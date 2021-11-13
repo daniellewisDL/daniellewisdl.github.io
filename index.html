@@ -12,7 +12,7 @@
 <body>
 
     <!--Main Navigation-->
-    <header>
+    <header class="min-vh-100">
       <style>
           /* Height for devices larger than 576px */
           @media (min-width: 992px) {
@@ -44,9 +44,6 @@
                   </li>
                   <li class="nav-item active">
                       <a class="nav-link" aria-current="page" href="#posts">about site</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#posts" target="_blank">about me</a>
                   </li>
               </ul>
   
@@ -100,7 +97,7 @@
   
     <!--Main layout-->
     <main class="my-5">
-      <div class="container">
+      <div class="container" id="posts">
 
         <!--Section: Content-->
         <section class="text-center">
@@ -118,7 +115,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Streamlit cheat sheet</h5>
                   <p class="card-text">
-                    A cheat sheet for streamlit.
+                    A cheat sheet for streamlit, the easiest and best python library to create and share data apps.
                   </p>
                   <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-primary" target="_blank">Launch app</a>
                   <!--<a href="#!" class="btn btn-primary">Read post</a>-->
@@ -137,7 +134,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Covid HK</h5>
                   <p class="card-text">
-                    A simple app to track covid-19 cases and vaccinations in HK.
+                    A simple app built with python and streamlit to track covid-19 cases and vaccinations in HK.
                   </p>
                   <a href="https://covid-hk.herokuapp.com/" class="btn btn-primary" target="_blank">Launch app</a>
                   <!--<a href="#!" class="btn btn-primary">Read post</a>-->
@@ -156,7 +153,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Equations explorer</h5>
                   <p class="card-text">
-                    An app to explore some of the equations that changed the world.
+                    A streamlit and python app to explore some of the most important equations in human history.
                   </p>
                   <a href="https://equations-explorer.herokuapp.com/" class="btn btn-primary" target="_blank">Launch app</a>
                   <!--<a href="#!" class="btn btn-primary">Read post</a>-->
@@ -177,7 +174,7 @@
                 <div class="card-body">
                   <h5 class="card-title">HSBC HK API Explorer app</h5>
                   <p class="card-text">
-                    An app to explore the HSBC HK APIs and the data they can provide.
+                    A streamlit and python app to explore the banking APIs provided by HSBC.
                   </p>
                   <!--<a href="#!" class="btn btn-primary">Launch app</a>-->
                   <a href="#!" class="btn btn-primary">Read post</a>
@@ -194,9 +191,9 @@
                   </a>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">PDF to PPT</h5>
+                  <h5 class="card-title">.pdf to .pptx</h5>
                   <p class="card-text">
-                    A simple app to convert simple-mindedly a .pdf into a .pptx file.
+                    A streamlit and python app to convert .pdf into a .pptx file, using a simple imaging.
                   </p>
                   <a href="https://pdf-to-ppt.herokuapp.com/" class="btn btn-primary" target="_blank">Launch app</a>
                   <!--<a href="#!" class="btn btn-primary">Read post</a>-->
