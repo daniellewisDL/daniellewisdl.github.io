@@ -11,30 +11,14 @@
   </head>
   <body style="background-color: rgb(0,0,0);">
 
-      <!--Main Navigation-->
       <header class="min-vh-100">
-        <style>
-            /* Height for devices larger than 576px */
-            @media (min-width: 992px) {
-                #intro {
-                margin-top: -58.59px;
-                }
-            }
-    
-            .navbar .nav-link {
-                color: #fff !important;
-            }
-        </style>
-    
-            <!-- Navbar -->
+
           <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
             <div class="container-fluid">
-                <!-- Navbar brand -->
                 <a class="navbar-brand nav-link" target="_blank" href="#">
                 <strong>DL</strong>
                 </a>
-                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
-                aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button">
                 <i class="fa fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarExample01">
@@ -43,7 +27,7 @@
                         <a class="nav-link" href="#posts" target="_blank">posts</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" aria-current="page" href="#posts">about site</a>
+                        <a class="nav-link" href="#posts">about site</a>
                     </li>
                 </ul>
     
@@ -69,10 +53,8 @@
                 </div>
             </div>
           </nav>
-          <!-- Navbar -->
-    
-          <!-- Background image -->
-          <div id="intro" class="bg-image vh-100 shadow-1-strong">
+
+          <div id="intro" class="bg-image vh-100 shadow-1-strong" style="margin-top: -60px;">
               <!-- This div is  intentionally blank. It creates the transparent black overlay over the video which you can modify in the CSS -->
               <div class="overlay"></div>
 
@@ -81,7 +63,6 @@
                   <source src="./src/video.mp4" type="video/mp4">
               </video>
 
-              <!-- The header content -->
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
                   <div class="w-100 text-white">
@@ -91,23 +72,22 @@
                   </div>
               </div>
           </div>
-          <!-- Background image -->
       </header>
-      <!--Main Navigation-->
-    
-      <!--Main layout-->
+
+
+
       <main class="my-5">
         <div class="container" id="posts">
 
-          <!--Section: Content-->
-          <section class="text-center">
-            <h4 class="mb-5 text-light"><strong>Latest posts</strong></h4>
+
+          <section>
+            <h4 class="display-5 mb-5 text-light text-center"><strong>Latest posts</strong></h4>
 
             <div class="row">
               <div class="col-lg-4 col-md-12 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/streamlit-cheat-sheet.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/streamlit-cheat-sheet.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -118,16 +98,16 @@
                       A cheat sheet for streamlit, the easiest and best python library to create and share data apps.
                     </p>
                     <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="./streamlit-cheat-sheet.html" class="btn btn-dark">Read post</a>
+                    <a href="https://github.com/daniellewisDL/streamlit-cheat-sheet/blob/master/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/covid-hk.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/covid-hk.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -146,8 +126,8 @@
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/equations.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/equations.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgb(94, 29, 29);"></div>
                     </a>
@@ -168,8 +148,8 @@
             <div class="row">
               <div class="col-lg-4 col-md-12 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/pexels-ronald-pang-4392569.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/pexels-ronald-pang-4392569.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -188,8 +168,8 @@
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/pdf-ppt.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/pdf-ppt.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -208,8 +188,8 @@
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/qrcode.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/qrcode.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -231,8 +211,8 @@
             <div class="row">
               <div class="col-lg-4 col-md-12 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/qig.png" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/qig.png" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -251,8 +231,8 @@
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/risk-pnl.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/risk-pnl.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -271,8 +251,8 @@
 
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image hover-overlay ripple">
-                    <img src="./src/space-invaders.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/space-invaders.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
                     </a>
@@ -293,8 +273,8 @@
               <!--
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card">
-                  <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img src="./src/pexels-kampus-production-7289717.jpg" class="img-fluid" />
+                  <div class="bg-image">
+                    <img src="./src/pexels-kampus-production-7289717.jpg" class="card-img-top" />
                     <a href="#!">
                       <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                     </a>
@@ -314,30 +294,12 @@
             </div>
             
           </section>
-          <!--Section: Content-->
 
-          <!-- Pagination
-          <nav class="my-4" aria-label="...">
-            <ul class="pagination pagination-circle justify-content-center">
-              <li class="page-item">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </main>
-      -->
-      <!--Main layout-->
+      
 
-      <!--Footer-->
+
       <footer class="bg-light text-lg-start">
 
         <div class="text-center py-4 align-items-center" style="background-color: rgb(64, 64, 64);">
@@ -357,14 +319,13 @@
 
         </div>
 
-        <!-- Copyright -->
         <div class="text-center p-3 text-light" style="background-color: rgb(32,32,32);">
           Made in 2021 by
           <a class="text-light" href="https://daniellewisdl.github.io/">Daniel Lewis</a>
         </div>
-        <!-- Copyright -->
+
       </footer>
-      <!--Footer-->
-  </body>
+
+    </body>
 
 </html>
