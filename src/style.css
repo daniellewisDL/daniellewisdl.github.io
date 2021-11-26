@@ -1,8 +1,7 @@
 header {
     position: relative;
     background-color: black;
-    height: 75vh;
-    min-height: 25rem;
+    min-height: 8rem;
     width: 100%;
     overflow: hidden;
   }
@@ -38,6 +37,22 @@ header {
     z-index: 1;
   }
   
+  post {
+    text-align: left;
+  
+  }
+ 
+  .card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .navbar .nav-link {
+    color: #fff !important;
+  } 
+
+
   /* Media Query for devices withi coarse pointers and no hover functionality */
   
   /* This will use a fallback image instead of a video for devices that commonly do not support the HTML5 video element */
@@ -51,3 +66,4 @@ header {
       display: none;
     }
   }
+
