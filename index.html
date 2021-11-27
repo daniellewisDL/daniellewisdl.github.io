@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="./src/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/7e37785e6e.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+    <script src="./js/sketch.js"></script>
   </head>
+
+
   <body style="background-color: rgb(0,0,0);">
 
       <header class="min-vh-100">
@@ -24,15 +28,14 @@
                 <div class="collapse navbar-collapse" id="navbarExample01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#posts" target="_blank">posts</a>
+                        <a class="nav-link" href="#posts">posts</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#posts">about site</a>
+                        <a class="nav-link" href="#about">about site</a>
                     </li>
                 </ul>
     
                 <ul class="navbar-nav d-flex flex-row">
-                    <!-- Icons -->
                     <li class="nav-item me-3 me-lg-0">
                     <a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow"
                         target="_blank">
@@ -55,13 +58,6 @@
           </nav>
 
           <div id="intro" class="bg-image vh-100 shadow-1-strong" style="margin-top: -60px;">
-              <!-- This div is  intentionally blank. It creates the transparent black overlay over the video which you can modify in the CSS -->
-              <div class="overlay"></div>
-
-              <!-- The HTML5 video element that will create the background video on the header -->
-              <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
-                  <source src="./src/video.mp4" type="video/mp4">
-              </video>
 
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
@@ -77,6 +73,8 @@
 
 
       <main class="my-5">
+
+
         <div class="container" id="posts">
 
 
@@ -118,8 +116,7 @@
                       A simple app built with python and streamlit to track covid-19 cases and vaccinations in HK.
                     </p>
                     <a href="https://covid-hk.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/covid-hk/blob/master/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
@@ -138,8 +135,7 @@
                       A streamlit and python app to explore some of the most important equations in human history.
                     </p>
                     <a href="https://equations-explorer.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/equations-explorer/blob/main/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
@@ -159,9 +155,7 @@
                     <p class="card-text">
                       A streamlit and python app to explore the banking APIs provided by HSBC.
                     </p>
-                    <a href="#!" class="btn btn-dark">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/hsbc-hk-api-explorer/blob/main/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
@@ -180,8 +174,7 @@
                       A streamlit and python app to convert .pdf into a .pptx file, using a simple imaging.
                     </p>
                     <a href="https://pdf-to-ppt.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/pdf-to-ppt/blob/main/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
@@ -200,7 +193,6 @@
                       A streamlit wrapper on the python qrcode library to generate a QR code for website links or other text.
                     </p>
                     <a href="https://qr-codify.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
                     <a href="#!" class="btn btn-dark">View code</a>
 
                   </div>
@@ -223,28 +215,7 @@
                       An app to match a randomly chosen inspirational quote with an image.
                     </p>
                     <a href="https://quote-image-gen.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a> 
-                    <a href="#!" class="btn btn-dark">View code</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image">
-                    <img src="./src/risk-pnl.jpg" class="card-img-top" />
-                    <a href="#!">
-                      <div class="mask" style="background-color: rgba(255, 255, 255, 1);"></div>
-                    </a>
-                  </div>
-                  <div class="card-body text-light">
-                    <h5 class="card-title">Trading desk risk and pnl explorer</h5>
-                    <p class="card-text">
-                      A simple visualisation app to look at trading desk risk factors and pnl.
-                    </p>
-                    <a href="https://risk-pnl-explorer.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/qr-code-app/blob/main/app.py" class="btn btn-dark">View code</a>
                   </div>
                 </div>
               </div>
@@ -263,8 +234,7 @@
                       A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.
                     </p>
                     <a href="https://space-invaders-sprites.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="#!" class="btn btn-dark">Read post</a>
-                    <a href="#!" class="btn btn-dark">View code</a>
+                    <a href="https://github.com/daniellewisDL/space-invaders/blob/main/app.py" class="btn btn-dark">View code</a>
 
                   </div>
                 </div>
@@ -296,6 +266,31 @@
           </section>
 
         </div>
+
+
+
+
+        <div class="container" id="about" style="margin-top: 60px;">
+          <section>
+            <h4 class="display-5 mb-5 text-light text-center"><strong>About site</strong></h4>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="card" style="background-color: rgb(64,64,64);">
+
+                  <div class="card-body text-light">
+                    <h5 class="card-title">Notes and links</h5>
+                    <p class="card-text">
+                      I am a hobbyist coder, and this is a place for me to store some links to my projects, and maybe offer some views on things too. Nothing serious here.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+
       </main>
       
 
