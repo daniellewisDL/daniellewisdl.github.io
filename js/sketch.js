@@ -7,11 +7,11 @@ var choice_of_color;
 var theta;
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth-20, windowHeight);
 }
 
 function setup() {
-    canvas = createCanvas(windowWidth, windowHeight);
+    canvas = createCanvas(windowWidth-20, windowHeight);
     canvas.position(0,0);
     canvas.style('z-index', '0');
     frameRate(frame_rate);
