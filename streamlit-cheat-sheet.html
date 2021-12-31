@@ -1,255 +1,292 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
   <head>
-
     <title>daniellewisDL</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="./src/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
     <script src="https://use.fontawesome.com/7e37785e6e.js"></script>
-    <link rel="stylesheet" href="./src/monokai.css">
+    <link rel="stylesheet" href="./css/monokai.css">
     <script>hljs.highlightAll();</script>
-  
+
   </head>
-  
 
 
-  <body style="background-color: rgb(53, 53, 53);">
+  <body style="background-color: rgb(0,0,0);">
 
-      <header style="background-color: rgb(70, 43, 43);">
-          <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
+      <header class="min-vh-20">
+
+          <nav class="navbar navbar-expand navbar-dark d-none d-sm-block" style="z-index: 20;">
             <div class="container-fluid">
-                <a class="navbar-brand nav-link" target="_blank" href="https://daniellewisdl.github.io/">
-                <strong>DL</strong>
-                </a>
-                <button class="navbar-toggler" type="button">
-                <i class="fa fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbar">
-                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                          <a class="nav-link" href="https://daniellewisdl.github.io/" target="_blank">home</a>
-                      </li>
-                  </ul>
+
+                <a class="navbar-brand nav-link" href="#"><strong>DL</strong></a>
+
+                <!-- <ul class="navbar-nav me-auto"> <!-- me-auto pushes social links to right
+                    <li class="nav-item"><a class="nav-link" href="#latestPosts">posts</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#about">about site</a></li>
+                </ul> -->
     
-                  <ul class="navbar-nav d-flex flex-row">
-                      <li class="nav-item me-3 me-lg-0">
-                      <a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow"
-                          target="_blank">
-                          <i class="fa fa-linkedin"></i>
-                      </a>
-                      </li>
-                      <li class="nav-item me-3 me-lg-0">
-                      <a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank">
-                          <i class="fa fa-twitter"></i>
-                      </a>
-                      </li>
-                      <li class="nav-item me-3 me-lg-0">
-                      <a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank">
-                          <i class="fa fa-github"></i>
-                      </a>
-                      </li>
-                  </ul>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item me-3">
+                    <a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                    </li>
+                    <li class="nav-item me-3">
+                    <a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    </li>
+                    <li class="nav-item me-3">
+                    <a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    </li>
+                </ul>
                 </div>
             </div>
           </nav>
 
-          <div id="intro" class="bg-image shadow-1-strong" style="margin-top: 0px;">
-              <div class="container">
-                  <div class="d-flex text-center align-items-center">
+          <div id="banner" class="bg-image h-20 shadow-1-strong">
+
+              <div class="container h-20">
+                  <div class="d-flex h-20 text-center align-items-center">
                   <div class="w-100 text-white">
-                      <h1 class="display-3 mb-0">Notes and links</h1>
+                      <h1 class="display-3">Notes and links</h1>
                       <p class="lead mb-0">from @daniellewisDL</p>
                   </div>
                   </div>
               </div>
           </div>
-        
       </header>
 
 
-
-
       <main class="my-5">
+
         <div class="container" id="post">
 
+
           <section>
-
-            <div class="row">
-              <div class="d-none d-lg-block col-lg-4 col-md-4 mb-12">
-                <pre>
-
-
-
-
-                  
-
-                </pre>
+            
+            <div class="row" style="justify-content: center">
+              <div class="col-12 mb-4">
                 <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="bg-image">
-                    <img src="./src/streamlit-cheat-sheet.jpg" class="img-fluid" />
-                    <a href="#!">
-                      <div class="mask" style="background-color: rgba(255, 255, 255, 0.2);"></div>
-                    </a>
-                  </div>
-                  <div class="card-body text-light">
-                    <h5 class="card-title">Streamlit cheat sheet</h5>
-                    <p class="card-text">
-                      A cheat sheet for streamlit, the easiest and best python library to create and share data apps.
-                    </p>
-                    <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-dark" target="_blank">Launch app</a>
-                    <a href="https://github.com/daniellewisDL/streamlit-cheat-sheet/blob/master/app.py" class="btn btn-dark">View code</a>
+                  <div class="row g-0">
+                    <div class="col-12">
+                      <div class="card-body text-light">
+                        <p class="card-text">
+                          <h5 class="display-4">Streamlit</h5>
+                          <p><small class="text-muted">November 2021</small></p>
+                          <pre>
+                          </pre>
+                          <p class="lead">
+                            If you have tried making web apps in python, you will know that it is a bit of a faff.
+                            Sure, there are options: django, flask, web2py and other frameworks have all attempted to make it easier.
+                            However, if you are like me, you will have found these options wanting.
+                            In late 2019, a far easier option was released: Streamlit.
+                          </p>
+                          <pre>
+                          </pre>
+                          <h4>What is Streamlit?</h4>
+                          <p>
+                            Streamlit is an awesome open-source python library that makes producing and sharing web apps easy.
+                            Its principal mission is to make sharing machine learning and data science projects easy.
+                          </p>
+                          <p>
+                            And in my view, they nailed it.
+                          </p>
+                          <pre>
+                            <code>$ pip install streamlit</code></pre>
+        
+                          <pre>
+                          </pre>                  
+                          <h4>Why did they create Streamlit?</h4>
+                          <p>
+                            The use case will be familiar to anyone who is not a full-stack developer who has created a machine
+                            learning model, data profiling pipeline, or even just some nice visualisations in a python script or
+                            jupyter notebook, and then wants to share it with others.
+                          </p>  
+                          <p>
+                            Often, ML engineers, data scientists, or the ever-increasing ranks of non-specialists like me who are
+                            learning these techniques, will want to share the output of their work. This could be to demonstrate
+                            the effectiveness of a model, or to get early feedback on the direction of a project, or simply to
+                            share the ideas and work.
+                          </p>
+                          <p>
+                            But sharing models is not easy. Often, the code will have been scrubbed together in a jupyter notebook
+                            or a series of python scripts, which can be difficult to follow, and emailing notebooks and source files
+                            and explaining how to install python and structure the project folder just right is always going to
+                            cause headaches. 
+                          </p>
+                          <p>
+                            While there are some alternatives, such as creating a simple GUI with tkinter and then creating an
+                            executable of that with PyInstaller, the easiest way to share is usually a web app, where the code can
+                            be running on a server, and all the user has to do is point a web browser at the right address. This also
+                            makes updating the app and adding features super easy. But producing great-looking and easy to use web apps
+                            is a real skill which can take many years to develop. And data nerds are often not front-end devs.
+                          </p>
+                          <p>
+                            Now, if you really want to build high-quality, scalable, feature rich and secure web apps, python is probably
+                            not the best language to use (although it can be and has been done well by many). But this use case is to spin
+                            something up in minutes to demo, which is not straightforward in node.js or other frameworks.
+                          </p>
+                          <p>
+                            The Streamlit founders realised that machine learning engineers and data scientists at many tech companies were
+                            spending far too long sketching code to produce a wonky front-end and not enough time in their core area of expertise. 
+                          </p>
+                          <p>
+                            Their insight was to create a tool to abstract away almost all the front-end work, so that data scientists
+                            could optimise their time on their core tasks, and then, when needed, use Streamlit to produce beautiful, simple apps,
+                            to show off their latest autoencoder or GBM.
+                          </p>
+                          <p>
+                            In 2021, Streamlit went further and opened up Streamlit Cloud, which makes deploying web apps built with Streamlit to
+                            the cloud, so that anyone with an internet connection can view the app. It just takes one click. Even Heroku, which
+                            in my view is pretty easy to use as a web app deployment cloud provider, can't get anywhere near the simplicity of
+                            the Streamlit approach.
+                          </p>
+                          <pre>
+                          </pre>
+                          <div class="container col-lg-6" style='justify-content: center;'>
+                            <div style="align-items: center;">
+                              <iframe style="width: 100%; min-height: 320px;" src="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4"></iframe>
+                            </div>
+                            <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.streamlit.io/">streamlit.io</a></span></p>
+                          </div>
+                          <pre>
+                          </pre>
+                          <h4>An amazingly helpful and inclusive online community</h4>
+                          <p>
+                            One of the reasons Streamlit has gathered so much momentum (and VC funding) since its launch is a thriving community,
+                            who jump at the chance to help others and celebrate their work, or offer tips and tricks or hacks to provide additional
+                            useful functionality. I've rarely seen so collaborative and enthusiastic a group of users, and they have propelled
+                            feature requests and issue resolution making the tool accelerate its development.
+                          </p>
+                          <pre>
+                          </pre>
+                          <h4>Other uses</h4>
+                          <p>
+                            Streamlit is so easy to use, and creates simple and beautiful web apps in seconds, I would strongly recommend any python
+                            user install and experiment with it. Although its genesis was to help share data apps, I have found it so useful that
+                            if I want to explore a python library's functionality, often I'll spin up a small streamlit app. It takes seconds, and
+                            the interactive nature of what you can produce makes everything easier.
+                          </p>
+                          <pre>
+                          </pre>
+
+                          <p>
+                            Happy streamlitting!
+                          </p>
+                          <pre>
+                          </pre>
+                          <h4>Useful links</h4>
+                          <p>
+                            <ul>
+                              <li>
+                                Streamlit official <a href="https://streamlit.io/">website</a>
+                              </li>
+                              <li>
+                                Tyler Richards' excellent book: <a href="https://www.packtpub.com/product/getting-started-with-streamlit-for-data-science/9781800565500">Getting Started with Streamlit for Data Science</a>
+                              </li>
+                              <li>
+                                The Data Professor's Streamlit <a href="https://www.youtube.com/watch?v=ZZ4B0QUHuNc&list=PLtqF5YXg7GLmCvTswG32NqQypOuYkPRUE"> YouTube Tutorial Series</a>
+                              </li>
+                              <li>
+                                Peter Baumgartner's <a href="https://pmbaumgartner.github.io/streamlitopedia/front/introduction.html">Streamlitopedia</a>
+                              </li>
+                            </ul>
+                          </p>
+
+                          <div class="accordian bg-dark" id="csAccordian">
+                            <div class="accordian-item">
+                              <h2 class="accordion-header" id="csHeading">
+                                <button class="accordion-button bg-dark text-light" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                  Bonus material - the Cheat Sheet
+                                </button>
+                              </h2>
+                              <div id="collapseOne" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                              
+
+                                              <h4>What is the Cheat Sheet?</h4>
+                                              <p>
+                                                I first discovered Streamlit when it was announced in October 2019, when I was doing some machine learning projects at work.
+                                                But I didn't really start using it until mid-2020, after the pandemic hit. I had been asked to do some data analysis and
+                                                visualisations for work, and started off using a (half-)pipeline in a jupyter notebook to read a bunch of data, visualise
+                                                with matplotlib, and save down a few hundred multi-page pdfs to distribute to the team I was working with.
+                                              </p>
+                                              <p>
+                                                I had that feeling where I thought 'there must be an easier way' and I thought about creating and then sharing a web app
+                                                with my colleagues so they could explore the data further. However, my Flask-foo was poor at the time, and I knew it would
+                                                take too long. Then I remembered Streamlit.
+                                              </p>
+                                              <p>
+                                                I went to streamlit.io, pip installed away, and tried the first tutorial. It was simple, powerful and was exactly what I
+                                                needed for my project. I also found the nascent but amazingly helpful online community.
+                                              </p>
+                                              <p>
+                                                As I was using Streamlit, I searched through the docs for the various functionality, and I thought someone must have made
+                                                a cheat sheet, like the plethora of famous ones for python data science.
+                                              </p>
+                                              <p>
+                                                But search as I might, I could not find a Streamlit Cheat Sheet. So I thought, well I'll just write down all the commands
+                                                and then use that. After I did that, I realised I'd created what I wanted, and that it might be useful to others. I stuck
+                                                it in a powerpoint slide and applied the streamlit design language.
+                                              </p>
+                                              <p>
+                                                I then had a neat idea - what if I could put the cheat sheet inside a streamlit app? Streamlit was so easy to use that
+                                                it was pretty simple to do.
+                                              </p>
+                                              <pre>
+                                              </pre>
+                                              <div class="container col-lg-6" style='justify-content: center;'>
+                                                <p><img src="./src/scs.png"></p>
+                                                <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://discuss.streamlit.io/t/streamlit-cheat-sheet/4912">discuss.streamlit.io</a></span></p>
+                                              </div>
+                                              <pre>
+                                              </pre>
+                                              <h4>Hundreds of thousands of views</h4>
+                                              <p>
+                                                After I shared it with the community, I was surprised how many people liked my cheat sheet. I got friendly comments from
+                                                many users as well as the founders of the company, and was invited to the private beta of Streamlit Cloud.
+                                              </p>
+                                              <div class="container col-lg-6" style='justify-content: center;'>
+                                                <p><img src="./src/scs-star-history.png"></p>
+                                                <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.star-history.com/">GitHub star history</a></span></p>
+                                              </div>
+                                              <p>
+                                                I deployed the app.py version of the Cheat Sheet to both Streamlit Cloud and to Heroku, and collectively have had hundreds
+                                                of thousands of visitors, which is really gratifying as I hope I have helped the community build better and faster. In addition,
+                                                it was my first (and only) GitHub repo to get over 150 stars.
+                                              </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div class="col-lg-8 col-md-12 mb-12">
-                 <div class="post text-light text-left ">
-
-                  <h5 class="display-4">Streamlit</h5>
-                  <p>Daniel Lewis, November 2021</p>
-                  <pre>
-                  </pre>
-                  <p class="lead">
-                    If you have tried making web apps in python, you will know that it is a bit of a faff.
-                    Sure, there are options: django, flask, web2py and other frameworks have all attempted to make it easier.
-                    However, if you are like me, you will have found these options wanting.
-                    In late 2019, a far easier option was released: Streamlit.
-                  </p>
-                  <pre>
-                  </pre>
-                  <h4>What is Streamlit?</h4>
-                  <p>
-                    Streamlit is an awesome open-source python library that makes producing and sharing web apps easy. Its principal mission is to make sharing machine learning and data science projects easy.
-                  </p>
-                  <p>
-                    And in my view, they nailed it.
-                  </p>
-                  <pre><code>$ pip install streamlit</code></pre>
-
-                  <pre>
-                  </pre>                  
-                  <h4>Why did they create Streamlit?</h4>
-                  <p>
-                    The use case will be familiar to anyone who is not a full-stack developer who has created a machine learning model, data profiling pipeline, or even just some nice visualisations in a python script or jupyter notebook, and then wants to share it with others.
-                  </p>  
-                  <p>
-                    Often, ML engineers, data scientists, or the ever-increasing ranks of non-specialists like me who are learning these techniques, will want to share the output of their work. This could be to demonstrate the effectiveness of a model, or to get early feedback on the direction of a project, or simply to share the ideas and work.
-                  </p>
-                  <p>
-                    But sharing models is not easy. Often, the code will have been scrubbed together in a jupyter notebook or a series of python scripts, which can be difficult to follow, and emailing notebooks and source files and explaining how to install python and structure the project folder just right is always going to cause headaches. 
-                  </p>
-                  <p>
-                    While there are some alternatives, such as creating a simple GUI with tkinter and then creating an executable of that with PyInstaller, the easiest way to share is usually a web app, where the code can be running on a server, and all the user has to do is point a web browser at the right address. This also makes updating the app and adding features super easy. But producing great-looking and easy to use web apps is a real skill which can take many years to develop. And data nerds are often not front-end devs.
-                  </p>
-                  <p>
-                    Now, if you really want to build high-quality, scalable, feature rich and secure web apps, python is probably not the best language to use (although it can be and has been done well by many). But this use case is to spin something up in minutes to demo, which is not straightforward in node.js or other frameworks.
-                  </p>
-                  <p>
-                    The Streamlit founders realised that machine learning engineers and data scientists at many tech companies were spending far too long sketching code to produce a wonky front-end and not enough time in their core area of expertise. 
-                  </p>
-                  <p>
-                    Their insight was to create a tool to abstract away almost all the front-end work, so that data scientists could optimise their time on their core tasks, and then, when needed, use Streamlit to produce beautiful, simple apps, to show off their latest autoencoder or GBM.
-                  </p>
-                  <p>
-                    In 2021, Streamlit went further and opened up Streamlit Cloud, which makes deploying web apps built with Streamlit to the cloud, so that anyone with an internet connection can view the app. It just takes one click. Even Heroku, which in my view is pretty easy to use as a web app deployment cloud provider, can't get anywhere near the simplicity of the Streamlit approach.
-                  </p>
-                  <pre>
-                  </pre>
-                  <div style="align-items: center;">
-                    <iframe style="width: 100%; min-height: 320px;" src="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4"></iframe>
-                  </div>
-                  <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.streamlit.io/">streamlit.io</a></span></p>
-                  <pre>
-                  </pre>
-                  <h4>An amazingly helpful and inclusive online community</h4>
-                  <p>
-                    One of the reasons Streamlit has gathered so much momentum (and VC funding) since its launch is a thriving community, who jump at the chance to help others and celebrate their work, or offer tips and tricks or hacks to provide additional useful functionality. I've rarely seen so collaborative and enthusiastic a group of users, and they have propelled feature requests and issue resolution making the tool accelerate its development.
-                  </p>
-                  <pre>
-                  </pre>
-                  <h4>Other uses</h4>
-                  <p>
-                    Streamlit is so easy to use, and creates simple and beautiful web apps in seconds, I would strongly recommend any python user install and experiment with it. Although its genesis was to help share data apps, I have found it so useful that if I want to explore a python library's functionality, often I'll spin up a small streamlit app. It takes seconds, and the interactive nature of what you can produce makes everything easier.
-                  </p>
-                  <pre>
-                  </pre>
-                  <h4>What is the Cheat Sheet?</h4>
-                  <p>
-                    I first discovered Streamlit when it was announced in October 2019, when I was doing some machine learning projects at work. But I didn't really start using it until mid-2020, after the pandemic hit. I had been asked to do some data analysis and visualisations for work, and started off using a (half-)pipeline in a jupyter notebook to read a bunch of data, visualise with matplotlib, and save down a few hundred multi-page pdfs to distribute to the team I was working with.
-                  </p>
-                  <p>
-                    I had that feeling where I thought 'there must be an easier way' and I thought about creating and then sharing a web app with my colleagues so they could explore the data further. However, my Flask-foo was poor at the time, and I knew it would take too long. Then I remembered Streamlit.
-                  </p>
-                  <p>
-                    I went to streamlit.io, pip installed away, and tried the first tutorial. It was simple, powerful and was exactly what I needed for my project. I also found the nascent but amazingly helpful online community.
-                  </p>
-                  <p>
-                    As I was using Streamlit, I searched through the docs for the various functionality, and I thought someone must have made a cheat sheet, like the plethora of famous ones for python data science.
-                  </p>
-                  <p>
-                    But search as I might, I could not find a Streamlit Cheat Sheet. So I thought, well I'll just write down all the commands and then use that. After I did that, I realised I'd created what I wanted, and that it might be useful to others. I stuck it in a powerpoint slide and applied the streamlit design language.
-                  </p>
-                  <p>
-                    I then had a neat idea - what if I could put the cheat sheet inside a streamlit app? Streamlit was so easy to use that it was pretty simple to do.
-                  </p>
-                  <pre>
-                  </pre>
-                  <p><img src="./src/scs.png" style="width: 80%;"/></p>
-                  <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://discuss.streamlit.io/t/streamlit-cheat-sheet/4912">discuss.streamlit.io</a></span></p>
-                  <pre>
-                  </pre>
-                  <h4>Hundreds of thousands of views</h4>
-                  <p>
-                    After I shared it with the community, I was surprised how many people liked my cheat sheet. I got friendly comments from many users as well as the founders of the company, and was invited to the private beta of Streamlit Cloud.
-                  </p>
-                  <p><img src="./src/scs-star-history.png" style="width: 80%;"/></p>
-                  <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.star-history.com/">GitHub star history</a></span></p>
-                  <p>
-                    I deployed the app.py version of the Cheat Sheet to both Streamlit Cloud and to Heroku, and collectively have had hundreds of thousands of visitors, which is really gratifying as I hope I have helped the community build better and faster. In addition, it was my first (and only) GitHub repo to get over 150 stars.
-                  </p>
-
-                  <p>
-                    Happy streamlitting!
-                  </p>
-                  <pre>
-                  </pre>
-                  <h4>Useful links</h4>
-                  <p>
-                    <ul>
-                      <li>
-                        Streamlit official <a href="https://streamlit.io/">website</a>
-                      </li>
-                      <li>
-                        Tyler Richards' excellent book: <a href="https://www.packtpub.com/product/getting-started-with-streamlit-for-data-science/9781800565500">Getting Started with Streamlit for Data Science</a>
-                      </li>
-                      <li>
-                        The Data Professor's Streamlit <a href="https://www.youtube.com/watch?v=ZZ4B0QUHuNc&list=PLtqF5YXg7GLmCvTswG32NqQypOuYkPRUE"> YouTube Tutorial Series</a>
-                      </li>
-                      <li>
-                        Peter Baumgartner's <a href="https://pmbaumgartner.github.io/streamlitopedia/front/introduction.html">Streamlitopedia</a>
-                      </li>
-                    </ul>
-                  </p>
-                </div>
-              </div>
-
-
             </div>
 
-            
-         </section>
+          </section>
 
         </div>
-      </main>
 
+
+
+      </main>
+      
 
 
       <footer class="bg-light text-lg-start">
@@ -276,9 +313,7 @@
           <a class="text-light" href="https://daniellewisdl.github.io/">Daniel Lewis</a>
         </div>
 
-
       </footer>
-
 
     </body>
 
