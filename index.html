@@ -4,6 +4,7 @@
     <title>daniellewisDL</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="./src/favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
@@ -48,7 +49,7 @@
             </div>
           </nav>
 
-          <div id="bannerP5js" class="bg-image vh-100 shadow-1-strong">
+          <div id="bannerP5js" class="bg-image vh-100">
 
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
@@ -68,53 +69,22 @@
 
 
           <section>
-            <h4 class="display-5 mt-5 mb-5 text-light text-center"><strong>Featured posts</strong></h4>
+            <h4 class="display-5 mt-5 mb-5 text-light text-center">Featured posts</h4>
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block h-100">
-                      <img class="card-img-top h-100" src="./src/streamlit-cheat-sheet.jpg">
+                <div class="card border-light" style="background-color: rgb(0, 0, 0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Streamlit</h5>
+                      <p class="card-text">
+                        The simplest and best python library to create and share python web apps (and my cheat sheet).</p>
+                      <p class="card-text"><small class="text-muted">20 November 2021</small></p>
+                      <a href="./posts/streamlit-cheat-sheet.html" class="btn btn-dark">Read post</a>
+                      <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-dark" target="_blank">Launch cheat sheet</a>
+                      <a href="https://github.com/daniellewisDL/streamlit-cheat-sheet" class="btn btn-dark">Repo</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">Streamlit</h5>
-                        <p class="card-text">
-                          An article on Streamlit, the easiest and best python library to create and share data apps. The app link below goes to my cheat sheet for Streamlit, created in Streamlit.
-                        </p>
-                        <p class="card-text"><small class="text-muted">20 November 2021</small></p>
-                        <a href="./streamlit-cheat-sheet.html" class="btn btn-dark">Read post</a>
-                        <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/streamlit-cheat-sheet/blob/master/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <h4 class="display-5 mt-5 mb-5 text-light text-center"><strong>Streamlit apps</strong></h4>
-
-            <div class="row" style="justify-content: center">
-              <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/covid-hk.jpg">
-                    </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">Covid HK</h5>
-                        <p class="card-text">
-                          A simple app built with python and streamlit to track covid-19 cases and vaccinations in HK.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://covid-hk.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/covid-hk/blob/master/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top img-rounded" src="./src/streamlit-cheat-sheet.jpg" />
                   </div>
                 </div>
               </div>
@@ -122,22 +92,77 @@
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/equations.jpg">
+                <div class="card border-light" style="background-color: rgb(0, 0, 0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Processing and p5js</h5>
+                      <p class="card-text">
+                        The best creative coding tools in existence (and how I made the homepage banner art).
+                      </p>
+                      <p class="card-text"><small class="text-muted">20 November 2021</small></p>
+                      <a href="./posts/processing-article.html" class="btn btn-dark">Read post</a>
                     </div>
-                    <div class="col-md-10">
+                    <img class="card-img-top" src="./src/processing.jpg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <h4 class="display-5 mt-5 mb-5 text-light text-center">Streamlit app miscellany</h4>
+
+            <div class="row" style="justify-content: center">
+              <div class="col-12 mb-4">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Covid HK</h5>
+                      <p class="card-text">
+                        A web app to get and display the latest HK government covid cases and vaccination data via data.gov.uk API and display it as simply and quickly as possible.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://covid-hk.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
+                      <a href="https://github.com/daniellewisDL/covid-hk/blob/master/app.py" class="btn btn-dark">Repo</a>
+                    </div>
+                    <img class="card-img-top" src="./src/covid-hk.jpg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="justify-content: center">
+              <div class="col-12 mb-4">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                    <div class="col-12">
                       <div class="card-body text-light">
                         <h5 class="card-title">Equations explorer</h5>
                         <p class="card-text">
-                          A streamlit and python app to explore some of the most important equations in human history.
+                          A web app to explore some of the most important equations in human history.
                         </p>
                         <p class="card-text"><small class="text-muted">October 2021</small></p>
                         <a href="https://equations-explorer.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/equations-explorer/blob/main/app.py" class="btn btn-dark">View code</a>
+                        <a href="https://github.com/daniellewisDL/equations-explorer/blob/main/app.py" class="btn btn-dark">Repo</a>
                       </div>
+                      <img class="card-img-top" src="./src/equations.jpg" />
                     </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="justify-content: center">
+              <div class="col-12 mb-4">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">HSBC HK API Explorer app</h5>
+                      <p class="card-text">
+                        An explorer app for the banking APIs provided by HSBC in Hong Kong.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://github.com/daniellewisDL/hsbc-hk-api-explorer/blob/main/app.py" class="btn btn-dark">Repo</a>
+                    </div>
+                    <img class="card-img-top" src="./src/hk-atms.jpg" />
                   </div>
                 </div>
               </div>
@@ -145,21 +170,18 @@
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/pexels-ronald-pang-4392569.jpg">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">PDF to PPT converter</h5>
+                      <p class="card-text">
+                        A simple app to convert an uploaded .pdf into a .pptx file, using simple image translation.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://pdf-to-ppt.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
+                      <a href="https://github.com/daniellewisDL/pdf-to-ppt/blob/main/app.py" class="btn btn-dark">Repo</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">HSBC HK API Explorer app</h5>
-                        <p class="card-text">
-                          A streamlit and python app to explore the banking APIs provided by HSBC in Hong Kong.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://github.com/daniellewisDL/hsbc-hk-api-explorer/blob/main/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top" src="./src/pdf-ppt.jpg" />
                   </div>
                 </div>
               </div>
@@ -167,22 +189,18 @@
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/pdf-ppt.jpg">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">QR Codify</h5>
+                      <p class="card-text">
+                        A streamlit wrapper on the python qrcode library to generate a QR code for any website links or other text.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://qr-codify.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
+                      <a href="https://github.com/daniellewisDL/qr-code-app/blob/main/app.py" class="btn btn-dark">Repo</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">.pdf to .pptx</h5>
-                        <p class="card-text">
-                          A streamlit and python app to convert .pdf into a .pptx file, using a simple imaging.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://pdf-to-ppt.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/pdf-to-ppt/blob/main/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top" src="./src/qrcode.jpg" />
                   </div>
                 </div>
               </div>
@@ -190,22 +208,18 @@
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/qrcode.jpg">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Quote Image Generator</h5>
+                      <p class="card-text">
+                        An app to match a randomly chosen inspirational quote with an image.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://quote-image-gen.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
+                      <a href="https://github.com/daniellewisDL/quote-image-gen/blob/main/app.py" class="btn btn-dark">Repo</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">QR Codify</h5>
-                        <p class="card-text">
-                          A streamlit wrapper on the python qrcode library to generate a QR code for website links or other text.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://qr-codify.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/qr-code-app/blob/main/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top" src="./src/qig.jpg" />
                   </div>
                 </div>
               </div>
@@ -213,49 +227,46 @@
 
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/qig.png">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Space invader sprites</h5>
+                      <p class="card-text">
+                        A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="https://space-invaders-sprites.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
+                      <a href="https://github.com/daniellewisDL/space-invaders/blob/main/app.py" class="btn btn-dark">Repo</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">Quote Image Generator</h5>
-                        <p class="card-text">
-                          An app to match a randomly chosen inspirational quote with an image.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://quote-image-gen.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/quote-image-gen/blob/main/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top" src="./src/space-invaders.jpg" />
                   </div>
                 </div>
               </div>
             </div>
 
+
+            <h4 class="display-5 mt-5 mb-5 text-light text-center">Processing and p5js miscellany</h4>
+
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(64,64,64);">
-                  <div class="row g-0">
-                    <div class="col-md-2 d-none d-md-block">
-                      <img src="./src/space-invaders.jpg">
+                <div class="card" style="background-color: rgb(0,0,0);">
+                  <div class="col-12">
+                    <div class="card-body text-light">
+                      <h5 class="card-title">Perlin noise</h5>
+                      <p class="card-text">
+                        A simple demo of Perlin noise
+                      </p>
+                      <p class="card-text"><small class="text-muted">October 2021</small></p>
+                      <a href="./posts/perlin-noise.html" class="btn btn-dark" target="_blank">Read post</a>
                     </div>
-                    <div class="col-md-10">
-                      <div class="card-body text-light">
-                        <h5 class="card-title">Space invader sprites</h5>
-                        <p class="card-text">
-                          A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://space-invaders-sprites.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/space-invaders/blob/main/app.py" class="btn btn-dark">View code</a>
-                      </div>
-                    </div>
+                    <img class="card-img-top" src="./src/streamlit-cheat-sheet.jpg" />
                   </div>
                 </div>
               </div>
             </div>
+
+
+
 
           </section>
 
@@ -266,16 +277,13 @@
 
         <div class="container" id="about" style="margin-top: 60px;">
           <section>
-            <h4 class="display-5 mb-5 text-light text-center"><strong>About site</strong></h4>
-
+            <h4 class="display-5 mb-5 text-light text-center">About site</h4>
             <div class="row">
               <div class="col-12">
-                <div class="card" style="background-color: rgb(64,64,64);">
-
+                <div class="card" style="background-color: rgb(0,0,0);">
                   <div class="card-body text-light">
-                    <h5 class="card-title">Notes and links</h5>
                     <p class="card-text">
-                      I am a hobbyist programmer and this is a place for me to store some links to my projects, and maybe offer some views on things too. Nothing serious here.
+                      Hi - I'm an accountant by trade, with a CompSci background, and in this, my small corner of the web, I use as a place for me to store some links to my personal projects, and maybe offer some views on things too. Nothing serious here.
                     </p>
                   </div>
                 </div>
@@ -291,7 +299,7 @@
 
       <footer class="bg-light text-lg-start">
 
-        <div class="text-center py-4 align-items-center" style="background-color: rgb(64, 64, 64);">
+        <div class="text-center py-4 align-items-center" style="background-color: rgb(16, 16, 16);">
 
           <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn btn-dark m-1" role="button" rel="nofollow"
             target="_blank">
@@ -309,7 +317,7 @@
         </div>
 
         <div class="text-center p-3 text-light" style="background-color: rgb(32,32,32);">
-          Made in 2021 by
+          Made in 2021 to 2022 by
           <a class="text-light" href="https://daniellewisdl.github.io/">Daniel Lewis</a>
         </div>
 
