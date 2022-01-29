@@ -3,7 +3,7 @@
   <head>
     <title>daniellewisDL</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="../src/favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
@@ -17,14 +17,14 @@
   </head>
 
 
-  <body style="background-color: rgb(0,0,0);">
+  <body style="background-color: rgb(255, 255, 255);">
 
       <header class="min-vh-20">
 
-          <nav class="navbar navbar-expand navbar-dark d-none d-sm-block" style="z-index: 20;">
+          <nav class="navbar navbar-expand d-none d-sm-block" style="z-index: 20;">
             <div class="container-fluid">
 
-                <a class="navbar-brand nav-link" href="https://daniellewisdl.github.io/"><strong>DL</strong></a>
+                <a class="navbar-brand nav-link" href="../index.html"><strong>DL</strong></a>
    
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item me-3">
@@ -51,7 +51,7 @@
 
               <div class="container">
                   <div class="d-flex text-center align-items-center">
-                  <div class="w-100 text-white">
+                  <div class="w-100">
                       <h1 class="display-3 mt-4">Notes and links</h1>
                       <p class="lead mb-4">from @daniellewisDL</p>
                   </div>
@@ -63,17 +63,17 @@
 
       <main class="mb-5">
 
-        <div class="container" id="post">
+        <div class="container" id="post" style="max-width: 800px;">
 
 
           <section>
             
             <div class="row" style="justify-content: center">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <div class="card" style="border-width: 0px;">
                   <div class="row g-0">
                     <div class="col-12">
-                      <div class="card-body text-light">
+                      <div class="card-body">
                         <p class="card-text">
                           <h5 class="display-4">Streamlit</h5>
                           <p><small class="text-muted">November 2021</small></p>
@@ -83,7 +83,7 @@
                             If you have tried making web apps in python, you will know that it is a bit of a faff.
                             Sure, there are options: django, flask, web2py and other frameworks have all attempted to make it easier.
                             However, if you are like me, you will have found these options wanting.
-                            In late 2019, a far easier option was released: Streamlit.
+                            If you want an easy, simple and powerful tool, you should use Streamlit.
                           </p>
                           <pre>
                           </pre>
@@ -100,7 +100,7 @@
         
                           <pre>
                           </pre>                  
-                          <h4>Why did these guys create Streamlit?</h4>
+                          <h4>Why did these folk create Streamlit?</h4>
                           <p>
                             The use case will be familiar to anyone who is not a front-end developer, but has created a machine
                             learning model, data profiling pipeline, or even just some nice visualisations in a python script or
@@ -114,7 +114,7 @@
                           <p>
                             But sharing python-based models is not easy. Often, the code will have been scrubbed together in a jupyter notebook
                             or a series of python scripts, which can be difficult to follow, and emailing notebooks and pickled model files
-                            and explaining how to install python, make the venvs, and structure the project folder just right is always going to
+                            and explaining how to install python, make the venv, and structure the project folder just right is always going to
                             cause headaches.
                           </p>
                           <p>
@@ -146,11 +146,11 @@
                           </p>
                           <pre>
                           </pre>
-                          <div class="container col-lg-6" style='justify-content: center;'>
+                          <div class="container" style='justify-content: center;'>
                             <div style="align-items: center;">
-                              <iframe style="width: 100%; min-height: 320px;" src="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4"></iframe>
+                              <iframe style="height: auto; width: auto;" src="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4"></iframe>
                             </div>
-                            <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.streamlit.io/">streamlit.io</a></span></p>
+                            <p><span class="d-block p-2">Source: <a href="https://www.streamlit.io/">streamlit.io</a></span></p>
                           </div>
                           <pre>
                           </pre>
@@ -167,12 +167,39 @@
                           <p>
                             Streamlit is so easy to use, and creates simple and beautiful web apps in seconds, I would strongly recommend any python
                             user install and experiment with it. Although its genesis was to help share data apps, I have found it so useful that
-                            if I want to explore a python library's functionality, often I'll spin up a small streamlit app. It takes seconds, and
+                            if I want to explore the funcationality of a particular python library, often I'll spin up a small streamlit app. It takes seconds, and
                             the interactive nature of what you can produce makes everything easier.
                           </p>
-                          <pre>
-                          </pre>
+                          <p>
+                            For example, recently I was interested in playing with the python qrcode library. The following code was all it took to
+                            create a simple web app where the user can input an arbitrary string and generate a qrcode.
+                          </p>
 
+                          <pre>
+                            <code>import streamlit as st
+import qrcode
+from PIL import Image
+from numpy import asarray
+
+st.header('Simple QR Code generator')
+user_input = st.text_input("Enter link to website, hidden message, or any text!",
+              value="https://daniellewisdl.github.io/")
+
+st.write("Data to be encoded:")
+st.write("{}".format(user_input))
+
+if st.button('Generate'):
+    img = Image.fromarray(asarray(qrcode.make(user_input)))
+    st.image(img)</code></pre>
+
+                          <p>
+                            In order to run this locally, if your active environment has streamlit installed, you only need to type <code>streamlit run app.py</code> at the command line. 
+                            This will spin up a local web server, and launch your default browser pointing to <code>localhost:8501</code>, where the output of this code will look something like the following:</p>
+                          <p>
+                            <img src="../src/qr-code-app-grab.png" style="max-width: 100%;">
+                          </p>
+
+                          <p>It really is that easy.</p>
                           <p>
                             Happy streamlitting!
                           </p>
@@ -198,14 +225,14 @@
                           <pre>
                           </pre>
 
-                          <div class="accordian bg-dark" id="csAccordian">
+                          <div class="accordian text-dark" id="csAccordian">
                             <div class="accordian-item">
                               <h2 class="accordion-header" id="csHeading">
-                                <button class="accordion-button bg-dark text-light" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <button class="accordion-button text-dark" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#collapseOne">
                                   Bonus material - the Cheat Sheet
                                 </button>
                               </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse" style="background-color: black;">
+                              <div id="collapseOne" class="accordion-collapse collapse" style="background-color: rgb(255, 255, 255);">
                                 <div class="accordion-body">
                               
 
@@ -272,7 +299,7 @@
                                   </p>
                                   <div class="container col-6" style='justify-content: center;'>
                                     <p><img class="img-fluid" src="../src/scs-star-history.png"></p>
-                                    <p><span class="d-block p-2 bg-dark text-white">Source: <a href="https://www.star-history.com/">GitHub star history</a></span></p>
+                                    <p><span class="d-block p-2">Source: <a href="https://www.star-history.com/">GitHub star history</a></span></p>
                                   </div>                                </div>
                               </div>
                             </div>
@@ -284,7 +311,6 @@
                 </div>
               </div>
             </div>
-
           </section>
 
         </div>
@@ -293,26 +319,27 @@
 
       <footer class="bg-light text-lg-start">
 
-        <div class="text-center py-4 align-items-center" style="background-color: rgb(16, 16, 16);">
+        <hr>
+        <div class="text-center align-items-center" style="background-color: rgb(255, 255, 255);">
 
-          <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-linkedin"></i>
           </a>
-          <a href="https://twitter.com/daniellewisdl" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://twitter.com/daniellewisdl" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-twitter"></i>
           </a>
-          <a href="https://github.com/daniellewisDL" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://github.com/daniellewisDL" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-github"></i>
           </a>
 
         </div>
 
-        <div class="text-center p-3 text-light" style="background-color: rgb(32,32,32);">
-          Made in 2021 by
-          <a class="text-light" href="https://daniellewisdl.github.io/">Daniel Lewis</a>
+        <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
+          Hacked together by
+          <a class="text-dark" href="#">Daniel Lewis</a>, 2021-2022
         </div>
 
       </footer>
