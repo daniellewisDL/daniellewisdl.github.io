@@ -14,18 +14,18 @@
   </head>
 
 
-  <body style="background-color: rgb(0,0,0);">
+  <body style="background-color: rgb(255, 255, 255);">
 
       <header class="min-vh-100">
 
-          <nav class="navbar navbar-expand navbar-dark d-none d-sm-block" style="z-index: 20;">
+          <nav class="navbar navbar-expand d-none d-sm-block" style="z-index: 20;">
             <div class="container-fluid">
 
                 <a class="navbar-brand nav-link" href="#"><strong>DL</strong></a>
 
                 <ul class="navbar-nav me-auto"> <!-- me-auto pushes social links to right -->
                     <li class="nav-item"><a class="nav-link" href="#latestPosts">posts</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="#about">about site</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#about">about</a></li>
                 </ul>
     
                 <ul class="navbar-nav d-flex flex-row">
@@ -53,7 +53,7 @@
 
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
-                  <div class="w-100 text-white">
+                  <div class="w-100">
                       <h1 class="display-3">Notes and links</h1>
                       <p class="lead mb-0">from @daniellewisDL</p>
                   </div>
@@ -65,206 +65,192 @@
 
       <main class="my-5">
 
-        <div class="container" id="latestPosts">
+        <div class="container" id="latestPosts" style="max-width: 800px;">
 
 
           <section>
-            <h4 class="display-5 mt-5 mb-5 text-light text-center">Featured posts</h4>
+            <h4 class="display-6 mt-5 mb-5">Posts</h4>
 
-            <div class="row" style="justify-content: center">
+            
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card border-light" style="background-color: rgb(0, 0, 0);">
+                <a href="./posts/streamlit-cheat-sheet.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Streamlit</h5>
-                      <p class="card-text">
-                        The simplest and best python library to create and share python web apps (and my cheat sheet).</p>
-                      <p class="card-text"><small class="text-muted">20 November 2021</small></p>
-                      <a href="./posts/streamlit-cheat-sheet.html" class="btn btn-dark">Read post</a>
-                      <a href="https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/master/app.py" class="btn btn-dark" target="_blank">Launch cheat sheet</a>
-                      <a href="https://github.com/daniellewisDL/streamlit-cheat-sheet" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Streamlit</h5>
+                        <span class="text-muted" style="font-size: xx-small;">20 November 2021</span>
+                        </div>
+                        <p class="card-text">The simplest and best python library to create and share python web apps.</p>
                     </div>
-                    <img class="card-img-top img-rounded" src="./src/streamlit-cheat-sheet.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card border-light" style="background-color: rgb(0, 0, 0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Processing and p5js</h5>
-                      <p class="card-text">
-                        The best creative coding tools in existence (and how I made the homepage banner art).
-                      </p>
-                      <p class="card-text"><small class="text-muted">20 November 2021</small></p>
-                      <a href="./posts/processing-article.html" class="btn btn-dark">Read post</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Processing</h5>
+                        <span class="text-muted" style="font-size: xx-small;">29 January 2022</span>
+                        </div>
+                        <p class="card-text">Processing is an awesome set of tools to create digital art.</p>
                     </div>
-                    <img class="card-img-top" src="./src/processing.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-
-            <h4 class="display-5 mt-5 mb-5 text-light text-center">Streamlit app miscellany</h4>
-
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Covid HK</h5>
-                      <p class="card-text">
-                        A web app to get and display the latest HK government covid cases and vaccination data via data.gov.uk API and display it as simply and quickly as possible.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://covid-hk.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                      <a href="https://github.com/daniellewisDL/covid-hk/blob/master/app.py" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Covid HK</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">A web app to see the latest HK covid cases and vaccination data.</p>
                     </div>
-                    <img class="card-img-top" src="./src/covid-hk.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
-                    <div class="col-12">
-                      <div class="card-body text-light">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
+                  <div class="col-12">
+                    <div class="card-body">
+                      <div class="my-card-header">
                         <h5 class="card-title">Equations explorer</h5>
-                        <p class="card-text">
-                          A web app to explore some of the most important equations in human history.
-                        </p>
-                        <p class="card-text"><small class="text-muted">October 2021</small></p>
-                        <a href="https://equations-explorer.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                        <a href="https://github.com/daniellewisDL/equations-explorer/blob/main/app.py" class="btn btn-dark">Repo</a>
-                      </div>
-                      <img class="card-img-top" src="./src/equations.jpg" />
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">A web app to explore some of the most important equations in human history.</p>
                     </div>
-                  
-                </div>
-              </div>
-            </div>
-
-            <div class="row" style="justify-content: center">
-              <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
-                  <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">HSBC HK API Explorer app</h5>
-                      <p class="card-text">
-                        An explorer app for the banking APIs provided by HSBC in Hong Kong.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://github.com/daniellewisDL/hsbc-hk-api-explorer/blob/main/app.py" class="btn btn-dark">Repo</a>
-                    </div>
-                    <img class="card-img-top" src="./src/hk-atms.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">PDF to PPT converter</h5>
-                      <p class="card-text">
-                        A simple app to convert an uploaded .pdf into a .pptx file, using simple image translation.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://pdf-to-ppt.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                      <a href="https://github.com/daniellewisDL/pdf-to-ppt/blob/main/app.py" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">HSBC HK API Explorer app</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">Explore the banking APIs provided by HSBC in Hong Kong.</p>
                     </div>
-                    <img class="card-img-top" src="./src/pdf-ppt.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">QR Codify</h5>
-                      <p class="card-text">
-                        A streamlit wrapper on the python qrcode library to generate a QR code for any website links or other text.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://qr-codify.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                      <a href="https://github.com/daniellewisDL/qr-code-app/blob/main/app.py" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">PDF to PPT converter</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">Convert a .pdf into a .pptx file.</p>
                     </div>
-                    <img class="card-img-top" src="./src/qrcode.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
-
-            <div class="row" style="justify-content: center">
+            
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Quote Image Generator</h5>
-                      <p class="card-text">
-                        An app to match a randomly chosen inspirational quote with an image.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://quote-image-gen.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                      <a href="https://github.com/daniellewisDL/quote-image-gen/blob/main/app.py" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">QR code generator</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">Generate a QR code for any website links or other text.</p>
                     </div>
-                    <img class="card-img-top" src="./src/qig.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Space invader sprites</h5>
-                      <p class="card-text">
-                        A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="https://space-invaders-sprites.herokuapp.com/" class="btn btn-dark" target="_blank">Launch app</a>
-                      <a href="https://github.com/daniellewisDL/space-invaders/blob/main/app.py" class="btn btn-dark">Repo</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Quote Image Generator</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">Generate a randomly chosen inspirational quote and match with an image.</p>
                     </div>
-                    <img class="card-img-top" src="./src/space-invaders.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
-
-            <h4 class="display-5 mt-5 mb-5 text-light text-center">Processing and p5js miscellany</h4>
-
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="col-12 mb-4">
-                <div class="card" style="background-color: rgb(0,0,0);">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
                   <div class="col-12">
-                    <div class="card-body text-light">
-                      <h5 class="card-title">Perlin noise</h5>
-                      <p class="card-text">
-                        A simple demo of Perlin noise
-                      </p>
-                      <p class="card-text"><small class="text-muted">October 2021</small></p>
-                      <a href="./posts/perlin-noise.html" class="btn btn-dark" target="_blank">Read post</a>
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Space invader sprites</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.</p>
                     </div>
-                    <img class="card-img-top" src="./src/streamlit-cheat-sheet.jpg" />
                   </div>
                 </div>
+                </a>
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-12 mb-4">
+                <a href="./posts/template.html" class="myCardLink">
+                <div class="card">
+                  <div class="col-12">
+                    <div class="card-body">
+                      <div class="my-card-header">
+                        <h5 class="card-title">Perlin noise</h5>
+                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
+                        </div>
+                        <p class="card-text">A simple demo of Perlin noise.</p>
+                    </div>
+                  </div>
+                </div>
+                </a>
+              </div>
+            </div>
 
 
 
@@ -275,15 +261,15 @@
 
 
 
-        <div class="container" id="about" style="margin-top: 60px;">
+        <div class="container" id="about" style="margin-top: 60px; max-width: 800px;">
           <section>
-            <h4 class="display-5 mb-5 text-light text-center">About site</h4>
+            <h4 class="display-6 mb-5">About</h4>
             <div class="row">
               <div class="col-12">
-                <div class="card" style="background-color: rgb(0,0,0);">
-                  <div class="card-body text-light">
+                <div class="card">
+                  <div class="card-body">
                     <p class="card-text">
-                      Hi - I'm an accountant by trade, with a CompSci background, and in this, my small corner of the web, I use as a place for me to store some links to my personal projects, and maybe offer some views on things too. Nothing serious here.
+                      I'm Dan. I am a husband and a dad, and I work in financial services. When I get the chance outside of these duties, I try to further my interests in maths, science and technology, as well as computer science, linguistics, machine learning and generative art. This is my small corner of the web, where you can find some links to my personal projects, and maybe my views on some things too. Nothing serious here.
                     </p>
                   </div>
                 </div>
@@ -292,33 +278,34 @@
             </div>
           </section>
         </div>
-
+  
       </main>
       
 
 
       <footer class="bg-light text-lg-start">
 
-        <div class="text-center py-4 align-items-center" style="background-color: rgb(16, 16, 16);">
+        <hr>
+        <div class="text-center align-items-center" style="background-color: rgb(255, 255, 255);">
 
-          <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-linkedin"></i>
           </a>
-          <a href="https://twitter.com/daniellewisdl" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://twitter.com/daniellewisdl" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-twitter"></i>
           </a>
-          <a href="https://github.com/daniellewisDL" class="btn btn-dark m-1" role="button" rel="nofollow"
+          <a href="https://github.com/daniellewisDL" class="btn" role="button" rel="nofollow"
             target="_blank">
             <i class="fa fa-github"></i>
           </a>
 
         </div>
 
-        <div class="text-center p-3 text-light" style="background-color: rgb(32,32,32);">
-          Made in 2021 to 2022 by
-          <a class="text-light" href="https://daniellewisdl.github.io/">Daniel Lewis</a>
+        <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
+          Hacked together by
+          <a class="text-dark" href="#">Daniel Lewis</a>, 2021-2022
         </div>
 
       </footer>
