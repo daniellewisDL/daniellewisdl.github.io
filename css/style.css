@@ -1,6 +1,21 @@
+.myCardLink {
+  text-decoration: none;
+  color:black;
+}
+
+.myCardLink:hover {
+  text-decoration: none;
+  color:black
+}
+
+.my-card-header h5 { 
+  display: inline;
+}
+
+
 header {
     position: relative;
-    background-color: black;
+    background-color: rgb(255, 255, 255);
     min-height: 8rem;
     width: 100%;
     overflow: hidden;
@@ -18,7 +33,7 @@ header {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: black;
+    background-color: rgb(255, 255, 255);
     opacity: 1;
     z-index: 1;
   }
@@ -28,7 +43,8 @@ header {
   }
 
   .card {
-    border: 1px solid rgb(48, 48, 48);
+    border: 1px solid rgb(255, 255, 255);
+    background-color: white;
   }
 
   .card:hover {
@@ -45,6 +61,6 @@ header {
   }
 
   .navbar .nav-link {
-    color: #fff !important;
+    color: rgb(0, 0, 0) !important;
   } 
 
