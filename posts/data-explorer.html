@@ -4,7 +4,7 @@
         <style>
           * {font-family: sans-serif;}
           .button {
-                background-color: #b42626;
+                background-color: #4285F4;
                 border: none;
                 color: white;
                 padding: 5px 5px;
@@ -35,7 +35,7 @@
         <script src="https://d3js.org/d3.v7.min.js"></script>
     </head>
     <body>
-      <h3>Data explorer</h3>
+      <h3>Universal explorer</h3>
       <div id="buttgp">
         <button class="button" id="dm1-button">DM1</button>
         <button class="button" id="dm2-button">DM2</button>
@@ -66,21 +66,21 @@
               planet = ["mercury", "venus", "earth", "mars"],
               ir =     ["V", "H", "M", "L"]
 
-        const tribe_colors =  ["#a70000", "#ff0000", "#ff7b7b", "#ffbaba"],
-              planet_colors = ["#607c3c", "#809c13", "#b5e550", "#b5e550"],
-              ir_colors =     ["#1919ff", "#6666ff", "#9999ff", "#ccccff"]
+        const tribe_colors =  ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"],
+              planet_colors = ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"],
+              ir_colors =     ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"]
 
         let colonyData = [];
 
         margin = ({top: 5, right: 5, bottom: 5, left: 5})
 
-        var w = 1200, h = 640
+        var w = 1200, h = 480
         let myUnitHeight = 25
-        let myUnitWidth = 150
-        let myUnitSpacing = 3
-        var unitsPerRow = Math.floor((w-10)/myUnitWidth)
-        let unitsPerQuad = Math.floor((0.5*w-10)/(myUnitWidth))
-        let unitsPerStrip = Math.floor((0.25*w-10)/(myUnitWidth))
+        let myUnitWidth = 40
+        let myUnitSpacing = 10
+        var unitsPerRow = Math.floor(   (w-(myUnitSpacing*3))/myUnitWidth   )-1
+        let unitsPerQuad = Math.floor(   (0.5*w-myUnitSpacing*3)/myUnitWidth   )-4
+        let unitsPerStrip = Math.floor(  (0.25*w-myUnitSpacing*3)/myUnitWidth   )-1
 
         var svg = d3.select("#explorer-div")
             .append("svg")
@@ -99,8 +99,8 @@
             .attr("class", "colony")
             .attr("transform", function(d, i) {
               return "translate(" +
-                      (5+(i%unitsPerRow)*(myUnitWidth+myUnitSpacing)) + "," +
-                      (5+(Math.floor(i/unitsPerRow))*((myUnitHeight+myUnitSpacing))) + 
+                      (margin.left+(i%unitsPerRow)*(myUnitWidth+myUnitSpacing)) + "," +
+                      (margin.top+(Math.floor(i/unitsPerRow))*((myUnitHeight+myUnitSpacing))) + 
                       ")" })
 
           colonies
@@ -117,47 +117,20 @@
             .append("rect")
               .attr("x", "0")
               .attr("y", "0")
-              .attr("width", myUnitWidth/10)
+              .attr("width", myUnitWidth/2)
               .attr("height", myUnitHeight)
               .style("fill", function(d) {
                 return ir_colors[ir.findIndex(e => {return e == d.ir})] })
               .style("fill-opacity", "1")
           colonies
             .append("rect")
-              .attr("x", myUnitWidth/10)
+              .attr("x", myUnitWidth/2)
               .attr("y", "0")
-              .attr("width", myUnitWidth/10)
+              .attr("width", myUnitWidth/2)
               .attr("height", myUnitHeight)
               .style("fill", function(d) {
                 return tribe_colors[tribe.findIndex(e => {return e == d.tribe})] })
               .style("fill-opacity", "1")
-          colonies
-            .append("rect")
-              .attr("x", 2*myUnitWidth/10)
-              .attr("y", "0")
-              .attr("width", myUnitWidth/10)
-              .attr("height", myUnitHeight)
-              .style("fill", function(d) {
-                return planet_colors[planet.findIndex(e => {return e == d.planet})] })
-              .style("fill-opacity", "1")
-
-          colonies
-            .append("rect")
-              .attr("x", 3*myUnitWidth/10)
-              .attr("y", "0")
-              .attr("width", 7*myUnitWidth/10)
-              .attr("height", myUnitHeight)
-              .style("fill", "#ffffff")
-              .style("fill-opacity", "1")
-          
-          colonies
-            .append("text")
-              .attr("x", 1+3*myUnitWidth/10)
-              .attr("y", "15")
-              .text(function(d) {return ". " + d.planet + " | " + d.tribe})
-              .attr("font-size", "0.7em")
-
-
           
 
           d3.select("#dm1-button").on("click", function() {
@@ -167,8 +140,8 @@
               .ease(d3.easeSin)
               .attr("transform", function(d, i) {
               return "translate(" +
-                      (5+(i%unitsPerRow)*(myUnitWidth+myUnitSpacing)) + "," +
-                      (5+(Math.floor(i/unitsPerRow))*((myUnitHeight+myUnitSpacing))) + 
+                      (margin.left+(i%unitsPerRow)*(myUnitWidth+myUnitSpacing)) + "," +
+                      (margin.top+(Math.floor(i/unitsPerRow))*((myUnitHeight+myUnitSpacing))) + 
                       ")" })
             })
               
@@ -186,8 +159,8 @@
                 else if (i_tribe == 1) {x_offset = 0; y_offset=h/2}
                 else if (i_tribe == 2) {x_offset = w/2; y_offset=0}
                 else if (i_tribe == 3) {x_offset = w/2; y_offset=h/2}
-                dest_x = 5 + (i_prime%unitsPerQuad) * (myUnitWidth+myUnitSpacing) + x_offset
-                dest_y = 5 + (Math.floor(i_prime/unitsPerQuad))*(myUnitHeight+myUnitSpacing)+ y_offset
+                dest_x = margin.left + (i_prime%unitsPerQuad) * (myUnitWidth+myUnitSpacing) + x_offset
+                dest_y = margin.top + (Math.floor(i_prime/unitsPerQuad))*(myUnitHeight+myUnitSpacing)+ y_offset
                 return "translate(" + dest_x + "," + dest_y + ")"
             })
           })
