@@ -3,16 +3,23 @@
 <head>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
     <style>
-        .line {
-            fill: none;
-            stroke: steelblue;
-            stroke-width: 2px;
-            }
+        @font-face {
+            font-family: chomsky;
+            src: url(src/Chomsky.otf)
+        }
         body {
-            background-image: url("./src/nyt003.png");
-            background-repeat: no-repeat;
-            color:black;
-            background-color: white;
+            background-color: rgb(255, 255, 255);
+            font-family: "Times New Roman", Times, serif;
+        }
+        svg {
+            background-image: url("./src/pexels-eva-bronzini-7598248-2.jpg");
+            /* Photo by icon0.com: https://www.pexels.com/photo/white-crumpled-paper-479444/ */
+            background-size: auto;
+            background-repeat: repeat;
+            /* filter: sepia(0.5) blur(2px) ; */
+            filter: sepia(0.7);
+            /* color:black; */
+            /* background-color: rgb(0, 0, 0); */
             font-family: "Times New Roman", Times, serif;
         }
         div.tooltip {
@@ -28,1140 +35,126 @@
             /* background: rgb(17, 14, 38); */
         }
 
-        .imgPaper {
-            filter: sepia(100%) brightness(50%);
-        }
     </style>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body>
-    <body>
-    <!-- <h3>Titanic</h3> -->
     <div id="viz-div"></div>
     <script>
+        let width = 800
+        let height = 1400
+        let primaryContainerWidth = 720
+        let primaryContainerHeight = 480
+        let secondaryContainerWidth = 720
+        let secondaryContainerHeight = 180
 
-        const imageFileList = ['aaron-willer-and-family-H.jpg',
-                'abbing_a.jpg',
-                'abraham-salomon-H.jpg',
-                'ada-balls-older-2-H.jpg',
-                'ada-doling-H.jpg',
-                'adal-nasrallah-H.jpg',
-                'adal-nasrallah-older-H.jpg',
-                'addie-wells-children-H.jpg',
-                'addie-wells-portrait-H.jpg',
-                'adminamelia-icard-titanic-1951.jpg',
-                'adminberthe-mayne.jpg',
-                'adminC324s_Per_Fabian_Oliver_Malkolm_Myhrman.jpg',
-                'adminC324t_Gustaf_Hjalmar_Edvardsson.jpg',
-                'admincharles-hallace-romaine.jpg',
-                'admindenzil-john-jarvis.jpg',
-                'adminjohan-samuel-andersson.jpg',
-                'adminpaul-chevre.jpg',
-                'adminWilliam Stead.jpg',
-                'adolf-dyker-H.jpg',
-                'Adolphe-Saalfeld_H.jpg',
-                'agda_lindahl_H.jpg',
-                'agnes_beatrice_sandstrom_H.jpg',
-                'aks-leah-1923.jpg',
-                'aks_family.jpg',
-                'albert-adrian-dick-H.jpg',
-                'albert-caldwell-H.jpg',
-                'albert-f-caldwell-1934-H.jpg',
-                'albert-f-caldwell-1958-H.jpg',
-                'albert-f-caldwell-1972-H.jpg',
-                'albert-moss_1962_L.jpg',
-                'albert-sylvia-caldwell-1929-H.jpg',
-                'alden_caldwell_1928_H.jpg',
-                'alexander-holverson-1912-H.jpg',
-                'alexander-holverson-H.jpg',
-                'alfrida-andersson-H.jpg',
-                'algernon-barkworth-H.jpg',
-                'alice-fortune-H.jpg',
-                'alice-johnson.jpg',
-                'alice-silvey-H.jpg',
-                'alice_leader_H.jpg',
-                'aliina-alice-johnson-H.jpg',
-                'allen_ew.jpg',
-                'anders-johan-anersson-H.jpg',
-                'andrews-longley-hogeboom-H.jpg',
-                'andrewsfamily.jpg',
-                'anna-danbom-H.jpg',
-                'anna-lahtinen-l.jpg',
-                'anna-nysten-1912-2-H.jpg',
-                'anna-nysten-1932-H.jpg',
-                'anna-nysten-1937-H.jpg',
-                'anna-nysten-1953-H.jpg',
-                'anna-nysten-1972-H.jpg',
-                'anna-sinkkonen-m.jpg',
-                'anna-sjoblom-1930s-H.jpg',
-                'anna-sjoblom-1962-H.jpg',
-                'anna-sjoblom-tdr-H.jpg',
-                'anna-thomas-H.jpg',
-                'anna-turja_H.jpg',
-                'anna-wiljo-hamalainen.jpg',
-                'anne-isham-H.jpg',
-                'annie-caton-howland-1937-H.jpg',
-                'annie-stengel-arrival_H.jpg',
-                'antoinette-flegenheim_H.jpg',
-                'archibald-gracie-1912-H.jpg',
-                'argene-del-carlo-with-nun-H.jpg',
-                'arthur-larned-ryerson-H.jpg',
-                'arthur-newell-H.jpg',
-                'arthur-olsen-1936-H.jpg',
-                'arthur-olsen-adult-H.jpg',
-                'arthur-olsen-H.jpg',
-                'arthur-peuchen-H.jpg',
-                'asplund-survivors-H.jpg',
-                'austin-partner_2_L.jpg',
-                'austin-partner_L.jpg',
-                'B-CosmoDuffGordon.jpg',
-                'bannurah_and_shaninah_nyc_1912_H.jpg',
-                'beattlie_t.jpg',
-                'beesley_etc_carpathia_H.jpg',
-                'beila-meier-moore-H.jpg',
-                'beila-moore-1953-H.jpg',
-                'bernt-johannessen-1930s_L.jpg',
-                'bernt-johannessen-1950s_L.jpg',
-                'bernt-johannessen_L.jpg',
-                'bert-bean-1987-H.jpg',
-                'bert-johns-H.jpg',
-                'berta-nilsson-1966-H.jpg',
-                'berta-nilsson-2-H.jpg',
-                'bertha-chambers-1919-H.jpg',
-                'bertha-ilett_large.jpg',
-                'bertha-illet-christensen-1931_H.jpg',
-                'bertha-lehmann-1956-H.jpg',
-                'bertha-lehmann-family-H.jpg',
-                'bertha-lehmann-H.jpg',
-                'bertha-moran-1953_H.jpg',
-                'bertha-mulvihill-H.jpg',
-                'bertha-watt-1919-H.jpg',
-                'bertha-watt-1959-H.jpg',
-                'bertha-watt-1975-H.jpg',
-                'bess-allison-H.jpg',
-                'bessie-watt-H.jpg',
-                'blank_h_01.jpg',
-                'borebank-jj.jpg',
-                'brailey.jpg',
-                'Brereton1Clean.jpg',
-                'Brereton2.jpg',
-                'bridget-moran-H.jpg',
-                'brown_jm2.jpg',
-                'bruce-ismay-pen-drawing-H.jpg',
-                'bryhl_d.jpg',
-                'byles_trd.jpg',
-                'C324g_Hans_Linus_Eklund.jpg',
-                'C324h_Nils_Johansson.jpg',
-                'C324k_Johan_Viktor_Bengtsson.jpg',
-                'C324n Nils Martin adahl.jpg',
-                'C324r_Elin_Ester_Maria_Braf.jpg',
-                'C324v_Elin_Gerda_Lindell.jpg',
-                'C324w_Edvard_Bengtsson_Lindell.jpg',
-                'C324y_Albert_Augustsson.jpg',
-                'caldwell.jpg',
-                'CandeeBio-Helen-1905.jpg',
-                'carl-olof-jansson-1950s-H.jpg',
-                'carl-olof-jansson-1963-H.jpg',
-                'caroline-bonnell-H.jpg',
-                'caroline-brown-H.jpg',
-                'caroline-endres2_H.jpg',
-                'caroline-endres_H.jpg',
-                'caroline-lamson-brown-H.jpg',
-                'carrie-constance-chaffee-H.jpg',
-                'CarterLucileMiss.jpg',
-                'catherine-crosby-H.jpg',
-                'catherine-peters-l.jpg',
-                'charles-eugene-williams-l.jpg',
-                'charles-fortune-2-H.jpg',
-                'charles-sedgwick_H.jpg',
-                'charles-warren.jpg',
-                'charles-williams-1912-H.jpg',
-                'charles-williams-raquet-1922-H.jpg',
-                'charles-williams-raquet-1925-H.jpg',
-                'charlotte-appleton-H.jpg',
-                'charlotte-cardeza-1902-H.jpg',
-                'charlotte-cardeza-pp-H.jpg',
-                'charlotte-marjorie-collyer-alternate-H.jpg',
-                'clara-hays-younger-H.jpg',
-                'clarence-moore-H.jpg',
-                'clear-cameron-1900s_H.jpg',
-                'collyer-OG2.jpg',
-                'colonel-john-weir-1912-H.jpg',
-                'col_astor_1900.jpg',
-                'constance-chaffee-H.jpg',
-                'constance-willard-1912-H.jpg',
-                'cordelia-lobb-H.jpg',
-                'coutts-bros_H.jpg',
-                'crafton.jpg',
-                'dagmar-bryhl-H.jpg',
-                'daisy-minahan-H.jpg',
-                'DalyEugenePic.jpg',
-                'daniel-buckley-1917-H.jpg',
-                'daniel-moran-uniform-H.jpg',
-                'DarbySepia-H.jpg',
-                'david-charters-H.jpg',
-                'de-messemaeker-1919-H.jpg',
-                'de-messemaeker-younger-H.jpg',
-                'del-carlo_s.jpg',
-                'dickinson-bishop-1912-H.jpg',
-                'dick_aa.jpg',
-                'dorothy-gibson-publicity-still-rbb-H.jpg',
-                'dorothy-harder-H.jpg',
-                'dorothy-harder-pp-H.jpg',
-                'dr-max-staehelin-l.jpg',
-                'dyker_a.jpg',
-                'EDarby1931-H.jpg',
-                'EDarby1936-H.jpg',
-                'edgar-fred-giles-H.jpg',
-                'edith-haisman-H.jpg',
-                'edith-haisman-marie-aks-H.jpg',
-                'edith-haisman-watch-H.jpg',
-                'edith-peacock-H.jpg',
-                'edith-rosenbaum-russell_1974_H.jpg',
-                'edith_l_rosenbaum_1912_500.jpg',
-                'edith_russell_pig_H.jpg',
-                'edward-beane.jpg',
-                'edward-calderhead-1915.jpg',
-                'edward-gifford-crosby-H.jpg',
-                'edward_ryan_H.jpg',
-                'edwin-kimball-1912-2-H.jpg',
-                'edwin-kimball-1912-H.jpg',
-                'edwin-kimball-H.jpg',
-                'eileen-mcnamee-m.jpg',
-                'einar-carlson.jpg',
-                'eleanor-cassebeer-H.jpg',
-                'eleanor-johnson-1997-H.jpg',
-                'eleanor-johnson.jpg',
-                'eleanor-widener-1a-H.jpg',
-                'eleanor-widener-2a-H.jpg',
-                'eleanor-widener-3-H.jpg',
-                'eleanor-widener-5-H.jpg',
-                'eleanor-widener-6-H.jpg',
-                'Eleanor_Widener_Vogue_1909_H.jpg',
-                'elisabeth-walton-allen-H.jpg',
-                'elisabeth_walton_allen_1947_H.jpg',
-                'eliza-hocking-H.jpg',
-                'elizabeth-dowdell-H.jpg',
-                'elizabeth-eustis-1921-H.jpg',
-                'elizabeth-eustis-H.jpg',
-                'elizabeth-nye_H.jpg',
-                'ellen-shine-1970-H.jpg',
-                'ellen-toomey-1912-H.jpg',
-                'ellen-wilkes-older-H.jpg',
-                'elmer-juliet-taylor-l.jpg',
-                'eloise-smith-H.jpg',
-                'elsie-doling-H.jpg',
-                'emil-taussig-H.jpg',
-                'emilio-portaluppi-2-H.jpg',
-                'emilio-portaluppi-3-P.jpg',
-                'emilio-portaluppi-4-H.jpg',
-                'emilio-portaluppi-5-H.jpg',
-                'emily-borie-ryerson-1919-H.jpg',
-                'emily-borie-ryerson-1927-2-H.jpg',
-                'emily-borie-ryerson-H.jpg',
-                'emily-goldsmith-1943-H.jpg',
-                'emily-maria-ryerson-pp-H.jpg',
-                'emily-maria-ryerson-pp2-H.jpg',
-                'emily-rugg-H.jpg',
-                'emily-rugg-older-baby-H.png',
-                'emily-rugg-older-child-H.png',
-                'emily-rugg-older-H.jpg',
-                'emily-ryerson-marriage-1927-H.jpg',
-                'emma-bucknell-H.jpg',
-                'emma_schabert_H.jpg',
-                'EndresCaroline1923.jpg',
-                'englehart-c-ostby-H.jpg',
-                'ernest-crease-H.jpg',
-                'ernest-tomlin-milwaukee-H.jpg',
-                'ernst-danbom-H.jpg',
-                'ernst-moraweck-H.jpg',
-                'ervin-lewy-H.jpg',
-                'ethel-fortune-H.jpg',
-                'eugene-daly-pipes-H.jpg',
-                'eugene-day-1912-H.jpg',
-                'eva-hart-older-with-dog-H.jpg',
-                'EZTaylor1947.jpg',
-                'EZTaylor2.jpg',
-                'fancisco-carrau-H.jpg',
-                'fatima-masselmany-H.jpg',
-                'file0208.jpg',
-                'florence-cumings-H.jpg',
-                'fortune_ca.jpg',
-                'fox_sh.jpg',
-                'frank-aks-1976-H.jpg',
-                'frank-goldsmith-1943-H.jpg',
-                'frank-goldsmith-1970s-H.jpg',
-                'frank-goldsmith-1971-H.jpg',
-                'frank-goldsmith-1976-H.jpg',
-                'frank-goldsmith-pp-H.jpg',
-                'frauenthaldrhenry.jpg',
-                'frederic-kimber-seward-1912-H.jpg',
-                'frederic-kimber-seward-1919-H.jpg',
-                'frederic-kimber-seward-1925-H.jpg',
-                'frederick-hoyt-H.jpg',
-                'frolicher-stehli_m.jpg',
-                'george-brereton-1923.jpg',
-                'george-eitemiller-1912-H.jpg',
-                'george-eitmiller-H.jpg',
-                'george-graham-H.jpg',
-                'george-green.jpg',
-                'george-harder-1923-H.jpg',
-                'george-harder-M.jpg',
-                'george-mackay-H.jpg',
-                'george-quincy-clifford-H.jpg',
-                'george-thomas-H.jpg',
-                'george-widener-H.jpg',
-                'gertrube-kimball-H.jpg',
-                'GibsonDot1.jpg',
-                'GibsonDot10.jpg',
-                'GibsonDot9.jpg',
-                'gilbert-tucker_H.jpg',
-                'gilnagh_k.jpg',
-                'gilnagh_k_02.jpg',
-                'gracie-the-times-dispatch-richmond--12051912-H.jpg',
-                'greenfield1.jpg',
-                'gretchen-longley-1912-H.jpg',
-                'gretchen-longley-1959-H.jpg',
-                'gritli-frolicher-stehli.jpg',
-                'gunnar-tenglin-1953-H.jpg',
-                'gunnar-tenglin-family-H.jpg',
-                'gus_cohen_kenneth_more_H.jpg',
-                'haisman-johnson-aks-H.jpg',
-                'hakan-bjornstrom-steffanson-1912-H.jpg',
-                'hakan-bjornstrom-steffanson-younger-H.jpg',
-                'hakan_bjornstrom-steffansson_H.png',
-                'hanna-tannus-muawwad-H.jpg',
-                'harder-H.jpg',
-                'HarderGeorge2.jpg',
-                'harder_couple_H.jpg',
-                'harold-eleanor-johnson-H.jpg',
-                'harriet-crosby-H.jpg',
-                'Harris_Rene_1922_H.jpg',
-                'harry-bristow_H.jpg',
-                'harry-haven-homer-1921-pp-L.jpg',
-                'harry-haven-homer-1923-2-H.jpg',
-                'harry-homer-H.jpg',
-                'harry-molson-H.jpg',
-                'hart-family-H.jpg',
-                'hedwig-turkula-H.jpg',
-                'helen-bishop-1912-H.jpg',
-                'helen-bishop-1916-H.jpg',
-                'helen-bishop-H.jpg',
-                'helen-newsom-wedding-H.jpg',
-                'helen-newsom.jpg',
-                'helen-ostby-1915.jpg',
-                'helen-ostby-2-H.jpg',
-                'helen-ostby-H.jpg',
-                'helen-ostby2-H.jpg',
-                'helen-wilson-resenquist-older-H.jpg',
-                'helen-wilson-rosenquist-H.jpg',
-                'helga-hilda-hirvonen-H.jpg',
-                'helmina-nilsson-1922-H.jpg',
-                'henry-b-harris-H.jpg',
-                'henry-clara-frauenthal-H.jpg',
-                'henry-frauenthal-2-H.jpg',
-                'henry-frauenthal-3-H.jpg',
-                'herbert-f-chaffee-H.jpg',
-                'herbert-h-hilliard_H.jpg',
-                'herbert-hilliard-younger_H.jpg',
-                'herbert-hilliard.jpg',
-                'herman-klaber-H.jpg',
-                'herman_klaber_H.jpg',
-                'hickman_lewis.jpg',
-                'hilda-slayter-family-group-H.jpg',
-                'hippach-family-H.jpg',
-                'HippachIda.jpg',
-                'HomerHarry4.jpg',
-                'howard-b-case-H.png',
-                'howard-brown-case.jpg',
-                'howard-case-1912-H.jpg',
-                'hoyts_H.jpg',
-                'hugh-rood-H.jpg',
-                'ida-hippach-H2.jpg',
-                'IllmanEmily.jpg',
-                'irene-harries-H.jpg',
-                'irene-harris-1919-H.jpg',
-                'irene-harris-1923-H.jpg',
-                'irene-harris-1935-H.jpg',
-                'irene-harris-1959-H.jpg',
-                'irene-harris-1962-H.jpg',
-                'jack-ryerson-1924-H.jpg',
-                'jack-ryerson-pp-H.jpg',
-                'jacques-futrelle_H.jpg',
-                'jakob-birnbaum-H.jpg',
-                'james-clinch-smith-1911-EH.jpg',
-                'james-clinch-smith-H.jpg',
-                'james-george-reed-H.jpg',
-                'james-vivan-drew.jpg',
-                'jane-herman-1912-H.jpg',
-                'jane-hoyt-1912-H.jpg',
-                'jane-hoyt-H.jpg',
-                'jane-quick-1962-H.png',
-                'jaques-futrelle-family-OG.jpg',
-                'jean-and-ida-hippach-H.jpg',
-                'jean-hippach-2-H.jpg',
-                'jean-hippach-wedding-dress-1920-H.jpg',
-                'jennie-hansen-1939-H.jpg',
-                'jennie-hansen-1952-H.jpg',
-                'jennie-hansen-H.jpg',
-                'jennie-hansen-obit-1952-H.jpg',
-                'jeremiah-burke-1912-H.jpg',
-                'jeremiah-burke-H.jpg',
-                'jessie-trout.jpg',
-                'JIFlynn.jpg',
-                'JIFlynn2.jpg',
-                'joan-ralph-wells-H.jpg',
-                'johan-anderson-H.jpg',
-                'johan-svensson-H.jpg',
-                'john-b-crafton-H.jpg',
-                'john-b-thayer-H.jpg',
-                'john-b-thayer-jr-1932-H.jpg',
-                'john-b-thayer-jr-1941-H.jpg',
-                'john-borie-ryerson-1928-H.jpg',
-                'john-borie-ryerson-1980s-H.jpg',
-                'john-borie-ryerson-H.jpg',
-                'john-bradley-cumings-H.jpg',
-                'john-edward-maguire-H.jpg',
-                'john-george-sage_H.jpg',
-                'john-hatfield-cribb-H.jpg',
-                'john-henry-chapman-H.jpg',
-                'john-hugo-ross-H.jpg',
-                'john-j-borebank-H.jpg',
-                'john-j-lamb-H.jpg',
-                'john-kennedy-H.jpg',
-                'john-nelle-snyder-2-H.jpg',
-                'john-nelle-snyder-H.jpg',
-                'john-snyder-1912-2-H.jpg',
-                'john-snyder-1912-H.jpg',
-                'john-snyder-1926-H.jpg',
-                'john-snyder-1952-H.jpg',
-                'John_Bertram_Brady-m.jpg',
-                'jose-carrau-H.jpg',
-                'julia-barry-H.jpg',
-                'julia-cavendish-2-H.jpg',
-                'julia-cavendish-H.jpg',
-                'karl-behr-H.jpg',
-                'karl-behr-tennis-1906-H.jpg',
-                'kate-gilnagh-1960s-H.jpg',
-                'kate-mullin-1962-H.jpg',
-                'kate-mullin-H.jpg',
-                'kink-mother-daughter-1949-H.jpg',
-                'kmason2washingtondodge.jpg',
-                'kmasonclarence_moore.jpg',
-                'kmasonMiss_Compton.jpg',
-                'kmasonwashingtondodge.jpg',
-                'knut-paul-rommetvedt-H.jpg',
-                'Kreuchen-H.jpg',
-                'laroche-mother-children.jpg',
-                'laura-cribb-1948-H.jpg',
-                'laura-mae-cribb-1916-H.jpg',
-                'laura-mae-cribb-1917-H.jpg',
-                'laura-mae-cribb-older-H.jpg',
-                'laura_cribb_given_reception_H.jpg',
-                'lawrence-beesley-dulwich-college_H.jpg',
-                'leah-aks-1967-H.jpg',
-                'leila-meyer-and-daughter-H.jpg',
-                'leila-meyer-H.jpg',
-                'leila-meyer-jane-1921-H.jpg',
-                'leslie-williams-H.jpg',
-                'lillian-asplund-M.jpg',
-                'lillian-bentham-1912-H.jpg',
-                'lily-potter-1939-H.jpg',
-                'lily-potter-1954-H.jpg',
-                'lily-potter-2-1939-H.jpg',
-                'louise-kink-1992-H.jpg',
-                'lucian-smith-H.jpg',
-                'lucile-carter-1918.jpg',
-                'lucile-carter-H.jpg',
-                'lucile-polk-carter-1935-H.jpg',
-                'lucile-polk-carter-reeves-H.jpg',
-                'lucille-polk-carter-1912-H.jpg',
-                'lutie-parrish-H.jpg',
-                'lyyli_silven_H.jpg',
-                'mad.jpg',
-                'madeleine-astor-1920s-H.jpg',
-                'madeleine-astor-1929-H.jpg',
-                'madeleine-astor-1933-2-H.jpg',
-                'madeleine-astor-1933-H.jpg',
-                'madeleine-astor-1940-H.jpg',
-                'madeleine-astor-and-newborn-baby-H.jpg',
-                'madeleine-astor-portrait-1911-H.jpg',
-                'madeleine-newell-1912_H.jpg',
-                'madeline-mellinger-H.jpg',
-                'maggie-day-H.jpg',
-                'mahala-douglas-1921-H.jpg',
-                'mahala-douglas-1923-H.jpg',
-                'mahala_douglas_1928_H.jpg',
-                'mahala_douglas_1938_H.jpg',
-                'mahala_douglas_H.jpg',
-                'maioni_r_02.jpg',
-                'major-peuchen-after-titanic-H.jpg',
-                'major-peuchen-predicament_NT_940x358.jpg',
-                'malvina-cornell-H.jpg',
-                'margaret-devaney-oneill-H.jpg',
-                'margaret-fleming.jpg',
-                'margaret-hays-H.jpg',
-                'margaret-swift-H.jpg',
-                'marguerite-frolicher-1962-H.jpg',
-                'maria-kink-H.jpg',
-                'marian-thayer-1924-pp-H.jpg',
-                'marian-thayer-H.jpg',
-                'marie-andre-mallet.jpg',
-                'marie-grice_young_1890s_H.jpg',
-                'marie-jerwan.jpg',
-                'marie_grice_young_1955_H.jpg',
-                'marion-becker-graduation-1925-H.jpg',
-                'marion-wright-1952-H.jpg',
-                'marion-wright.jpg',
-                'marjorie-collyer-1912-H.jpg',
-                'marjorie-newell-robb-H.jpg',
-                'mark-fortune-H.jpg',
-                'marshall-drew-1977-H.jpg',
-                'mary-corey-H.jpg',
-                'mary-davison-2-H.jpg',
-                'mary-eloise-hughes-smith-H.jpg',
-                'mary-eloise-smith-H.jpg',
-                'mary-fortune-H.jpg',
-                'mary-glynn-H.jpg',
-                'mary-holverson-1912-H.jpg',
-                'mary-holverson-H.jpg',
-                'mary-lines-1935-H.jpg',
-                'mary-lines-1975-H.jpg',
-                'mary-lines-in-1966-H.jpg',
-                'mary-mangan-H.jpg',
-                'mary-marvin-1914-H.jpg',
-                'mary-marvin-H.jpg',
-                'mary-marvin-pearls-H.jpg',
-                'mathilde-weisz-H.jpg',
-                'mauge_p_01.jpg',
-                'max-staehelin-H.jpg',
-                'may-futrelle-1912-2-H.jpg',
-                'may-futrelle-1912-3-H.jpg',
-                'may-futrelle-1912-H.jpg',
-                'may-futrelle-1947-H.jpg',
-                'may-futrelle-1960s-H.jpg',
-                'may-futrelle-1961-H.jpg',
-                'may-futrelle-pp-1920s-H.jpg',
-                'mellors-portrait-1925.jpg',
-                'meyer-moore-marriage-H.jpg',
-                'meyer-moore-older-H.jpg',
-                'meyer_news.jpg',
-                'mike_poirierTitanic_Edith_Russell_A.jpg',
-                'mike_poirierTitanic_George_Harder_1920.jpg',
-                'mike_poirierTitanic_george_Rheims.jpg',
-                'mike_poirierTitanic_Margeretta_Spedden_1922.jpg',
-                'mike_poirierTitanic_Rene_Harris_Barber_1923.jpg',
-                'mike_poirierTitanic_Tillie_Samuel_1923.jpg',
-                'mike_poirierTitanic_Virginia_Clark_2_A.jpg',
-                'mike_poirierTitanic_WE_Carter.jpg',
-                'milton-long-H.jpg',
-                'mr-and-mrs-straus-H.jpg',
-                'mrs-astor-and-john-jr-H.jpg',
-                'mrs-cardeza-at-her-desk-H.jpg',
-                'mrs-clark-l.jpg',
-                'mrs-george-d-wick-H.jpg',
-                'mrs-george-nelson-stone-H.jpg',
-                'mrs-j-murray-brown-H.jpg',
-                'mrs-straus-H.jpg',
-                'mrs-tws-brown-H.jpg',
-                'mrs_futrelle_grave_H.jpg',
-                'mrs_futrelle_H.jpg',
-                'nassef-albimona-1940-H.jpg',
-                'natalie-wick-H.jpg',
-                'natsch_c_1910.jpg',
-                'nell-snyder-1972-H.jpg',
-                'nella-goldenberg-1915-H.jpg',
-                'nelle-snyder-1912-2-H.jpg',
-                'nelle-snyder-1912-3-H.jpg',
-                'nelle-snyder-1912-H.jpg',
-                'nelle-snyder-1939-H.jpg',
-                'nelle-snyder-1982-H.jpg',
-                'nellie-becker-1912-H.jpg',
-                'nellie-becker-H.jpg',
-                'nellie-dwyer-H.jpg',
-                'nellie-hocking-H.jpg',
-                'newell_aw.jpg',
-                'nicola-yarred-H.jpg',
-                'nikola-lulic-H.jpg',
-                'nikola-lulic2-H.jpg',
-                'nora-keane_H.jpg',
-                'norman-cambell-chamber-1919-H.jpg',
-                'norman-campbell-chambers-H.jpg',
-                'olaus-abelseth-1912-H.jpg',
-                'olaus-abelseth-1978-H.jpg',
-                'olaus-abelseth-family-1950s-H.jpg',
-                'olaus-abelseth_1957_L.jpg',
-                'olaus-abelseth_L.jpg',
-                'olive_earnshaw_3.jpg',
-                'olive_earnshaw_crolius_1920-H.jpg',
-                'orian-davidson-P.jpg',
-                'oscar-hedman-1957-H.jpg',
-                'oscar-hedman-passport-1922-H.jpg',
-                'oscar-hedman-tillie-H.jpg',
-                'oscar-johannson-H.jpg',
-                'oscar-tillie-hedman-older-H.jpg',
-                'oscar-wilhelm-johansson_fb.jpg',
-                'oskar-palmquist-H.jpg',
-                'patrick-lane-H.jpg',
-                'patrick-o-keefe-H.jpg',
-                'patrick-o-keefe-l.jpg',
-                'paul_chevre-ny_H.jpg',
-                'paul_chevre_le_soleil_H.jpg',
-                'per-oliver-myhrman-H.jpg',
-                'percy-oxenham-1953-H.jpg',
-                'peter-hansen-H.jpg',
-                'peuchen-family-H.jpg',
-                'philip-zenni-2-H.jpg',
-                'philip-zenni-dayton_H.jpg',
-                'philip-zenni.jpg',
-                'phylllis-may-quick-H.jpg',
-                'pierre-marechal-H.jpg',
-                'pierre_marechal_1_H.jpg',
-                'portalupi_e.jpg',
-                'quick-mother-children.jpg',
-                'remmetvedt-family-H.jpg',
-                'res_1057350718_Straus_Isidor1908.jpg',
-                'res_1060910067_Mn.jpg',
-                'res_1079277810_Goldenberg.jpg',
-                'res_1079299823_Louis Garrett (Elias Nicola-Yarred).jpg',
-                'res_1079644726_Stahelin.jpg',
-                'res_1079799073_Stead 1909.jpg',
-                'res_1079823659_Nord-Matin 1966.JPG',
-                'res_1079888850_Peruschitz.jpg',
-                'res_1079900454_Leroy 1956.jpg',
-                'res_1080157696_Stead 2.jpg',
-                'rev-bateman-H.jpg',
-                'rice-family-1912-H.jpg',
-                'richard-f-white-H.jpg',
-                'richard-norris-williams-1913-H.jpg',
-                'richard-norris-williams-1920-H.jpg',
-                'richard-norris-williams-1962-H.jpg',
-                'richard-norris-williams-1964-H.jpg',
-                'richard-sallie-beckwith.jpg',
-                'richards-family.jpg',
-                'robert-daniel-1916-H.jpg',
-                'robert-daniel-older-H.jpg',
-                'robert-douglas-norman.jpg',
-                'robert-w-daniel-bee-H.jpg',
-                'RobertElizabeth.jpg',
-                'roger-bricoux-H.jpg',
-                'roland-stanley-H.jpg',
-                'RosaliePic1.jpg',
-                'rosalie_bidois_H.jpg',
-                'rossmore_abbott.jpg',
-                'ruth-becker-1960-H.jpg',
-                'ruth-becker-H.jpg',
-                'ruth-dodge-vida-H.jpg',
-                'ryerson_couple.jpg',
-                'SA79c_Luise_Kink_Luise_Kink_Anton_Kink_Titanic_survivors.jpg',
-                'sally-beckwith-1912-H.jpg',
-                'samuel-andersson2.jpg',
-                'samuel-herman-H.jpg',
-                'samuel-nella-goldenberg-dog-H.jpg',
-                'sandstrom-family-1962-H.jpg',
-                'sandstrom-family-H.jpg',
-                'sap-demulder-scheerlinck-H.jpg',
-                'SelenaCook1-H.jpg',
-                'selini-yasbeck.jpg',
-                'sjostedt_ea.jpg',
-                'slayter_hm.jpg',
-                'SpeddenFredericO.jpg',
-                'steffanson-H.jpg',
-                'steffanson-pp-H.jpg',
-                'StengelAnnie1919_H.jpg',
-                'stephen-weart-blackwell-H.jpg',
-                'susan-parker-ryerson-H.jpg',
-                'susan-ryerson-nurse-1918-H.jpg',
-                'susan-webber-H.jpg',
-                'susan-webber2-H.jpg',
-                'suzette-ryerson.jpg',
-                'SwiftMargaret.jpg',
-                'SwiftMargaret1920.jpg',
-                'sylvia-alden-caldwell-H.jpg',
-                'sylvia-caldwell-1944-H.jpg',
-                'sylvia-caldwell-H.jpg',
-                'sylviacaldwell.jpg',
-                'thelma-assed-thomas.jpg',
-                'thelma-thomas-1960s-H.jpg',
-                'thelma-thomas-1962-H.jpg',
-                'thelma-thomas-older-H.jpg',
-                'theodore-demulder-1930-2_H.jpg',
-                'thomas-cardeza-1912-H.jpg',
-                'thomas-cardeza-1915-H.jpg',
-                'thomas-cardeza-1917-H.jpg',
-                'thomas-cardeza-1919-H.jpg',
-                'thomas-mary-davison-H.jpg',
-                'thomas-mccormack-l.jpg',
-                'thomson-beattie-H.jpg',
-                'thomson-beattie_H.jpg',
-                'thure-lundstrom-1935-H.jpg',
-                'tillie-taussig-H.jpg',
-                'timothy-mccarthy_bg_H.jpg',
-                'timothy-mccarthy_H.jpg',
-                'treastall-peacock-H.jpg',
-                'tws-brown-H.jpg',
-                'vincenz-kink-H.jpg',
-                'virginia-clark-1912-2-H.jpg',
-                'virginia-clark-1912-H.jpg',
-                'virginia-clark-H.jpg',
-                'virginia-ethel-martin-emanuel-1922-L.jpg',
-                'Voyage_Nourney_4.jpg',
-                'walter-miller-clark_H.jpg',
-                'walter-porter-H.jpg',
-                'washington-dodge-2-H.jpg',
-                'washington-dodge-jr-1962-H.jpg',
-                'washington-dodge-jr2-H.jpg',
-                'washington-dodge-junior-1919-l.jpg',
-                'washington-dodge-sfcall-H.jpg',
-                'washington-roebling-H.jpg',
-                'webber_s.jpg',
-                'willard_c.jpg',
-                'william-coutts-1956-H.jpg',
-                'william-doherty-H.jpg',
-                'william-hipkins-H.jpg',
-                'william-hull-botsford-H.jpg',
-                'william-lahtinen-1912-H.jpg',
-                'william-lahtinen-l.jpg',
-                'william-lobb-H.jpg',
-                'william-minahan-H.jpg',
-                'william-silvey-H.jpg',
-                'william-sloper-older-H.jpg',
-                'william-stead-portrait-H.jpg',
-                'william-thompson-sloper-H.jpg',
-                'william-thompson-sloper-pp-H.jpg',
-                'william-thompson-sloper-pp2-H.jpg',
-                'winifred-quick-tongerloo-1980s-H.png',
-                'winifred-quick-tongerloo-H.png',
-                'winnie_troutt_norumbega_H.jpg',
-                'winnifred-vera-quick-1913-H.png',
-                'wright-woolcott-H.jpg',
-                'YoungMarieOlson.jpg',
-                'ZG10f_Piere_Marechal.jpg',
-                'ZG10h_Margaret_Swift.jpg']
+        var svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 1)
 
-        const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean dictum tempor mauris, ac hendrerit tortor dignissim in. Integer ut tempor elit, sed malesuada dui. Vestibulum commodo scelerisque felis, ac sagittis tellus convallis a. Suspendisse quis leo egestas, gravida dui at, mattis eros. Quisque vel placerat erat. Proin hendrerit congue hendrerit. Fusce molestie nisl vitae urna lobortis ornare. Duis lorem eros, rhoncus a libero ac, pretium vulputate ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" +
-                        "Vestibulum nibh turpis, rutrum in accumsan sed, lacinia interdum eros. Nam et mauris et nibh volutpat varius. Aliquam semper libero non faucibus mattis. Curabitur orci augue, suscipit non eros in, sodales suscipit risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam sed euismod erat. Mauris auctor ultricies ullamcorper. Nam scelerisque sollicitudin tincidunt. Integer at porttitor nisi, sed scelerisque lorem. Cras gravida mauris in nisl sollicitudin blandit ut id ante. Phasellus nec ante nisi. Sed vel tortor elit. Nam placerat arcu non turpis dapibus varius. Cras augue neque, rutrum non augue at, faucibus porttitor nisl. Aliquam vel ante sapien." + 
-                        "Nunc non tortor nibh. Sed viverra justo ac lorem egestas, non ultricies odio laoreet. Donec a vestibulum risus. Suspendisse potenti. Phasellus ultrices risus in congue accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce dignissim augue non elit rhoncus rhoncus. Nam tristique malesuada diam, id congue augue auctor a. Curabitur id rhoncus nisl, vel venenatis odio. Aenean sit amet orci quis nunc pellentesque varius sed in ipsum." +
-                        "Nulla facilisis mauris vitae malesuada euismod. Donec tempus aliquam ipsum, ac dapibus massa venenatis id. Suspendisse vel ex sed enim mattis ullamcorper nec quis velit. Nulla non tincidunt augue. Donec dictum massa et est tristique, sit amet laoreet augue dapibus. Mauris consequat magna sagittis quam ultrices viverra. Vestibulum aliquam lacinia libero, posuere rhoncus turpis elementum in. Quisque porta dui et quam varius, sit amet mollis dolor elementum. Nunc nec lacus eget leo congue efficitur nec vitae sapien. Nulla arcu metus, vulputate vitae blandit sed, ullamcorper id metus. Nam pulvinar justo eget augue eleifend facilisis. Donec eget interdum felis, interdum pharetra nulla. Maecenas rutrum scelerisque tristique. Nam sed metus vehicula, sodales purus vel, ullamcorper orci." +
-                        "Sed euismod mi id ornare finibus. Mauris massa ex, pharetra ac nibh luctus, vulputate malesuada orci. Sed placerat, ipsum ultrices venenatis vehicula, justo justo malesuada sem, in molestie augue augue sed sapien. Vivamus in tempor nisi, sed viverra ligula. Donec vitae faucibus tortor. Cras nec felis at neque iaculis fermentum vitae ac odio. Integer viverra hendrerit augue, in vulputate nisl cursus sed. Quisque pellentesque mauris ac ipsum tincidunt hendrerit. Suspendisse vulputate placerat ex, quis ullamcorper ante commodo quis."
-
-        const divStaticDefaultHTML = "<p style='font-size: 9px;'>"+lorem+lorem+lorem+"</p>"
-
-        let globalState = 1
-        let t = 1309
-
-        var divStatic = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", .5)
-            .html(divStaticDefaultHTML)
-
-        const extractColumn = (arr, column) => arr.map(x=>x[column]);
-
-        const margin = ({top: 5, right: 5, bottom: 5, left: 5})
-
-        var radius = 7
-        var originalRadius = radius
-
-        var w = 814, h = 540
-        var topLeft = {x: 43, y: 218}
+        var masthead = svgFrontPage.append("g").attr("id", "masthead")
         
-        var svg = d3.select("#viz-div")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h)
-            .attr("transform", "translate(" + topLeft.x + "," + topLeft.y + ")")
-            // .style("background", "black")
+        var mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",50)")
+        mainHero.append("text").attr("x", 0).attr("y", 00).text("The New York Times.").attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
         
-        let passengerData = []
+        var fitToPrint = masthead.append("g").attr("id", "fitToPrint").attr("transform", "translate(50,15)")
+        fitToPrint.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+        fitToPrint.append("text").attr("x", 50).attr("y", 20).text('"All the News That'+"'s").attr("text-anchor", "middle").attr("font-size", "8pt")
+        fitToPrint.append("text").attr("x", 50).attr("y", 35).text('Fit to Print"').attr("text-anchor", "middle").attr("font-size", "8pt")
 
-        d3.csv('./data/titanic.csv').then(
-            res => {
+        var theWeather = masthead.append("g").attr("id", "theWeather").attr("transform", "translate(650,15)")
+        theWeather.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+        theWeather.append("text").attr("x", 50).attr("y", 13).text("THE WEATHER").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold").attr("font-family", "sans-serif")
+        theWeather.append("line").attr("x1", 35).attr("x2", 65).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+        theWeather.append("text").attr("x", 50).attr("y", 25).text("Unsettled Tuesday; Wednesday,").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 30).text("fair, cooler; moderate southerly").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 35).text("winds, becoming variable.").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 40).text("For full weather report see Page 21.").attr("text-anchor", "middle").attr("font-size", "3pt")
 
-                passengerData = res
-                passengerData.forEach((item)=>{
-                    // replace all ? with 100 to treat as special case
-                    if (item.kAge == "?") { item.kAge = 85}
-                })
-                
-                let gs1Legend = svg.append("g")
-                                    .attr("id", "gs1LegendGroup")
+        var dateLine = masthead.append("g").attr("id", "dateLine").attr("transform", "translate(40,70)")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 0).attr("y2", 0).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 2).attr("y2", 2).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 14).attr("y2", 14).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+        dateLine.append("text").attr("x", 10).attr("y", 11).text("VOL. LXI . NO. 15,806").attr("text-anchor", "left").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 360).attr("y", 11).text("NEW YORK, TUESDAY, APRIL 16, 1912. - TWENTY-FOUR PAGES,").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 580).attr("y", 11).text("ONE CENT").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 655).attr("y", 7.5).text("In Greater New York,").attr("text-anchor", "middle").attr("font-size", "4pt")
+        dateLine.append("text").attr("x", 655).attr("y", 12).text("Jersey City, and Newark.").attr("text-anchor", "middle").attr("font-size", "4pt")
+        dateLine.append("line").attr("x1", 685).attr("x2", 685).attr("y1", 5).attr("y2", 12).attr("stroke", "black").style("stroke-width", 0.5)
+        dateLine.append("text").attr("x", 700).attr("y", 7).text("Elsewhere").attr("text-anchor", "middle").attr("font-size", "3pt")
+        dateLine.append("text").attr("x", 700).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
 
-                let headlinesEtc = svg.append("g")
-                                        .attr("id", "headlinesEtc")
+        var mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", "translate(" + width/2 + ",115)")
+        mainHeadline.append("text").attr("x", 0).attr("y", 0).text("TITANIC SINKS FOUR HOURS AFTER HITTING ICEBERG;").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
+        mainHeadline.append("text").attr("x", 0).attr("y", 25).text("866 RESCUED BY CARPATHIA, PROBABLY 1250 PERISH;").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
+        mainHeadline.append("text").attr("x", 0).attr("y", 50).text("ISMAY SAFE, MRS. ASTOR MAYBE, NOTED NAMES MISSING").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
 
-                let subHeadline = d3.select("#headlinesEtc").append("text")
-                                    .text("THERE ARE 1,309 KNOWN PASSENGERS ABOARD THE RMS TITANIC ...")
-                                    .attr("x", 10)
-                                    .attr("y", h-35)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "24px")
+        var primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,180)")
+        primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-                let oneOfN = d3.select("#headlinesEtc").append("text")
-                                    .text(" 1 / 12 ")
-                                    .attr("x", 10)
-                                    .attr("y", h-10)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "12px")
+        var secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,880)")
+        secondaryContainer.append("rect").attr("class", "secondaryContainerRect").attr("x", 0).attr("y", 0).attr("width", secondaryContainerWidth).attr("height", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-                let clickForMore = d3.select("#headlinesEtc").append("text")
-                                    .text("... hover for details ... ... click for more")
-                                    .attr("x", w-250)
-                                    .attr("y", h-10)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "12px")
+        var lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", "translate(250,670) scale(1.5,1.5)")
+        lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg")
+        lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
+        lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("The Lost Titanic Being Towed Out of Belfast Harbor.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+        lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
 
-                let passengerGroup = svg.append("g").attr("id", "passengerGroup")
+        var captSmith = svgFrontPage.append("g").attr("id", "captSmith").attr("transform", "translate(245,1080) scale(1.2,1.2)")
+        captSmith.append("image").attr("x", 0).attr("y", 0).attr("width", 120).attr("height", 160).attr("xlink:href", "./src/capt-smith.jpg")
+        captSmith.append("rect").attr("x", -1).attr("y", -1).attr("width", 122).attr("height", 162).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("rect").attr("x", -2).attr("y", -2).attr("width", 124).attr("height", 164).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("rect").attr("x", -3).attr("y", -3).attr("width", 126).attr("height", 166).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("text").attr("x", 60).attr("y", 170).text("CAPT. E. J. SMITH,").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+        captSmith.append("text").attr("x", 60).attr("y", 175).text("Commander of the Titanic.").attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "bold")
 
-                let passengers = passengerGroup.selectAll("g")
-                    .data(passengerData)
-                    .enter()
-                    .append("g")
-                    .attr("class", "passenger")
-                    .attr("transform", (d, i) => {
-                        return "translate(0, 0)"
-                    })
+        const loremShort = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        
+        var boilerPlateTemp = svgFrontPage.append("g").attr("id", "boilerPlateTemp")
 
-                passengers
-                    .transition()
-                        .duration((d,i)=>i)
-                        .attr("transform", (d, i) => {
-                                let leftRightBuffer = 15
-                                let topBuffer = (radius*2+1)
-                                let unitSize = (radius*2+1)
-                                let numUnitsWide = 10 * Math.floor(Math.floor(( w-(leftRightBuffer*2) ) / unitSize)/10)
-                                let initialX = leftRightBuffer + radius + (i % numUnitsWide ) * unitSize + ( Math.floor((i%numUnitsWide)/10))
-                                let initialY = topBuffer + Math.floor( i/numUnitsWide ) * unitSize + Math.floor((Math.floor(i/numUnitsWide))/10)
-                                return "translate(" +
-                                        initialX + "," +
-                                        initialY + ")"
-                            })
-                
-                passengers
-                        .append("rect")
-                        .attr("x", 0)
-                        .attr("y", 0)
-                        .attr("width", radius*2)
-                        .attr("height", radius*2)
-                        .attr("rx", 0)
-                        .attr("ry", 0)
-                        .style("fill", "#4b371c")
-                        .style("opacity", 0.5)
-                
+        var firstLeftHeadlines = boilerPlateTemp.append("g").attr("transform", "translate(45,680) scale(0.4,0.8)")
+        firstLeftHeadlines.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<23; i++) {firstLeftHeadlines.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                var xSex = d3.scaleBand()
-                    .range([ 0, w ])
-                    .domain(["male", "female"])
-                
-                // console.log("M: ", xSex("male"))
-                // console.log("F: ", xSex("female"))
+        var secondLeftHeadlines = boilerPlateTemp.append("g").attr("transform", "translate(145,680) scale(0.4,0.8)")
+        secondLeftHeadlines.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<23; i++) {secondLeftHeadlines.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                var yAge = d3.scaleLinear()
-                    .range([ h*0.9, h*0.1 ])
-                    .domain([d3.min(extractColumn(passengerData,"kAge")), 85])
-                
-               
-                d3.select("svg").on("click", ()=>{
+        var firstRightHeadlines = boilerPlateTemp.append("g").attr("transform", "translate(565,680) scale(0.4,0.8)")
+        firstRightHeadlines.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<23; i++) {firstRightHeadlines.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                    oneOfN.text((globalState+1) + " / 12")
+        var secondRightHeadlines = boilerPlateTemp.append("g").attr("transform", "translate(665,680) scale(0.4,0.8)")
+        secondRightHeadlines.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<23; i++) {secondRightHeadlines.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                    if (globalState == 0) {
-                        radius = originalRadius
-                        subHeadline.text("THERE ARE 1,309 KNOWN PASSENGERS ABOARD THE RMS TITANIC ...")
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i))
-                            .attr("transform", (d, i) => {
-                                let leftRightBuffer = 15
-                                let topBuffer = (radius*2+1)
-                                let unitSize = (radius*2+1)
-                                let numUnitsWide = 10 * Math.floor(Math.floor(( w-(leftRightBuffer*2) ) / unitSize)/10)
-                                let initialX = leftRightBuffer + radius + (i % numUnitsWide ) * unitSize + ( Math.floor((i%numUnitsWide)/10))
-                                let initialY = topBuffer + Math.floor( i/numUnitsWide ) * unitSize + Math.floor((Math.floor(i/numUnitsWide))/10)
-                                return "translate(" +
-                                        initialX + "," +
-                                        initialY + ")"
-                            })
-                        passengers.selectAll("rect")
-                            .transition().duration(t)
-                                .attr("rx", 0)
-                                .attr("ry", 0)
-                                .attr("width", radius*2)
-                                .attr("height", radius*2)
-                                .style("fill", "#4b371c")
-                                .style("opacity", 0.5)
-                        globalState += 1
-                    }
-                    else if (globalState == 1) {
-                        radius = 4
-                        let midBuffer = 35
-                        let topBuffer = 0.05 * h
-                        let unitSize = radius*2 + 1
-                        let bottomBuffer = 0.8 * h
-                        let numUnitsHigh = Math.floor((bottomBuffer-topBuffer)/unitSize)
+        var lowerText1 = boilerPlateTemp.append("g").attr("transform", "translate(45,1080) scale(0.4,0.8)")
+        lowerText1.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<36; i++) {lowerText1.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
+        var lowerText2 = boilerPlateTemp.append("g").attr("transform", "translate(145,1080) scale(0.4,0.8)")
+        lowerText2.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<36; i++) {lowerText2.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                        gs1Legend.append("text")
-                                    .attr("id", "gs1LegendMale")
-                                    .text("Male")
-                                    .attr("x", -100)
-                                    .attr("y", 0.8*h+15)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "16px")
-                        
-                        gs1Legend.append("text")
-                                    .attr("id", "gs1LegendFemale")
-                                    .text("Female")
-                                    .attr("x", w+100)
-                                    .attr("y", 0.8*h+15)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "16px")
+        var lowerText3 = boilerPlateTemp.append("g").attr("transform", "translate(245,1310) scale(0.8,0.8)")
+        lowerText3.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<8; i++) {lowerText3.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                        d3.select("#gs1LegendMale")
-                            .transition()
-                            .duration(t)
-                            .attr("x", w/2-85)
-                        
-                        d3.select("#gs1LegendFemale")
-                            .transition()
-                            .duration(t)
-                            .attr("x", w/2+50)
+        var lowerText4 = boilerPlateTemp.append("g").attr("transform", "translate(445,1080) scale(0.4,0.8)")
+        lowerText4.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<36; i++) {lowerText4.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("THERE ARE 843 MALE PASSENGERS, AND 466 FEMALE PASSENGERS ...")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-                        
-                        passengers.selectAll("rect")
-                            .transition().duration(t/4)
-                                .attr("rx", 0)
-                                .attr("ry", 0)
-                                .attr("width", radius*2)
-                                .attr("height", radius*2)
-                                .style("fill", (d) => (d.kSex == "male" ? "#4b371c" : "#9a7b4f"))
-                                .style("opacity", 0.9)
+        var lowerText5 = boilerPlateTemp.append("g").attr("transform", "translate(545,1080) scale(0.4,0.8)")
+        lowerText5.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<36; i++) {lowerText5.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i*2))
-                                .attr("transform", (d,i) => {
-                                    let i_prime = passengerData.filter(item => item.kSex == d.kSex).findIndex(e => {return e.openmlid == d.openmlid})
-                                    let initialY = topBuffer + ( i_prime % numUnitsHigh) * unitSize
-                                    let initialX
-                                    if (d.kSex == "female") { initialX = 407 + midBuffer + Math.floor( i_prime / numUnitsHigh ) * unitSize }
-                                    else                   { initialX = 407 - midBuffer - unitSize - Math.floor( (i_prime) / numUnitsHigh ) * unitSize }
-
-                                    return "translate(" +
-                                            initialX + "," +
-                                            initialY + ")"
-                                })
-
-                        globalState += 1
-                    }
-                    else if (globalState == 2) {
-                    
-                        radius = 4
-                        let midBuffer = 50
-                        let classBuffer = 10
-                        let topBuffer = 0.05 * h
-                        let unitSize = radius*2 + 1
-                        let bottomBuffer = 0.8 * h
-                        let classHeight = (bottomBuffer-topBuffer)/3
-                        let numUnitsHigh = Math.floor((classHeight-classBuffer)/unitSize)
-
-                        gs1Legend.append("text")
-                                    .attr("id", "gs1Legend1st")
-                                    .text("First Class")
-                                    .attr("x", 407)
-                                    .attr("y", -100)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "12px")
-                                    .style("text-anchor", "middle")
-                                    .style("vertical-align", "middle")
-                        gs1Legend.append("text")
-                                    .attr("id", "gs1Legend2nd")
-                                    .text("Second Class")
-                                    .attr("x", 407)
-                                    .attr("y", -100)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "12px")
-                                    .style("text-anchor", "middle")
-                                    .style("vertical-align", "middle")
-                        gs1Legend.append("text")
-                                    .attr("id", "gs1Legend3rd")
-                                    .text("Third Class")
-                                    .attr("x", 407)
-                                    .attr("y", -100)
-                                    .style("font-style", "italic")
-                                    .style("font-size", "12px")
-                                    .style("text-anchor", "middle")
-                                    .style("vertical-align", "middle")
-
-                        d3.select("#gs1Legend1st")
-                            .transition()
-                            .duration(t)
-                            .attr("y", topBuffer+classHeight*0.5)
-                        d3.select("#gs1Legend2nd")
-                            .transition()
-                            .duration(t)
-                            .attr("y", topBuffer+classHeight*1.5)
-                        d3.select("#gs1Legend3rd")
-                            .transition()
-                            .duration(t)
-                            .attr("y", topBuffer+classHeight*2.5)
-
-
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("326 IN FIRST CLASS, 272 IN SECOND CLASS, AND 706 IN THIRD CLASS ...")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-                        
-                        passengers.selectAll("rect")
-                            .transition().duration(t/4)
-                                .attr("rx", 0)
-                                .attr("ry", 0)
-                                .attr("width", radius*2)
-                                .attr("height", radius*2)
-                                .style("fill", (d) => (d.kSex == "male" ? "#4b371c" : "#9a7b4f"))
-                                .style("opacity", 0.9)
-
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i))
-                                .attr("transform", (d,i) => {
-                                    let i_prime = passengerData.filter(item => (item.kSex == d.kSex && item.kPclass == d.kPclass)).findIndex(e => {return e.openmlid == d.openmlid})
-                                    let yOffset = 0
-                                    if (d.kPclass == 2) {yOffset = classHeight}
-                                    else if (d.kPclass == 3) {yOffset = classHeight * 2}
-
-                                    // let initialY = yOffset + topBuffer + ( i_prime % numUnitsHigh) * unitSize
-                                    // let initialX
-                                    // if (d.kSex == "female") { initialX = 407 + midBuffer + Math.floor( i_prime / numUnitsHigh ) * unitSize }
-                                    // else                   { initialX = 407 - midBuffer - unitSize - Math.floor( (i_prime) / numUnitsHigh ) * unitSize }
-
-                                    let initialY = yOffset + topBuffer + ( i_prime % numUnitsHigh) * unitSize
-                                    let initialX
-                                    if (d.kSex == "female") { initialX = 407 + midBuffer + Math.floor( i_prime / numUnitsHigh ) * unitSize }
-                                    else                   { initialX = 407 - midBuffer - unitSize - Math.floor( (i_prime) / numUnitsHigh ) * unitSize }
-
-                                    return "translate(" +
-                                            initialX + "," +
-                                            initialY + ")"
-                                })
-
-                        globalState += 1
-                    }
-                    else if (globalState == 3) {
-
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("BREAKING NEWS - SURVIVORS HAVE BEEN IDENTIFIED ... ")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-
-                        passengers.selectAll("rect")
-                            .transition().duration(t)
-                            .style("opacity", (d)=>(d.openmlsurvived == 1 ? 1 : 0.2))
-
-                        globalState += 1
-                    }
-                    else if (globalState == 4) {
-
-                        gs1Legend.selectAll("text").remove()
-
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("globalState == 4")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i*2))
-                            .attr("transform", (d,i) => {
-                                return "translate(" +
-                                        Math.floor(Math.random()*w) + "," +
-                                        Math.floor(Math.random()*h) + ")"
-                        })
-                        globalState = 0
-                    }
-                    else if (globalState == 5) {
-
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("globalState == 5")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i*2))
-                            .attr("transform", (d,i) => {
-                                return "translate(" +
-                                        Math.floor(Math.random()*w) + "," +
-                                        Math.floor(Math.random()*h) + ")"
-                        })
-                        globalState += 1
-                    }
-                    else {
-
-                        subHeadline.transition().duration(t/3).attr("x", w)
-                            .transition().duration(0)
-                                .text("globalState == 6")
-                                .attr("x", -w)
-                            .transition().duration(t/3).attr("x", 10)
-
-
-                        passengers
-                            .transition()
-                            .duration((d,i)=>(i*2))
-                            .attr("transform", (d,i) => {
-                                return "translate(" +
-                                        Math.floor(Math.random()*w) + "," +
-                                        Math.floor(Math.random()*h) + ")"
-                        })
-                        globalState = 0
-                    }
-
-                    })
-
-
-                d3.selectAll("rect")
-                        .on("mouseover", (e,d)=>{
-                            divStatic
-                                .html(getHTML(d))
-                                .style("opacity", 1)
-                        })
-                        .on("mouseout", (e,d)=>{
-                            divStatic
-                                .html(divStaticDefaultHTML)
-                                .style("opacity", 1)
-                        })
-
-                function getHTML(passenger) {
-                    var imageFile = imageFileList[Math.floor(Math.random()*imageFileList.length)]
-
-                    htmlToReturn = 
-                                   "<img src='./data/images/" + imageFile +"' height=300 class='imgPaper'>" + 
-                                   "<p><b>" + passenger.derivedName + "</b>, is " + ((passenger.kAge==85) ? "of unknown age " : (passenger.kAge + " years old, ")) +
-                                   "and is believed to have boarded at " + passenger.kBoarded + ", travelling in class " + passenger.kPclass + ".</p>" +
-                                   "<p>" + ((passenger.kSex == "male") ? "His" : "Her") + " hometown is " + passenger.kHometown + " and " + ((passenger.kSex == "male") ? "his" : "her") +
-                                   " destination was believed to be " + passenger.kDestination + ". " + ((passenger.kSex == "male") ? "His" : "Her") + " ticket number is reported to be " + passenger.kTicket +
-                                   ", " + ((passenger.kSex == "male") ? "his" : "her") + " fare was $ " + passenger.kFare + ", and " + ((passenger.kSex == "male") ? "his" : "her") + " cabin is believed to be " +
-                                   passenger.kCabin + ". " + ((passenger.kSex == "male") ? "He" : "She") + " is believed to have " + passenger.kSibSp + " siblings or spouses on board, as well as " + passenger.kParch +
-                                   " parents or children. At this point, " +
-                                   ((passenger.kSurvived == 1) ? ("it is believed that " + passenger.derivedName + " has managed to board a lifeboat.") : ("we are very sorry to report that " + passenger.derivedName + " is not believed to have been able to board a lifeboat.")) +
-                                   "</p>"
-                                   
-                    return htmlToReturn
-                }
-
-            }
-        )
+        var lowerText6 = boilerPlateTemp.append("g").attr("transform", "translate(645,1080) scale(0.4,0.8)")
+        lowerText6.append("text").text("RULE OF SEA FOLLOWED").attr("x", 0).attr("y", 0).style("font-family", "sans-serif").attr("font-size", "8pt")
+        for (let i=0; i<36; i++) {lowerText6.append("text").text(loremShort).attr("x", 0).attr("y", 10+i*10).style("font-family", "sans-serif").attr("font-size", "6pt")}
 
     </script>
+    <script src="./js/titanic.js"></script>
 </body>
 
 </html>
