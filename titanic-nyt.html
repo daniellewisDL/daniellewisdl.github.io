@@ -12,9 +12,9 @@
             font-family: "Times New Roman", Times, serif;
         }
         svg {
-            background-image: url("./src/pexels-eva-bronzini-7598248-2.jpg");
+            background-image: url("./src/bg003.jpg");
             /* Photo by icon0.com: https://www.pexels.com/photo/white-crumpled-paper-479444/ */
-            background-size: auto;
+            background-size: cover;
             background-repeat: repeat;
             /* filter: sepia(0.5) blur(2px) ; */
             filter: sepia(0.7);
@@ -40,8 +40,9 @@
 </head>
 
 <body>
-    <div id="viz-div"></div>
+    <div id="viz-div" style="text-align:center;"></div>
     <script>
+        console.log(window.innerWidth)
         let width = 800
         let height = 1400
         let primaryContainerWidth = 720
@@ -49,7 +50,8 @@
         let secondaryContainerWidth = 720
         let secondaryContainerHeight = 180
 
-        var svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 1)
+        var svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 0)
+        svgFrontPage.transition().duration(1500).style("opacity", 1).attr("transform", "translate(0,0) scale(1,1)")
 
         var masthead = svgFrontPage.append("g").attr("id", "masthead")
         
