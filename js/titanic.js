@@ -1,5 +1,4 @@
 
-
 var tabularData = [
                     {cabinClass: 'Crew', ageSex: 'Women', survived: 'Survived', number: 20},
                     {cabinClass: 'Crew', ageSex: 'Women', survived: 'Perished', number: 3},
@@ -35,14 +34,25 @@ let t = 1309 *2
 var defaultSC = secondaryContainer.append("g").attr("id", "defaultSC")
 var defaultPD = passengerDetailContainer.append("g").attr("id", "defaultPD")
 
+let linerPath = "M 0 0 L -2 0 C -4 0 -5 -7 -5 -20 C -5 -52 -6 -38 -6 -65 C -6 -90 0 -100 0 -100 C 0 -100 6 -90 6 -65 C 6 -38 5 -52 5 -20 C 5 -7 4 0 2 0 Z"
+let linersList = [{className: 'celtic', name: 'Celtic', length: 680.75, beam: 75.0, depth: 44, tonnage: 20904, horsePower: 12600, avSpeed: 17, yearBuilt: 1901, screw: "Twin Screw"},
+                    {className: 'oceanic', name: 'Oceanic', length: 685.5, beam: 68.5, depth: 44.5, tonnage: 17274, horsePower: 28000, avSpeed: 21, yearBuilt: 1899, screw: "Twin Screw"},
+                    {className: 'baltic', name: 'Baltic', length: 708.5, beam: 75, depth: 44, tonnage: 23876, horsePower: 14000, avSpeed: 16.5, yearBuilt: 1904, screw: "Twin Screw"},
+                    {className: 'adriatic', name: 'Adriatic', length: 709.25, beam: 75.5, depth: 52, tonnage: 24541, horsePower: 16000, avSpeed: 17, yearBuilt: 1907, screw: "Twin Screw"},
+                    {className: 'titanic', name: 'Titanic / Olympic', length: 850, beam: 92, depth: 52, tonnage: 46329, horsePower: 46000, avSpeed: 21, yearBuilt: 1910, screw: "Triple Screw"}]
+
+let whiteStarFlagPath = "M 0 0 C 0 0 0 0 0 0 C 1 -1 3 0 4 -1 C 5 -2 6 -1 8 -1 C 9 -1 10 -2 14 -2 C 12 -3 12 -3 9 -4 C 12 -5 11 -5 13 -6 C 10 -7 9 -6 7 -7 C 4 -9 4 -7 3 -8 C 2 -9 0 -9 -2 -9 C 0 -6 -1 -3 0 0 Z"
+let starPath = "M 25 1 L 31 18 H 49 L 35 29 L 40 46 L 25 36 L 10 46 L 15 29 L 1 18 H 19 Z"
+
+let linerScale = d3.scaleLinear().domain([0,850]).range([0,1.4])
+
 setDefaultSC()
 
 function setDefaultSC() {
     iconsList = ["icons8-temperature-64.png",
     "icons8-clock-80.png",
-    "icons8-boat-leaving-port-50.png",
-    "icons8-titanic-48.png",
-    "icons8-globe-100.png"]
+    "icons8-titanic-48.png"]
+    
     var spacing = secondaryContainerWidth / 5
     var iconSize = 64
     var xFirst = spacing/2 - iconSize/2
@@ -50,6 +60,69 @@ function setDefaultSC() {
     for (let i=0;i<iconsList.length;i++) {
         defaultSC.append("image").attr("class", "icon").attr("x", xFirst + spacing*(i)).attr("y", yIcon).attr("width", iconSize).attr("height", iconSize).attr("xlink:href", "./src/"+iconsList[i])
     }
+    
+    let liners = defaultSC.append("g").attr("id", "linersInfographic").attr("transform", "translate(590,150)")
+    
+    liners.selectAll("path").data(linersList).enter()
+        .append("path")
+        .attr("id", "linerPath")
+        .attr("class", d=>d.className)
+        .attr("d", linerPath)
+        .attr("transform", (d,i) => `translate (${25*i},0) scale(${linerScale(d.length)})`)
+        .style("opacity", 0.5)
+    let linerText1Default = "Along with the Olympic, Titanic"
+    let linerText2Default = "was the biggest liner in the world."
+    linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 50).attr("y", 10).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
+    linerText2 = liners.append("text").attr("id", "linerText2").text(linerText2Default).attr("x", 50).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
+
+    let linerDeetsStartY = -90
+    let linerDeetsSpacingY = 13
+    let linerDeetsStartX = -20
+
+    linerDeets0 = liners.append("path").attr("id", "linerDeets0").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-40},${linerDeetsStartY-20}) scale(3,3)`)
+    linerDeets00 = liners.append("path").attr("id", "linerDeets0").attr("d", starPath).attr("fill", "white").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-36},${linerDeetsStartY-40}) scale(.25,.25) rotate(-5)`)
+    linerDeets1 = liners.append("text").attr("id", "linerDeets1").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets2 = liners.append("text").attr("id", "linerDeets2").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets3 = liners.append("text").attr("id", "linerDeets3").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*2).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets4 = liners.append("text").attr("id", "linerDeets4").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*3).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets5 = liners.append("text").attr("id", "linerDeets5").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*4).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets6 = liners.append("text").attr("id", "linerDeets6").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*5).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets7 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*6).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets8 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*7).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+
+    d3.selectAll("#linerPath")
+        .on("mouseover", (e, d) => {
+            linerText1.text(d.name).attr("font-size", "12pt").attr("y", 18).style("font-weight", "bold")
+            linerText2.text("")
+            d3.select("."+d.className).attr("fill", "red")
+            linerDeets0.style("opacity", 0.8)
+            linerDeets00.style("opacity", 0.8)
+            linerDeets1.text("Length: "+d.length+" ft")
+            linerDeets2.text("Beam: "+d.beam+" ft")
+            linerDeets3.text("Depth: "+d.depth+" ft")
+            linerDeets4.text("Tonnage: "+d3.format(",")(d.tonnage))
+            linerDeets5.text("Horsepower: "+d3.format(",")(d.horsePower))
+            linerDeets6.text("Av speed: "+d.avSpeed+" Kn.")
+            linerDeets7.text("Built: "+d.yearBuilt)
+            linerDeets8.text(d.screw)
+
+        })
+        .on("mouseout", (e, d)=> {
+            linerText1.text(linerText1Default).attr("font-size", "6pt").attr("y", 10).style("font-weight", "normal")
+            linerText2.text(linerText2Default)
+            d3.select("."+d.className).attr("fill", "black")
+            linerDeets0.style("opacity", 0)
+            linerDeets00.style("opacity", 0)
+            linerDeets1.text("")
+            linerDeets2.text("")
+            linerDeets3.text("")
+            linerDeets4.text("")
+            linerDeets5.text("")
+            linerDeets6.text("")
+            linerDeets7.text("")
+            linerDeets8.text("")
+        })
+
 }
 
 
