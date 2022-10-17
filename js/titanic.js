@@ -1,3 +1,20 @@
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
 
 var tabularData = [
                     {cabinClass: 'Crew', ageSex: 'Women', survived: 'Survived', number: 20},
@@ -35,10 +52,10 @@ var defaultSC = secondaryContainer.append("g").attr("id", "defaultSC")
 var defaultPD = passengerDetailContainer.append("g").attr("id", "defaultPD")
 
 let linerPath = "M 0 0 L -2 0 C -4 0 -5 -7 -5 -20 C -5 -52 -6 -38 -6 -65 C -6 -90 0 -100 0 -100 C 0 -100 6 -90 6 -65 C 6 -38 5 -52 5 -20 C 5 -7 4 0 2 0 Z"
-let linersList = [{className: 'celtic', name: 'Celtic', length: 680.75, beam: 75.0, depth: 44, tonnage: 20904, horsePower: 12600, avSpeed: 17, yearBuilt: 1901, screw: "Twin Screw"},
-                    {className: 'oceanic', name: 'Oceanic', length: 685.5, beam: 68.5, depth: 44.5, tonnage: 17274, horsePower: 28000, avSpeed: 21, yearBuilt: 1899, screw: "Twin Screw"},
-                    {className: 'baltic', name: 'Baltic', length: 708.5, beam: 75, depth: 44, tonnage: 23876, horsePower: 14000, avSpeed: 16.5, yearBuilt: 1904, screw: "Twin Screw"},
-                    {className: 'adriatic', name: 'Adriatic', length: 709.25, beam: 75.5, depth: 52, tonnage: 24541, horsePower: 16000, avSpeed: 17, yearBuilt: 1907, screw: "Twin Screw"},
+let linersList = [{className: 'celtic', name: 'Celtic', length: 681, beam: 75.0, depth: 44, tonnage: 20904, horsePower: 12600, avSpeed: 17, yearBuilt: 1901, screw: "Twin Screw"},
+                    {className: 'oceanic', name: 'Oceanic', length: 685, beam: 68.5, depth: 44.5, tonnage: 17274, horsePower: 28000, avSpeed: 21, yearBuilt: 1899, screw: "Twin Screw"},
+                    {className: 'baltic', name: 'Baltic', length: 708, beam: 75, depth: 44, tonnage: 23876, horsePower: 14000, avSpeed: 16.5, yearBuilt: 1904, screw: "Twin Screw"},
+                    {className: 'adriatic', name: 'Adriatic', length: 709, beam: 75.5, depth: 52, tonnage: 24541, horsePower: 16000, avSpeed: 17, yearBuilt: 1907, screw: "Twin Screw"},
                     {className: 'titanic', name: 'Titanic / Olympic', length: 850, beam: 92, depth: 52, tonnage: 46329, horsePower: 46000, avSpeed: 21, yearBuilt: 1910, screw: "Triple Screw"}]
 
 let whiteStarFlagPath = "M 0 0 C 0 0 0 0 0 0 C 1 -1 3 0 4 -1 C 5 -2 6 -1 8 -1 C 9 -1 10 -2 14 -2 C 12 -3 12 -3 9 -4 C 12 -5 11 -5 13 -6 C 10 -7 9 -6 7 -7 C 4 -9 4 -7 3 -8 C 2 -9 0 -9 -2 -9 C 0 -6 -1 -3 0 0 Z"
@@ -46,23 +63,210 @@ let starPath = "M 25 1 L 31 18 H 49 L 35 29 L 40 46 L 25 36 L 10 46 L 15 29 L 1 
 
 let linerScale = d3.scaleLinear().domain([0,850]).range([0,1.4])
 
+let titanicTimeline = [
+    {time: 0.979166666666667, realtime: '11:30pm', time2: 23.5, name: 'event1', narrative: 'Lookouts notice a haze', key: 'non-key'},
+    {time: 0.986111111111111, realtime: '11:40pm', time2: 23.6666666666667, name: 'event2', narrative: 'Titanic hits iceberg', key: 'key'},
+    {time: 0.00347222222222222, realtime: '12:05am', time2: 0.0833333333333333, name: 'event3', narrative: 'Capt. issues distress call CQD', key: 'key'},
+    {time: 0.0104166666666667, realtime: '12:15am', time2: 0.25, name: 'event4', narrative: 'Stewards order lifebelts', key: 'non-key'},
+    {time: 0.0138888888888889, realtime: '12:20am', time2: 0.333333333333333, name: 'event5', narrative: 'Lifeboat loading begins', key: 'non-key'},
+    {time: 0.0173611111111111, realtime: '12:25am', time2: 0.416666666666667, name: 'event6', narrative: 'Capt. Admits ship will sink', key: 'non-key'},
+    {time: 0.03125, realtime: '12:45am', time2: 0.75, name: 'event7', narrative: 'First lifeboat rowed away', key: 'key'},
+    {time: 0.0381944444444444, realtime: '12:55am', time2: 0.916666666666667, name: 'event8', narrative: 'Lifeboat No 6 lowered', key: 'non-key'},
+    {time: 0.0555555555555556, realtime: '1:20am', time2: 1.33333333333333, name: 'event9', narrative: 'Boiler room No 4 floods', key: 'non-key'},
+    {time: 0.0625, realtime: '1:30am', time2: 1.5, name: 'event10', narrative: 'Sinking rate ten degrees', key: 'non-key'},
+    {time: 0.0590277777777778, realtime: '1:25am', time2: 1.41666666666667, name: 'event11', narrative: 'CQ: Loading lifeboats', key: 'non-key'},
+    {time: 0.0659722222222222, realtime: '1:35am', time2: 1.58333333333333, name: 'event12', narrative: 'CQ: Engine room flooded', key: 'non-key'},
+    {time: 0.0694444444444444, realtime: '1:40am', time2: 1.66666666666667, name: 'event13', narrative: 'Collapsible 3 launched', key: 'non-key'},
+    {time: 0.0729166666666667, realtime: '1:45am', time2: 1.75, name: 'event14', narrative: 'Last radio transmission', key: 'key'},
+    {time: 0.0798611111111111, realtime: '1:55am', time2: 1.91666666666667, name: 'event15', narrative: 'Lifeboat No 4 launched', key: 'non-key'},
+    {time: 0.0868055555555556, realtime: '2:05am', time2: 2.08333333333333, name: 'event16', narrative: 'Collapsible D launched', key: 'non-key'},
+    {time: 0.0902777777777778, realtime: '2:10am', time2: 2.16666666666667, name: 'event17', narrative: 'Ship lights go out', key: 'non-key'},
+    {time: 0.0951388888888889, realtime: '2:17am', time2: 2.28333333333333, name: 'event18', narrative: 'Titanic breaks in two', key: 'non-key'},
+    {time: 0.0965277777777778, realtime: '2:19am', time2: 2.31666666666667, name: 'event19', narrative: 'Bow begins to sink', key: 'non-key'},
+    {time: 0.0972222222222222, realtime: '2:20am', time2: 2.33333333333333, name: 'event20', narrative: 'Titanic fully under waves', key: 'key'},
+    {time: 0.1, realtime: '2:24am', time2: 2.4, name: 'event21', narrative: 'Titanic at ocean bottom', key: 'non-key'},
+    {time: 0.145833333333333, realtime: '3:30am', time2: 3.5, name: 'event22', narrative: 'Survivors see Carpathia', key: 'non-key'},
+    {time: 0.166666666666667, realtime: '4:00am', time2: 4, name: 'event23', narrative: 'Carpathia rescue begins', key: 'non-key'},
+    {time: 0.220833333333333, realtime: '5:18am', time2: 5.3, name: 'event24', narrative: 'Sunrise on Carpathia', key: 'non-key'},
+    {time: 0.375, realtime: '9:00am', time2: 9, name: 'event25', narrative: 'Final survivors on Carptathia', key: 'non-key'},
+    {time: 0.385416666666667, realtime: '9:15am', time2: 9.25, name: 'event26', narrative: 'Californian arrives, too late', key: 'non-key'}
+    
+    ]
+
+let clockScale = d3.scaleLinear().domain([0,1]).range([-180,540])
+
 setDefaultSC()
 
 function setDefaultSC() {
-    iconsList = ["icons8-temperature-64.png",
-    "icons8-clock-80.png",
-    "icons8-titanic-48.png"]
-    
-    var spacing = secondaryContainerWidth / 5
-    var iconSize = 64
-    var xFirst = spacing/2 - iconSize/2
-    var yIcon = secondaryContainerHeight/2 - iconSize/2
-    for (let i=0;i<iconsList.length;i++) {
-        defaultSC.append("image").attr("class", "icon").attr("x", xFirst + spacing*(i)).attr("y", yIcon).attr("width", iconSize).attr("height", iconSize).attr("xlink:href", "./src/"+iconsList[i])
+
+
+    // CLOCK INFOGRAPHIC
+
+    let clockTimeLine = defaultSC.append("g").attr("id", "clockTimeLine").attr("transform", "translate(40,150)")
+
+    let clockArcGenerator = d3.arc()
+
+    let arcData = []
+    for (let i=-4;i<15;i++) {
+        arcData.push({startAngle: i*Math.PI/24, endAngle: (i+1)*Math.PI/24, fill: i%2 ? 'none' : 'none', innerRadius: 100, outerRadius: 105})
     }
-    
-    let liners = defaultSC.append("g").attr("id", "linersInfographic").attr("transform", "translate(590,150)")
-    
+    arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 57, outerRadius: 60})
+    arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 3, outerRadius: 5})
+
+    clockTimeLine.append("clipPath").attr("id", "clockClip").append("rect").attr("x", -40).attr("y", -150).attr("width", 180).attr("height", 180)
+    clockTimeLine.append("text").text("KEY").attr("x", 145).attr("y", 5).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+    clockTimeLine.append("text").text("EVENTS").attr("x", 145).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+
+    let clockFace = clockTimeLine.append("g").attr("id", "clockFace")
+
+    clockFace
+        .selectAll('path')
+        .data(arcData)
+        .enter()
+        .append('path')
+        .attr('d', clockArcGenerator)
+        .attr("clip-path", "url(#clockClip)")
+        .attr('fill', d=>d.fill)
+        .attr('stroke', 'black')
+
+    let numeralFontSize = "20pt"
+    let numeralStartY = -70
+    let clockTimeLineLabels = clockFace.append("g").attr("id", "clockTimeLineLabels").attr("clip-path", "url(#clockClip)")
+    clockTimeLineLabels.append("text").text("XI").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(-30)`)
+    clockTimeLineLabels.append("text").text("XII").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(0)`)
+    clockTimeLineLabels.append("text").text("I").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(30)`)
+    clockTimeLineLabels.append("text").text("II").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(60)`)
+    clockTimeLineLabels.append("text").text("III").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(90)`)
+    clockTimeLineLabels.append("text").text("IIII").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(120)`)
+
+    clockEvents = clockTimeLine.append("g").attr("id", "clockEvents").attr("clip-path", "url(#clockClip)")
+    clockEvents.selectAll("g")
+        // .data(titanicTimeline.filter(item=>item.key=="key"))
+        .data(titanicTimeline)
+        .enter().append("g").attr("id", (d)=>{return d.name}).attr("transform", (d)=>{return "translate(0,0) rotate("+clockScale(d.time)+")"})
+        .on("mouseover", (e,d)=>{
+
+            // reduce opacity of all event rods
+            clockEvents.selectAll("circle").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
+            clockEvents.selectAll("line").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
+            clockEventsKeyLabels.selectAll("text").style("opacity", 0)
+
+            // raise opacity of hovered event rod
+            d3.select("#"+d.name).selectAll("circle").attr("fill", "red").style("opacity", 1)
+            d3.select("#"+d.name).selectAll("line").attr("stroke", "red").style("opacity", 1)
+            d3.select("#nonKeyEventTime").text(d.realtime).style("opacity", 1)
+            d3.select("#nonKeyEventlabel").text(d.narrative).style("opacity", 1)
+            
+        })
+        .on("mouseleave", (e,d)=>{
+
+            // reset opacity of alll event rods
+            clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            clockEvents.selectAll("line").attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            clockEventsKeyLabels.selectAll("text").style("opacity", 1)
+            d3.select("#nonKeyEventTime").style("opacity", 0)
+            d3.select("#nonKeyEventlabel").style("opacity", 0)
+        })
+        
+    clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0).attr("y2", (d)=>(d.key=="key"?125:110)).attr("stroke-width", (d)=>(d.key=="key"?4:3)).attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
+    clockEvents.selectAll("g").append("circle").attr("cx", 0).attr("cy", (d)=>(d.key=="key"?129:113)).attr("r", (d)=>(d.key=="key"?4:3)).attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+
+    let clockEventsKeyLabels = clockTimeLine.append("g").attr("id", "clockEventsKeyLabels")
+    let clockEventsKeyLabelsFontSize = "6pt"
+    clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits iceberg").attr("x", -38).attr("y", -140).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress call sent").attr("x", 12).attr("y", -128).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 55).attr("y", -117).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio transmission").attr("x", 84).attr("y", -85).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "event20label").text("Fully submerged").attr("x", 115).attr("y", -30).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", 70).attr("y", -130).attr("font-size", "10pt").attr("font-weight", "bold").style("opacity", 0)
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", 70).attr("y", -115).attr("font-size", "10pt").style("opacity", 0)
+
+
+    // MAP INFOGRAPHIC
+    let titanicChart = defaultSC.append("g").attr("id", "titanicChart").attr("transform", "translate(260,0)")
+    titanicChart.append("text").text("TITANIC'S FATEFUL PATH").attr("x", 115).attr("y", 170).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+    titanicChart.append("clipPath").attr("id", "chartClip").append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z")
+    zoomRect = titanicChart.append("rect").attr("x", 0).attr("y", 0).attr("width", 230).attr("height", 180).attr("fill", "red").style("opacity", 0.02).attr("clip-path", "url(#chartClip)")
+
+    let topojsonData = "https://unpkg.com/world-atlas@2.0.2/countries-50m.json"
+    d3.json(topojsonData).then(
+        res => {
+            const countriesToInclude = ["Sweden", "France", "Germany", "United States of America", "Greenland", "Canada", "Ireland", "Spain", "United Kingdom",
+                                        "Belgium", "Netherlands", "Luxembourg", "Austria", "Czechia", "Denmark", "Finland", "Norway", "Italy", 
+                                            ]
+            const { countries } = res.objects
+            const geojsonData = topojson.feature(res, countries).features.filter(item=>countriesToInclude.includes(item.properties.name))
+
+            // const projection = d3.geoOrthographic()
+            const projection = d3.geoMercator()
+                .scale(280)
+                .rotate([30, -45])
+                .translate([150,100])
+
+            const path = d3.geoPath(projection)
+
+            const graticulePaths = titanicChart.append("g").attr("id", "graticulePaths")
+            
+            graticulePaths
+                .append("path")
+                .attr("clip-path", "url(#chartClip)")
+                .attr("d", path(d3.geoGraticule().step([5,5])()))
+                .style("stroke", "grey")
+                .style("stroke-width", 0.6)
+                .attr("fill", "none")
+
+            const countryPaths = titanicChart.append("g").attr("id", "countryPaths")
+            
+            countryPaths
+                .selectAll("path").data(geojsonData).enter()
+                .append("path")
+                .attr("clip-path", "url(#chartClip)")
+                .attr("fill", "red")
+                .style("opacity", 0.7)
+                .attr("d", (d)=>{ return path(d)})
+                .style("stroke", "none")
+            
+            const keyLocations = titanicChart.append("g").attr("id", "keyLocations")
+
+            const keyLocationsData = [{name: "Southampton", lat: 50.9105, long: -1.4049},
+                                      {name: "Cherbourg", lat: 49.6339, long: -1.6222},
+                                      {name: "Queenstown", lat: 51.8503, long: -8.2943},
+                                      {name: "Disaster", lat: 41.7666, long: -50.2333},
+                                      {name: "New York", lat: 40.7128, long: -74.0060} ]
+
+
+            keyLocations
+                .selectAll("circle").data(keyLocationsData).enter()
+                .append("circle")
+                .attr("clip-path", "url(#chartClip)")
+                .attr("cx", (d)=>{ return projection([d.long,d.lat])[0] })
+                .attr("cy", (d)=>{ return projection([d.long,d.lat])[1] })
+                .attr("r", 2)
+                .attr("fill", "blue")
+                .style("opacity", 1)
+            
+            const keyGeoPaths = titanicChart.append("g").attr("id", "keyGeoPaths")
+
+            const keyGeoPathsData = [path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.4049,50.9105], [-1.6222,49.6339]]}}),
+                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.6222,49.6339], [-8.2943,51.8503]]}}),
+                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-8.2943,51.8503], [-50.2333,41.7666,]]}})]
+
+            keyGeoPaths
+                .selectAll("path").data(keyGeoPathsData).enter()
+                .append("path")
+                // .attr("clip-path", "url(#chartClip)")
+                .attr("d", d=>d)
+                .attr("stroke", "green")
+                .style("opacity", 1)
+
+        })
+        
+
+    // LINER INFOGRAPHIC
+
+    let liners = defaultSC.append("g").attr("id", "linersInfographic").attr("transform", "translate(600,150)")
+    liners.append("text").text("GREATEST LINERS").attr("x", 15).attr("y", -130).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+
     liners.selectAll("path").data(linersList).enter()
         .append("path")
         .attr("id", "linerPath")
@@ -75,20 +279,21 @@ function setDefaultSC() {
     linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 50).attr("y", 10).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
     linerText2 = liners.append("text").attr("id", "linerText2").text(linerText2Default).attr("x", 50).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
 
-    let linerDeetsStartY = -90
-    let linerDeetsSpacingY = 13
-    let linerDeetsStartX = -20
+    let linerDeetsStartY = -80
+    let linerDeetsSpacingY = 11
+    let linerDeetsStartX = -15
+    let linerDeetsFontSize = "7pt"
 
-    linerDeets0 = liners.append("path").attr("id", "linerDeets0").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-40},${linerDeetsStartY-20}) scale(3,3)`)
-    linerDeets00 = liners.append("path").attr("id", "linerDeets0").attr("d", starPath).attr("fill", "white").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-36},${linerDeetsStartY-40}) scale(.25,.25) rotate(-5)`)
-    linerDeets1 = liners.append("text").attr("id", "linerDeets1").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets2 = liners.append("text").attr("id", "linerDeets2").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets3 = liners.append("text").attr("id", "linerDeets3").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*2).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets4 = liners.append("text").attr("id", "linerDeets4").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*3).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets5 = liners.append("text").attr("id", "linerDeets5").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*4).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets6 = liners.append("text").attr("id", "linerDeets6").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*5).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets7 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*6).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets8 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*7).attr("font-size", "8pt").style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets0 = liners.append("path").attr("id", "linerDeets0").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-41},${linerDeetsStartY-15}) scale(3,3)`)
+    linerDeets00 = liners.append("path").attr("id", "linerDeets0").attr("d", starPath).attr("fill", "white").style("opacity", 0).attr("transform", `translate(${linerDeetsStartX-37},${linerDeetsStartY-35}) scale(.25,.25) rotate(-5)`)
+    linerDeets1 = liners.append("text").attr("id", "linerDeets1").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets2 = liners.append("text").attr("id", "linerDeets2").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets3 = liners.append("text").attr("id", "linerDeets3").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*2).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets4 = liners.append("text").attr("id", "linerDeets4").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*3).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets5 = liners.append("text").attr("id", "linerDeets5").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*4).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets6 = liners.append("text").attr("id", "linerDeets6").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*5).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets7 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*6).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets8 = liners.append("text").attr("id", "linerDeets7").text("").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*7).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
 
     d3.selectAll("#linerPath")
         .on("mouseover", (e, d) => {
@@ -101,11 +306,10 @@ function setDefaultSC() {
             linerDeets2.text("Beam: "+d.beam+" ft")
             linerDeets3.text("Depth: "+d.depth+" ft")
             linerDeets4.text("Tonnage: "+d3.format(",")(d.tonnage))
-            linerDeets5.text("Horsepower: "+d3.format(",")(d.horsePower))
+            linerDeets5.text("Hp: "+d3.format(",")(d.horsePower))
             linerDeets6.text("Av speed: "+d.avSpeed+" Kn.")
             linerDeets7.text("Built: "+d.yearBuilt)
             linerDeets8.text(d.screw)
-
         })
         .on("mouseout", (e, d)=> {
             linerText1.text(linerText1Default).attr("font-size", "6pt").attr("y", 10).style("font-weight", "normal")
@@ -196,10 +400,8 @@ clickForMoreRect = clickForMore.append("rect")
 
 clickForMore
     .append("path")
-    // .attr("d", `M ${primaryContainerWidth-20} ${primaryContainerHeight-20} L ${primaryContainerWidth-10} ${primaryContainerHeight-15} L ${primaryContainerWidth-20} ${primaryContainerHeight-10} Z`)
     .attr("d", `M ${primaryContainerWidth-87.5-15} ${primaryContainerHeight-35-20} L ${primaryContainerWidth-87.5+15} ${primaryContainerHeight-35-5} L ${primaryContainerWidth-87.5-15} ${primaryContainerHeight-35+10} Z`)
     .style("opacity", 0.4)
-    
 
 clickForMore.append("text")
             .text("Click here for more details ...")
@@ -372,7 +574,7 @@ function redraw(newRoot) {
 d3.csv('./data/titanic.csv').then(
     res => {
     
-    passengerData = res
+    passengerData = shuffle(res)
 
     let passengerGroup = primaryContainer.append("g").attr("id", "passengerGroup")
 
@@ -727,39 +929,79 @@ d3.csv('./data/titanic.csv').then(
         }
         })
 
-
+    setPD(passengerData.find(item=>(item.openmlid==11)))
+    
     passengers.selectAll("rect")
             .on("mouseover", (e,d)=>{
+                defaultPD.style("opacity", 1)
                 setPD(d)
             })
             .on("mouseout", (e,d)=>{
-                setPD(passengerData.find(item=>(item.openmlid==11)))
+                // defaultPD.style("opacity", 0.5)
             })
 
     setPD(passengerData.find(item=>(item.openmlid==11)))
 
     function setPD(passenger) {
+
+        // let passengerDetailContainerWidth = 215
+        // let passengerDetailContainerHeight = 200
+
         defaultPD.selectAll("g").remove()
         
-        let passengerDetailTitle = defaultPD.append("g").attr("id", "passengerDetailTitle").attr("transform", "translate(0,0) scale(0.8,1)")
-        passengerDetailTitle.append("text").text("PASSENGER PROFILE").attr("x", 5).attr("y", 15).style("font-weight", "bold").style("font-size", "12px").style("font-family", "sans-serif")
+        let passengerDetailTitle = defaultPD.append("g").attr("id", "passengerDetailTitle").attr("transform", "translate(0,0) scale(1,1)")
+        mainPassengerTitle = passengerDetailTitle.append("g").attr("id", "mainPassengerTitle")
+        mainPassengerTitle
+            .append("text").attr("id", "mainPassengerName").text(passenger.derivedPassengerTitleName).attr("x", 5).attr("y", 20).attr("font-size", "14pt").attr("font-weight", "bold") //.attr("font-style", "italic")
+        passengerDetailTitle.append("text").attr("id", "mainPassengerSubTitle").text("PASSENGER PROFILE").attr("x", 5).attr("y", 35).attr("font-size", "11pt").attr("font-weight", "bold") //.attr("font-style", "italic")
+        const mainPassengerTitleRequiredWidth = 0.9*(passengerDetailContainerWidth/((d3.select("#mainPassengerName")._groups[0][0].getComputedTextLength())))
 
-        let passengerTitleName = passenger.derivedTitle + " " + passenger.derivedSurname
-        let passengerFirstColumn = defaultPD.append("g").attr("id", "passengerFirstColumn").attr("transform", `translate(0,20) scale(1,1)`)
-        passengerFirstColumn.append("text").text(passenger.openmlname).attr("x", 5).attr("y", 35).style("font-weight", "bold").style("font-size", "18px")
-        passengerFirstColumn.append("text").text(passenger.kSex + ", age " + ((passenger.kAge=="?")?"unknown":d3.format(".0f")(passenger.kAge))).attr("x", 5).attr("y", 50).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Boarded at " + passenger.kBoarded).attr("x", 5).attr("y", 65).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Destination was " + passenger.kDestination).attr("x", 5).attr("y", 80).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Hometown was " + passenger.kHometown).attr("x", 5).attr("y", 95).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Cabin class was " + passenger.kPclass).attr("x", 5).attr("y", 110).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Cabin was " + passenger.kCabin).attr("x", 5).attr("y", 125).style("font-size", "12px")
-        passengerFirstColumn.append("text").text("Fare was " + passenger.kFare).attr("x", 5).attr("y", 140).style("font-size", "12px")
-        passengerFirstColumn.append("text").text((passenger.openmlsurvived==1)?"Survived":"Perished").attr("x", 5).attr("y", 155).style("font-size", "18px").style("font-weight", "bold")
+        mainPassengerTitle.attr("transform", `scale(${mainPassengerTitleRequiredWidth},1)`)
 
-        // let imageFile = (passenger.openmlid==11) ? "John_Jacob_Astor_1909.jpg" : "blank.jpg"
-        // pdImage = defaultPD.append("g").attr("id", "pdImage")
-        // pdImage.append("image").attr("x", 100).attr("y", 10).attr("width", 120).attr("height", 100).attr("xlink:href", `./data/images/${imageFile}`)
+        const passengerAgeScale = d3.scaleLinear().domain([0,85]).range([0,120])
 
+        let passengerFirstColumn = defaultPD.append("g").attr("id", "passengerFirstColumn").attr("transform", `translate(5,45) scale(1,1)`)
+        passengerFirstColumn.append("rect").attr("x", 0).attr("y", 5).attr("width", 120).attr("height", 1)
+        passengerFirstColumn.append("rect").attr("x", (passenger.kAge=="?") ? 0 : passengerAgeScale(passenger.kAge)-1).attr("y", 0).attr("width", (passenger.kAge=="?") ? 0 : 3).attr("height", 11).attr("fill", "red")
+        passengerFirstColumn.append("text").text(((passenger.kAge=="?")?"Age unknown":d3.format(".0f")(passenger.kAge)+" yrs")).attr("x", (passenger.kAge=="?") ? 0 : passengerAgeScale(passenger.kAge)-1).attr("y", 18).style("font-size", "8px").attr("text-anchor", ((passenger.kAge=="?")||passenger.kAge<10) ? "left" :"middle")
+        
+        passengerBoardedGroup = passengerFirstColumn.append("g").attr("id", "passengerBoardedGroup")
+        passengerBoardedGroup.append("text").text("Boarded").attr("x", 0).attr("y", 32).style("font-size", "8px")
+        passengerBoardedGroup.append("rect").attr("x", 0).attr("y", 35).attr("width", 59).attr("height", 10).attr("id", "belfastBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Belfast"?1:0.5)
+        passengerBoardedGroup.append("text").attr("x", 30).attr("y", 43).attr("text-anchor", "middle").text("Belfast").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kBoarded=="Belfast"?1:0.5)
+        passengerBoardedGroup.append("rect").attr("x", 61).attr("y", 35).attr("width", 59).attr("height", 10).attr("id", "southamptonBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Southampton"?1:0.5)
+        passengerBoardedGroup.append("text").attr("x", 91).attr("y", 43).attr("text-anchor", "middle").text("Southampton").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kBoarded=="Southampton"?1:0.5)
+        passengerBoardedGroup.append("rect").attr("x", 0).attr("y", 46).attr("width", 59).attr("height", 10).attr("id", "cherbourgBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Cherbourg"?1:0.5)
+        passengerBoardedGroup.append("text").attr("x", 30).attr("y", 54).attr("text-anchor", "middle").text("Cherbourg").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kBoarded=="Cherbourg"?1:0.5)
+        passengerBoardedGroup.append("rect").attr("x", 61).attr("y", 46).attr("width", 59).attr("height", 10).attr("id", "queenstownBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Queenstown"?1:0.5)
+        passengerBoardedGroup.append("text").attr("x", 91).attr("y", 54).attr("text-anchor", "middle").text("Queenstown").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kBoarded=="Queenstown"?1:0.5)
+        
+        passengerClassGroup = passengerFirstColumn.append("g").attr("id", "passengerClassGroup")
+        passengerClassGroup.append("text").text("Class").attr("x", 0).attr("y", 67).style("font-size", "8px")
+        passengerClassGroup.append("rect").attr("x", 0).attr("y", 70).attr("width", 39).attr("height", 10).attr("id", "firstBox").attr("fill", "brown").style("opacity", passenger.kPclass=="1"?1:0.5)
+        passengerClassGroup.append("text").attr("x", 20).attr("y", 78).attr("text-anchor", "middle").text("First").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kPclass=="1"?1:0.5)
+        passengerClassGroup.append("rect").attr("x", 40).attr("y", 70).attr("width", 39).attr("height", 10).attr("id", "secondBox").attr("fill", "brown").style("opacity", passenger.kPclass=="2"?1:0.5)
+        passengerClassGroup.append("text").attr("x", 60).attr("y", 78).attr("text-anchor", "middle").text("Second").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kPclass=="2"?1:0.5)
+        passengerClassGroup.append("rect").attr("x", 80).attr("y", 70).attr("width", 39).attr("height", 10).attr("id", "thirdBox").attr("fill", "brown").style("opacity", passenger.kPclass=="3"?1:0.5)
+        passengerClassGroup.append("text").attr("x", 100).attr("y", 78).attr("text-anchor", "middle").text("Third").style("font-size", "8px").attr("fill", "white").style("opacity", passenger.kPclass=="3"?1:0.5)
+        
+        passengerDestGroup = passengerFirstColumn.append("g").attr("id", "passengerDestGroup")
+        passengerDestGroup.append("text").text("Destination").attr("x", 0).attr("y", 91).style("font-size", "8px")
+        passengerDestGroup.append("rect").attr("x", 0).attr("y", 94).attr("width", 120).attr("height", 10).attr("fill", "grey")
+        passengerDestination = passengerDestGroup.append("text").attr("id", "passengerDestination").attr("x", 2).attr("y", 102).attr("text-anchor", "left").text(passenger.kDestination).style("font-size", "8px").attr("fill", "white")
+        const passengerDestRequiredWidth = 0.90*((Math.min(1,120/d3.select("#passengerDestination")._groups[0][0].getComputedTextLength())))
+        passengerDestination.attr("transform", `scale(${passengerDestRequiredWidth},1)`)//.attr("x", 60*passengerDestRequiredWidth)
+
+        passengerHomeGroup = passengerFirstColumn.append("g").attr("id", "passengerHomeGroup")
+        passengerHomeGroup.append("text").text("Hometown").attr("x", 0).attr("y", 115).style("font-size", "8px")
+        passengerHomeGroup.append("rect").attr("x", 0).attr("y", 118).attr("width", 120).attr("height", 10).attr("fill", "grey")
+        passengerHome = passengerHomeGroup.append("text").attr("id", "passengerHometown").attr("x", 2).attr("y", 126).attr("text-anchor", "left").text(passenger.kHometown).style("font-size", "8px").attr("fill", "white")
+        const passengerHomeRequiredWidth = 0.90*((Math.min(1,120/d3.select("#passengerHometown")._groups[0][0].getComputedTextLength())))
+        passengerHome.attr("transform", `scale(${passengerHomeRequiredWidth},1)`)//.attr("x", 60*passengerDestRequiredWidth)
+
+        let passengerSecondColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(130,45) scale(1,1)")
+        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"./data/images/_blank.jpg").style("opacity", 0.6)
+        passengerSecondColumn.append("text").text((passenger.openmlsurvived==1)?"Survived":"Perished").attr("text-anchor", "middle").attr("x", 40).attr("y", 140).style("font-size", "18px").style("font-weight", "bold")
 
         // IMAGE FILE
         // passenger.derivedName  passenger.kAge
