@@ -29,38 +29,42 @@
 <body>
     <div id="viz-div" style="text-align:center;"></div>
     <script>
-        let width = 800
-        let height = 1400
-        let primaryContainerWidth = 720
-        let primaryContainerHeight = 480
-        let secondaryContainerWidth = 720
-        let secondaryContainerHeight = 180
-        let passengerDetailContainerWidth = 215
-        let passengerDetailContainerHeight = 200
+        const width = 800
+        const height = 1400
+        const primaryContainerWidth = 720
+        const primaryContainerHeight = 480
+        const secondaryContainerWidth = 720
+        const secondaryContainerHeight = 180
+        const passengerDetailContainerWidth = 215
+        const passengerDetailContainerHeight = 200
+        const scaleFactor = Math.min(window.innerWidth, 1280)/width
+        const yTranslateMe = (scaleFactor*height - height)/2
 
-        var svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 0).attr("transform", "translate(0,-700) scale(0.1,0.1)")
-        svgFrontPage.transition().duration(2500).style("opacity", 1).attr("transform", "translate(0,200) scale(1.3,1.3)")
+        const svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 0).attr("transform", `translate(0,${yTranslateMe}) scale(${scaleFactor},${scaleFactor})`)
+        svgFrontPage.transition().duration(2500).style("opacity", 1)
 
-        var masthead = svgFrontPage.append("g").attr("id", "masthead")
+        const masthead = svgFrontPage.append("g").attr("id", "masthead")
         
-        var mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",50)")
-        mainHero.append("text").attr("x", 0).attr("y", 00).text("The New York Times.").attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
+        const newspaperName = "The New York Times."
+        // const newspaperName = "The Times of New York."
+        const mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",52)")
+        mainHero.append("text").attr("x", 0).attr("y", 0).text(newspaperName).attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
         
-        var fitToPrint = masthead.append("g").attr("id", "fitToPrint").attr("transform", "translate(50,15)")
+        const fitToPrint = masthead.append("g").attr("id", "fitToPrint").attr("transform", "translate(50,15)")
         fitToPrint.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
-        fitToPrint.append("text").attr("x", 50).attr("y", 20).text('"All the News That'+"'s").attr("text-anchor", "middle").attr("font-size", "8pt")
-        fitToPrint.append("text").attr("x", 50).attr("y", 35).text('Fit to Print"').attr("text-anchor", "middle").attr("font-size", "8pt")
+        fitToPrint.append("text").attr("x", 50).attr("y", 20).text('"All the News That'+"'s").attr("text-anchor", "middle").attr("font-size", "7pt")
+        fitToPrint.append("text").attr("x", 50).attr("y", 35).text('Fit to Print"').attr("text-anchor", "middle").attr("font-size", "7pt")
 
-        var theWeather = masthead.append("g").attr("id", "theWeather").attr("transform", "translate(650,15)")
+        const theWeather = masthead.append("g").attr("id", "theWeather").attr("transform", "translate(650,15)")
         theWeather.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
         theWeather.append("text").attr("x", 50).attr("y", 13).text("THE WEATHER").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold").attr("font-family", "sans-serif")
         theWeather.append("line").attr("x1", 35).attr("x2", 65).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
-        theWeather.append("text").attr("x", 50).attr("y", 25).text("Unsettled Tuesday; Wednesday,").attr("text-anchor", "middle").attr("font-size", "4.5pt")
-        theWeather.append("text").attr("x", 50).attr("y", 30).text("fair, cooler; moderate southerly").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 23).text("Unsettled Tuesday; Wednesday,").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 29).text("fair, cooler; moderate southerly").attr("text-anchor", "middle").attr("font-size", "4.5pt")
         theWeather.append("text").attr("x", 50).attr("y", 35).text("winds, becoming variable.").attr("text-anchor", "middle").attr("font-size", "4.5pt")
         theWeather.append("text").attr("x", 50).attr("y", 40).text("For full weather report see Page 21.").attr("text-anchor", "middle").attr("font-size", "3pt")
 
-        var dateLine = masthead.append("g").attr("id", "dateLine").attr("transform", "translate(40,70)")
+        const dateLine = masthead.append("g").attr("id", "dateLine").attr("transform", "translate(40,70)")
         dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 0).attr("y2", 0).attr("stroke", "black")
         dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 2).attr("y2", 2).attr("stroke", "black")
         dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 14).attr("y2", 14).attr("stroke", "black")
@@ -74,52 +78,52 @@
         dateLine.append("text").attr("x", 700).attr("y", 7).text("Elsewhere").attr("text-anchor", "middle").attr("font-size", "3pt")
         dateLine.append("text").attr("x", 700).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
 
-        var mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", "translate(" + width/2 + ",115)")
-        mainHeadline.append("text").attr("x", 0).attr("y", 0).text("TITANIC SINKS FOUR HOURS AFTER HITTING ICEBERG;").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
-        mainHeadline.append("text").attr("x", 0).attr("y", 25).text("710 RESCUED BY CARPATHIA, PROBABLY 1514 PERISH;").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
-        mainHeadline.append("text").attr("x", 0).attr("y", 50).text("ISMAY SAFE, MRS. ASTOR MAYBE, NOTED NAMES MISSING").attr("text-anchor", "middle").attr("font-size", "19pt").style("font-weight", "bold").style("font-style", "italic")
+        const mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", "translate(" + width/2 + ",115)")
+        mainHeadline.append("text").attr("x", 0).attr("y", 0).text("TITANIC SINKS 160 MINUTES AFTER HITTING ICEBERG;").attr("text-anchor", "middle").attr("font-size", "18pt").style("font-weight", "bold").style("font-style", "italic")
+        mainHeadline.append("text").attr("x", 0).attr("y", 25).text("710 RESCUED BY CARPATHIA, PROBABLY 1514 PERISH;").attr("text-anchor", "middle").attr("font-size", "18pt").style("font-weight", "bold").style("font-style", "italic")
+        mainHeadline.append("text").attr("x", 0).attr("y", 50).text("ISMAY SAFE, MRS. ASTOR MAYBE, NOTED NAMES MISSING").attr("text-anchor", "middle").attr("font-size", "18pt").style("font-weight", "bold").style("font-style", "italic")
 
-        var primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,180)")
+        const primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,180)")
         primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-        var secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,880)")
+        const secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,880)")
         secondaryContainer.append("rect").attr("class", "secondaryContainerRect").attr("x", 0).attr("y", 0).attr("width", secondaryContainerWidth).attr("height", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-        var passengerDetailContainer = svgFrontPage.append("g").attr("id", "passengerDetailContainer").attr("transform", "translate(545,670)")
+        const passengerDetailContainer = svgFrontPage.append("g").attr("id", "passengerDetailContainer").attr("transform", "translate(545,670)")
         passengerDetailContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-        var lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", "translate(150,670) scale(1.5,1.5)")
-        lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg")
+        const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", "translate(150,670) scale(1.5,1.5)")
+        lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
         lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
-        lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("The Lost Titanic Being Towed Out of Belfast Harbor.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+        lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("RMS Titanic departing Southampton on April 10, 1912.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
         lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
 
-        var captSmith = svgFrontPage.append("g").attr("id", "captSmith").attr("transform", "translate(253,1080) scale(1.2,1.2)")
-        captSmith.append("image").attr("x", 0).attr("y", 0).attr("width", 120).attr("height", 160).attr("xlink:href", "./src/capt-smith.jpg")
+        const captSmith = svgFrontPage.append("g").attr("id", "captSmith").attr("transform", "translate(253,1080) scale(1.2,1.2)")
+        captSmith.append("image").attr("x", 0).attr("y", 0).attr("width", 120).attr("height", 160).attr("xlink:href", "./src/capt-smith.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
         captSmith.append("rect").attr("x", -1).attr("y", -1).attr("width", 122).attr("height", 162).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
         captSmith.append("rect").attr("x", -2).attr("y", -2).attr("width", 124).attr("height", 164).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
         captSmith.append("rect").attr("x", -3).attr("y", -3).attr("width", 126).attr("height", 166).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
         captSmith.append("text").attr("x", 60).attr("y", 170).text("CAPT. E. J. SMITH,").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
         captSmith.append("text").attr("x", 60).attr("y", 175).text("Commander of the Titanic.").attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "bold")
 
-        var boilerPlate = svgFrontPage.append("g").attr("id", "boilerPlate")
+        const boilerPlate = svgFrontPage.append("g").attr("id", "boilerPlate")
 
-        var firstLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(37,668) scale(0.68,0.6)")
+        const firstLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(37,668) scale(0.68,0.6)")
         firstLeftHeadlines.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/leftHeadlines.png")
 
-        var secondLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(437,668) scale(0.6,0.53)")
+        const secondLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(437,668) scale(0.6,0.53)")
         secondLeftHeadlines.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/rightHeadlines.png")
 
-        var lowerLeftCol1 = boilerPlate.append("g").attr("transform", "translate(40,1070) scale(0.35,0.38)")
+        const lowerLeftCol1 = boilerPlate.append("g").attr("transform", "translate(40,1070) scale(0.35,0.38)")
         lowerLeftCol1.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol1.png").style("opacity", 0.8)
 
-        var lowerLeftCol2 = boilerPlate.append("g").attr("transform", "translate(140,1065) scale(0.35,0.4)")
+        const lowerLeftCol2 = boilerPlate.append("g").attr("transform", "translate(140,1065) scale(0.35,0.4)")
         lowerLeftCol2.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol2.png").style("opacity", 0.8)
 
-        var lowerLeftCol3 = boilerPlate.append("g").attr("transform", "translate(235,1290) scale(0.33,0.37)")
+        const lowerLeftCol3 = boilerPlate.append("g").attr("transform", "translate(235,1290) scale(0.33,0.37)")
         lowerLeftCol3.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol3.png").style("opacity", 0.8)
 
-        var partialList = boilerPlate.append("g").attr("transform", "translate(405,1070) scale(0.43,0.4)")
+        const partialList = boilerPlate.append("g").attr("transform", "translate(405,1070) scale(0.43,0.4)")
         partialList.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/partialList.png").style("opacity", 0.8)
 
     </script>
