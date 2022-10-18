@@ -18,27 +18,27 @@ function shuffle(array) {
 
 var tabularData = [
                     {cabinClass: 'Crew', ageSex: 'Women', survived: 'Survived', number: 20},
-                    {cabinClass: 'Crew', ageSex: 'Women', survived: 'Perished', number: 3},
+                    {cabinClass: 'Crew', ageSex: 'Women', survived: 'Lost', number: 3},
                     {cabinClass: 'Crew', ageSex: 'Men', survived: 'Survived', number: 192},
-                    {cabinClass: 'Crew', ageSex: 'Men', survived: 'Perished', number: 693},
+                    {cabinClass: 'Crew', ageSex: 'Men', survived: 'Lost', number: 693},
                     {cabinClass: 'First Class', ageSex: 'Children', survived: 'Survived', number: 5},
-                    {cabinClass: 'First Class', ageSex: 'Children', survived: 'Perished', number: 1},
+                    {cabinClass: 'First Class', ageSex: 'Children', survived: 'Lost', number: 1},
                     {cabinClass: 'First Class', ageSex: 'Women', survived: 'Survived', number: 140},
-                    {cabinClass: 'First Class', ageSex: 'Women', survived: 'Perished', number: 4},
+                    {cabinClass: 'First Class', ageSex: 'Women', survived: 'Lost', number: 4},
                     {cabinClass: 'First Class', ageSex: 'Men', survived: 'Survived', number: 57},
-                    {cabinClass: 'First Class', ageSex: 'Men', survived: 'Perished', number: 118},
+                    {cabinClass: 'First Class', ageSex: 'Men', survived: 'Lost', number: 118},
                     {cabinClass: 'Second Class', ageSex: 'Children', survived: 'Survived', number: 24},
-                    {cabinClass: 'Second Class', ageSex: 'Children', survived: 'Perished', number: 0},
+                    {cabinClass: 'Second Class', ageSex: 'Children', survived: 'Lost', number: 0},
                     {cabinClass: 'Second Class', ageSex: 'Women', survived: 'Survived', number: 80},
-                    {cabinClass: 'Second Class', ageSex: 'Women', survived: 'Perished', number: 13},
+                    {cabinClass: 'Second Class', ageSex: 'Women', survived: 'Lost', number: 13},
                     {cabinClass: 'Second Class', ageSex: 'Men', survived: 'Survived', number: 14},
-                    {cabinClass: 'Second Class', ageSex: 'Men', survived: 'Perished', number: 154},
+                    {cabinClass: 'Second Class', ageSex: 'Men', survived: 'Lost', number: 154},
                     {cabinClass: 'Third Class', ageSex: 'Children', survived: 'Survived', number: 27},
-                    {cabinClass: 'Third Class', ageSex: 'Children', survived: 'Perished', number: 52},
+                    {cabinClass: 'Third Class', ageSex: 'Children', survived: 'Lost', number: 52},
                     {cabinClass: 'Third Class', ageSex: 'Women', survived: 'Survived', number: 76},
-                    {cabinClass: 'Third Class', ageSex: 'Women', survived: 'Perished', number: 89},
+                    {cabinClass: 'Third Class', ageSex: 'Women', survived: 'Lost', number: 89},
                     {cabinClass: 'Third Class', ageSex: 'Men', survived: 'Survived', number: 75},
-                    {cabinClass: 'Third Class', ageSex: 'Men', survived: 'Perished', number: 387}
+                    {cabinClass: 'Third Class', ageSex: 'Men', survived: 'Lost', number: 387}
                     ]
 
 let group = d3.group(tabularData, d=>d.cabinClass, d=> d.ageSex)
@@ -66,10 +66,10 @@ let linerScale = d3.scaleLinear().domain([0,850]).range([0,1.4])
 let titanicTimeline = [
     {time: 0.979166666666667, realtime: '11:30pm', time2: 23.5, name: 'event1', narrative: 'Lookouts notice a haze', key: 'non-key'},
     {time: 0.986111111111111, realtime: '11:40pm', time2: 23.6666666666667, name: 'event2', narrative: 'Titanic hits iceberg', key: 'key'},
-    {time: 0.00347222222222222, realtime: '12:05am', time2: 0.0833333333333333, name: 'event3', narrative: 'Capt. issues distress call CQD', key: 'key'},
+    {time: 0.00347222222222222, realtime: '12:05am', time2: 0.0833333333333333, name: 'event3', narrative: 'Distress call CQD sent', key: 'key'},
     {time: 0.0104166666666667, realtime: '12:15am', time2: 0.25, name: 'event4', narrative: 'Stewards order lifebelts', key: 'non-key'},
     {time: 0.0138888888888889, realtime: '12:20am', time2: 0.333333333333333, name: 'event5', narrative: 'Lifeboat loading begins', key: 'non-key'},
-    {time: 0.0173611111111111, realtime: '12:25am', time2: 0.416666666666667, name: 'event6', narrative: 'Capt. Admits ship will sink', key: 'non-key'},
+    {time: 0.0173611111111111, realtime: '12:25am', time2: 0.416666666666667, name: 'event6', narrative: 'Capt. admits ship will sink', key: 'non-key'},
     {time: 0.03125, realtime: '12:45am', time2: 0.75, name: 'event7', narrative: 'First lifeboat rowed away', key: 'key'},
     {time: 0.0381944444444444, realtime: '12:55am', time2: 0.916666666666667, name: 'event8', narrative: 'Lifeboat No 6 lowered', key: 'non-key'},
     {time: 0.0555555555555556, realtime: '1:20am', time2: 1.33333333333333, name: 'event9', narrative: 'Boiler room No 4 floods', key: 'non-key'},
@@ -173,29 +173,60 @@ function setDefaultSC() {
 
     let clockEventsKeyLabels = clockTimeLine.append("g").attr("id", "clockEventsKeyLabels")
     let clockEventsKeyLabelsFontSize = "6pt"
-    clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits iceberg").attr("x", -38).attr("y", -140).attr("font-size", clockEventsKeyLabelsFontSize)
+    clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits iceberg").attr("x", -38).attr("y", -137).attr("font-size", clockEventsKeyLabelsFontSize)
     clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress call sent").attr("x", 12).attr("y", -128).attr("font-size", clockEventsKeyLabelsFontSize)
     clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 55).attr("y", -117).attr("font-size", clockEventsKeyLabelsFontSize)
     clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio transmission").attr("x", 84).attr("y", -85).attr("font-size", clockEventsKeyLabelsFontSize)
     clockEventsKeyLabels.append("text").attr("id", "event20label").text("Fully submerged").attr("x", 115).attr("y", -30).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", 70).attr("y", -130).attr("font-size", "10pt").attr("font-weight", "bold").style("opacity", 0)
-    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", 70).attr("y", -115).attr("font-size", "10pt").style("opacity", 0)
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", 90).attr("y", -115).attr("font-size", "10pt").attr("font-weight", "bold").style("opacity", 0)
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", 55).attr("y", -100).attr("font-size", "10pt").style("opacity", 0)
 
 
     // MAP INFOGRAPHIC
-    let titanicChart = defaultSC.append("g").attr("id", "titanicChart").attr("transform", "translate(260,0)")
-    titanicChart.append("text").text("TITANIC'S FATEFUL PATH").attr("x", 115).attr("y", 170).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
-    titanicChart.append("clipPath").attr("id", "chartClip").append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z")
-    zoomRect = titanicChart.append("rect").attr("x", 0).attr("y", 0).attr("width", 230).attr("height", 180).attr("fill", "red").style("opacity", 0.02).attr("clip-path", "url(#chartClip)")
+
+
+    let mapInfographicHeadline = defaultSC
+        .append("text").text("TITANIC'S FATEFUL PATH").attr("x", 260+115).attr("y", 170).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+    
+    let outerTitanicChart = defaultSC.append("g").attr("id", "outerTitanicChart").attr("transform", "translate(260,0)").attr("clip-path", "url(#chartClipInner)")
+    outerTitanicChart.append("clipPath").attr("id", "chartClipInner").append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z")
+    outerTitanicChart.append("clipPath").attr("id", "chartClip").append("path").attr("d", "M -100 -100 L 330 -100 L 280 150 L -50 150 Z")
+
+    let titanicChart = outerTitanicChart.append("g").attr("id", "titanicChart").attr("transform", "translate(0,0) scale(1,1)").attr("clip-path", "url(#chartClip)")
+    
+    let zoom = d3.zoom().interpolate(d3.interpolate).on("zoom", handleZoom)
+    const transformIn = d3.zoomIdentity.scale(2.7).translate(-10, -75) 
+    const transformOut = d3.zoomIdentity.translate(0, 0).scale(1)
+
+    function handleZoom(e) {titanicChart.attr('transform', e.transform)}
+
+    function zoomIn() {
+        titanicChart.transition().duration(1000).call(zoom.transform, transformIn)
+        d3.select("#otherVessels").transition().duration(1000).style("opacity", 1)
+        mapInfographicHeadline.transition().duration(500).style("opacity", 0).transition().duration(500).style("opacity", 1).text("NEARBY VESSELS")
+        }
+    function zoomOut() {
+        titanicChart.transition().duration(1000).call(zoom.transform, transformOut)
+        d3.select("#otherVessels").transition().duration(1000).style("opacity", 0.5)
+        mapInfographicHeadline.transition().duration(500).style("opacity", 0).transition().duration(500).style("opacity", 1).text("TITANIC'S FATEFUL PATH")
+    }
 
     let topojsonData = "https://unpkg.com/world-atlas@2.0.2/countries-50m.json"
+    let topojsonDataResult
+
     d3.json(topojsonData).then(
         res => {
+            topojsonDataResult = res
+            renderWorld(topojsonDataResult)
+        })
+    
+    function renderWorld(topojsonInput) {
+            titanicChart.selectAll("g").remove()
+
             const countriesToInclude = ["Sweden", "France", "Germany", "United States of America", "Greenland", "Canada", "Ireland", "Spain", "United Kingdom",
-                                        "Belgium", "Netherlands", "Luxembourg", "Austria", "Czechia", "Denmark", "Finland", "Norway", "Italy", 
-                                            ]
-            const { countries } = res.objects
-            const geojsonData = topojson.feature(res, countries).features.filter(item=>countriesToInclude.includes(item.properties.name))
+                                        "Belgium", "Netherlands", "Luxembourg", "Austria", "Czechia", "Denmark", "Norway"]
+            const { countries } = topojsonInput.objects
+            const geojsonData = topojson.feature(topojsonInput, countries).features.filter(item=>countriesToInclude.includes(item.properties.name))
 
             // const projection = d3.geoOrthographic()
             const projection = d3.geoMercator()
@@ -225,15 +256,30 @@ function setDefaultSC() {
                 .style("opacity", 0.7)
                 .attr("d", (d)=>{ return path(d)})
                 .style("stroke", "none")
-            
+    
+            const keyGeoPaths = titanicChart.append("g").attr("id", "keyGeoPaths")
+
+            const keyGeoPathsData = [path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.4049,50.9105], [-1.6222,49.6339]]}}),
+                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.6222,49.6339], [-6.7893,49.6339]]}}),
+                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-6.7893,49.6339], [-8.2943,51.8503]]}}),
+                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-8.2943,51.8503], [-49.9467,41.7250]]}})]
+
+            keyGeoPaths
+                .selectAll("path").data(keyGeoPathsData).enter()
+                .append("path")
+                // .attr("clip-path", "url(#chartClip)")
+                .attr("d", d=>d)
+                .attr("stroke", "green")
+                .attr("fill", "none")
+                .style("opacity", 1)
+
+        
             const keyLocations = titanicChart.append("g").attr("id", "keyLocations")
 
             const keyLocationsData = [{name: "Southampton", lat: 50.9105, long: -1.4049},
                                       {name: "Cherbourg", lat: 49.6339, long: -1.6222},
                                       {name: "Queenstown", lat: 51.8503, long: -8.2943},
-                                      {name: "Disaster", lat: 41.7666, long: -50.2333},
                                       {name: "New York", lat: 40.7128, long: -74.0060} ]
-
 
             keyLocations
                 .selectAll("circle").data(keyLocationsData).enter()
@@ -244,23 +290,51 @@ function setDefaultSC() {
                 .attr("r", 2)
                 .attr("fill", "blue")
                 .style("opacity", 1)
+
+            const otherVessels = titanicChart.append("g").attr("id", "otherVessels").style("opacity", 0.5)
+
+            const otherVesselsData = [  {vessel: "Titanic", lat: 41.7250, long: -49.9467},
+                                        {vessel: 'Virginian', lat: 42.5, long: -53.75},
+                                        // {vessel: 'Baltic', lat: 42, long: -45},
+                                        {vessel: 'Carpathia', lat: 41.2, long: -49.1},
+                                        // {vessel: 'Antilian', lat: 40.9, long: -49.5},
+                                        // {vessel: 'Parisian', lat: 41.4, long: -51.1},
+                                        {vessel: 'Mt Temple', lat: 41.4, long: -51.3},
+                                        {vessel: 'Birma', lat: 40.8, long: -52.2},
+                                        {vessel: 'Frankfurt', lat: 39.8, long: -52.2},
+                                        {vessel: 'Ypiranga', lat: 38.2, long: -49.5},
+                                        {vessel: 'Cincinnati', lat: 37.6, long: -54.8},
+                                        {vessel: 'Asian', lat: 41.2, long: -56.2},
+                                        {vessel: 'Olympic', lat: 40.5, long: -61.2},
+                                        {vessel: 'Californian', lat: 42.0833, long: -50.1167} ]
+
+            const otherVesselsGroups = otherVessels
+                .selectAll("g").data(otherVesselsData).enter()
+                .append("g")
+                .attr("transform", (d)=>(`translate(${projection([d.long,d.lat])[0]},${projection([d.long,d.lat])[1]})`))
             
-            const keyGeoPaths = titanicChart.append("g").attr("id", "keyGeoPaths")
+            otherVesselsGroups
+                .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", (d)=>((d.vessel=="Titanic")?1:0.5))
+                .attr("fill", "black")
 
-            const keyGeoPathsData = [path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.4049,50.9105], [-1.6222,49.6339]]}}),
-                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.6222,49.6339], [-8.2943,51.8503]]}}),
-                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-8.2943,51.8503], [-50.2333,41.7666,]]}})]
+            otherVesselsGroups.append("text")
+                .attr("x", (d)=>(d.long>-49.95?1:-1))
+                .attr("y", 0.5).text(d=>d.vessel)
+                .attr("dx", d=>d.vessel=="Titanic"?2:0)
+                .attr("dy", d=>d.vessel=="Titanic"?-1:0)
+                .attr("text-anchor", (d)=>(d.long>-49.95?"start":"end"))
+                .attr("font-size", "2pt")
+                .style("font-weight", d=>d.vessel=="Titanic"?"bold":"normal")
+                .attr("transform", "rotate(15)")
 
-            keyGeoPaths
-                .selectAll("path").data(keyGeoPathsData).enter()
-                .append("path")
-                // .attr("clip-path", "url(#chartClip)")
-                .attr("d", d=>d)
-                .attr("stroke", "green")
-                .style("opacity", 1)
+        }
 
-        })
-        
+    zoomRect = outerTitanicChart.append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z").attr("fill", "red").style("opacity", 0.2).attr("clip-path", "url(#chartClip)").style("z-index", 10000)
+        .on("mouseover", ()=>{zoomIn()})
+        .on("mouseleave", ()=>{zoomOut()})
 
     // LINER INFOGRAPHIC
 
@@ -335,7 +409,7 @@ const extractColumn = (arr, column) => arr.map(x=>x[column]);
 var sunburstRadius = 0.9*Math.min(primaryContainerWidth, primaryContainerHeight) / 2
 
 var radius = 6.5
-let cornerRadius = 0
+let cornerRadius = radius
 var originalRadius = radius
 
 const palette1 = ["#3b3122", "#8a7350", "#66553b"]
@@ -348,12 +422,12 @@ let gs1Legend = primaryContainer.append("g").attr("id", "gs1LegendGroup")
 
 let headlinesEtc = primaryContainer.append("g").attr("id", "headlinesEtc")
 
-let subHeadlines = ["OVER 1,300 PASSENGERS WERE KNOWN ON RMS TITANIC",
+let subHeadlines = ["OVER 1,300 PASSENGERS ON RMS TITANIC",
                     "MALE PASSENGERS OUTNUMBERED FEMALES BY 2:1",        // 466 female, 843 male
-                    "HALF OF KNOWN PASSENGERS WERE UNDER 30 YRS OLD",
-                    "ONE QUARTER OF PASSENGERS WERE IN FIRST CLASS",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
-                    "NEWS FROM RMS OLYMPIC: IDENTITY OF THE SURVIVORS",
-                    "RMS CARPATHIA: MORE NEWS ON SURVIVORS INCL. CREW"
+                    "HALF OF PASSENGERS WERE UNDER 30 YRS OLD",
+                    "ONE QTR OF PASSENGERS WERE IN 1st CLASS",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
+                    "OLYMPIC WIRES: IDENTITY OF THE SURVIVORS",
+                    "CARPATHIA WIRES: SURVIVORS & CREW"
                     ]
             
             
@@ -364,6 +438,7 @@ let subHeadline = d3.select("#headlinesEtc").append("text")
             .attr("y", primaryContainerHeight-42)
             .style("font-style", "italic")
             .style("font-size", "20px")
+            .style("font-weight", "bold")
 
 
 function subHeadlineTransition(textToTransition) {
@@ -516,7 +591,7 @@ function redraw(newRoot) {
                 clickToRedrawText.style("opacity", 1)
                 clickToRedrawValue.style("opacity", 1).text(
                     (sequenceArray[1].data[0]=="Men" || sequenceArray[1].data[0]=="Women" || sequenceArray[1].data[0]=="Children") ? "Sex" :
-                        (sequenceArray[1].data[0]=="Perished" || sequenceArray[1].data[0]=="Survived") ? "Survivorship" : "Cabin class"
+                        (sequenceArray[1].data[0]=="Lost" || sequenceArray[1].data[0]=="Survived") ? "Survivorship" : "Cabin class"
                     )
             } else if (sequenceArray.length == 3) {
                 clickToRedrawText.style("opacity", 1)
@@ -890,12 +965,12 @@ d3.csv('./data/titanic.csv').then(
 
             survivorKey = primaryContainer.append("g").attr("id", "survivorKey").attr("transform", "translate(-300, 100)")
 
-            survivorKey.append("text").text("Survived").attr("x", 0).attr("y", 0).style("font-size", "12px") //.style("font-style", "italic")
+            survivorKey.append("text").text("Survived").attr("x", 0).attr("y", -1).style("font-size", "14px") //.style("font-style", "italic")
                         .style("vertical-align", "middle")
-            survivorKey.append("text").text("Perished").attr("x", 0).attr("y", 20).style("font-size", "12px") //.style("font-style", "italic")
+            survivorKey.append("text").text("Lost").attr("x", 0).attr("y", 19).style("font-size", "14px") //.style("font-style", "italic")
                         .style("vertical-align", "middle")
-            survivorKey.append("rect").attr("x", -5-radius*2).attr("y", -radius*2).attr("width", radius*2).attr("height", radius*2).style("opacity", 1).style("fill", "#4b371c")
-            survivorKey.append("rect").attr("x", -5-radius*2).attr("y", 20-radius*2).attr("width", radius*2).attr("height", radius*2).style("opacity", 0.2).style("fill", "#4b371c")
+            survivorKey.append("rect").attr("x", -5-radius*3).attr("y", -radius*3).attr("width", radius*3).attr("height", radius*3).style("opacity", 1).style("fill", "#4b371c")
+            survivorKey.append("rect").attr("x", -5-radius*3).attr("y", 20-radius*3).attr("width", radius*3).attr("height", radius*3).style("opacity", 0.3).style("fill", "#4b371c")
 
             survivorKey.transition().duration(t).attr("transform", "translate(100,100)")
 
@@ -989,28 +1064,21 @@ d3.csv('./data/titanic.csv').then(
         passengerDestGroup.append("text").text("Destination").attr("x", 0).attr("y", 91).style("font-size", "8px")
         passengerDestGroup.append("rect").attr("x", 0).attr("y", 94).attr("width", 120).attr("height", 10).attr("fill", "grey")
         passengerDestination = passengerDestGroup.append("text").attr("id", "passengerDestination").attr("x", 2).attr("y", 102).attr("text-anchor", "left").text(passenger.kDestination).style("font-size", "8px").attr("fill", "white")
-        const passengerDestRequiredWidth = 0.90*((Math.min(1,120/d3.select("#passengerDestination")._groups[0][0].getComputedTextLength())))
+        const passengerDestRequiredWidth = 0.95*((Math.min(1,120/d3.select("#passengerDestination")._groups[0][0].getComputedTextLength())))
         passengerDestination.attr("transform", `scale(${passengerDestRequiredWidth},1)`)//.attr("x", 60*passengerDestRequiredWidth)
 
         passengerHomeGroup = passengerFirstColumn.append("g").attr("id", "passengerHomeGroup")
         passengerHomeGroup.append("text").text("Hometown").attr("x", 0).attr("y", 115).style("font-size", "8px")
         passengerHomeGroup.append("rect").attr("x", 0).attr("y", 118).attr("width", 120).attr("height", 10).attr("fill", "grey")
         passengerHome = passengerHomeGroup.append("text").attr("id", "passengerHometown").attr("x", 2).attr("y", 126).attr("text-anchor", "left").text(passenger.kHometown).style("font-size", "8px").attr("fill", "white")
-        const passengerHomeRequiredWidth = 0.90*((Math.min(1,120/d3.select("#passengerHometown")._groups[0][0].getComputedTextLength())))
+        const passengerHomeRequiredWidth = 0.95*((Math.min(1,120/d3.select("#passengerHometown")._groups[0][0].getComputedTextLength())))
         passengerHome.attr("transform", `scale(${passengerHomeRequiredWidth},1)`)//.attr("x", 60*passengerDestRequiredWidth)
 
         let passengerSecondColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(130,45) scale(1,1)")
-        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"./data/images/_blank.jpg").style("opacity", 0.6)
-        passengerSecondColumn.append("text").text((passenger.openmlsurvived==1)?"Survived":"Perished").attr("text-anchor", "middle").attr("x", 40).attr("y", 140).style("font-size", "18px").style("font-weight", "bold")
-
-        // IMAGE FILE
-        // passenger.derivedName  passenger.kAge
-        // passenger.kBoarded     passenger.kPclass
-        // passenger.kSex         passenger.kHometown
-        // passenger.kDestination passenger.kTicket
-        // passenger.kFare        passenger.kCabin
-        // passenger.kSibSp       passenger.kParch
-        // passenger.kSurvived 
+        passengerSecondColumn.append("clipPath").attr("id", "portraitClip").append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60)
+        passengerSecondColumn.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60).attr("fill", "grey")
+        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"./data/images/_blank.jpg").style("opacity", 0.6).style("filter", "blur(1px)").attr("clip-path", "url(#portraitClip)")
+        passengerSecondColumn.append("text").text((passenger.openmlsurvived==1)?"Survived":"Lost").attr("text-anchor", "middle").attr("x", 40).attr("y", 140).style("font-size", "18px").style("font-weight", "bold")
                     
         return
     }
