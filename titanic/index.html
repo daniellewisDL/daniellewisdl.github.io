@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
+    <style>
+        @font-face {
+            font-family: chomsky;
+            src: url(src/Chomsky.otf)
+        }
+        body {
+            background-color: rgb(202, 193, 153);
+            font-family: "Times New Roman", Times, serif;
+        }
+        svg {
+            background-image: url("./src/bg003.jpg");
+            /* Photo by icon0.com: https://www.pexels.com/photo/white-crumpled-paper-479444/ */
+            background-size: cover;
+            background-repeat: repeat;
+            /* filter: sepia(0.5) blur(1px) ; */
+            filter: sepia(0.7);
+            font-family: "Times New Roman", Times, serif;
+        }
 
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+</head>
+
+<body>
+    <div id="viz-div" style="text-align:center;"></div>
+    <script>
+        const width = 800
+        const height = 1400
+        const primaryContainerWidth = 720
+        const primaryContainerHeight = 480
+        const secondaryContainerWidth = 720
+        const secondaryContainerHeight = 180
+        const passengerDetailContainerWidth = 140
+        const passengerDetailContainerHeight = 300
+        const scaleFactor = Math.min(window.innerWidth, 900)/width
+        const yTranslateMe = (scaleFactor*height - height)/2
+
+
+        const svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 0).attr("transform", `translate(0,${yTranslateMe}) scale(${scaleFactor},${scaleFactor})`)
+        svgFrontPage.transition().duration(2500).style("opacity", 1)
+
+        const masthead = svgFrontPage.append("g").attr("id", "masthead")
+        
+        const newspaperName = "The New York Times."
+        // const newspaperName = "The Daily Bugle."
+        const mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",44)")
+        mainHero.append("text").attr("x", 0).attr("y", 0).text(newspaperName).attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
+        
+        const fitToPrint = masthead.append("g").attr("id", "fitToPrint").attr("transform", "translate(50,7)")
+        fitToPrint.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+        fitToPrint.append("text").attr("x", 50).attr("y", 20).text('"All the News That').attr("text-anchor", "middle").attr("font-size", "7pt")
+        fitToPrint.append("text").attr("x", 50).attr("y", 35).text('Fits the Print"').attr("text-anchor", "middle").attr("font-size", "7pt")
+
+        const theWeather = masthead.append("g").attr("id", "theWeather").attr("transform", "translate(650,7)")
+        theWeather.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 100).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+        theWeather.append("text").attr("x", 50).attr("y", 13).text("THE WEATHER").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold").attr("font-family", "sans-serif")
+        theWeather.append("line").attr("x1", 35).attr("x2", 65).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+        theWeather.append("text").attr("x", 50).attr("y", 23).text("Unsettled Tuesday; Wednesday,").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 29).text("fair, cooler; moderate southerly").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 35).text("winds, becoming variable.").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+        theWeather.append("text").attr("x", 50).attr("y", 40).text("For full weather report see Page 21.").attr("text-anchor", "middle").attr("font-size", "3pt")
+
+        const dateLine = masthead.append("g").attr("id", "dateLine").attr("transform", "translate(40,58)")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 0).attr("y2", 0).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 2).attr("y2", 2).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 14).attr("y2", 14).attr("stroke", "black")
+        dateLine.append("line").attr("x1", 0).attr("x2", 720).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+        dateLine.append("text").attr("x", 10).attr("y", 11).text("VOL. LXI . NO. 15,806").attr("text-anchor", "left").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 360).attr("y", 11).text("NEW YORK, TUESDAY, APRIL 16, 1912. - TWENTY-FOUR PAGES,").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 580).attr("y", 11).text("ONE CENT").attr("font-size", "6pt").attr("font-weight", "bold")
+        dateLine.append("text").attr("x", 655).attr("y", 7.5).text("In Greater New York,").attr("text-anchor", "middle").attr("font-size", "4pt")
+        dateLine.append("text").attr("x", 655).attr("y", 12).text("Jersey City, and Newark.").attr("text-anchor", "middle").attr("font-size", "4pt")
+        dateLine.append("line").attr("x1", 685).attr("x2", 685).attr("y1", 5).attr("y2", 12).attr("stroke", "black").style("stroke-width", 0.5)
+        dateLine.append("text").attr("x", 700).attr("y", 7).text("Elsewhere").attr("text-anchor", "middle").attr("font-size", "3pt")
+        dateLine.append("text").attr("x", 700).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
+
+        const mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", "translate(" + width/2 + ",100)")
+        mainHeadline.append("text").attr("x", 0).attr("y", 0).attr("id", "mainHeadlineText").text("TITANIC SINKS AFTER HITTING ICEBERG; 1,514 SOULS LOST").attr("text-anchor", "middle").attr("font-size", "18pt").style("font-weight", "bold").style("font-style", "italic")
+        const mainHeadlineRequiredWidth = 1*(primaryContainerWidth/((d3.select("#mainHeadlineText")._groups[0][0].getComputedTextLength())))
+        mainHeadline.attr("transform", `translate(${width/2},100) scale(${mainHeadlineRequiredWidth},1)`)
+
+        const primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,110) scale(0.8,1)")
+        primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+        const secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,595)")
+        secondaryContainer.append("rect").attr("class", "secondaryContainerRect").attr("x", 0).attr("y", 0).attr("width", secondaryContainerWidth).attr("height", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+        const passengerDetailContainer = svgFrontPage.append("g").attr("id", "passengerDetailContainer").attr("transform", "translate(620,290)")
+        passengerDetailContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+        const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", "translate(620,110) scale(0.76,0.76)")
+        lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
+        lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
+        lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("RMS Titanic departing Southampton on April 10, 1912.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+        lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
+
+        const captSmith = svgFrontPage.append("g").attr("id", "captSmith").attr("transform", "translate(253,780) scale(1.2,1.2)")
+        captSmith.append("image").attr("x", 0).attr("y", 0).attr("width", 120).attr("height", 160).attr("xlink:href", "./src/capt-smith.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
+        captSmith.append("rect").attr("x", -1).attr("y", -1).attr("width", 122).attr("height", 162).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("rect").attr("x", -2).attr("y", -2).attr("width", 124).attr("height", 164).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("rect").attr("x", -3).attr("y", -3).attr("width", 126).attr("height", 166).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+        captSmith.append("text").attr("x", 60).attr("y", 170).text("CAPT. E. J. SMITH,").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+        captSmith.append("text").attr("x", 60).attr("y", 175).text("Commander of the Titanic.").attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "bold")
+
+        const boilerPlate = svgFrontPage.append("g").attr("id", "boilerPlate")
+
+        const firstLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(655,222) scale (0.8,1)")
+        firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)
+        firstLeftHeadlines.append("text").text("Col. Astor and Bride,").attr("x", 0).attr("y",0).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("text").text("Isidor Straus and Wife,").attr("x", 0).attr("y",7).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("text").text("and Maj. Butt Aboard.").attr("x", 0).attr("y",14).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 19).attr("y2", 19).attr("stroke", "black").style("stroke-width", 0.5)
+        firstLeftHeadlines.append("text").text('"RULE OF SEA" FOLLOWED').attr("x", 0).attr("y",29).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif").attr("transform", "scale(0.8,1)")
+        firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 34).attr("y2", 34).attr("stroke", "black").style("stroke-width", 0.5)
+        firstLeftHeadlines.append("text").text("Women and Children Put Over").attr("x", 0).attr("y",43).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("text").text("in Lifeboats and Are Supposed").attr("x", 0).attr("y",49).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("text").text("to be Safe on Carpathia.").attr("x", 0).attr("y",55).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 61).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
+        firstLeftHeadlines.append("line").attr("x1", 35/0.8).attr("x2", 35/0.8).attr("y1", -8).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
+
+        const secondLeftHeadlines = boilerPlate.append("g").attr("transform", "translate(725,222) scale (0.8,1)")
+        secondLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)
+        secondLeftHeadlines.append("text").text("Biggest Liner Plunges").attr("x", 0).attr("y",0).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("text").text("to the Bottom").attr("x", 0).attr("y",7).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("text").text("at 2:20 A.M.").attr("x", 0).attr("y",14).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 19).attr("y2", 19).attr("stroke", "black").style("stroke-width", 0.5)
+        secondLeftHeadlines.append("text").text("RESCUERS THERE TOO LATE").attr("x", 0).attr("y",29).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").attr("font-family", "sans-serif").attr("transform", "scale(0.8,1)")
+        secondLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 34).attr("y2", 34).attr("stroke", "black").style("stroke-width", 0.5)
+        secondLeftHeadlines.append("text").text("The Californian Stands By on").attr("x", 0).attr("y",43).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("text").text("Chance of Picking Up Other").attr("x", 0).attr("y",49).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("text").text("Boats or Rafts.").attr("x", 0).attr("y",55).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").attr("font-family", "sans-serif")
+        secondLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 61).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
+
+        const lowerLeftCol1 = boilerPlate.append("g").attr("transform", "translate(40,780) scale(0.35,0.38)")
+        lowerLeftCol1.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol1.png").style("opacity", 0.8)
+
+        const lowerLeftCol2 = boilerPlate.append("g").attr("transform", "translate(140,775) scale(0.35,0.4)")
+        lowerLeftCol2.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol2.png").style("opacity", 0.8)
+
+        const lowerLeftCol3 = boilerPlate.append("g").attr("transform", "translate(235,980) scale(0.33,0.37)")
+        lowerLeftCol3.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol3.png").style("opacity", 0.8)
+
+        const partialList = boilerPlate.append("g").attr("transform", "translate(405,780) scale(0.43,0.4)")
+        partialList.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/partialList.png").style("opacity", 0.8)
+
+    </script>
+    <script src="./js/titanic.js"></script>
+</body>
+
+</html>
