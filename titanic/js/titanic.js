@@ -1179,7 +1179,7 @@ d3.csv('./data/titanic.csv').then(
     setPD(passengerData.find(item=>(item.openmlid==11)))
 
     function formatFare(fare) {
-        // Fare is in Pre-1970 British Pounds (). Conversion Factors: 1 = 12s = 240d and 1s = 20d
+        // Fare is in Pre-1970 British Pounds. Conversion Factors: 1 = 12s = 240d and 1s = 20d
         // Will come in a decimal e.g. 7.66645
 
         let poundsFare = Math.floor(fare)
@@ -1187,11 +1187,6 @@ d3.csv('./data/titanic.csv').then(
         let penceFareInitial = Math.floor(fractionFare * 120)
         let shillingsFare = Math.floor(penceFareInitial/12)
         let penceFareFinal = penceFareInitial % 12
-
-        console.log("Pounds: "+poundsFare)
-        console.log("Shillings: "+shillingsFare)
-        console.log("Pence: "+penceFareFinal)
-        console.log(fare)
         return '\u00A3'+ poundsFare + " " + shillingsFare + "s. " + penceFareFinal + "d."
     }
 
@@ -1262,7 +1257,8 @@ d3.csv('./data/titanic.csv').then(
         passengerSecondColumn.append("clipPath").attr("id", "portraitClip").append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60)
         passengerSecondColumn.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60).attr("fill", "grey").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
         passengerSecondColumn.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 42).attr("ry", 62).attr("fill", "none").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
-        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"../data/images/_blank.jpg").style("opacity", 0.6).style("filter", "blur(1px)").attr("clip-path", "url(#portraitClip)")
+        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).style("opacity", 0.6).style("filter", "blur(1px)").attr("clip-path", "url(#portraitClip)")
+                .attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"../src/blank.jpg")
         passengerSecondColumn.append("text").text((passenger.openmlsurvived==1)?"SURVIVED":"LOST").attr("text-anchor", "middle").attr("x", 40).attr("y", 140).style("font-size", "16px").style("font-weight", "bold")//.attr("transform", `translate (${5/0.7},0) scale(0.7,1)`)
                     
         let passengerThirdColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(65,185)")
