@@ -103,6 +103,30 @@ let titanicTimeline = [
     
     ]
 
+let lifeboatData = [
+    {boat: '1', kaggleSurvivors: 5, launched: "1:05 a.m", wikiSurvivors: 12},
+    {boat: '2', kaggleSurvivors: 14, launched: "1:45 a.m", wikiSurvivors: 18},
+    {boat: '3', kaggleSurvivors: 26, launched: "1:00 a.m", wikiSurvivors: 38},
+    {boat: '4', kaggleSurvivors: 31, launched: "1:50 a.m", wikiSurvivors: 42},
+    {boat: '5', kaggleSurvivors: 29, launched: "12:43 a.m", wikiSurvivors: 36},
+    {boat: '6', kaggleSurvivors: 21, launched: "1:10 a.m", wikiSurvivors: 29},
+    {boat: '7', kaggleSurvivors: 22, launched: "12:40 a.m", wikiSurvivors: 28},
+    {boat: '8', kaggleSurvivors: 24, launched: "1:00 a.m", wikiSurvivors: 28},
+    {boat: '9', kaggleSurvivors: 26, launched: "1:30 a.m", wikiSurvivors: 56},
+    {boat: '10', kaggleSurvivors: 28, launched: "1:50 a.m", wikiSurvivors: 35},
+    {boat: '11', kaggleSurvivors: 26, launched: "1:35 a.m", wikiSurvivors: 70},
+    {boat: '12', kaggleSurvivors: 18, launched: "1:30 a.m", wikiSurvivors: 30},
+    {boat: '13', kaggleSurvivors: 42, launched: "1:40 a.m", wikiSurvivors: 65},
+    {boat: '14', kaggleSurvivors: 33, launched: "1:30 a.m", wikiSurvivors: 58},
+    {boat: '15', kaggleSurvivors: 38, launched: "1:41 a.m", wikiSurvivors: 65},
+    {boat: '16', kaggleSurvivors: 23, launched: "1:20 a.m", wikiSurvivors: 40},
+    {boat: 'A', kaggleSurvivors: 8, launched: "2:12 a.m", wikiSurvivors: 13},
+    {boat: 'B', kaggleSurvivors: 9, launched: "2:12 a.m", wikiSurvivors: 30},
+    {boat: 'C', kaggleSurvivors: 41, launched: "2:00 a.m", wikiSurvivors: 44},
+    {boat: 'D', kaggleSurvivors: 18, launched: "2:05 a.m", wikiSurvivors: 25}
+
+]
+
 let clockScale = d3.scaleLinear().domain([0,1]).range([-180,540])
 
 setDefaultSC()
@@ -446,8 +470,8 @@ let subHeadlines = ["OVER 1,300 PASSENGERS ON RMS TITANIC",
                     "MALE PASSENGERS OUTNUMBERED FEMALES BY 2:1",        // 466 female, 843 male
                     "HALF OF PASSENGERS WERE UNDER 30 YRS OLD",
                     "ONE QTR OF PASSENGERS WERE IN 1st CLASS",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
-                    "OLYMPIC WIRES: IDENTITY OF THE SURVIVORS",
-                    "CARPATHIA WIRES: SURVIVORS & CREW",
+                    "RMS OLYMPIC: IDENTITY OF THE SURVIVORS",
+                    "CARPATHIA NEWS: SURVIVORS & CREW",
                     "SCALE OF TRAGEDY SHOWN BY 'SANKEY' CHART"
                     ]
             
@@ -769,22 +793,22 @@ d3.csv('./data/titanic.csv').then(
             gs1Legend.style("opacity", 0)
 
             gs1LegendBelfast = gs1Legend.append("g").attr("id", "gs1LegendBelfast").attr("transform", `translate(${belfastCentroid[0]},${belfastCentroid[1]})`)
-            gs1LegendBelfast.append("text").text("Belfast").attr("x", 18).attr("y", -30).attr("font-size", "10pt").style("font-weight", "bold")
+            gs1LegendBelfast.append("text").text("Belfast, Ireland").attr("x", 18).attr("y", -30).attr("font-size", "10pt").style("font-weight", "bold")
             gs1LegendBelfast.append("text").text("Departed 9 April 1912").attr("x", 18).attr("y", -18).attr("font-size", "8pt")
             gs1LegendBelfast.append("text").text(belfastJoined + " passengers boarded").attr("x", 18).attr("y", -8).attr("font-size", "6pt")
             gs1LegendBelfast.append("path").attr("d", arrowPath).attr("transform", "translate(15,15) scale(7.6,6)").style("opacity", 0.6)
             gs1LegendSouthampton = gs1Legend.append("g").attr("id", "gs1LegendSouthampton").attr("transform", `translate(${southamptonCentroid[0]},${southamptonCentroid[1]})`)
-            gs1LegendSouthampton.append("text").text("Southampton").attr("x", 18).attr("y", -170).attr("font-size", "10pt").style("font-weight", "bold")
+            gs1LegendSouthampton.append("text").text("Southampton, England").attr("x", 18).attr("y", -170).attr("font-size", "10pt").style("font-weight", "bold")
             gs1LegendSouthampton.append("text").text("Departed 12:00pm, 10 April 1912").attr("x", 18).attr("y", -158).attr("font-size", "8pt")
             gs1LegendSouthampton.append("text").text(southamptonJoined + " passengers boarded").attr("x", 18).attr("y", -148).attr("font-size", "6pt")
             gs1LegendSouthampton.append("path").attr("d", arrowPath).attr("transform", "translate(-145,-20) scale(-3,-4) rotate(-40)").style("opacity", 0.6)
             gs1LegendCherbourg = gs1Legend.append("g").attr("id", "gs1LegendCherbourg").attr("transform", `translate(${cherbourgCentroid[0]},${cherbourgCentroid[1]})`)
-            gs1LegendCherbourg.append("text").text("Cherbourg").attr("x", 70).attr("y", 60).attr("font-size", "10pt").style("font-weight", "bold")
+            gs1LegendCherbourg.append("text").text("Cherbourg, France").attr("x", 70).attr("y", 60).attr("font-size", "10pt").style("font-weight", "bold")
             gs1LegendCherbourg.append("text").text("Departed 8:10pm, 10 April 1912").attr("x", 70).attr("y", 72).attr("font-size", "8pt")
             gs1LegendCherbourg.append("text").text(cherbourgJoined + " passengers boarded").attr("x", 70).attr("y", 82).attr("font-size", "6pt")
             gs1LegendCherbourg.append("path").attr("d", arrowPath).attr("transform", "translate(-10,-80) scale(-2.9,-4)").style("opacity", 0.6)
             gs1LegendQueenstown = gs1Legend.append("g").attr("id", "gs1LegendQueenstown").attr("transform", `translate(${queenstownCentroid[0]},${queenstownCentroid[1]})`)
-            gs1LegendQueenstown.append("text").text("Queenstown").attr("x", -85).attr("y", -75).attr("font-size", "10pt").style("font-weight", "bold")
+            gs1LegendQueenstown.append("text").text("Queenstown, Ireland").attr("x", -85).attr("y", -75).attr("font-size", "10pt").style("font-weight", "bold")
             gs1LegendQueenstown.append("text").text("Departed 1:30pm, 11 April 1912").attr("x", -85).attr("y", -63).attr("font-size", "8pt")
             gs1LegendQueenstown.append("text").text(queenstownJoined + " passengers boarded").attr("x", -85).attr("y", -53).attr("font-size", "6pt")
             gs1LegendQueenstown.append("path").attr("d", arrowPath).attr("transform", "translate(0,65) scale(-2.7,3)").style("opacity", 0.6)
@@ -1155,7 +1179,20 @@ d3.csv('./data/titanic.csv').then(
     setPD(passengerData.find(item=>(item.openmlid==11)))
 
     function formatFare(fare) {
-        return fare
+        // Fare is in Pre-1970 British Pounds (). Conversion Factors: 1 = 12s = 240d and 1s = 20d
+        // Will come in a decimal e.g. 7.66645
+
+        let poundsFare = Math.floor(fare)
+        let fractionFare = fare - poundsFare
+        let penceFareInitial = Math.floor(fractionFare * 120)
+        let shillingsFare = Math.floor(penceFareInitial/12)
+        let penceFareFinal = penceFareInitial % 12
+
+        console.log("Pounds: "+poundsFare)
+        console.log("Shillings: "+shillingsFare)
+        console.log("Pence: "+penceFareFinal)
+        console.log(fare)
+        return '\u00A3'+ poundsFare + " " + shillingsFare + "s. " + penceFareFinal + "d."
     }
 
     function setPD(passenger) {
@@ -1242,21 +1279,38 @@ d3.csv('./data/titanic.csv').then(
         passengerTicketGroup.append("rect").attr("x", 2).attr("y", 3).attr("width", thirdColumnBoxWidth-4).attr("height", 50-4).attr("id", "ticketBox").attr("fill", "none").style("opacity", .5).attr("stroke", "black").attr("stroke-width", 0.5)
         passengerTicketGroup.append("path").attr("id", "ticketFlag").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 1).attr("transform", `translate(${thirdColumnBoxWidth/2-6},${17}) scale(1.2,1.2)`)
         passengerTicketGroup.append("path").attr("id", "ticketStar").attr("d", starPath).attr("fill", "white").style("opacity", 1).attr("transform", `translate(${thirdColumnBoxWidth/2-5},${9}) scale(.1,.1) rotate(-5)`)
-        passengerTicketGroup.append("text").attr("x", 4).attr("y", 25).attr("text-anchor", "start").text("Tkt: " + passenger.openmlticket).style("font-size", ()=>(passenger.openmlticket.length>15?"5px":"6px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
+        passengerTicketGroup.append("text").attr("x", 4).attr("y", 25).attr("text-anchor", "start").text("Tkt: " + passenger.openmlticket).style("font-size", ()=>(passenger.openmlticket.length>13?"5px":"6px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
         passengerTicketGroup.append("text").attr("x", 4).attr("y", 35).attr("text-anchor", "start").text("Fare: " + formatFare(passenger.openmlfare)).style("font-size", "6px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
         passengerTicketGroup.append("text").attr("x", 4).attr("y", 45).attr("text-anchor", "start").text("Cabin: " + (passenger.openmlcabin=="?"?"Unknown":passenger.openmlcabin)).style("font-size", ()=>(passenger.openmlcabin.length>12?"5px":"6px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
     
         let passengerLifeboatGroup = passengerThirdColumn.append("g").attr("id", "passengerLifeboatGroup").attr("transform", "translate(0,70)")
         
-        passengerLifeboatGroup.append("text").text("Lifeboat:").attr("x", 0).attr("y", -1).style("font-size", "8px")
+        passengerLifeboatGroup.append("text").text("Lifeboat boarded:").attr("x", 0).attr("y", -3).style("font-size", "8px")
         // passengerLifeboatGroup.append("rect").attr("x", 0).attr("y", 0).attr("width", thirdColumnBoxWidth).attr("height", 35).attr("fill", "none").attr("stroke", "grey")
         const lifeboatRadius = 3
-        lifeboats = passengerLifeboatGroup.selectAll("circle").data(["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]).enter().append("circle")
-            .attr("cx", (d,i)=>(62-(Math.floor(i/2)*2*lifeboatRadius+1)-(i>7?10:0)))
-            .attr("cy", (d,i)=>(i%2?10:25))
+        lifeboatsMain = passengerLifeboatGroup.append("g").attr("id", "lifeboatsMain")
+        lifeboatsMain
+            .selectAll("circle").data(lifeboatData).enter().append("circle")
+            .attr("cx", (d,i)=>(67-(Math.floor((i%16)/2)*2*lifeboatRadius+1)-((i>7&&i<16)?20:0)))
+            .attr("cy", (d,i)=>(i < 16 ? (i%2?3:32) : (i%2?13:22) ))
             .attr("r", lifeboatRadius)
-            .attr("fill", "grey")
-            .attr("opacity", 0.5)
+            .attr("fill", d=>(d.boat==passenger.processedLifeboat?"red":"grey"))
+            .attr("opacity", d=>(d.boat==passenger.processedLifeboat?1:0.5))
+
+        let lifeboatLine1Text = ""
+        let lifeboatLine2Text = ""
+        let lifeboatLine3Text = ""
+
+        if (passenger.processedLifeboat.length == 0 ) { lifeboatLine2Text = "Did not board"}
+        else if (passenger.processedLifeboat == "?") { lifeboatLine2Text = "Unknown"}
+        else { lifeboatLine1Text = ((passenger.processedLifeboat.match("[ABCD]")===null)?"Lifeboat No. ":"Collapsible ")+passenger.processedLifeboat
+               lifeboatLine2Text = "Launch: " + lifeboatData.find(item => item.boat == passenger.processedLifeboat).launched
+               lifeboatLine3Text = "Aboard: " + lifeboatData.find(item => item.boat == passenger.processedLifeboat).wikiSurvivors + " souls"
+        }
+
+        lifeboatLine1 = lifeboatsMain.append("text").attr("x", 1).attr("y", 12).attr("text-anchor", "start").text(lifeboatLine1Text).style("font-size", "6px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
+        lifeboatLine2 = lifeboatsMain.append("text").attr("x", 1).attr("y", 19).attr("text-anchor", "start").text(lifeboatLine2Text).style("font-size", "6px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
+        lifeboatLine3 = lifeboatsMain.append("text").attr("x", 1).attr("y", 26).attr("text-anchor", "start").text(lifeboatLine3Text).style("font-size", "6px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
         
         return
     }
