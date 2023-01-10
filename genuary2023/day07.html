@@ -10,8 +10,8 @@
 
   <body style="background-color: rgb(255, 255, 255);">
     <header>
-      <!-- <h1>Genuary 2023 | Day 7</h1>
-      <h3>Sample a color palette from your favorite movie/album cover</h3> -->
+      <h1>Genuary 2023 | Day 7</h1>
+      <h3>Sample a color palette from your favorite movie/album cover</h3>
     </header>
     <div id="myCanvas"></div>
 
@@ -29,7 +29,7 @@
 
           p.preload = function() {
             // myImageOriginal = p.loadImage('assets/matrix4.png')
-            myImage = p.loadImage('assets/shawshank.png')
+            myImage = p.loadImage('assets/'+p.random(['shawshank.png','matrix.png','matrix4.png','up.png']))
           }
 
           p.setup = function() {
