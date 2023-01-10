@@ -13,7 +13,7 @@
       <h1>Genuary 2023 | Day 9 | Plants</h1>
     </header>
     <div id="myCanvas"></div>
-
+    <a href="https://en.wikipedia.org/wiki/Barnsley_fern">Barnsley Ferns</a> with random parameters
     <script>
       
       var s = function( p ) {
@@ -21,7 +21,7 @@
           let canvas
           // let frame_rate = 100
           let strW = 1
-          let width = 1200
+          let width = 600
           let height = 600
           let boxWidth = 100
           let boxHeight = 100
@@ -30,7 +30,8 @@
           let x = 0
           let y = 0
 
-          let circleRadius = 20
+          const fernAlpha = 150
+          let circleRadius = 2
 
           p.setup = function() {
               canvas = p.createCanvas(width,height)
@@ -71,10 +72,10 @@
                 let a4yy = randRange(0.24,0.1)
                 let a4k = randRange(0.44,0.1)
 
-                let basecol = [Math.random()*200,Math.random()*200,Math.random()*200]
+                let basecol = [50+Math.random()*200,50+Math.random()*200,50+Math.random()*200]
                 p.push()
                 p.translate(xBoxes*boxWidth,yBoxes*boxHeight)
-                for (let i = 0; i < 10000; i++) {
+                for (let i = 0; i < 20000; i++) {
                   drawPoint(basecol)
                   nextPoint(rand1, rand2,rand3,
                             a1x, a1y, a1k,
@@ -96,12 +97,12 @@
 
           //range −2.1820 < x < 2.6558 and 0 ≤ y < 9.9983.
           function drawPoint(basecol) {
-            p.fill(basecol[0],basecol[1],basecol[2],1);
+            p.fill(basecol[0],basecol[1],basecol[2],fernAlpha);
             p.noStroke()
             // p.strokeWeight(1);
             let px = p.map(x, -2.1820, 2.6558, 4, boxWidth-4);
             let py = p.map(y, 0, 11, boxHeight, 0);
-            p.circle(px, py, 10);
+            p.circle(px, py, circleRadius);
           }
 
           function nextPoint(r1=0.01,r2=0.86,r3=0.93,

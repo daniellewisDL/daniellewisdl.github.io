@@ -10,8 +10,7 @@
 
   <body style="background-color: rgb(255, 255, 255);">
     <header>
-      <h1>Genuary 2023 | Day 1</h1>
-      <h3>Infinite Loop</h3>
+      <h1>Genuary 2023 | Day 1 | Infinite Loop</h1>
     </header>
     <div id="myCanvas"></div>
 
@@ -29,10 +28,10 @@
 
           let xCoord = 0
           let yCoord = 0
-          let circleRadius = 10
+          let circleRadius = 40
           let timeStepCounter = 0 
           let scale = 0
-          let piDivisor = 100
+          let piDivisor = 30
 
           // function windowResized() {
           //     resizeCanvas(windowWidth-2*leftCanvasBuffer, windowHeight-2*topCanvasBuffer)
@@ -51,7 +50,7 @@
               }
             
           p.draw = function() {
-              p.fill(0,50)
+              p.fill(0,10)
               p.rect(0,0,width,height)
               p.fill(0,200,0)
               scale = 2 / (3 - Math.cos(2*timeStepCounter))
