@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; }</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 1</h1>
+      <h3>Infinite Loop</h3>
+    </header>
+    <div id="myCanvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          // let frame_rate = 500
+          let strW = 1
+          let leftCanvasBuffer = 10
+          let topCanvasBuffer = 100
+          let width = 600
+          let height = 400
+
+          let xCoord = 0
+          let yCoord = 0
+          let circleRadius = 10
+          let timeStepCounter = 0 
+          let scale = 0
+          let piDivisor = 100
+
+          // function windowResized() {
+          //     resizeCanvas(windowWidth-2*leftCanvasBuffer, windowHeight-2*topCanvasBuffer)
+          // }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              // canvas.style('z-index', '0')
+              // p.frameRate(frame_rate)
+              p.background(0)
+              // p.stroke(0)
+              // p.strokeWeight(strW)
+              // p.noFill()
+              // p.rect(0,0,width,height)
+              p.noStroke()
+              }
+            
+          p.draw = function() {
+              p.fill(0,50)
+              p.rect(0,0,width,height)
+              p.fill(0,200,0)
+              scale = 2 / (3 - Math.cos(2*timeStepCounter))
+              xCoord = scale * Math.cos(timeStepCounter)
+              yCoord = scale * Math.sin(2*timeStepCounter) / 2
+              timeStepCounter = timeStepCounter + Math.PI/piDivisor
+              p.circle(p.map(xCoord,-1.2,1.2,-width/2,width/2)+width/2,p.map(yCoord,-0.5,0.5,-height/2,height/2)+height/2,circleRadius)
+              }
+          
+          p.keyPressed = function() {
+            if (p.key === 's') {p.saveGif("mySketch",5)}
+          }
+          
+          }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>

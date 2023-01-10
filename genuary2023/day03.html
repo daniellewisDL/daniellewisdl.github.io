@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; }</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 3</h1>
+      <h3>Glitch Art</h3>
+    </header>
+    <div id="myCanvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          let frame_rate = 10
+          let width = 600
+          let height = 400
+          let myImageOriginal
+
+          p.preload = function() {
+            myImageOriginal = p.loadImage('assets/boys.bmp')
+            myImage = p.loadImage('assets/boys.bmp')
+          }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              p.frameRate(frame_rate)
+              p.background(0)
+
+            }
+
+          p.draw = function() {
+            // p.noLoop()
+            
+            myImage.loadPixels()
+            myImageOriginal.loadPixels()
+
+            for (let i = 0; i < myImage.pixels.length; i++) {
+                myImage.pixels[i] = myImageOriginal.pixels[i]
+                if (i < myImage.pixels.length-100 && Math.random()>0.4) {
+                  for (let j = 0; j < 100; j++) {myImage.pixels[i+j]=0}
+                  
+                }
+            }
+
+            myImage.updatePixels()
+            p.image(myImage, 0, 0, width, height)
+          }
+        }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>

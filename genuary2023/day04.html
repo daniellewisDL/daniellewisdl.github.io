@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; }</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 4</h1>
+      <h3>Intersections</h3>
+    </header>
+    <div id="myCanvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          // let frame_rate = 50
+          let strW = 1
+          let width = 600
+          let height = 400
+          let rectWidth = 40
+          let rectHeight = 40
+
+          let circleRadius = 20
+          let timeStepCounter = 0 
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              // p.frameRate(frame_rate)
+              p.background(0, 140, 0)
+          }
+            
+          p.draw = function() {
+              
+              p.fill(0, 80, 0, 10)
+              p.noStroke()
+              p.rect(0,0,width,height)
+              p.stroke(0,200,0,250)
+              p.strokeWeight(strW)
+              p.noFill()
+              
+              timeStepCounter = timeStepCounter + 1
+              p.push()
+              p.translate(width/2, height/2)
+              p.rotate(Math.random()*Math.PI)
+              p.rect(Math.random()*width/2-width/2, Math.random()*height/2-height/2, Math.random()*width*2, Math.random()*height*2)
+              p.pop()
+              if (timeStepCounter > 1000) {p.noLoop()}
+          }
+          
+          
+          p.keyPressed = function() {
+            if (p.key === 's') {p.saveGif("mySketch",5)}
+          }
+          
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
