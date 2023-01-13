@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 13 | Something you've wanted to learn</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle">https://en.wikipedia.org/wiki/Sierpinski_triangle</a>
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 600
+          let height = 600
+          let level = 0
+          let bgColor = 0
+          let fgColor = "red"
+          let timeStepCounter =0
+          let initialX = width/2
+          let initialY = height/2
+          let size = 50
+          let sizeFactor = 1.5
+          const colorSchema = ["#f60000", "#ff8c00", "#ffee00", "#4de94c", "#3783ff", "#4815aa"]
+
+          let coords = [{x:0,y:0,kx:1,ky:1},{x:0,y:0,kx:5/6,ky:1},{x:0,y:0,kx:1,ky:2/3},
+                        {x:0,y:0,kx:1/2,ky:1},{x:0,y:0,kx:1/4,ky:1},{x:0,y:0,kx:1,ky:1/4},
+                        {x:0,y:0,kx:1/3,ky:1},{x:0,y:0,kx:3/4,ky:1},{x:0,y:0,kx:1/6,ky:1}]
+
+          p.setup = function() {
+            p.createCanvas(width, height)
+            p.background(bgColor)
+          }
+
+          // Find the midpoint
+          function findMidPoint(p1, p2) {
+            return p.createVector((p1.x + p2.x)/2,(p1.y + p2.y)/2)
+          }
+
+          // Draw Sierpinski
+          function drawSierpinski(tri, depth, triColor) {
+            if(depth === level) {
+              return
+            }
+            
+            let m1 = findMidPoint(tri.p1, tri.p2)
+            let m2 = findMidPoint(tri.p2, tri.p3)
+            let m3 = findMidPoint(tri.p3, tri.p1)
+
+            let t = new Triangle(m1, m2, m3);
+            t.draw(true, triColor);
+            
+            let t1 = new Triangle(tri.p1, m1, m3)
+            let t2 = new Triangle(m1, tri.p2, m2)
+            let t3 = new Triangle(m2, tri.p3, m3)
+
+            drawSierpinski(t1, depth + 1)
+            drawSierpinski(t2, depth + 1)
+            drawSierpinski(t3, depth + 1)
+          }
+
+          // Class to make a triangle object
+          class Triangle {
+            constructor(p1,p2,p3) {
+              this.p1 = p1
+              this.p2 = p2
+              this.p3 = p3
+            }
+            
+            draw(empty, primaryColor) {
+              p.noStroke()
+              p.fill(empty?bgColor:primaryColor)
+              p.triangle(this.p1.x, this.p1.y, this.p2.x, this.p2.y, this.p3.x, this.p3.y)
+            }
+          }
+
+          function drawFullSierpinski(x,y,color) {
+            p.push()
+            p.translate(x,y)
+            let p1 = p.createVector(0,0)
+            let p2 = p.createVector(+size*Math.tan(Math.PI/6) , +size)
+            let p3 = p.createVector(-size*Math.tan(Math.PI/6) , +size)
+            let t1 = new Triangle(p1, p2, p3)
+
+            for (let i = 0; i < 6; i++) {
+              t1.draw(false,colorSchema[i])
+              drawSierpinski(t1, 0, colorSchema[i])
+              p.rotate(Math.PI/3)
+            }
+
+
+
+
+            p.pop()
+              
+          }
+
+          p.draw = function() {
+            level = 3
+            p.background(bgColor,5)
+            timeStepCounter = timeStepCounter + Math.PI/30
+            drawFullSierpinski(width/2+sizeFactor*size*Math.cos(timeStepCounter),height/2+sizeFactor*size*Math.sin(timeStepCounter),"white")
+            drawFullSierpinski(width/4+sizeFactor*size*Math.cos(timeStepCounter),height/4+sizeFactor*size*Math.sin(timeStepCounter),"white")
+            drawFullSierpinski(3*width/4+sizeFactor*size*Math.cos(timeStepCounter),height/4+sizeFactor*size*Math.sin(timeStepCounter),"white")
+            drawFullSierpinski(3*width/4+sizeFactor*size*Math.cos(timeStepCounter),3*height/4+sizeFactor*size*Math.sin(timeStepCounter),"white")
+            drawFullSierpinski(width/4+sizeFactor*size*Math.cos(timeStepCounter),3*height/4+sizeFactor*size*Math.sin(timeStepCounter),"white")
+            console.log(p.FRAMERATE)
+            // drawFullSierpinski(initialX,initialY,myColor)
+            // initialX += Math.random()*100-50
+            // initialY += Math.random()*100-50
+            // if (initialX >= width || initialX <=0) {initialX = width/2}
+            // if (initialY >= height || initialY <= 0) {initialY = height/2}
+
+
+          }
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
