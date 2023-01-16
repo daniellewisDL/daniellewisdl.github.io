@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 19 | Black and white</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 600
+          let height = 600
+          let angleSpeedOff = 0
+          let offsetIncrements = 0.01
+          let angle = 0
+          let angleSpeed = Math.PI/200
+          let outerAngleSpeedOff = 1000
+          let outerAngle = 0
+          let outerAngleSpeed = Math.PI/200
+          let circleSize = Math.min(width/2,height/2)
+          let largerCircleSize = circleSize *1.2
+          let numSegs = Math.floor(p.random(2,4))*2
+          let outerArcLength = 2*Math.PI/numSegs
+          let annulusSize = p.random(2,50)
+          let bgColorRando = Math.random()*255
+          let bgColor = (bgColorRando,bgColorRando,bgColorRando)
+          let cornerPiecesOuterMargin = 5
+          let cornerPiecesInnerMargins = p.random(5,10)
+          let cornerPiecesSize = p.random(10,45)
+          let blackTextColor = "white"
+          let whiteTextColor = "black"
+          let cornerColorsBottom = ["black","black","black","black","black","black","black","black","black","black"]
+          let cornerColorsTop = ["white","white","white","white","white","white","white","white","white","white"]
+          let orbiterTimeCounter = 0
+          let orbiterX = 100
+          let orbiterY = 100
+          let orbiterOffsetAngle = Math.random()*Math.PI
+          let orbiterAxis1 = 300
+          let orbiterAxis2 = 500
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.frameRate(20)
+            p.background(bgColor)
+          }
+
+          p.draw = function() {
+            // p.noLoop()
+            p.background(bgColor)
+            drawText()
+            drawCorners()
+            drawAnnulus()
+            drawInnerCircle()
+            drawOrbiter()
+            
+            angleSpeedOff += offsetIncrements
+            angleSpeed = p.map(p.noise(angleSpeedOff),0,1,Math.PI/10000,Math.PI/50)
+            angle = angle + angleSpeed
+            
+            outerAngleSpeedOff += offsetIncrements
+            outerAngleSpeed = p.map(p.noise(outerAngleSpeedOff),0,1,Math.PI/10000,Math.PI/50)
+            outerAngle = outerAngle - outerAngleSpeed
+
+          }
+
+          function drawInnerCircle() {
+            // Inner circle
+
+            p.stroke("grey")
+            p.strokeWeight(2)            
+            p.noFill()
+            p.circle(width/2,height/2,circleSize)
+
+            // p.noStroke()
+            p.fill("black")
+            p.arc(width/2,height/2,circleSize,circleSize,angle,angle+Math.PI)
+
+            // p.noStroke()
+            p.fill("white")
+            p.arc(width/2,height/2,circleSize,circleSize,angle+Math.PI,angle+2*Math.PI)
+          }
+
+          function drawAnnulus() {
+            // draw annulus
+
+            p.stroke("grey")
+            p.strokeWeight(2)            
+            p.noFill()
+            p.circle(width/2,height/2,largerCircleSize)
+
+            // p.noStroke()
+            for (let i=0; i<numSegs; i=i+2 ) {
+              p.fill("white")
+              p.arc(width/2,height/2,largerCircleSize,largerCircleSize, outerAngle + i*outerArcLength, outerAngle + (i+1)* outerArcLength)
+              p.fill("black")
+              p.arc(width/2,height/2,largerCircleSize,largerCircleSize,outerAngle + (i+1)*outerArcLength, outerAngle+(i+2)*outerArcLength)
+
+            }
+
+            // remove center of annulus
+            p.fill(bgColor)
+            p.circle(width/2,height/2,largerCircleSize-annulusSize)
+
+          }
+
+          function drawOrbiter() {
+
+              orbiterAxis1 = 70000
+              orbiterAxis2 = 38000
+
+              orbiterTimeCounter += Math.PI/100
+              orbiterX = width/2 + Math.sqrt(orbiterAxis1)*Math.cos(orbiterOffsetAngle)*Math.cos(orbiterTimeCounter) - Math.sqrt(orbiterAxis2)*Math.sin(orbiterOffsetAngle)*Math.sin(orbiterTimeCounter)
+              orbiterY = +height/2 + Math.sqrt(orbiterAxis1)*Math.sin(orbiterOffsetAngle)*Math.cos(orbiterTimeCounter) + Math.sqrt(orbiterAxis2)*Math.cos(orbiterOffsetAngle)*Math.sin(orbiterTimeCounter)
+              p.fill("black")
+              p.circle(orbiterX,orbiterY,20)
+              p.fill("white")
+              p.circle(orbiterX,orbiterY,10)
+
+          }
+
+
+          function drawCorners() {
+              // let cornerPiecesOuterMargin = 10
+              // let cornerPiecesInnerMargins = 5
+              // let cornerPiecesSize = 10
+
+              let startingYDistanceAwayFromEdge = cornerPiecesOuterMargin+cornerPiecesInnerMargins*3+cornerPiecesSize*4
+
+              // for (let a = 0; a < 2; a++) {
+                for (let b = 0; b < 4; b++) {
+                  for (let c = 0; c < b+1; c++) {
+                    
+                    if (p.frameCount % 20 == 0 &&Math.random()>0.9) {cornerColorsBottom[b+c]=(cornerColorsBottom[b+c]=="white")?"black":"white"}
+                    p.fill(cornerColorsBottom[b+c])
+                    p.rect(cornerPiecesOuterMargin+c*(cornerPiecesSize+cornerPiecesInnerMargins),height - startingYDistanceAwayFromEdge+b*(cornerPiecesSize+cornerPiecesInnerMargins),cornerPiecesSize,cornerPiecesSize)
+                    if (p.frameCount % 20 == 0 &&Math.random()>0.9) {cornerColorsTop[b+c]=(cornerColorsTop[b+c]=="white")?"black":"white"}
+                    p.fill(cornerColorsTop[b+c])
+                    p.rect(width-(cornerPiecesOuterMargin+cornerPiecesSize)-c*(cornerPiecesSize+cornerPiecesInnerMargins),startingYDistanceAwayFromEdge-cornerPiecesSize-b*(cornerPiecesSize+cornerPiecesInnerMargins),cornerPiecesSize,cornerPiecesSize)
+
+                  }
+                }
+              // }
+
+          }
+
+
+          function drawText() {
+            // if (p.frameCount % 30 == 0 && Math.random()>0.8) { blackTextColor = (blackTextColor == "white") ? "black" : "white"}
+            // if (p.frameCount % 30 == 0 && Math.random()>0.8) { whiteTextColor = (whiteTextColor == "white") ? "black" : "white"}
+            // console.log(p.frameCount)
+
+            p.textAlign(p.LEFT,p.TOP)
+            p.fill(blackTextColor)
+            p.textSize(100)
+            p.text("BLACK", 0,0)
+
+            p.textAlign(p.RIGHT,p.BASELINE)
+            p.fill(whiteTextColor)
+            p.textSize(100)
+            p.text("WHITE", width,height-5)
+
+          }
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
