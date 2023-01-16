@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 27 | Hilma af Klint</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 600
+          let height = 600
+          let swanColors = ["#ab4a32", "#5485c1", "#d7b15e","#cd9a8f","#1c1c1c","#cfc7c1","#c6c8c4","#c8d9d2","#a95745","#91b6b7","#c1c8aa","#121212"]
+          let swanCirclesBgColor = p.random(swanColors)
+          swanColors.splice(swanColors.indexOf(swanCirclesBgColor),1)
+          let mainCircleSize = 1.2*width/2
+          let midCircleSize = 2*mainCircleSize/3
+          let smallCircleSize = midCircleSize/2
+          let imageChoice = "swanBubbles"
+          let counter = 0
+        
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.frameRate(1)
+          }
+
+          p.draw = function() {
+            // p.noLoop()
+
+            if (counter%3==0) {imageChoice = (imageChoice=="swanCircles")?"swanBubbles":(imageChoice=="swanBubbles")?"groupX":"swanCircles"}
+            counter++
+            console.log(counter)
+            if (imageChoice == "swanCircles") {swanCircles()}
+            else if (imageChoice == "swanBubbles") {swanBubbles()}
+            else {groupX()}
+            // groupX()
+            for (let stipples = 0; stipples< 10000; stipples++) {
+              p.fill(255,20)
+              p.noStroke()
+              p.circle(Math.random()*width,Math.random()*height,Math.random()*8)
+            }
+          }
+
+
+          function groupX() {
+            p.background("black")
+
+            // Main golden circle
+            let goldenCircleRadius = width*p.random(0.4,0.7)
+            let circleY = p.random(goldenCircleRadius,height/2)
+
+            // Triangle feature - draw this 2/3s of the time
+            if (Math.random()>0.33) {
+              // 50:50 chance of upside down
+
+              let triangleWidth = p.random(width/2,width*0.9)
+              let numStrips = p.random([6,7,8,9,10,11,12])
+              let numTracks = p.random([6,7,8,9,10,11,12])
+              let triangleTop = circleY+goldenCircleRadius/2
+              let triangleHeight = height - triangleTop
+
+              if (Math.random()>0.5) {
+                // UPSIDE DOWN
+                p.noStroke()
+                p.fill(p.random(swanColors))
+                p.rect(0,0,width,triangleTop)
+                p.fill(p.random(swanColors))
+                p.rect(0,triangleTop,width,height)
+                p.stroke("white")
+                p.strokeWeight(0.5)
+                p.fill(0)
+
+                p.triangle(width/2-triangleWidth/2,triangleTop,width/2+triangleWidth/2,triangleTop,width/2,height)
+                for (let strips = 0; strips < numStrips; strips++) {
+                  p.triangle(width/2-triangleWidth/2 + (strips*triangleWidth/numStrips),triangleTop,width/2-triangleWidth/2+((strips+1)*triangleWidth/numStrips),triangleTop,width/2,height)
+                }
+                let trackIncrementor = triangleHeight/numTracks
+                for (let tracks = 0; tracks < numTracks; tracks++) {
+                  p.line(width/2-triangleWidth/2,triangleTop+tracks*trackIncrementor,width/2-triangleWidth/2,triangleTop+tracks*trackIncrementor)
+                }
+
+              } else {
+                //UPSIDE UP
+                p.stroke("white")
+                p.strokeWeight(0.5)
+                p.fill(p.random(swanColors))
+                p.triangle(width/2-triangleWidth/2,height,width/2+triangleWidth/2,height,width/2,triangleTop)
+                for (let strips = 0; strips < numStrips; strips++) {
+                  p.fill(p.random(swanColors))
+                  p.triangle(width/2-triangleWidth/2 + (strips*triangleWidth/numStrips),height,width/2-triangleWidth/2+((strips+1)*triangleWidth/numStrips),height,width/2,triangleTop)
+                }
+
+              } 
+            } else {
+              // radial patterns
+              let numSegments = 10
+              p.noStroke()
+              for (i=0; i<numSegments;i++) {
+                  p.fill(p.random(swanColors))
+                  p.arc(width/2,height/2,width*2,width*2,i*2*Math.PI/numSegments,(i+1)*2*Math.PI/numSegments)
+              }
+              
+
+            }
+
+            // Draw main golden circle
+            p.strokeWeight(p.random([1,4]))
+            p.stroke("black")
+            p.fill("#bb8b54")
+            p.circle(width/2,circleY, goldenCircleRadius)
+
+
+
+
+          }
+
+          function swanBubbles() {
+            p.background(255, 254, 233)
+            p.stroke("grey")
+            p.strokeWeight(1)
+            p.fill(p.random(swanColors))
+            p.circle(width/2,height/2,smallCircleSize)
+            p.fill(200)
+            p.circle(width/2,height/2,smallCircleSize-15)
+            p.fill(p.random(swanColors))
+            p.triangle(width/2,height/2+10,width/2,height/2-10,width/2-10,height/2)
+            p.fill("white")
+            p.triangle(width/2,height/2+10,width/2,height/2-10,width/2+10,height/2)
+            let bubbleSize = p.random(smallCircleSize/5,smallCircleSize*.6)
+            let bubbleIncrement = (smallCircleSize-bubbleSize)/12
+            let lengthOfArc = mainCircleSize/4+10
+            let numBubbles = p.random([4,5,6,7,8,9,10,11,12])
+            for (let i = 0; i<numBubbles; i++) {
+                let cx = width/2+lengthOfArc*Math.cos(p.map(i,0,11,-Math.PI,6*Math.PI/4))
+                let cy = height/2+lengthOfArc*Math.sin(p.map(i,0,11,-Math.PI,6/4*Math.PI))
+                p.strokeWeight(2)
+                p.fill("white")
+                p.circle(cx,cy,bubbleSize)
+                let rectSize = bubbleSize/3.5
+                p.fill(p.random(swanColors))
+                let finalColor1 = p.random(swanColors)
+                let finalColor2 = p.random(swanColors)
+                if (i==numBubbles-1) {p.fill(finalColor1)}
+                p.rect(cx-rectSize,cy-rectSize,rectSize,rectSize)
+                p.fill("white")
+                if (i==numBubbles-1) {p.fill(finalColor2)}
+                p.rect(cx,cy-rectSize,rectSize,rectSize)
+                p.fill("white")
+                if (i==numBubbles-1) {p.fill(finalColor2)}
+                p.rect(cx-rectSize,cy,rectSize,rectSize)
+                p.fill(p.random(swanColors))
+                if (i==numBubbles-1) {p.fill(finalColor1)}
+                p.rect(cx,cy,rectSize,rectSize)
+                lengthOfArc = lengthOfArc + 12
+                bubbleSize = bubbleSize + bubbleIncrement
+            }
+
+          }
+
+
+          function swanCircles() {
+            p.background(swanCirclesBgColor)
+            p.stroke("grey")
+            p.strokeWeight(0.1)
+
+            p.fill(p.random(swanColors))
+            p.circle(width/2,height/2,mainCircleSize)
+
+            p.fill(p.random(swanColors))
+            p.arc(width/2,height/2,mainCircleSize,mainCircleSize,Math.PI/2,Math.PI*p.random([0.5,1.5,1.5,1.5]))
+
+            let numLayers = p.random([2,3,4,5,6])
+
+            for (let i=0; i<numLayers; i++) {
+                let cycleCircleSize = (numLayers-i)*midCircleSize/numLayers
+                p.fill(p.random(swanColors))
+                p.circle(width/2,height/2,cycleCircleSize)
+                p.fill(p.random(swanColors))
+                p.arc(width/2,height/2,cycleCircleSize,cycleCircleSize,Math.PI/2,Math.PI*p.random([0.5,1.5,1.5,1.5]))
+
+            }
+
+          }
+
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
