@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 18 | !grid</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 600
+          let height = 600
+          let textSize = 30
+          let textSizeOff = 0
+          let textX = width/2
+          let textY = height/2
+          let textXOff = 1000
+          let textYOff = 2000
+          let offsetIncrements = 0.05
+          let phrase = "     Definitely     not     a     grid"
+          let horizLineCount = p.random(10,10)
+          let vertLineCount = p.random(30,80)
+          let widthMultiplier = p.random(2,20)
+
+          
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.frameRate(20)
+            
+            p.background(255, 254, 233)
+            // p.noFill()
+            p.stroke("grey")
+            p.strokeWeight(0.5)            
+          }
+
+          p.draw = function() {
+            p.background(255, 254, 233, 10)
+            
+            drawGrid()
+
+            // p.noFill()
+            p.stroke("grey")
+            p.strokeWeight(0.5)            
+            textX = p.map(p.noise(textXOff),0,1,0,width)
+            textXOff += offsetIncrements
+            textY = p.map(p.noise(textYOff),0,1,0,height)
+            textYOff += offsetIncrements
+            textSize = p.map(p.noise(textSizeOff),0,1,5,100)
+            textSizeOff += offsetIncrements
+            p.textSize(textSize)
+            // p.text(p.random(["G","g","R","r","I","i","D","d"]),textX,textY)
+            p.text(phrase[p.frameCount%phrase.length],textX,textY)
+            // console.log(p.frameCount%phrase.length)
+          }
+
+          function drawGrid() {
+            p.stroke("grey")
+            p.strokeWeight(0.1)            
+
+            // draw horiz lines
+            let topY = 4*height/6
+            let horizSpace = height - topY
+            // horizLineCount = p.random(10,40)
+            let yIncrementorBase = Math.log(horizSpace) / Math.log (horizLineCount)
+            for (let i = 0; i < horizLineCount; i++) {
+              p.line(0,topY+yIncrementorBase**i,width,topY+yIncrementorBase**i)
+            }
+
+            // draw verticals
+
+            // vertLineCount = p.random(10,40)
+            let xIncrementor = width/vertLineCount
+            // widthMultiplier = p.random(2,20)
+            for (let i = 0; i < vertLineCount; i++) {
+              p.line(i*xIncrementor,topY+1,p.map(i*xIncrementor,0,width,-width*widthMultiplier,width*widthMultiplier),height)
+            }
+
+            // draw backGrid ???
+
+            for (let i = 0; i < vertLineCount; i++) {
+              p.line(i*xIncrementor,topY,i*xIncrementor,0)
+            }
+            for (let i = 0; i < topY/xIncrementor; i++) {
+              p.line(0,i*xIncrementor,width,i*xIncrementor)
+            }
+
+          }
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
