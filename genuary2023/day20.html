@@ -23,22 +23,31 @@
 
           let width = 800
           let height = 800
-          let bgColor = "DarkSeaGreen"
-          let fgColor = "MidnightBlue"
 
-          const fgColors = ['#696969','#2F4F4F','#B8860B','#D2691E','#8B4513','#A0522D','#A52A2A','#4682B4','#0000FF','#0000CD',
-                            '#7FFF00','#7CFC00','#00FF00','#32CD32','#00FF7F','#3CB371','#2E8B57','#228B22','#6B8E23','#808000',
-                            '#556B2F','#20B2AA','#008B8B','#008080','#663399','#9400D3','#8B008B','#800080','#4B0082','#483D8B',
-                            '#FF4500','#C71585','#DC143C','#FF0000','#B22222']
+          const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
+                            'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
+                            'LightGray','Silver','Cornsilk','BlanchedAlmond','Bisque','NavajoWhite','Wheat','LightCyan','PaleTurquoise',
+                            'Aquamarine','LightSteelBlue','PowderBlue','LightBlue','SkyBlue','LightSkyBlue','Lavender','Thistle',
+                            'LightYellow','LemonChiffon','LightGoldenrodYellow','PapayaWhip','Moccasin','PeachPuff','PaleGoldenrod',
+                            'Khaki','Pink','LightPink']
 
-          const bgColors = ['#FFFAFA','#F0FFF0','#F5FFFA','#F0FFFF','#F0F8FF','#F8F8FF','#F5F5F5','#FFF5EE','#F5F5DC','#FDF5E6',
-                            '#FFFAF0','#FFFFF0','#FAEBD7','#FAF0E6','#FFF0F5','#FFE4E1','#DCDCDC','#D3D3D3','#C0C0C0','#FFF8DC',
-                            '#FFEBCD','#FFE4C4','#FFDEAD','#F5DEB3','#E0FFFF','#AFEEEE','#7FFFD4','#B0C4DE','#B0E0E6','#ADD8E6',
-                            '#87CEEB','#87CEFA','#E6E6FA','#D8BFD8','#DDA0DD','#EE82EE','#FFFFE0','#FFFACD','#FAFAD2','#FFEFD5',
-                            '#FFE4B5','#FFDAB9','#EEE8AA','#F0E68C','#FFC0CB','#FFB6C1']
+          const fgColors = ['DimGray','DarkSlateGray','DarkGoldenrod','Chocolate','SaddleBrown','Sienna','Brown',
+                            'SteelBlue','Blue','MediumBlue',
+                            'MediumSeaGreen','SeaGreen','ForestGreen','OliveDrab','Olive','DarkOliveGreen','LightSeaGreen','DarkCyan',
+                            'Teal','RebeccaPurple','DarkMagenta','Purple','Indigo','DarkSlateBlue','OrangeRed','MediumVioletRed',
+                            'Crimson','Red','FireBrick']
 
-          bgColor = p.random(bgColors)
-          fgColor = p.random(fgColors)
+          let bgColor = p.random(bgColors)
+          let fgColor = p.random(fgColors)
+
+          if (Math.random()>0.85) {
+            let tempColor = fgColor
+            fgColor=bgColor
+            bgColor=tempColor
+          }
+
+          console.log("Background color: ", bgColor)
+          console.log("Foreground color: ", fgColor)
 
           p.setup = function() {
             p.createCanvas(width,height)
