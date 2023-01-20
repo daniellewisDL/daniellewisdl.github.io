@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 21 | Persian Rug</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+    
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Persian_carpet">https://en.wikipedia.org/wiki/Persian_carpet</a>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 1600
+          let height = 1000
+
+          const reds100 = ["#722128","#852833","#923545","#9E4853","#C5BDB0"]
+          const reds200 = ["#9a9a99","#c4ab8f","#d14f4f","#e8b07c","#dc4423"]
+          const reds300 = ["#d7cec7","#565656","#76323f","#09f80","aaaaaa"]
+          const reds400 = ["#788070","#c3b999","#eaebe6","#4d241f","#615f21"]
+          const reds500 = ["#ad7141","#2e2b2c","#b13924","#7ab7a8","#aed4e5"]
+          const reds600 = ["#dcf3ff","#baf2ef","#a2d2df","#396d7c","#257ca3"]
+          const reds700 = ["#9e37s6","#c5ae8e","#342826","#4a342e","#998a71"]
+          let reds = p.random([reds100,reds200,reds300,reds400,reds500, reds600, reds700])
+
+          const hexToDecimal = hex => parseInt(hex, 16);
+
+          console.log(hexToDecimal(reds[0].substring(1,2)))
+          // let redsAlternative = 
+
+          // function
+
+          let innerLayerLimit = p.random(5,15)
+          let outerLayerLimit = p.random(innerLayerLimit+1,innerLayerLimit+20)
+          let myPixelDensity = 1
+          let myAlpha = p.random(100,200)
+          let myAlpha2 = 20*myAlpha
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            
+            p.pixelDensity(myPixelDensity)
+            p.frameRate(2)
+            // p.background(bgColor)
+          }
+
+          p.draw = function() {
+            // p.noLoop()
+            reds = p.random([reds100,reds200,reds300,reds400,reds500, reds600, reds700])
+            p.frameRate(1)
+            drawStuff()
+            copyLowerRight()
+
+
+            // TEST LINES
+            p.line(0,height/2,width,height/2)
+            p.line(width/2,0,width/2,height)
+          }
+
+          function drawStuff() {
+            let colorFill0 = p.random(reds)
+            p.stroke(p.red(colorFill0),p.blue(colorFill0),p.green(colorFill0),myAlpha)
+
+
+            // DRAW LARGE BACKGROUND SHAPES // HWERE"S MMY ALOPP+LLLPPPHAAAAAAAAAAA
+            for (let i=0; i<100; i++) {
+                let colorFill = p.random(reds)
+                p.fill(p.red(colorFill),p.blue(colorFill),p.green(colorFill),myAlpha)
+                p.rect(p.random(width/2,width),p.random(height/2,height),p.random(300),p.random(400))
+                let colorFill2 = p.random(reds)
+                p.fill(p.red(colorFill2),p.blue(colorFill2),p.green(colorFill2),myAlpha)
+                p.circle(p.random(width/2,width),p.random(height/2,height),p.random(400))
+            }
+            
+            // DRAW SMALL FOREGROUND SHAPES
+            p.noStroke()
+            for (let i=0; i<50; i++) {
+                let colorFill = p.random(reds)
+                p.fill(p.red(colorFill),p.blue(colorFill),p.green(colorFill),myAlpha)
+                p.rect(p.random(width/2,width),p.random(height/2,height),p.random(30),p.random(40))
+                let colorFill2 = p.random(reds)
+                p.fill(p.red(colorFill2),p.blue(colorFill2),p.green(colorFill2),myAlpha)
+                p.circle(p.random(width/2,width),p.random(height/2,height),p.random(40))
+                let colorFill3 = p.random(reds)
+                p.fill(p.red(colorFill3),p.blue(colorFill3),p.green(colorFill3),myAlpha)
+                
+                let startTriX = p.random(width/2,width)
+                let startTriY = p.random(height/2,height)
+                let triSize = p.random(5,400)*0.5
+                p.triangle(startTriX,startTriY,startTriX+p.random(-triSize,triSize),startTriY+p.random(-triSize,triSize),startTriX+p.random(-triSize,triSize),startTriY+p.random(-triSize,triSize))
+              }
+
+            p.stroke(p.red(colorFill0),p.blue(colorFill0),p.green(colorFill0),myAlpha2)
+
+            let numLayers = 10
+            let widths = []
+            for (let j=0; j<numLayers; j++) {widths.push(Math.floor(p.random(innerLayerLimit,outerLayerLimit)))}
+            // console.log(widths)
+            
+            for (let i=numLayers; i>0; i--) {
+              
+              let outerWidth = 0
+              let thisLayer = p.random(reds)
+              for (let k=0;k<i;k++) {outerWidth +=widths[k]}
+              colorFill = p.random(reds)  
+              p.stroke(p.red(thisLayer),p.blue(thisLayer),p.green(thisLayer),255)
+              p.fill(p.red(thisLayer),p.blue(thisLayer),p.green(thisLayer),myAlpha2)
+              p.rect(width-outerWidth,height/2,outerWidth,height/2)
+              p.rect(width/2,height-outerWidth,width/2,outerWidth)
+            }
+
+          }
+
+          function copyLowerRight() {
+            p.loadPixels()
+
+            for (let yToRepeat = height/2; yToRepeat < height; yToRepeat++) {
+              for (let xToRepeat = width/2; xToRepeat < width; xToRepeat++) {
+
+                // GET LOWER RIGHT PIXELS AND LOAD INTO VARIABLES
+                let pixelRed = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 0 ]
+                let pixelBlue = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 1 ]
+                let pixelGreen = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 2 ]
+                let pixelAlpha = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 3 ]
+                
+                // ASSIGN LOWER RIGHT PIXELS TO LOWER LEFT PIXELS
+                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 0] = pixelRed
+                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 1] = pixelBlue
+                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 2] = pixelGreen
+                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+
+                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 0] = pixelRed
+                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 1] = pixelBlue
+                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 2] = pixelGreen
+                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+
+                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 0] = pixelRed
+                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 1] = pixelBlue
+                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 2] = pixelGreen
+                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+
+                
+              }
+            }
+            // console.log(p.pixels)
+            p.updatePixels()
+
+          }
+
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>
