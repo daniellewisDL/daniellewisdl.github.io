@@ -48,9 +48,8 @@
           let rayY1 = height/2
           let rayX2 = rayX1
           let rayY2 = rayY1
-          let raySpeed = 10
+          let raySpeed = 20
           let rayAngle = Math.random()*Math.PI*2
-          // rayAngle = Math.PI
           let rayM = 0
 
           p.setup = function() {
@@ -83,56 +82,39 @@
               }
             }
 
-            // p.fill("purple")
-            // p.triangle(topX,topY,rightX,rightY,width,0)
-            // p.rect(0,0,leftX,height)
-            // p.triangle(topX,topY,leftX,leftY,0,0)
-            // p.rect(rightX,0,width-rightX,height)
-            // p.rect(0,leftY,width,height-leftY)
-            // p.rect(0,0,width,topY)
-
-
             rayX2 = rayX1 + raySpeed*Math.cos(rayAngle)
             rayY2 = rayY1 + raySpeed*Math.sin(rayAngle)
             rayM = (rayY2 - rayY1) / (rayX2 - rayX1)
             rayC = rayY1 - rayM*rayX1
-            console.log(Math.floor(180*rayAngle/Math.PI))
-            // normaliseRayAngle()
-            console.log(Math.floor(180*rayAngle/Math.PI))
 
             if (rayY2 > leftY) {
               pulseReflectors()
               rayY2 = leftY - 0.1
               let a = (rayY2-rayY1)/Math.sin(rayAngle)
               rayX2 = rayX1 + a * Math.cos(rayAngle) 
-              // rayAngle = -1*(p.random(0,1))*rayAngle
-              rayAngle = -1*rayAngle
+              rayAngle = p.random(-Math.PI+0.1,0-0.1)
 
             } else if ( rayY2 < (rightM * rayX2 + rightC) ) {
 
               pulseReflectors()
               rayX2 = (rayC - rightC) / (rightM - rayM) - 0.1 
               rayY2 = (rightC*rayM - rayC*rightM) / (rayM - rightM) + 0.1
-              // CRITICAL STEP
-              // rayAngle = ((p.random(3,4))*Math.PI/3 - rayAngle/2)
-              rayAngle = -1*(-Math.PI/3 - rayAngle)*2 + Math.PI - rayAngle
+              rayAngle = p.random(-5*Math.PI/3+0.1,-2*Math.PI/3-0.1)
 
             } else if ( rayY2 < (leftM * rayX2 + leftC) ) {
               pulseReflectors()
               rayX2 = (rayC - leftC) / (leftM - rayM) + 0.1
               rayY2 = (leftC*rayM - rayC*leftM) / (rayM - leftM) + 0.1
-              // CRITICAL STEP
-              rayAngle = (p.random(3,4)*Math.PI/3 - rayAngle/2)
-              // rayAngle = (5*Math.PI/3 - rayAngle/2)
+              rayAngle = p.random(-4*Math.PI/3+0.1,-7*Math.PI/3-0.1)
 
             }
             rayM = Math.cos(rayAngle)/Math.sin(rayAngle)
 
             p.stroke("green")
             p.strokeWeight(1)
-            // p.line(rayX1,rayY1,rayX2,rayY2)
-            // p.noStroke()
-            // p.fill("green")
+            p.line(rayX1,rayY1,rayX2,rayY2)
+            p.noStroke()
+            p.fill("green")
             p.noFill()
             p.circle(rayX2,rayY2,10)
             rayX1 = rayX2
