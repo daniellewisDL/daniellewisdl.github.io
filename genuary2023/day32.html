@@ -9,7 +9,7 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 31 | Deliberate break<br><br>
+    Genuary 2023 | Day 32 | Retrospective<br><br>
     
     <div id="myCanvas"></div>
     <br><br>
@@ -19,14 +19,17 @@
       
       var s = function( p ) {
 
-          let width = 600
-          let height = 600
-          let myDots = []
-          for (let i=0; i<100; i++) {
-            myDots.push({x:Math.random()*width,y:Math.random()*height})
+          let numX = 5
+          let numY = 6
+          let width = 180*numX
+          let height = 180*numY
+          let images = []
+
+          p.preload = function() {
+            for (let i=0; i<30; i++) {
+              images.push(p.loadImage('src/day'+(i+1)+'.png'))
+            }
           }
-          // Find 3 nearest neighbours (KNN?)
-          
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -36,12 +39,10 @@
 
           p.draw = function() {
             p.noLoop()
-            p.fill("black")
-            p.noStroke()
-            for (let i=0; i<100; i++) {
-              p.circle(myDots[i].x,myDots[i].y,3)
+            for (let j=0; j<images.length; j++) {
+              p.image(images[j],(j%numX)*180,Math.floor(j/numX)*180)
+
             }
-            
           }
 
 
