@@ -9,18 +9,17 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    <header>
-      <h1>Genuary 2023 | Day 16 | Reflection of a reflection</h1>
-    </header>
+    Genuary 2023 | Day 16 | Reflection of a reflection<br><br>
+    
     <div id="myCanvas"></div>
-    <br><hr><br>
+    <br><br>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 400
-          let height = 400 
+          let width = 300
+          let height = 600 
           let triSide = width*0.9
           let strWSides = 0.1
           let strWRays = 10
@@ -97,7 +96,10 @@
             rayY2 = rayY1 + raySpeed*Math.sin(rayAngle)
             rayM = (rayY2 - rayY1) / (rayX2 - rayX1)
             rayC = rayY1 - rayM*rayX1
-            
+            console.log(Math.floor(180*rayAngle/Math.PI))
+            // normaliseRayAngle()
+            console.log(Math.floor(180*rayAngle/Math.PI))
+
             if (rayY2 > leftY) {
               pulseReflectors()
               rayY2 = leftY - 0.1
@@ -112,8 +114,8 @@
               rayX2 = (rayC - rightC) / (rightM - rayM) - 0.1 
               rayY2 = (rightC*rayM - rayC*rightM) / (rayM - rightM) + 0.1
               // CRITICAL STEP
-              rayAngle = ((p.random(3,4))*Math.PI/3 - rayAngle/2)
-              // rayAngle = (5*Math.PI/3 - rayAngle/2)
+              // rayAngle = ((p.random(3,4))*Math.PI/3 - rayAngle/2)
+              rayAngle = -1*(-Math.PI/3 - rayAngle)*2 + Math.PI - rayAngle
 
             } else if ( rayY2 < (leftM * rayX2 + leftC) ) {
               pulseReflectors()
@@ -137,6 +139,12 @@
             rayY1 = rayY2
 
 
+          }
+
+          function normaliseRayAngle() {
+            if (rayAngle > Math.PI || rayAngle < -Math.PI ) {
+              rayAngle = (rayAngle>0) ? rayAngle - Math.floor(Math.abs(rayAngle/Math.PI))*Math.PI : rayAngle + Math.floor(Math.abs(rayAngle/Math.PI))*Math.PI 
+            }
           }
 
           function pulseReflectors() {

@@ -9,21 +9,20 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    <header>
-      <h1>Genuary 2023 | Day 28 | Generative Poetry</h1>
-    </header>
+    Genuary 2023 | Day 28 | Generative Poetry<br><br>
+    
     <div id="myCanvas"></div>
-    <br><hr><br>
+    <br><br>
 
     
     <script>
       
       var s = function( p ) {
 
-          let width = 800
+          let width = 300
           let height = 600
           let sunColor = "#ab292b"
-          let textSize = 30
+          let textSize = 20
           let xBorderProportion = 0.9
           let yBorderProportion = 0.9
           let paperStrokeLength = 100
@@ -50,14 +49,11 @@
 
           p.preload = function() {
               font = p.loadFont("./assets/ChangAndEng-LOBn.ttf")
-              // font = p.loadFont("./assets/RedDragons-rg0e7.otf")
           }
 
           p.setup = function() {
             p.createCanvas(width,height)
-            // p.background(255, 254, 233)
             p.textSize(textSize)
-            // p.frameRate(1/2)
           }
 
           p.draw = function() {
@@ -69,7 +65,7 @@
             drawBorder()
             drawLandscape()
             drawHaiku(generateHaiku())
-            p.frameRate(1/2)
+            p.frameRate(1/3)
             // p.delayTime()
           }
 
@@ -105,7 +101,7 @@
             let mountainPercentage = p.random(0.3,0.7)
             let snowXHalfWidth = 0.5*mountainWidth*(1-mountainPercentage)
 
-            for (let i=0;i<p.random([3,5]);i++) {
+            for (let i=0;i<p.random([1,2,3]);i++) {
 
                 mountainCenterX = p.random(minX+mountainWidth/2,maxX-mountainWidth/2)
                 mountainWidth = mountainWidth * 0.7
@@ -159,23 +155,6 @@
               p.line(sunCenterX-(sunSize/5+p.map(i,0,waterLines,0.4,0)*sunSize/5),waterY0+waterIncrement*i,sunCenterX+(sunSize/5+p.map(i,0,waterLines,.4,0)*sunSize/5),waterY0+waterIncrement*i)
             }
 
-
-            // Draw cherry blossom on horizon
-
-            // for (let i=0;i<1000;i++) {
-            //   p.noStroke()
-            //   p.fill(228,111,156,200)
-            //   p.circle(p.random(minX,p.random(minX+100,maxX)),waterY0+p.random(-3,0),2)
-            // }
-
-            // Draw tree
-
-            // p.noFill()
-            // p.stroke(10,200)
-            // p.strokeWeight(5)
-            // p.curve(50,250,100,500,200,300,200,350)
-
-
           }
 
           function drawV(x,y,size) {
@@ -197,7 +176,7 @@
             p.noStroke()
             p.fill(0,200)
             for (let i=0; i<3; i++) {
-              p.text(haiku[i],width*0.15,height*0.15+i*(textSize+10))
+              p.text(haiku[i],width*0.1,height*0.1+i*(textSize+10))
             }
           }
 

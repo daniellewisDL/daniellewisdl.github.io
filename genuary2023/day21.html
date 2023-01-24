@@ -9,20 +9,19 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    <header>
-      <h1>Genuary 2023 | Day 21 | Persian Rug</h1>
-    </header>
-    <div id="myCanvas"></div>
-    <br><hr><br>
+    Genuary 2023 | Day 21 | Persian Rug<br><br>
     
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Persian_carpet">https://en.wikipedia.org/wiki/Persian_carpet</a>
+    <div id="myCanvas"></div>
+    <br><br>
+    
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Persian_carpet">Persian carpet</a>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 1600
-          let height = 1000
+          let width = 400
+          let height = 800
 
           const reds100 = ["#722128","#852833","#923545","#9E4853","#C5BDB0"]
           const reds200 = ["#9a9a99","#c4ab8f","#d14f4f","#e8b07c","#dc4423"]
@@ -35,13 +34,10 @@
 
           const hexToDecimal = hex => parseInt(hex, 16);
 
-          console.log(hexToDecimal(reds[0].substring(1,2)))
-          // let redsAlternative = 
-
-          // function
+          // console.log(hexToDecimal(reds[0].substring(1,2)))
 
           let innerLayerLimit = p.random(5,15)
-          let outerLayerLimit = p.random(innerLayerLimit+1,innerLayerLimit+20)
+          let outerLayerLimit = p.random(innerLayerLimit+1,innerLayerLimit+5)
           let myPixelDensity = 1
           let myAlpha = p.random(100,200)
           let myAlpha2 = 20*myAlpha
@@ -72,7 +68,7 @@
             p.stroke(p.red(colorFill0),p.blue(colorFill0),p.green(colorFill0),myAlpha)
 
 
-            // DRAW LARGE BACKGROUND SHAPES // HWERE"S MMY ALOPP+LLLPPPHAAAAAAAAAAA
+            // DRAW LARGE BACKGROUND SHAPES
             for (let i=0; i<100; i++) {
                 let colorFill = p.random(reds)
                 p.fill(p.red(colorFill),p.blue(colorFill),p.green(colorFill),myAlpha)
@@ -102,7 +98,7 @@
 
             p.stroke(p.red(colorFill0),p.blue(colorFill0),p.green(colorFill0),myAlpha2)
 
-            let numLayers = 10
+            let numLayers = 7
             let widths = []
             for (let j=0; j<numLayers; j++) {widths.push(Math.floor(p.random(innerLayerLimit,outerLayerLimit)))}
             // console.log(widths)

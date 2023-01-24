@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary 2023</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <header>
+      <h1>Genuary 2023 | Day 31 | Deliberate break</h1>
+    </header>
+    <div id="myCanvas"></div>
+    <br><hr><br>
+
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = 600
+          let height = 600
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.background(200)
+            // p.frameRate(1)
+          }
+
+          p.draw = function() {
+            p.noLoop()
+            p.rect(width/2,height/2,100,100)
+          }
+
+
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>

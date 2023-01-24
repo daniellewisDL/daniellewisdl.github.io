@@ -9,20 +9,20 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    <header>
-      <h1>Genuary 2023 | Day 20 | Art Deco</h1>
-    </header>
+    Genuary 2023 | Day 20 | Art Deco<br><br>
     <div id="myCanvas"></div>
-    <br><hr><br>
+    <br><br>
     
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Whot!">https://en.wikipedia.org/wiki/Whot!</a>
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Whot!">Whot!</a>
+    Pagat: <a href="https://www.pagat.com/com/whot.html">Whot!</a>
+    
 
     <script>
       
       var s = function( p ) {
 
-          let width = 800
-          let height = 800
+          let width = 300
+          let height = 600
 
           const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
                             'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
@@ -61,7 +61,7 @@
             let choice = p.random([0,1,2,3])
             let startX = Math.random()*width
             let startY = Math.random()*height
-            let startSize = p.random(50,70)
+            let startSize = p.random(20,100)
             if (choice == 0) {drawWhotTriange(startX,startY,startSize)}
             else if (choice==1) {drawWhotCircle(startX,startY,startSize)}
             else if (choice==2) {drawWhotCross(startX,startY,startSize)}

@@ -4,27 +4,25 @@
     <title>Genuary 2023</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; color: white; }</style>
+    <style>body { font-family: monospace; color: black; }</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(0, 0, 0);">
-    <header>
-      <h1>Genuary 2023 | Day 12 | Tessellation</h1>
-    </header>
+  <body style="background-color: rgb(255, 255, 255);">
+    Genuary 2023 | Day 12 | Tessellation<br><br>
+    
     <div id="myCanvas"></div>
-    <br><hr><br>
-    Refresh the page for a new piece<br>
-    <a href="https://www.youtube.com/watch?v=thOifuHs6eY">Bestagons</a><br>
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Tessellation">https://en.wikipedia.org/wiki/Tessellation</a>
+    <br><br>
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Tessellation">Tessellation</a><br>
+    <a href="https://www.youtube.com/watch?v=thOifuHs6eY">Bestagons</a>
     
     <script>
       
       var s = function( p ) {
 
           let canvas
-          let width = 1200
-          let height = 1000
+          let width = 300
+          let height = 600
           let frameRate = 1
           let hexMargin = p.random(0,10)
           let hexSize = p.random(5,100)
@@ -34,14 +32,23 @@
 
           const malevichColors = ["#9c3623","#070709","#9e3825","#29285e","#c2892d", "#31753c", "#e29922", "#d6a7b3", "#e29724", "#e29724", "#e29724", "#e29724"]
           
+          function setParams() {
+            hexMargin = p.random(0,10)
+            hexSize = p.random(5,100)
+            circleEnscribe = p.random([0,1])
+            cubeEnscribe = p.random([0,1])
+            strW = p.random(0.5,3)
+          }
+
           p.setup = function() {
               canvas = p.createCanvas(width,height)
-              p.background(240)
+              
           }
             
           p.draw = function() {
-              p.noLoop()
-              // p.frameRate(frameRate)
+              p.background(240)
+              setParams()
+              
               p.noStroke()
 
               for (let i = 0; i < width/hexSize; i++) {
@@ -50,11 +57,8 @@
 
                 }
               }
-              // drawHex(width/2, height/2, hexSize)
-              // drawHex(width/2, height/2 - hexSize*2 - hexMargin, hexSize)
-              // drawHex(width/2 + hexSize*2 + hexMargin/2, height/2 - hexSize - hexMargin/2, hexSize)
-
-
+              p.frameRate(frameRate)
+              
           }
 
           function drawHex(hexX, hexY, size, color="#9e3825") {

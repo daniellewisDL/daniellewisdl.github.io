@@ -9,17 +9,16 @@
   </head>
 
   <body style="background-color: rgb(255, 255, 255);">
-    <header>
-      <h1>Genuary 2023 | Day 25 | Yayoi Kusama</h1>
+    Genuary 2023 | Day 25 | Yayoi Kusama<br><br>
 
-    </header>
+    
     <div id="myCanvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 900
+          let width = 300
           let height = 600
 
           const kusamaColors1 = ["#e17aec","#ec403c","#6effef","#ffb136"]
@@ -28,8 +27,7 @@
 
           p.setup = function() {
               p.createCanvas(width,height)
-              p.frameRate(.5)
-              p.background(20)
+              
               p.rectMode(p.CENTER)
           }
             
@@ -74,7 +72,8 @@
               drawSpottyBall(Math.random()*width,Math.random()*height,150,255, myColorPalette)
             }
             
-    
+            p.frameRate(.5)
+
           }
 
 

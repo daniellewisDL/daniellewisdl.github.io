@@ -4,161 +4,170 @@
     <title>Genuary 2023</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; color: white; }</style>
+    <style>body { font-family: monospace; color: black; }</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(0, 0, 0);">
-    <header>
-      <h1>Genuary 2023 | Day 11 | Suprematism</h1>
-    </header>
+  <body style="background-color: rgb(255, 255, 255);">
+    Genuary 2023 | Day 11 | Suprematism<br><br>
+    
     <div id="myCanvas"></div>
-    <br><hr><br>
-    Refresh the page for a new piece<br>
-    Randomly generated piece in the style of <a href="https://en.wikipedia.org/wiki/Kazimir_Malevich">Kazimir Malevich</a><br>
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Suprematism">https://en.wikipedia.org/wiki/Suprematism</a>
+    <br><br>
+
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Suprematism">Suprematism</a>, <a href="https://en.wikipedia.org/wiki/Kazimir_Malevich">Kazimir Malevich</a>
     
     <script>
       
       var s = function( p ) {
 
           let canvas
-          let width = 600
-          let height = 800
+          let width = 300
+          let height = 600
           let newWidth  = 0
           let newHeight = 0
           let newX      = 0
           let newY      = 0
           let overlapAllow = 0.01
+          
           let numPrimaryRects = p.random(1,30)
           let numSecondaryRects = p.random(1,3)
 
           const malevichColors = ["#9c3623","#070709","#9e3825","#29285e","#c2892d", "#31753c", "#e29922", "#d6a7b3", "#e29724", "#e29724", "#e29724", "#e29724"]
+
           let primaryAxis = Math.random(Math.PI*2)
-          // let primaryAxis = 0
-          // let secondaryAxis = Math.random(Math.PI*2)
           let secondaryAxis = primaryAxis - Math.PI/p.random([3,2])
 
           let primaryRects = []
-
-          for (let i = 0; i<numPrimaryRects; i++) {
-            if (i==0) {
-              newHeight = Math.floor(p.random(0.5 * height,     0.7 * height))
-              newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
-              newX      = Math.floor(p.random(0,width-newWidth))
-              newY      = Math.floor(p.random(0,height-newHeight))
-
-              primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
-
-            } else if (i<8) {
-
-                  while (true) {
-                      newHeight = Math.floor(p.random(0.10 * height,    0.20 * height))
-                      newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
-                      newX      = Math.floor(p.random(0,width-newWidth))
-                      newY      = Math.floor(p.random(0,height-newHeight))
-                      let overlap = false
-                      for (let j = 0; j < primaryRects.length; j++) {
-                        if (Math.random()<overlapAllow) {continue}
-
-                        if (!(primaryRects[j].x                            > (newX + newWidth) ||
-                            newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
-                            (primaryRects[j].y + primaryRects[j].height) < newY ||
-                            (newY + newHeight)                           < primaryRects[j].y
-                            )) {
-                              overlap=true
-                              console.log("overlap detected")
-                              break
-                            }
-                      
-                      }
-
-                      if (!overlap) {break}
-
-                    }
-
-              primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
-                  
-            } else if (i<12) {
-
-              while (true) {
-                      newHeight = Math.floor(p.random(0.05 * height,    0.10 * height))
-                      newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
-                      newX      = Math.floor(p.random(0,width-newWidth))
-                      newY      = Math.floor(p.random(0,height-newHeight))
-                      let overlap = false
-                      for (let j = 0; j < primaryRects.length; j++) {
-                        if (Math.random()<overlapAllow) {continue}
-
-                        if (!(primaryRects[j].x                            > (newX + newWidth) ||
-                            newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
-                            (primaryRects[j].y + primaryRects[j].height) < newY ||
-                            (newY + newHeight)                           < primaryRects[j].y
-                            )) {
-                              overlap=true
-                              console.log("overlap detected")
-                              break
-                            }
-                      
-                      }
-
-                      if (!overlap) {break}
-
-                    }
-
-              primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
-
-            } else {
-              
-              while (true) {
-                      newHeight = Math.floor(p.random(0.01 * height,    0.10 * height))
-                      newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
-                      newX      = Math.floor(p.random(0,width-newWidth))
-                      newY      = Math.floor(p.random(0,height-newHeight))
-                      let overlap = false
-                      for (let j = 0; j < primaryRects.length; j++) {
-                        if (Math.random()<overlapAllow) {continue}
-                        if (!(primaryRects[j].x                            > (newX + newWidth) ||
-                            newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
-                            (primaryRects[j].y + primaryRects[j].height) < newY ||
-                            (newY + newHeight)                           < primaryRects[j].y
-                            )) {
-                              overlap=true
-                              console.log("overlap detected")
-                              break
-                            }
-                      
-                      }
-
-                      if (!overlap) {break}
-
-                    }
-
-              primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
-            }
-            
-          }
-
           let secondaryRects = []
 
-          for (let i = 0; i<numSecondaryRects; i++) {
-            
-              newHeight = Math.floor(p.random(0.5 * height,     0.7 * height))
-              newWidth  = Math.floor(p.random(0.1 * newHeight,  0.2 * newHeight))
-              newX      = Math.floor(p.random(0,width-newWidth))
-              newY      = Math.floor(p.random(0,height-newHeight))
+          function setRects() {
+            primaryRects = []
+            secondaryRects = []
+            numPrimaryRects = p.random(1,30)
+            numSecondaryRects = p.random(1,3)
+            primaryAxis = Math.random(Math.PI*2)
+            secondaryAxis = primaryAxis - Math.PI/p.random([3,2])
+            for (let i = 0; i<numPrimaryRects; i++) {
+              if (i==0) {
+                newHeight = Math.floor(p.random(0.5 * height,     0.7 * height))
+                newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
+                newX      = Math.floor(p.random(0,width-newWidth))
+                newY      = Math.floor(p.random(0,height-newHeight))
 
-              secondaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
+                primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
 
+              } else if (i<8) {
+
+                    while (true) {
+                        newHeight = Math.floor(p.random(0.10 * height,    0.20 * height))
+                        newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
+                        newX      = Math.floor(p.random(0,width-newWidth))
+                        newY      = Math.floor(p.random(0,height-newHeight))
+                        let overlap = false
+                        for (let j = 0; j < primaryRects.length; j++) {
+                          if (Math.random()<overlapAllow) {continue}
+
+                          if (!(primaryRects[j].x                            > (newX + newWidth) ||
+                              newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
+                              (primaryRects[j].y + primaryRects[j].height) < newY ||
+                              (newY + newHeight)                           < primaryRects[j].y
+                              )) {
+                                overlap=true
+                                console.log("overlap detected")
+                                break
+                              }
+                        
+                        }
+
+                        if (!overlap) {break}
+
+                      }
+
+                primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
+                    
+              } else if (i<12) {
+
+                while (true) {
+                        newHeight = Math.floor(p.random(0.05 * height,    0.10 * height))
+                        newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
+                        newX      = Math.floor(p.random(0,width-newWidth))
+                        newY      = Math.floor(p.random(0,height-newHeight))
+                        let overlap = false
+                        for (let j = 0; j < primaryRects.length; j++) {
+                          if (Math.random()<overlapAllow) {continue}
+
+                          if (!(primaryRects[j].x                            > (newX + newWidth) ||
+                              newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
+                              (primaryRects[j].y + primaryRects[j].height) < newY ||
+                              (newY + newHeight)                           < primaryRects[j].y
+                              )) {
+                                overlap=true
+                                console.log("overlap detected")
+                                break
+                              }
+                        
+                        }
+
+                        if (!overlap) {break}
+
+                      }
+
+                primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
+
+              } else {
+                
+                while (true) {
+                        newHeight = Math.floor(p.random(0.01 * height,    0.10 * height))
+                        newWidth  = Math.floor(p.random(0.3 * newHeight,  0.9 * newHeight))
+                        newX      = Math.floor(p.random(0,width-newWidth))
+                        newY      = Math.floor(p.random(0,height-newHeight))
+                        let overlap = false
+                        for (let j = 0; j < primaryRects.length; j++) {
+                          if (Math.random()<overlapAllow) {continue}
+                          if (!(primaryRects[j].x                            > (newX + newWidth) ||
+                              newX                                         > (primaryRects[j].x + primaryRects[j].width) ||
+                              (primaryRects[j].y + primaryRects[j].height) < newY ||
+                              (newY + newHeight)                           < primaryRects[j].y
+                              )) {
+                                overlap=true
+                                console.log("overlap detected")
+                                break
+                              }
+                        
+                        }
+
+                        if (!overlap) {break}
+
+                      }
+
+                primaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
+              }
+              
             }
 
+            
+
+            for (let i = 0; i<numSecondaryRects; i++) {
+              
+                newHeight = Math.floor(p.random(0.5 * height,     0.7 * height))
+                newWidth  = Math.floor(p.random(0.1 * newHeight,  0.2 * newHeight))
+                newX      = Math.floor(p.random(0,width-newWidth))
+                newY      = Math.floor(p.random(0,height-newHeight))
+
+                secondaryRects.push({x: newX, y: newY, width:newWidth, height:newHeight})
+
+              }
+          }
+          
           p.setup = function() {
               canvas = p.createCanvas(width,height)
-              p.background(240)
+             
           }
             
           p.draw = function() {
-              p.noLoop()
+              // p.noLoop()
+              p.background(200)
+              setRects()
               p.noStroke()
 
               p.push()
@@ -184,37 +193,27 @@
 
               
               // Generate the canvas papery texture
-              for (let i = 0; i<100000; i++) {
-                p.fill(200,50)
-                p.circle(Math.random()*width,Math.random()*height,p.random([0,1,2,3,4])/2.7)
+              // for (let i = 0; i<100000; i++) {
+              //   p.fill(200,50)
+              //   p.circle(Math.random()*width,Math.random()*height,p.random([0,1,2,3,4])/2.7)
+              // }
+              for (let stipples = 0; stipples< 10000; stipples++) {
+                p.fill(255,20)
+                p.noStroke()
+                p.circle(Math.random()*width,Math.random()*height,Math.random()*8)
               }
 
-
-
+              p.frameRate(1)
           }
 
           function malevich() {
-
             p.fill(colorAlpha(p.random(malevichColors),2))
-              // p.push()
-              // p.translate(width/2,height/2)
-              // p.rotate(secondaryAxis)
-              // p.rect(-100,-100,50,300)
-              // // p.rect(-width/4 + Math.random()*width/2,-height/4 + Math.random()*height/2,p.random([40,80,100,120]),p.random([140,280,500,620]))
-              // p.pop()
-              
-              p.fill(colorAlpha(p.random(malevichColors),2))
-              p.push()
-              p.translate(width/2,height/2)
-              p.rotate(primaryAxis)
-
-              p.rect(0,0,200,300)
-              // p.rect(-width/4 + Math.random()*width/2,-height/4 + Math.random()*height/2,p.random([40,80,100,120]),p.random([140,280,500,620]))
-              p.pop()
-
-
-
-
+            p.fill(colorAlpha(p.random(malevichColors),2))
+            p.push()
+            p.translate(width/2,height/2)
+            p.rotate(primaryAxis)
+            p.rect(0,0,200,300)
+            p.pop()
           }
 
           function colorAlpha (aColor, alpha) {
