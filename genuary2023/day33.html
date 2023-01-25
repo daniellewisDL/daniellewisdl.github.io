@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <style>body { font-family: monospace;}</style>
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 33 | Network<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body style="background-color: rgb(0, 0, 0);">
+    <div id="canvas"></div>
+    <div></div>
 
-    
-    <script>
+<script>
       
       var s = function( p ) {
 
-          let width = 600
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let strW = 1
           let fgAlpha = 128
           let bgAlpha = 128
@@ -28,8 +24,8 @@
           let knn = 8
           let myDots = []
           // let numDots = 100
-          let cellSizeX = 60
-          let cellSizeY = 60
+          let cellSizeX = width/10
+          let cellSizeY = height/10
 
           const threadColors = ['Black','DarkGreen','Navy','Maroon','Green','DarkBlue','DarkRed','MidnightBlue','MediumBlue','DarkSlateGray',
                     'Indigo','ForestGreen','SaddleBrown','DarkOliveGreen','FireBrick','Brown','Blue','Lime','Red','Olive',
@@ -64,7 +60,19 @@
           const alexanderbgColor = p.color(0,120,0)
           const alexanderfgColor = p.color(255,255,69)
           const alexanderfgAlpha = 80
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
 
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            cellSizeX = width/10
+            cellSizeY = height/10
+            resetParams()
+          }
 
           function resetParams() {
             myDots = []
@@ -112,7 +120,6 @@
           p.setup = function() {
             p.createCanvas(width,height)
             resetParams()
-            console.log("Hello Alexander, and hello Eddie!")
             p.background(bgColor)
           }
 
