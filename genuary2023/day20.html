@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 20 | Art Deco<br><br>
-    <div id="myCanvas"></div>
-    <br><br>
-    
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Whot!">Whot!</a>
-    Pagat: <a href="https://www.pagat.com/com/whot.html">Whot!</a>
-    
-
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+           let width = p.windowWidth
+          let height = p.windowHeight
+          
 
           const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
                             'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
@@ -46,8 +39,17 @@
             bgColor=tempColor
           }
 
-          console.log("Background color: ", bgColor)
-          console.log("Foreground color: ", fgColor)
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -61,7 +63,7 @@
             let choice = p.random([0,1,2,3])
             let startX = Math.random()*width
             let startY = Math.random()*height
-            let startSize = p.random(20,100)
+            let startSize = p.random(20*width/800,100*width/800)
             if (choice == 0) {drawWhotTriange(startX,startY,startSize)}
             else if (choice==1) {drawWhotCircle(startX,startY,startSize)}
             else if (choice==2) {drawWhotCross(startX,startY,startSize)}

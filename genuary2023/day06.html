@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(240, 240, 240); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 6 | Steal like an artist<br><br>
-    
-    <div id="myCanvas"></div>
-    <br>
-    Hat tip: <a href="https://shirleywu.studio/filmflowers/">Shirley Wu</a>
+  <body>
+    <div id="canvas"></div>
+
     <script>
       
       var s = function( p ) {
@@ -21,12 +17,23 @@
           let canvas
           // let frame_rate = 100
           let strW = 1
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let backgroundColor = 240
-          let maxFlowerRadius = 40
+          let maxFlowerRadius = width/20
 
           let circleRadius = 20
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            maxFlowerRadius = width/20
+          }
 
           p.setup = function() {
               canvas = p.createCanvas(width,height)
@@ -37,19 +44,11 @@
           }
             
           p.draw = function() {
-            // p.noLoop()
-              // p.background(backgroundColor)
               p.background(backgroundColor,2)
-              // p.push()
-              // for (let i = 0; i < 9; i++) {
-              //   for (let j = 0; j < 7; j++) {
-                  p.push()
-                  p.translate(Math.random()*width, Math.random()*height)
-                  // p.translate(10+maxFlowerRadius+maxFlowerRadius*2.5*i,10+maxFlowerRadius+maxFlowerRadius*2.5*j)
-                  p.drawFlower()
-                  p.pop()
-                // }
-              // }
+              p.push()
+              p.translate(Math.random()*width, Math.random()*height)
+              p.drawFlower()
+              p.pop()
           }
           
           p.drawFlower = function() {
@@ -139,7 +138,7 @@
           
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

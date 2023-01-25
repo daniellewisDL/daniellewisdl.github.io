@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 17 | A grid inside a grid inside a grid<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body>
+    <div id="canvas"></div>
 
     
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let chars = []
           let textSizeStart = 50
           let dx = textSizeStart /10
@@ -38,6 +34,20 @@
               // console.log(chars)
           }
 
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            boxMargin = p.random(-5,10)
+            boxSize = p.random(20,100)
+          }
+
+
           p.setup = function() {
             p.createCanvas(width,height)
             p.frameRate(10)
@@ -47,10 +57,7 @@
           }
 
           p.draw = function() {
-            // p.noLoop()          
-            
             p.background(255, 254, 233,80)
-            // drawPaper()
             p.stroke(50,50)
             p.noFill()
 
@@ -91,21 +98,6 @@
               p.drawingContext.setLineDash(list);
             }
 
-          function drawPaper() {
-              p.fill(90)
-              p.stroke(50,18)
-              for(let threads = 0; threads < 40000; threads++) {
-                let x1 = Math.random() * width;
-                let y1 = Math.random() * height;
-                let theta = Math.random() * 2 * Math.PI;
-                let segmentLength = Math.random() * 5 + 2;
-                let x2 = Math.cos(theta) * segmentLength + x1;
-                let y2 = Math.sin(theta) * segmentLength + y1;
-                p.line(x1, y1, x2, y2)
-              }
-          }
-
-
           function splitBox(x,y,boxSizeX,boxSizeY,level) {
             
             // p.rect(x,y,boxSizeX,boxSizeY)
@@ -122,41 +114,16 @@
                   splitBox(x,y+boxSizeY/2,boxSizeX,boxSizeY/2,level+1)
               } else {
                   p.rect(x,y,boxSizeX,boxSizeY)
-                  // drawChar(x,y,boxSizeX,boxSizeY)
               }                
             } else {
                   p.rect(x,y,boxSizeX,boxSizeY)
-                  // drawChar(x,y,boxSizeX,boxSizeY)
             } 
-          }
-
-
-          
-
-
-          function drawChar(x,y,xSize,ySize) {
-            dy = 5
-
-            p.push()
-            
-            p.noStroke()
-            p.fill(100)
-
-            p.textSize(textSizeStart)
-            p.textAlign(p.CENTER, p.CENTER)
-            p.translate(x+xSize/2,y+ySize/2)
-            p.scale(xSize/(textSizeStart*1.2),ySize/(textSizeStart*1.2))
-            p.text(p.random(chars),0,dy)
-            
-            
-
-            p.pop()
           }
 
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; color: black; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 12 | Tessellation<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Tessellation">Tessellation</a><br>
-    <a href="https://www.youtube.com/watch?v=thOifuHs6eY">Bestagons</a>
+  <body>
+    <div id="canvas"></div>
     
     <script>
       
       var s = function( p ) {
 
           let canvas
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let frameRate = 1
-          let hexMargin = p.random(0,10)
-          let hexSize = p.random(5,100)
+          let hexMargin = p.random([0,1,2,3,4,5,6,7,8,9,,10,10,10,10])
+          let hexSize = p.random(5,Math.max(width/height)/10)
           let circleEnscribe = p.random([0,1])
           let cubeEnscribe = p.random([0,1])
           let strW = p.random(0.5,3)
 
           const malevichColors = ["#9c3623","#070709","#9e3825","#29285e","#c2892d", "#31753c", "#e29922", "#d6a7b3", "#e29724", "#e29724", "#e29724", "#e29724"]
           
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
+
           function setParams() {
             hexMargin = p.random(0,10)
             hexSize = p.random(5,100)
@@ -95,7 +102,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

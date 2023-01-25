@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
-
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 1 | Infinite Loop
-    <br><br>
-    <div id="myCanvas"></div>
+  
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
-      var s = function( p ) {
+      // Genuary++
 
-          let canvas
-          // let frame_rate = 500
+      // Day 1 | Infinite Loop
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
           let strW = 1
           let leftCanvasBuffer = 10
           let topCanvasBuffer = 100
-          let width = 300
-          let height = 600
-
           let xCoord = 0
           let yCoord = 0
           let circleRadius = 40
@@ -32,24 +30,24 @@
           let scale = 0
           let piDivisor = 30
 
-          // function windowResized() {
-          //     resizeCanvas(windowWidth-2*leftCanvasBuffer, windowHeight-2*topCanvasBuffer)
-          // }
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+          }
 
           p.setup = function() {
-              canvas = p.createCanvas(width,height)
-              // canvas.style('z-index', '0')
-              // p.frameRate(frame_rate)
-              p.background(0)
-              // p.stroke(0)
-              // p.strokeWeight(strW)
-              // p.noFill()
-              // p.rect(0,0,width,height)
-              p.noStroke()
-              }
-            
+            p.createCanvas(width,height)
+            p.background(0)
+            p.noStroke()
+          }
+
           p.draw = function() {
-              p.fill(0,10)
+            p.fill(0,5)
               p.rect(0,0,width,height)
               p.fill(0,200,0)
               scale = 2 / (3 - Math.cos(2*timeStepCounter))
@@ -57,15 +55,12 @@
               yCoord = scale * Math.sin(2*timeStepCounter) / 2
               timeStepCounter = timeStepCounter + Math.PI/piDivisor
               p.circle(p.map(xCoord,-1.2,1.2,-width/2,width/2)+width/2,p.map(yCoord,-0.5,0.5,-height/2,height/2)+height/2,circleRadius)
-              }
-          
-          p.keyPressed = function() {
-            if (p.key === 's') {p.saveGif("mySketch",5)}
           }
-          
-          }
+ 
+
+      }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

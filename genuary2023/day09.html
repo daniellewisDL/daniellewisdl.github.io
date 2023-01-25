@@ -1,41 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 9 | Plants<br><br>
-    
-    <div id="myCanvas"></div>
-    <br>
-    <a href="https://en.wikipedia.org/wiki/Barnsley_fern">Barnsley Ferns</a> with random parameters
+  <body>
+    <div id="canvas"></div>
+
     <script>
       
       var s = function( p ) {
 
           let canvas
-          // let frame_rate = 100
           let strW = 1
-          let width = 300
-          let height = 600
-          let boxWidth = 100
-          let boxHeight = 100
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let numBoxesX = 4
+          let numBoxesY = 3
+          let boxWidth = width/numBoxesX
+          let boxHeight = height/numBoxesY
           let backgroundColor = 0
-          let maxFlowerRadius = 40
           let x = 0
           let y = 0
 
           const fernAlpha = 150
           let circleRadius = 2
 
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            boxWidth = width/numBoxesX
+            boxHeight = height/numBoxesY
+            
+          }
+
           p.setup = function() {
               canvas = p.createCanvas(width,height)
-              // p.frameRate(frame_rate)
               p.background(backgroundColor)
               p.textSize(16)
               p.textFont('Courier')
@@ -49,10 +57,6 @@
                 let rand1 = randRange(0.005,0.0025)
                 let rand2 = randRange(0.8,0.05)
                 let rand3 = randRange(0.9,0.05)
-                // a1x=0,a1y=0.16,a1k=0,
-                // a2xx=0.85,a2xy=0.04,a2yx=-0.04,a2yy=0.85,a2k=1.6,
-                // a3xx=0.20,a3xy=-0.26,a3yx=0.23,a3yy=0.22,a3k=1.6,
-                // a4xx=-0.15,a4xy=0.28,a4yx=0.26,a4yy=0.24,a4k=.44 
                 let a1x = randRange(0.05,0.5)
                 let a1y = randRange(0.16,0.1)
                 let a1k = randRange(0,0)
@@ -139,7 +143,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

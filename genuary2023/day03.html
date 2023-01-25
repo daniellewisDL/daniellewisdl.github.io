@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 3 | Glitch Art<br><br>
-    
-    <div id="myCanvas"></div>
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
@@ -19,8 +16,8 @@
 
           let canvas
           let frame_rate = 10
-          let width = 600
-          let height = 400
+          let width = p.windowWidth
+          let height = p.windowHeight
           let myImageOriginal
 
           p.preload = function() {
@@ -34,7 +31,16 @@
               p.background(0)
 
             }
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
 
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+          }
           p.draw = function() {
             // p.noLoop()
             
@@ -54,7 +60,7 @@
           }
         }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

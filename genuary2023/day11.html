@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; color: black; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 11 | Suprematism<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Suprematism">Suprematism</a>, <a href="https://en.wikipedia.org/wiki/Kazimir_Malevich">Kazimir Malevich</a>
+  <body>
+    <div id="canvas"></div>
     
     <script>
       
       var s = function( p ) {
 
           let canvas
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let newWidth  = 0
           let newHeight = 0
           let newX      = 0
@@ -39,6 +33,17 @@
 
           let primaryRects = []
           let secondaryRects = []
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
 
           function setRects() {
             primaryRects = []
@@ -191,12 +196,6 @@
               }
               p.pop()
 
-              
-              // Generate the canvas papery texture
-              // for (let i = 0; i<100000; i++) {
-              //   p.fill(200,50)
-              //   p.circle(Math.random()*width,Math.random()*height,p.random([0,1,2,3,4])/2.7)
-              // }
               for (let stipples = 0; stipples< 10000; stipples++) {
                 p.fill(255,20)
                 p.noStroke()
@@ -222,7 +221,7 @@
           }
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

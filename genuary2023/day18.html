@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 18 | !grid<br><br>
-    </header>
-    <div id="myCanvas"></div>
-    <br><br>
-
-    
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let textSize = 30
           let textSizeOff = 0
           let textX = width/2
@@ -34,6 +28,20 @@
           let widthMultiplier = p.random(2,20)
 
           
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            horizLineCount = p.random(10,10)
+            vertLineCount = p.random(30,80)
+            widthMultiplier = p.random(2,20)
+          }
+
+
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -100,7 +108,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

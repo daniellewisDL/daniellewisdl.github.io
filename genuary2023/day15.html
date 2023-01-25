@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 15 | Sine waves<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
           let timeStepCounter = 0
           let yOff = 0
           let yNoiseOff = 0.0
@@ -34,6 +30,17 @@
             p.background(255)
           }
 
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
 
           p.draw = function() {
 
@@ -67,7 +74,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

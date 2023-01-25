@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 10 | Generative music<br><br>
+  <body>
+    <div id="canvas"></div>
     
-    <div id="myCanvas"></div>
-
-    <script>
+   <script>
       
       var s = function( p ) {
 
         let monoSynth;
-        let width = 300
-        let height = 600
+        let width = p.windowWidth
+        let height = p.windowHeight
         let frameRate = 10
         let velocity = 0.1
+
+        p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+
+            
+          }
 
         p.setup = function() {
           p.createCanvas(width, height)
@@ -49,7 +58,7 @@
           monoSynth.play(p.random(['C2','D2','E2']),velocity,0,1/8)
           p.noStroke()
           p.fill(Math.random()*200,Math.random()*200,Math.random()*200,80)
-          p.circle(Math.random()*width,Math.random()*height, Math.random()*300)
+          p.circle(Math.random()*width,Math.random()*height, Math.random()*Math.max(width,height))
         }
 
 
@@ -58,7 +67,7 @@
           monoSynth.play(p.random(['C5','D5','E5','C4']),velocity,0,1/8)
           p.noStroke()
           p.fill(0,80)
-          p.circle(Math.random()*width,Math.random()*height, Math.random()*100)
+          p.circle(Math.random()*width,Math.random()*height, Math.random()*Math.max(width,height))
         }
 
         function playSynth() {
@@ -67,12 +76,13 @@
           let time = 0 // time from now (in seconds)
           let dur = p.random([1/4,1/8,1]) // note duration (in seconds)
           monoSynth.play(note, velocity, time, dur)
-          p.rect(Math.random()*width,Math.random()*height,Math.random()*100,Math.random()*200)
+          p.fill(Math.random()*200,Math.random()*200,Math.random()*200,180)
+          p.rect(Math.random()*width,Math.random()*height,Math.random()*100,Math.random()*Math.max(width,height))
         }
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

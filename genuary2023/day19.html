@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 19 | Black and white<br><br>
-    </header>
-    <div id="myCanvas"></div>
-    <br><br>
-
-    
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
-
-          let width = 500
-          let height = 500
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let textSize = 100*width/600
           let angleSpeedOff = 0
           let offsetIncrements = 0.01
           let angle = 0
@@ -37,7 +31,7 @@
           let bgColor = (bgColorRando,bgColorRando,bgColorRando)
           let cornerPiecesOuterMargin = 5
           let cornerPiecesInnerMargins = p.random(5,10)
-          let cornerPiecesSize = p.random(10,45)
+          let cornerPiecesSize = p.random(30*width/600,45*width/600)
           let blackTextColor = "white"
           let whiteTextColor = "black"
           let cornerColorsBottom = ["black","black","black","black","black","black","black","black","black","black"]
@@ -48,6 +42,22 @@
           let orbiterOffsetAngle = Math.random()*Math.PI
           let orbiterAxis1 = 300
           let orbiterAxis2 = 500
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            circleSize = Math.min(width/2,height/2)
+            largerCircleSize = circleSize *1.2
+            textSize = 100*width/600
+            cornerPiecesInnerMargins = p.random(5,10)
+            cornerPiecesSize = p.random(30*width/600,45*width/600)
+            orbiterOffsetAngle = Math.random()*Math.PI
+          }
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -82,11 +92,9 @@
             p.noFill()
             p.circle(width/2,height/2,circleSize)
 
-            // p.noStroke()
             p.fill("black")
             p.arc(width/2,height/2,circleSize,circleSize,angle,angle+Math.PI)
 
-            // p.noStroke()
             p.fill("white")
             p.arc(width/2,height/2,circleSize,circleSize,angle+Math.PI,angle+2*Math.PI)
           }
@@ -115,29 +123,21 @@
           }
 
           function drawOrbiter() {
-
-              orbiterAxis1 = 70000
-              orbiterAxis2 = 38000
-
+              orbiterAxis1 = 70000*width/600
+              orbiterAxis2 = 38000*width/600
               orbiterTimeCounter += Math.PI/100
               orbiterX = width/2 + Math.sqrt(orbiterAxis1)*Math.cos(orbiterOffsetAngle)*Math.cos(orbiterTimeCounter) - Math.sqrt(orbiterAxis2)*Math.sin(orbiterOffsetAngle)*Math.sin(orbiterTimeCounter)
               orbiterY = +height/2 + Math.sqrt(orbiterAxis1)*Math.sin(orbiterOffsetAngle)*Math.cos(orbiterTimeCounter) + Math.sqrt(orbiterAxis2)*Math.cos(orbiterOffsetAngle)*Math.sin(orbiterTimeCounter)
               p.fill("black")
-              p.circle(orbiterX,orbiterY,20)
+              p.circle(orbiterX,orbiterY,30*width/600)
               p.fill("white")
-              p.circle(orbiterX,orbiterY,10)
+              p.circle(orbiterX,orbiterY,20*width/600)
 
           }
 
 
           function drawCorners() {
-              // let cornerPiecesOuterMargin = 10
-              // let cornerPiecesInnerMargins = 5
-              // let cornerPiecesSize = 10
-
               let startingYDistanceAwayFromEdge = cornerPiecesOuterMargin+cornerPiecesInnerMargins*3+cornerPiecesSize*4
-
-              // for (let a = 0; a < 2; a++) {
                 for (let b = 0; b < 4; b++) {
                   for (let c = 0; c < b+1; c++) {
                     
@@ -150,30 +150,25 @@
 
                   }
                 }
-              // }
-
           }
 
 
           function drawText() {
-            // if (p.frameCount % 30 == 0 && Math.random()>0.8) { blackTextColor = (blackTextColor == "white") ? "black" : "white"}
-            // if (p.frameCount % 30 == 0 && Math.random()>0.8) { whiteTextColor = (whiteTextColor == "white") ? "black" : "white"}
-            // console.log(p.frameCount)
 
             p.textAlign(p.LEFT,p.TOP)
             p.fill(blackTextColor)
-            p.textSize(100)
+            p.textSize(textSize)
             p.text("BLACK", 0,0)
 
             p.textAlign(p.RIGHT,p.BASELINE)
             p.fill(whiteTextColor)
-            p.textSize(100)
+            p.textSize(textSize)
             p.text("WHITE", width,height-5)
 
           }
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

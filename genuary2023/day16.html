@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 16 | Reflection of a reflection<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600 
-          let triSide = width*0.9
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let triSide = Math.min(height,width)*0.9
           let strWSides = 0.1
           let strWRays = 10
           let yOff = triSide*0.1
@@ -48,9 +44,51 @@
           let rayY1 = height/2
           let rayX2 = rayX1
           let rayY2 = rayY1
-          let raySpeed = 20
+          let raySpeed = triSide*2/30
           let rayAngle = Math.random()*Math.PI*2
           let rayM = 0
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+            triSide = Math.min(height,width)*0.9
+            strWSides = 0.1
+            strWRays = 10
+            yOff = triSide*0.1
+
+            leftX = width/2 - triSide/2
+            leftY = height/2 + triSide/2 * Math.tan(Math.PI/6)  + yOff
+
+            rightX = width/2 + triSide/2
+            rightY = leftY
+
+            topX = width/2
+            topY = height/2 - (triSide*Math.cos(Math.PI/6) - (triSide/2*Math.tan(Math.PI/6))) + yOff
+
+            rightM = (rightY - topY) / (rightX - topX)
+            rightC = rightY - rightM * rightX
+            
+
+            leftM = (topY - leftY) / (topX - leftX)
+            leftC = leftY - leftM * leftX
+
+            bottomM = 0
+            bottomC = rightY
+
+            rayX1 = width/2
+            rayY1 = height/2
+            rayX2 = rayX1
+            rayY2 = rayY1
+            raySpeed = triSide*2/30
+            rayAngle = Math.random()*Math.PI*2
+            rayM = 0
+          }
 
           p.setup = function() {
             p.createCanvas(width, height)
@@ -162,7 +200,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>
