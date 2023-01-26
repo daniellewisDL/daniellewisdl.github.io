@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let timeStepCounter = 0
+          let yOff = 0
+          let yNoiseOff = 0.0
+          let ampOff = 1000.0
+          let freqOff = 2000.0
+          let amp = height/3
+          let freq = 5
+          let offsetIncrements = 0.005
+
+          p.setup = function() {
+            p.createCanvas(width, height)
+            p.background(255)
+          }
+
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
+          p.draw = function() {
+
+            yNoiseOff+=offsetIncrements
+            yOff = p.map(p.noise(yNoiseOff),0,1,-400,400)
+
+            ampOff += offsetIncrements
+            amp = p.map(p.noise(ampOff),0,1,0,height/2)
+
+            freqOff += offsetIncrements
+            freq = p.map(p.noise(ampOff),0,1,0.5,3)
+
+            timeStepCounter += 1
+            p.background(240,0)
+            p.stroke(50,p.random(150,250),50,50)
+            let x1 = 0
+            let y1 = yOff + height/2
+            let x2 = 0
+            let y2 = yOff + height/2
+            
+            for (let i = 0; i <= width; i = i + 10) {
+              // p.fill(Math.random()*200,Math.random()*200,Math.random()*200)
+              x2=i
+              y2=yOff+p.map(height/2 + Math.sin(p.map(i,0,width,0,freq*Math.PI*2)) * amp ,0,height,height,0)
+              p.line(x1,y1,x2,y2)
+              x1=x2
+              y1=y2
+            }
+
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    
+
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let sunColor = "#ab292b"
+          let textSize = 20 *width/600
+          let xBorderProportion = 0.9
+          let yBorderProportion = 0.9
+          let paperStrokeLength = 100
+          const lines1 = ['small boats','ashen faced','snowy morn','shorter days','haze','low sun','advent','tarn','snowflakes','crystal nights',
+                'rain','winter stars','hungry','rain','champagne','the sound of geese','autumn sun','flying fish','december','wavering path','morning frost',
+                'evening walk','deep autumn','visiting the graves','over the hedge','a bubble','rain','my hand','three petals fall','instant message',
+                'out of the well','endless beaches','garden wedding','rainy New York','beach moods','faintly purple','the last light of day','flowery petals',
+                'through lace','rain','winter beach','winter','long illness','lunch al fresco','the attention','remembering a song','cold forgotten coffee',
+                'end of summer','waking up','long night','train window','old love letter','his scent gone','overnight snow','forest trail','learning to eat']
+          const lines2 = ['colors of','trying to remember','pouring another cup','flames dance','half the horse hidden','the lady in red','the passing stranger',
+                'in a bubble slowly','new asphalt','gusts of rain','the sound of a horse galloping','suddenly a whiff','half of the moon','another leaf','the sound of silence',
+                'drowned by the sound of the train','my shadow over','the sound of the wind','a long shadow','snowflakes melting','she leaves','smell of pine between','a blue sky above',
+                'The apple colder','strong October wind','a dragonfly','bursting surface','the white lilac','on her hip','the purple coneflower','moon reveals more',
+                'By the bucket','a stranger covers me','under the cherry blossoms','from the high window','the moon in my sake cup','against the moon','purple rhododendrons',
+                'blooming before','the tracery of frost','falls from the trees','three grey lines','white peonies','pink dogwood blooming','leaving out a chair','his dog gets',
+                'from my childhood','the palette of','our memories','with freckles and curls','on my window a spider','the fingerprints','the crinkled edges','from every room',
+                'his side of the bed','running to the end','around bruises']
+          const lines3 = ['the rainbow','my dream','black coffee','behind the house','the ice','in the deep','outside','through leaves',
+              'perfume','hidden','down','clapping','this morning','tombstones','joins another','on the pond','first','pines','in the trees',
+              'east','full moon','low','full moon','almost summer','herself herself each night','I hunt a moon','with his shadow','the bride blush deepens','black umbrellas bloom','disappears',
+              'pines in the light','dissolve in the dark','the end of rain','on glass','on the blue iris','of sand sea and sky','in falling snow','without me','for the sun',
+              'plum blossoms','autumn leaves','summer break','climbing the moon','from past journeys','of poppy petals','winter jasmine','untouched',
+              'of my thoughts','winter apples']
+
+          p.preload = function() {
+              font = p.loadFont("./assets/ChangAndEng-LOBn.ttf")
+          }
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            textSize = 20 *width/400
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+           
+          }
+
+          p.draw = function() {
+
+            // p.noLoop()
+            p.background(255, 254, 233)
+            p.textSize(Math.min(60,textSize))
+            p.rectMode(p.CENTER)
+            drawPaper()
+            drawBorder()
+            drawLandscape()
+            drawHaiku(generateHaiku())
+            p.frameRate(1/3)
+            console.log(textSize)
+          }
+
+          function drawBorder() {
+            p.noFill()
+            p.stroke(30,100)
+            p.strokeWeight(0.5)
+            p.rect(width/2,height/2,width*xBorderProportion,height*yBorderProportion)
+          }
+
+          function drawLandscape() {
+
+            // Draw sun
+            let sunSize = p.random(width/20,width/10)
+            let minX = (width-width*xBorderProportion*.8)/2
+            let maxX = width-minX
+            let minY = (height/3+sunSize/2)
+            let maxY = height-minY-sunSize/2
+            let sunCenterX = p.random(minX,maxX)
+            let sunCenterY = p.random(minY,maxY)
+            p.fill(sunColor)
+            p.noStroke()
+            p.circle(sunCenterX,sunCenterY,sunSize)
+
+
+            // Draw mountain
+
+            let waterY0 = Math.min(sunCenterY+sunSize,height*2/3)
+            waterY0 = p.random(sunCenterY+sunSize,height*2/3)
+            let mountainWidth = p.random(100,200)
+            let mountainCenterX = p.random(minX+mountainWidth/2,maxX-mountainWidth/2)
+            let mountainHeight = p.random(50,150)
+            let mountainPercentage = p.random(0.3,0.7)
+            let snowXHalfWidth = 0.5*mountainWidth*(1-mountainPercentage)
+
+            for (let i=0;i<p.random([1,2,3]);i++) {
+
+                mountainCenterX = p.random(minX+mountainWidth/2,maxX-mountainWidth/2)
+                mountainWidth = mountainWidth * 0.7
+                mountainHeight = mountainHeight * 0.7
+                // mountainPercentage = p.random(0.3,0.9)
+                snowXHalfWidth = 0.5*mountainWidth*(1-mountainPercentage)
+
+                p.fill(0)
+                p.stroke(100)
+                p.strokeWeight(1)
+                p.beginShape()
+                p.vertex(mountainCenterX-mountainWidth/2,waterY0)
+                p.vertex(mountainCenterX+mountainWidth/2,waterY0)
+                p.vertex(mountainCenterX,waterY0-mountainHeight)
+                p.endShape(p.CLOSE)
+
+
+                // Draw snow on top of mountain
+
+                p.fill(255)
+                p.stroke(0)
+                p.strokeWeight(0.5)
+                p.beginShape()
+                p.vertex(mountainCenterX-(snowXHalfWidth),waterY0-mountainHeight + mountainHeight*(1-mountainPercentage))
+                p.vertex(mountainCenterX+(snowXHalfWidth),waterY0-mountainHeight + mountainHeight*(1-mountainPercentage))
+                p.vertex(mountainCenterX,waterY0-mountainHeight)
+                p.endShape(p.CLOSE)
+
+            }
+            // Draw flock
+
+            let flockX = p.random(minX,maxX)
+            let flockY = p.random(minY,maxY)
+            p.fill(0)
+            p.stroke(0)
+            for (let i=0; i<7; i++) {
+               drawV(flockX+p.random(-40,40),flockY+p.random(-40,40),10)
+            }
+
+            // Draw water
+            let waterMidX= sunCenterX
+            let waterLines = 30
+            let waterIncrement = ((height-height*yBorderProportion*.8)) / waterLines
+            for (let i=0;i<waterLines;i++) {
+              p.stroke(0,0,200)
+              p.strokeWeight(0.2)
+              p.line( Math.max(minX,waterMidX-(waterLines**2-i*waterLines)), waterY0+waterIncrement*i,
+                      Math.min(maxX,waterMidX+(waterLines**2-i*waterLines)), waterY0+waterIncrement*i)
+              p.stroke(sunColor)
+              p.strokeWeight(2)
+              p.line(sunCenterX-(sunSize/5+p.map(i,0,waterLines,0.4,0)*sunSize/5),waterY0+waterIncrement*i,sunCenterX+(sunSize/5+p.map(i,0,waterLines,.4,0)*sunSize/5),waterY0+waterIncrement*i)
+            }
+
+          }
+
+          function drawV(x,y,size) {
+            p.stroke(0)
+            p.strokeWeight(1)
+            p.noFill()
+            p.push()
+            p.translate(x,y)
+            p.beginShape()
+            p.vertex(0-size*Math.cos(Math.PI/3),0-size*Math.sin(Math.PI/3))
+            p.vertex(0,0)
+            p.vertex(0+size*Math.cos(Math.PI/3),0-size*Math.sin(Math.PI/3))
+            p.endShape()
+            p.pop()
+          }
+
+          function drawHaiku(haiku) {
+            p.textFont(font)
+            p.noStroke()
+            p.fill(0,200)
+            for (let i=0; i<3; i++) {
+              p.text(haiku[i],width*(1-xBorderProportion**2),height*(1-yBorderProportion**2)+i*((Math.min(60,textSize)+10)))
+            }
+          }
+
+          function drawPaper() {
+            for (let i=0;i<10000;i++) {
+              p.stroke(30,10)
+              p.strokeWeight(0.5)
+              let xStart = Math.random()*width
+              let yKonst = Math.random()*height
+              let xKonst = Math.random()*width
+              let yStart = Math.random()*height
+
+              p.line(xStart,yKonst,xStart+Math.random()*paperStrokeLength,yKonst)
+              p.line(xKonst,yStart,xKonst,yStart+Math.random()*paperStrokeLength)
+            }
+
+          }
+
+
+          function generateHaiku() {
+            return [p.random(lines1), p.random(lines2), p.random(lines3)]
+            // return ["Fuck the twats", "They suck it good", "never ever let the dripping lost"]
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

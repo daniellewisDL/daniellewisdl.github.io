@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(0, 0, 0);">
+    <div id="canvas"></div>
+    <div></div>
+
+<script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let strW = 1
+          let fgAlpha = 128
+          let bgAlpha = 128
+          let scaleOuter = 1.1
+          let knn = 8
+          let myDots = []
+          // let numDots = 100
+          let cellSizeX = width/10
+          let cellSizeY = height/10
+
+          const threadColors = ['Black','DarkGreen','Navy','Maroon','Green','DarkBlue','DarkRed','MidnightBlue','MediumBlue','DarkSlateGray',
+                    'Indigo','ForestGreen','SaddleBrown','DarkOliveGreen','FireBrick','Brown','Blue','Lime','Red','Olive',
+                    'Teal','Purple','SeaGreen','DarkSlateBlue','DarkCyan','DarkMagenta','OliveDrab','Sienna','Crimson',
+                    'LimeGreen','RebeccaPurple','DimGray','OrangeRed','DarkGoldenrod','Chocolate','MediumSeaGreen','MediumVioletRed',
+                    'DarkViolet','LawnGreen','SteelBlue','LightSeaGreen','Chartreuse','SpringGreen','Gray','SlateGray','IndianRed',
+                    'RoyalBlue','DarkOrange','Peru','SlateBlue','MediumSpringGreen','BlueViolet','DarkOrchid','LightSlateGray','YellowGreen',
+                    'CadetBlue','DarkTurquoise','Goldenrod','Orange','DeepPink','Tomato','DodgerBlue','DeepSkyBlue','Coral','MediumSlateBlue',
+                    'MediumSlateBlue','DarkSeaGreen','Gold','RosyBrown','GreenYellow','MediumAquamarine','PaleVioletRed','MediumPurple','DarkKhaki',
+                    'MediumOrchid','MediumTurquoise','CornflowerBlue','Salmon','Turquoise','LightCoral','SandyBrown','DarkSalmon','DarkGray','Aqua',
+                    'Cyan','Fuchsia','Magenta','Yellow','LightGreen','Tan','LightSalmon','LightSalmon','HotPink','BurlyWood','Orchid','PaleGreen',
+                    'SkyBlue','Silver','LightSkyBlue','Aquamarine','LightSteelBlue','Plum','Violet','Khaki','LightBlue','Thistle','PowderBlue','LightPink','LightGray',
+                    'PaleGoldenrod','Wheat','NavajoWhite','Pink','PaleTurquoise','PeachPuff','Gainsboro','Moccasin','Bisque','BlanchedAlmond','AntiqueWhite',
+                    'PapayaWhip','MistyRose','Lavender','Beige','LemonChiffon','LightGoldenrodYellow','Linen','Cornsilk','OldLace','LightCyan','LightYellow','HoneyDew',
+                    'WhiteSmoke','SeaShell','LavenderBlush','AliceBlue','FloralWhite','MintCream','Azure','Ivory','GhostWhite','Snow','White']
+
+          const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
+                            'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
+                            'LightGray','Silver','Cornsilk','BlanchedAlmond','Bisque','NavajoWhite','Wheat','LightCyan','PaleTurquoise',
+                            'Aquamarine','LightSteelBlue','PowderBlue','LightBlue','SkyBlue','LightSkyBlue','Lavender','Thistle',
+                            'LightYellow','LemonChiffon','LightGoldenrodYellow','PapayaWhip','Moccasin','PeachPuff','PaleGoldenrod',
+                            'Khaki','Pink','LightPink']
+
+          const fgColors = ['DimGray','DarkSlateGray','DarkGoldenrod','Chocolate','SaddleBrown','Sienna','Brown',
+                            'SteelBlue','Blue','MediumBlue',
+                            'MediumSeaGreen','SeaGreen','ForestGreen','OliveDrab','Olive','DarkOliveGreen','LightSeaGreen','DarkCyan',
+                            'Teal','RebeccaPurple','DarkMagenta','Purple','Indigo','DarkSlateBlue','OrangeRed','MediumVioletRed',
+                            'Crimson','Red','FireBrick']
+
+          let fgColor = p.random(bgColors)
+          let bgColor = p.random(fgColors)
+          const alexanderbgColor = p.color(0,120,0)
+          const alexanderfgColor = p.color(255,255,69)
+          const alexanderfgAlpha = 80
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            cellSizeX = width/10
+            cellSizeY = height/10
+            resetParams()
+          }
+
+          function resetParams() {
+            myDots = []
+            for (let a=0;a<(height/cellSizeY)+1;a++) {
+              for (let b=0;b<(width/cellSizeX)+1;b++) {
+                let startX = b*cellSizeX + p.random(-cellSizeX/2,cellSizeX/2)
+                let startY = a*cellSizeY + p.random(-cellSizeY/2,cellSizeY/2)
+                myDots.push({x:startX,y:startY,speed:p.random([1,2,3]),direction:p.random(Math.PI*2),neighboursDist:[]})
+              }
+            }
+
+            for (let j=0; j<myDots.length; j++) {
+              for (let k=0;k<myDots.length; k++) {
+                myDots[j].neighboursDist.push(p.dist(myDots[j].x,myDots[j].y,myDots[k].x,myDots[k].y))
+              }
+            }
+          }
+
+          function updateParams() {
+            if ((p.frameCount%100)==0) {
+              fgColor = p.random(bgColors)
+              bgColor = p.random(fgColors)
+              strW = p.random([0.5,1,2])
+              fgAlpha = p.random([128,255,80])
+              bgAlpha = p.random([128,255,20])
+            }
+            myDots.forEach(item=>{
+                item.x = item.x + item.speed*Math.cos(item.direction)
+                if (item.x > width+50) {item.x = -50}
+                else if (item.x<0-50) {item.x = width+50}
+                item.y = item.y + item.speed*Math.sin(item.direction)
+                if (item.y > height+50) {item.y = -50}
+                else if (item.y<0-50) {item.y = height+50}
+                item.neighboursDist = []
+            })
+
+            for (let j=0; j<myDots.length; j++) {
+              for (let k=0;k<myDots.length; k++) {
+                myDots[j].neighboursDist.push(p.dist(myDots[j].x,myDots[j].y,myDots[k].x,myDots[k].y))
+              }
+            }
+
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            resetParams()
+            p.background(bgColor)
+          }
+
+          p.draw = function() {
+            updateParams()
+            p.background(p.red(bgColor),p.green(bgColor),p.blue(bgColor),bgAlpha)
+            p.noFill()
+            p.stroke(p.red(fgColor),p.green(fgColor),p.blue(fgColor),fgAlpha)
+            p.strokeWeight(strW)
+            for (let i=0; i<myDots.length; i++) {
+              let closestKNeighbours = returnIndicesOfKClosest(myDots[i].neighboursDist,knn) // return a list [10,20,30] of indices
+              closestKNeighbours.forEach(item=>{
+                p.line(myDots[i].x,myDots[i].y,myDots[item].x,myDots[item].y)
+              }
+              )
+            }
+          }
+ 
+          function compareNumbers(a, b) {
+            return a - b;
+          }
+ 
+          function returnIndicesOfKClosest(arrayOfDistances, konstant) {
+            let sortedArrayOfKDistances = arrayOfDistances.slice().sort(compareNumbers).slice(0,konstant)
+            let indexesToReturn = []
+            sortedArrayOfKDistances.forEach(item=>{
+              indexesToReturn.push(arrayOfDistances.indexOf(item))
+            })
+            return indexesToReturn
+          }
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>

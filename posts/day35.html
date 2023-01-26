@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(0, 0, 0);">
+    <div id="canvas"></div>
+
+    <script>
+      
+      // Genuary++
+
+      // Day 34 | Template / just some random circles
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.noStroke()
+
+          }
+
+          p.draw = function() {
+            // p.noLoop()
+            p.background(0)
+            p.stroke(p.random([50,100,150,200]),p.random([50,100,150,200]),p.random([0,50,100,150,200]))
+            p.strokeWeight(p.random(0.5,1.5))
+            p.noFill()
+
+            let numX = Math.floor(p.random(30,150))
+            let yInc = height/numX
+            let xInc = width/numX
+            let numRots = Math.floor(p.random(5,15))
+            let offset = Math.max(width,height)/p.random([3,4,5,6,7,8,9])
+            console.log(offset)
+            p.push()
+            p.translate(width/2,height/2)
+            for (let j=0; j<numRots; j++) {
+              for (i=0;i<numX;i++) {
+                p.line(-offset,-offset + i*yInc,-offset + width-(i*xInc),-offset)    
+              }
+              p.rotate(Math.PI*2/numRots)
+            }
+            p.pop()
+          }
+          p.frameRate(1)
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

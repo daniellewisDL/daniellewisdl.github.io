@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+
+
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+
+          const kusamaColors1 = ["#e17aec","#ec403c","#6effef","#ffb136"]
+          const kusamaColors2 = ["#00d6ef","#fff750","#00acfc","#c9e25a","#c1d758"]
+          const kusamaColors3 = ["#6bf5fc","#efa3f7","#67ec63"]
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+
+          }
+
+          p.setup = function() {
+              p.createCanvas(width,height)
+              
+              p.rectMode(p.CENTER)
+          }
+            
+          p.draw = function() {
+            // p.noLoop()
+            p.background(40)
+            let myColorPalette = p.random([kusamaColors1,kusamaColors2,kusamaColors3])
+            let numLayers = 20
+            let numBalls = 50*width/2500
+
+            for (z=1;z<numLayers;z++) {
+              p.noStroke()
+              p.fill(5,10)
+              p.rect(width/2,height/2,width,height)
+
+              // if (z<(.7*numLayers)) {
+              //     p.fill(50,50)
+
+              //     // Floor
+              //     p.beginShape()
+              //     p.vertex(0,height)
+              //     p.vertex(width,height)
+              //     p.vertex(width,2*height/3)
+              //     p.vertex(0,2*height/3)
+              //     p.endShape(p.CLOSE)
+
+              //     // Ceiling
+              //     p.beginShape()
+              //     p.vertex(0,0)
+              //     p.vertex(width,0)
+              //     p.vertex(width,0.25*height)
+              //     p.vertex(0,0.25*height)
+              //     p.endShape(p.CLOSE)
+              // }
+
+              for (y=0;y<(5*(numBalls-z));y++) {
+                drawSpottyBall(Math.random()*width,Math.random()*height,z*4,255, myColorPalette)
+              }
+            }
+
+            for (k=0;k<4;k++) {
+              drawSpottyBall(Math.random()*width,Math.random()*height,150,255, myColorPalette)
+            }
+            
+            p.frameRate(.5)
+
+          }
+
+
+          function drawSpottyBall(x,y,size,alpha,colorPalette) {
+            p.noStroke()
+            p.push()
+            p.translate(x,y)
+            p.rotate(Math.random()*Math.PI*2)
+            let myColor = p.random(colorPalette)
+            p.fill(0)
+            p.stroke(myColor)
+            p.strokeWeight(size/200)
+            p.circle(0,0,size)
+            p.noStroke()
+            p.fill(myColor)
+
+            p.ellipse(-size/2+size*.2,0,size*.3,size*.4)
+            p.ellipse(size/2-size*.2,0,size*.3,size*.4)
+            p.ellipse(0,-size/2+size*.1,size*.25,size*.15)
+            p.ellipse(0,size/2-size*.1,size*.25,size*.15)
+            p.circle(0,0,size*.1)
+            p.pop()
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
