@@ -43,12 +43,13 @@ header {
   }
 
   .card {
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid rgb(145, 145, 145);
     background-color: white;
+    max-width: 18rem;
   }
 
   .card:hover {
-    border: 1px solid ;
+    border: 1px solid rgb(38, 63, 204);
   }
 
   .card body {
@@ -57,7 +58,7 @@ header {
 
   .card-img-top {
     width: 100%;
-    max-height: 10px;
+    max-height: auto;
   }
 
   .navbar .nav-link {
