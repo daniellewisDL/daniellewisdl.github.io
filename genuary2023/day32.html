@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 32 | Retrospective<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-
-    
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
           let numX = 5
           let numY = 6
-          let width = 180*numX
-          let height = 180*numY
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let imageWidth = width/numX
+          let imageHeight = height/numY
+          let imageMargin = 10
           let images = []
+
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            imageWidth = width/numX
+            imageHeight = height/numY
+          }
+
 
           p.preload = function() {
             for (let i=0; i<30; i++) {
@@ -33,14 +44,19 @@
 
           p.setup = function() {
             p.createCanvas(width,height)
-            p.background(200)
-            // p.frameRate(1)
+            
+            
           }
 
           p.draw = function() {
             p.noLoop()
+            p.background(0)
+            
             for (let j=0; j<images.length; j++) {
-              p.image(images[j],(j%numX)*180,Math.floor(j/numX)*180)
+              p.image(images[j],
+                      (j%numX)*(imageWidth)+imageMargin,
+                      Math.floor(j/numX)*(imageHeight)+imageMargin,
+                      imageWidth-imageMargin*2,imageHeight-imageMargin*2)
 
             }
           }
@@ -49,7 +65,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

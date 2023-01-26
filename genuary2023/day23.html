@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 23 | More Moiré<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-    
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Moir%C3%A9_pattern">Moiré pattern</a>
-    
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
 
           const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
                             'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
@@ -40,7 +33,7 @@
           let fgColor = p.random(fgColors)
           let choice = p.random([0,1,2,3])
           let startSize1 = width*2
-          let startSize2 = Math.floor(p.random(300,600))
+          let startSize2 = Math.floor(p.random(width*.66,width*2))
           // startSize2 = width*2
           
           let rotateAngle1 = 0
@@ -59,6 +52,18 @@
 
           let numLayers = Math.floor(p.random(40,100))
           let numLayers2 = Math.floor(p.random(40,100))
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            resetParams()
+
+          }
 
           if (Math.random()>0.85) {
             let tempColor = fgColor
@@ -91,8 +96,7 @@
             fgColor = p.random(fgColors)
             choice = p.random([0,1,2,3])
             startSize1 = width*2
-            startSize2 = Math.floor(p.random(300,600))
-            // startSize2 = width*2
+            startSize2 = Math.floor(p.random(width*.66,width*2))
             
             rotateAngle1 = 0
             rotateAngle2 = 0
@@ -135,7 +139,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

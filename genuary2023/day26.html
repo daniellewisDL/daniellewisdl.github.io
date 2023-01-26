@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 26 | My kid could have made that<br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 800
-          let height = 600
-          let bigTriBase = 300
-          let bigTriHeight = 130
-          let sideMargin = 70
-          let squareSize = (width-2*sideMargin-2*bigTriHeight)*3/11
-          let topMargin = (height-(squareSize*7/3) - 2* bigTriHeight)/2
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let bigTriBase = 400*(Math.min(width,height)/800)
+          let bigTriHeight = 150*(Math.min(width,height)/800)
+          let sideMargin = 10*(Math.min(width,height)/800)
+
+          let squareSize = ((width)-2*sideMargin-2*bigTriHeight)/(11/3)
+          let topMargin = ((height)-(squareSize*7/3) - 2* bigTriHeight)/2
+
           let baseOff = 0.0
           let heightOff = 100.0
           let marginOff = 1000.0
@@ -34,6 +32,22 @@
           let textY = 40
           let textSize = 55
           let offsetIncrements = 0.02
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            bigTriBase = 300*(Math.min(width,height)/800)
+            bigTriHeight = 130*(Math.min(width,height)/800)
+            squareSize = ((width)-2*sideMargin-2*bigTriHeight)/(11/3)
+            topMargin = ((height)-(squareSize*7/3) - 2* bigTriHeight)/2
+            textSize = ((Math.min(width,height)/800)*55 )
+            p.textSize(textSize)
+          }
 
           p.preload = function() {
               font = p.loadFont("./assets/ChildsHandwriting-8AX2.ttf")
@@ -55,9 +69,9 @@
             // p.noLoop()
 
             textXOff += offsetIncrements
-            textX = 100 + 40*p.noise(textXOff)
+            textX = (Math.min(width,height)/800)*120 + 40*p.noise(textXOff)
             textYOff += offsetIncrements
-            textY = 40 + 40*p.noise(textYOff)
+            textY = (Math.min(width,height)/800)*40 + 40*p.noise(textYOff)
 
             p.fill("grey")
             p.noStroke()
@@ -71,11 +85,12 @@
             heightOff += offsetIncrements
             marginOff += offsetIncrements
 
-            bigTriBase = 100 + 400*p.noise(baseOff)
-            bigTriHeight = 80 + 70*p.noise(heightOff)
-            sideMargin = 10 + 90*p.noise(marginOff)
-            squareSize = (width-2*sideMargin-2*bigTriHeight)*3/11
-            topMargin = (height-(squareSize*7/3) - 2* bigTriHeight)/2
+            bigTriBase = (Math.min(width,height)/800)*200 + (Math.min(width,height)/800)*400*p.noise(baseOff)
+            bigTriHeight = (Math.min(width,height)/800)*150 + (Math.min(width,height)/800)*70*p.noise(heightOff)
+            sideMargin = (Math.max(width,height)/800)*30 + (Math.min(width,height)/800)*90*p.noise(marginOff)
+
+            squareSize = ((width)-2*sideMargin-2*bigTriHeight)/(11/3)
+            topMargin = ((height)-(squareSize*7/3) - 2* bigTriHeight)/2
 
             p.stroke(50)
             p.strokeWeight(0.5)
@@ -153,7 +168,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

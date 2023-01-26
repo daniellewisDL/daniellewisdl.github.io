@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 21 | Persian Rug<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-    
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Persian_carpet">Persian carpet</a>
-
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 400
-          let height = 800
+        let width = p.windowWidth
+          let height = p.windowHeight
 
           const reds100 = ["#722128","#852833","#923545","#9E4853","#C5BDB0"]
           const reds200 = ["#9a9a99","#c4ab8f","#d14f4f","#e8b07c","#dc4423"]
@@ -42,6 +35,18 @@
           let myAlpha = p.random(100,200)
           let myAlpha2 = 20*myAlpha
 
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
           p.setup = function() {
             p.createCanvas(width,height)
             
@@ -53,14 +58,10 @@
           p.draw = function() {
             // p.noLoop()
             reds = p.random([reds100,reds200,reds300,reds400,reds500, reds600, reds700])
-            p.frameRate(1)
             drawStuff()
             copyLowerRight()
+            p.frameRate(1)
 
-
-            // TEST LINES
-            p.line(0,height/2,width,height/2)
-            p.line(width/2,0,width/2,height)
           }
 
           function drawStuff() {
@@ -124,26 +125,26 @@
               for (let xToRepeat = width/2; xToRepeat < width; xToRepeat++) {
 
                 // GET LOWER RIGHT PIXELS AND LOAD INTO VARIABLES
-                let pixelRed = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 0 ]
-                let pixelBlue = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 1 ]
-                let pixelGreen = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 2 ]
-                let pixelAlpha = p.pixels[yToRepeat*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 3 ]
+                let pixelRed = p.pixels[yToRepeat*width*4 + xToRepeat*4 + 0 ]
+                let pixelBlue = p.pixels[yToRepeat*width*4 + xToRepeat*4 + 1 ]
+                let pixelGreen = p.pixels[yToRepeat*width*4 + xToRepeat*4 + 2 ]
+                let pixelAlpha = p.pixels[yToRepeat*width*4 + xToRepeat*4 + 3 ]
                 
                 // ASSIGN LOWER RIGHT PIXELS TO LOWER LEFT PIXELS
-                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 0] = pixelRed
-                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 1] = pixelBlue
-                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 2] = pixelGreen
-                p.pixels[(yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+                p.pixels[(yToRepeat+1)*width*4 - xToRepeat*4 + 0] = pixelRed
+                p.pixels[(yToRepeat+1)*width*4 - xToRepeat*4 + 1] = pixelBlue
+                p.pixels[(yToRepeat+1)*width*4 - xToRepeat*4 + 2] = pixelGreen
+                p.pixels[(yToRepeat+1)*width*4 - xToRepeat*4 + 3] = pixelAlpha
 
-                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 0] = pixelRed
-                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 1] = pixelBlue
-                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 2] = pixelGreen
-                p.pixels[(height-yToRepeat)*width*myPixelDensity*4 + xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+                p.pixels[(height-yToRepeat)*width*4 + xToRepeat*4 + 0] = pixelRed
+                p.pixels[(height-yToRepeat)*width*4 + xToRepeat*4 + 1] = pixelBlue
+                p.pixels[(height-yToRepeat)*width*4 + xToRepeat*4 + 2] = pixelGreen
+                p.pixels[(height-yToRepeat)*width*4 + xToRepeat*4 + 3] = pixelAlpha
 
-                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 0] = pixelRed
-                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 1] = pixelBlue
-                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 2] = pixelGreen
-                p.pixels[(height-yToRepeat+1)*width*myPixelDensity*4 - xToRepeat*myPixelDensity*4 + 3] = pixelAlpha
+                p.pixels[(height-yToRepeat+1)*width*4 - xToRepeat*4 + 0] = pixelRed
+                p.pixels[(height-yToRepeat+1)*width*4 - xToRepeat*4 + 1] = pixelBlue
+                p.pixels[(height-yToRepeat+1)*width*4 - xToRepeat*4 + 2] = pixelGreen
+                p.pixels[(height-yToRepeat+1)*width*4 - xToRepeat*4 + 3] = pixelAlpha
 
                 
               }
@@ -156,7 +157,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

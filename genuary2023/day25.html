@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 25 | Yayoi Kusama<br><br>
+  <body>
+    <div id="canvas"></div>
 
-    
-    <div id="myCanvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
 
           const kusamaColors1 = ["#e17aec","#ec403c","#6effef","#ffb136"]
           const kusamaColors2 = ["#00d6ef","#fff750","#00acfc","#c9e25a","#c1d758"]
           const kusamaColors3 = ["#6bf5fc","#efa3f7","#67ec63"]
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+
+          }
 
           p.setup = function() {
               p.createCanvas(width,height)
@@ -36,32 +44,32 @@
             p.background(40)
             let myColorPalette = p.random([kusamaColors1,kusamaColors2,kusamaColors3])
             let numLayers = 20
-            let numBalls = 20
+            let numBalls = 50*width/2500
 
             for (z=1;z<numLayers;z++) {
               p.noStroke()
               p.fill(5,10)
               p.rect(width/2,height/2,width,height)
 
-              if (z<(.7*numLayers)) {
-                  p.fill(50,50)
+              // if (z<(.7*numLayers)) {
+              //     p.fill(50,50)
 
-                  // Floor
-                  p.beginShape()
-                  p.vertex(0,height)
-                  p.vertex(width,height)
-                  p.vertex(width,2*height/3)
-                  p.vertex(0,2*height/3)
-                  p.endShape(p.CLOSE)
+              //     // Floor
+              //     p.beginShape()
+              //     p.vertex(0,height)
+              //     p.vertex(width,height)
+              //     p.vertex(width,2*height/3)
+              //     p.vertex(0,2*height/3)
+              //     p.endShape(p.CLOSE)
 
-                  // Ceiling
-                  p.beginShape()
-                  p.vertex(0,0)
-                  p.vertex(width,0)
-                  p.vertex(width,0.25*height)
-                  p.vertex(0,0.25*height)
-                  p.endShape(p.CLOSE)
-              }
+              //     // Ceiling
+              //     p.beginShape()
+              //     p.vertex(0,0)
+              //     p.vertex(width,0)
+              //     p.vertex(width,0.25*height)
+              //     p.vertex(0,0.25*height)
+              //     p.endShape(p.CLOSE)
+              // }
 
               for (y=0;y<(5*(numBalls-z));y++) {
                 drawSpottyBall(Math.random()*width,Math.random()*height,z*4,255, myColorPalette)
@@ -100,7 +108,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

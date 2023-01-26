@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 22 | Shadows<br><br>
-
-    <div id="myCanvas"></div>
-    <br><br>
-    
-    Wikipedia: <a href="https://en.wikipedia.org/wiki/Eclipse">Eclipse</a>
-
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 800
-          let height = 400
-          let sunWidth = height/2
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let sunWidth = Math.min(height,width)/2
           let bgColor = "black"
           let earthCounter = 0
           let earthOrbitSize = width*.9/2
@@ -34,7 +27,7 @@
           let earthY = 0
           let piIncrement = 200
           let earthYOffset = -flattenEllipseFactor*earthOrbitSize*Math.sin(3/2*Math.PI)
-          let eclipseThreshold = 100
+          let eclipseThreshold = 100*width/600
 
 
           const sunColors = ['#DDA0DD','#EE82EE','#F0E68C','#ADD8E6','#D8BFD8','#B0E0E6','#FFB6C1','#D3D3D3','#EEE8AA',
@@ -73,6 +66,48 @@
             continents.push({x:randR*Math.cos(randTheta),y:randR*Math.sin(randTheta)})
           }
 
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            sunWidth = Math.min(height,width)/2
+            earthCounter = 0
+            earthOrbitSize = width*.9/2
+            minEarthSize = 1
+            earthSize = 30 // needs to dynamically change
+            flattenEllipseFactor = p.random(-0.1,0.1)
+            earthBehindSun = false
+            earthX = 0
+            earthY = 0
+            earthYOffset = -flattenEllipseFactor*earthOrbitSize*Math.sin(3/2*Math.PI)
+            sunColor = p.random(sunColors)
+            earthColorSea = p.random(earthColors)
+            earthColorLand = p.random(earthColors)
+            starsColor = p.color(p.random(200,255),p.random(200,255),p.random(200,255))
+            eclipseThreshold = 100*width/600
+
+            if (Math.random()>0.8) {
+              sunColor="Gold"
+              earthColorSea="DodgerBlue"
+              earthColorLand = "Olive"
+            }
+            twinkingStars = []
+            for (let i=0; i<100; i++) {
+              twinkingStars.push({x:Math.random()*width,y:Math.random()*height})
+            }
+
+            continents = []
+            for (let i=0; i<40; i++) {
+              let randR = 0.9*(Math.random() ** 0.5)
+              let randTheta = Math.random()*Math.PI*2
+              continents.push({x:randR*Math.cos(randTheta),y:randR*Math.sin(randTheta)})
+            }
+          }
+
           p.setup = function() {
             p.createCanvas(width,height)
             // p.frameRate(10)
@@ -85,7 +120,7 @@
             drawTwinklingStars()
             drawSun()
             drawEarth()
-            console.log(p.frameRate())
+            console.log(Math.floor(p.frameRate()))
           }
 
 
@@ -103,26 +138,28 @@
             p.translate(width/2,height/2)
             p.fill(sunColor)
             if (earthCounter > Math.PI && earthX < eclipseThreshold && earthX > -eclipseThreshold) {
-              let coronaLineLength = 80
+              let coronaLineLength = Math.min(height,width)/600 * 150
               p.fill(40)
               p.circle(0,0,sunWidth)
-              for (let i=0;i<2*Math.PI;i+=0.02) {
+              for (let i=0;i<2*Math.PI;i+=0.04) {
                 p.stroke(250,80)
+                p.strokeWeight(4)
                 p.line(0,sunWidth/2+Math.random()*coronaLineLength,0+(Math.random()*coronaLineLength/10),sunWidth/2+Math.random()*coronaLineLength)
                 p.rotate(i)
               }
             }
             else {
-              let coronaLineLength = 30
+              let coronaLineLength = Math.min(height,width)/600 * 50
               p.circle(0,0,sunWidth)
-              for (let j=0;j<100;j++) {
+              for (let j=0;j<60;j++) {
                 let randR = sunWidth/2 * (Math.random() ** 0.5)
                 let randTheta = Math.random()*Math.PI*2
-                p.fill(0,20)
-                p.circle(randR*Math.cos(randTheta),randR*Math.sin(randTheta),Math.random()*20)
+                p.fill(0,10)
+                p.circle(randR*Math.cos(randTheta),randR*Math.sin(randTheta),Math.random()*80*sunWidth/200)
               }
-              for (let i=0;i<2*Math.PI;i+=0.02) {
+              for (let i=0;i<2*Math.PI;i+=0.04) {
                 p.stroke(p.red(sunColor),p.green(sunColor),p.blue(sunColor),80)
+                p.strokeWeight(4)
                 p.line(0,-coronaLineLength/2+sunWidth/2+Math.random()*coronaLineLength,Math.random()*coronaLineLength,-coronaLineLength/2+sunWidth/2+Math.random()*coronaLineLength)
                 p.rotate(i)
               }
@@ -191,7 +228,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

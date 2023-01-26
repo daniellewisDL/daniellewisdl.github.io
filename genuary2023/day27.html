@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 27 | Hilma af Klint<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
+  <body>
+    <div id="canvas"></div>
     
     <script>
       
       var s = function( p ) {
 
-          let width = 600
-          let height = 600
+           let width = p.windowWidth
+          let height = p.windowHeight
           let swanColors = ["#ab4a32", "#5485c1", "#d7b15e","#cd9a8f","#1c1c1c","#cfc7c1","#c6c8c4","#c8d9d2","#a95745","#91b6b7","#c1c8aa","#121212"]
           let swanCirclesBgColor = p.random(swanColors)
           swanColors.splice(swanColors.indexOf(swanCirclesBgColor),1)
-          let mainCircleSize = 1.2*width/2
+          let mainCircleSize = 1.2*Math.min(width,height)/2
           let midCircleSize = 2*mainCircleSize/3
           let smallCircleSize = midCircleSize/2
           let imageChoice = "swanBubbles"
           let counter = 0
         
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            mainCircleSize = 1.2*Math.min(width,height)/2
+            midCircleSize = 2*mainCircleSize/3
+            smallCircleSize = midCircleSize/2
+          }
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -57,7 +65,7 @@
             p.background("black")
 
             // Main golden circle
-            let goldenCircleRadius = width*p.random(0.4,0.7)
+            let goldenCircleRadius = Math.min(width,height)*p.random(0.3,0.5)
             let circleY = p.random(goldenCircleRadius,height/2)
 
             // Triangle feature - draw this 2/3s of the time
@@ -104,7 +112,7 @@
               } 
             } else {
               // radial patterns
-              let numSegments = 10
+              let numSegments = p.random([7,10,20,30])
               p.noStroke()
               for (i=0; i<numSegments;i++) {
                   p.fill(p.random(swanColors))
@@ -115,7 +123,7 @@
             }
 
             // Draw main golden circle
-            p.strokeWeight(p.random([1,4]))
+            p.strokeWeight(0.5)
             p.stroke("black")
             p.fill("#bb8b54")
             p.circle(width/2,circleY, goldenCircleRadius)
@@ -196,7 +204,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

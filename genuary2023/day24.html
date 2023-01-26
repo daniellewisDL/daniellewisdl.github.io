@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace; }</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 24 | Textile<br><br>
-
-    
-    <div id="myCanvas"></div>
+  <body>
+    <div id="canvas"></div>
 
     <script>
       
       var s = function( p ) {
 
-          let width = 300
-          let height = 600
-          let rectWidth = 40
-          let rectHeight = 40
+          let width = p.windowWidth
+          let height = p.windowHeight
+
           let strokeWeight = 1
           const threadColors = ['Black','DarkGreen','Navy','Maroon','Green','DarkBlue','DarkRed','MidnightBlue','MediumBlue','DarkSlateGray',
                     'Indigo','ForestGreen','SaddleBrown','DarkOliveGreen','FireBrick','Brown','Blue','Lime','Red','Olive',
@@ -39,9 +34,20 @@
                     'WhiteSmoke','SeaShell','LavenderBlush','AliceBlue','FloralWhite','MintCream','Azure','Ivory','GhostWhite','Snow','White']
           let threadColor = p.random(threadColors)
           let threadColor2 = p.random(threadColors)
-          let cellSize = Math.floor(p.random(10,30))
+          let cellSize = Math.floor(p.random(10,60))
           let oddEventually = false
           let threadSize = Math.floor(p.random(60,90))/100 // 0-1
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+
+          }
 
           p.setup = function() {
               p.createCanvas(width,height)
@@ -52,7 +58,7 @@
           p.draw = function() {
 
                 p.background(40)
-                
+
                 threadColor = p.random(threadColors)
                 threadColor2 = p.random(threadColors)
                 cellSize = Math.floor(p.random(10,30))
@@ -130,7 +136,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>

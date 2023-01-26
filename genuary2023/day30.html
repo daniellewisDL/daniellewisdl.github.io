@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Genuary 2023</title>
+    <title>Genuary++</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body { font-family: monospace;}</style>
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(255, 255, 255);">
-    Genuary 2023 | Day 30 | Minimalism<br><br>
-    
-    <div id="myCanvas"></div>
-    <br><br>
-    Recreation of <a href="https://en.wikipedia.org/wiki/Warming_stripes">Warming stripes</a> using various palettes<br>
-    Data from <a href="https://ourworldindata.org/explorers/climate-change?facet=none&Metric=Temperature+anomaly&Long-run+series">Our World In Data</a><br>
-    
-    
+  <body>
+    <div id="canvas"></div>
     <script>
       
       var s = function( p ) {
 
-          let width = 400
-          let height = 600
+          let width = p.windowWidth
+          let height = p.windowHeight
 
           const stripeColorsGreenLightToDark = ['#f7fcf5','#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32']
           const stripeColorsPurpleLightToDark = ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486']
@@ -47,6 +39,17 @@
 
           let numLayers = p.random([5,7,14,20])
           // numLayers=20
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
 
           p.setup = function() {
             p.createCanvas(width,height)
@@ -81,7 +84,7 @@
 
       }
       
-      let myp5 = new p5(s, "myCanvas")
+      let myp5 = new p5(s, "canvas")
 
     </script>
   </body>
