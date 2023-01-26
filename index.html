@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/7e37785e6e.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-    <script src="./js/sketch.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
+    
   </head>
 
 
@@ -29,21 +29,9 @@
                 </ul>
     
                 <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item me-3">
-                    <a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank">
-                        <i class="fa fa-linkedin"></i>
-                    </a>
-                    </li>
-                    <li class="nav-item me-3">
-                    <a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    </li>
-                    <li class="nav-item me-3">
-                    <a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank">
-                        <i class="fa fa-github"></i>
-                    </a>
-                    </li>
+                    <li class="nav-item me-3"><a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank"><i class="fa fa-github"></i></a></li>
                 </ul>
                 </div>
             </div>
@@ -54,244 +42,184 @@
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
                   <div class="w-100">
-                      <h1 class="display-3">Notes and links</h1>
-                      <p class="lead mb-0">from @daniellewisDL</p>
+                      <h1 class="display-3" id="blogTitle"></h1>
+                      <p class="lead mb-0">A visual blog</p>
+                      <p>inspired by <a href="https://genuary.art">genuary.art</a></p>
                   </div>
                   </div>
               </div>
           </div>
       </header>
 
-<!-- 
+ 
       <main class="my-5">
 
-        <div class="container" id="latestPosts" style="max-width: 800px;">
-
+        <div class="container d-flex justify-content-center" id="latestPosts" style="max-width: 800px;">
 
           <section>
             <h4 class="display-6 mt-5 mb-5">Posts</h4>
 
-            
+            <!-- MY NEW TYPE OF CARD -->
             <div class="row">
-              <div class="col-12 mb-4">
-                <a href="./posts/streamlit-cheat-sheet.html" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Streamlit</h5>
-                        <span class="text-muted" style="font-size: xx-small;">20 November 2021</span>
-                        </div>
-                        <p class="card-text">The simplest and best python library to create and share python web apps.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day35.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day35.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Rotations</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-02-04</p></div></div></div></div></a></div>
+                
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day34.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day34.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Circles</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-02-03</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day33.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day33.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Network</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-02-02</p></div></div></div></div></a></div>
+                  
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day32.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day32.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Retro</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-02-01</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day31.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day31.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Broken weave</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-31</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day30.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day30.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Minimalism</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-30</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day29.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day29.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Maximalism</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-29</p></div></div></div></div></a></div>
+  
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day28.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day28.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Hacku</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-28</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day27.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day27.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Hilma af Klint</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-27</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day26.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day26.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Child's play</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-26</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day25.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day25.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Yayoi Kusama</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-25</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day24.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day24.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Weave</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-24</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day23.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day23.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Moiré</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-23</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day22.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day22.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Shadows</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-22</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day21.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day21.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Cybercarpets</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-21</p></div></div></div></div></a></div>
+      
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day20.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day20.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Whot deco</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-20</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day19.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day19.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">B&W</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-19</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day18.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day18.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Not a grid</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-18</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day17.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day17.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Grids</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-17</p></div></div></div></div></a></div>
+    
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day16.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day16.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Reflections</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-16</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day15.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day15.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Sine waves</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-15</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day14.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day14.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Aesemic</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-14</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day13.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day13.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Snakerpinski</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-13</p></div></div></div></div></a></div>
+  
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day12.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day12.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Tessellation</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-12</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day11.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day11.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Suprematism</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-11</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day10.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day10.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Generative music</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-10</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day09.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day9.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Barnsley ferns</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-09</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day08.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day8.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">SDFs</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-08</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day07.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day7.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Movie palette</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-07</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day06.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day6.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Stolen motif</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-06</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day05.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day5.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Debug view</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-05</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day04.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day4.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Intersections</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-04</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day03.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day3.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Glitch art</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-03</p></div></div></div></div></a></div>
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day02.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day2.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">10 mins</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-02</p></div></div></div></div></a></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/day01.html" class="myCardLink"><div class="card">
+              <img src="../genuary2023/src/day1.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Infinite loop</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-01-01</p></div></div></div></div></a></div>
+
             </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="./posts/processing.html" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Processing</h5>
-                        <span class="text-muted" style="font-size: xx-small;">29 January 2022</span>
-                        </div>
-                        <p class="card-text">Processing is an awesome set of tools to create digital art.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="./posts/data-explorer.html" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">d3.js</h5>
-                        <span class="text-muted" style="font-size: xx-small;">1 May 2022</span>
-                        </div>
-                        <p class="card-text"><a href="https://d3js.org/">D3</a> is an awesome javascript library for visualisation. I'll write a post soon but for now a brief experiment.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://equations-explorer.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Equations explorer</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">A web app to explore some of the most important equations in human history.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://hhdae.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">HSBC HK API Explorer app</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">Explore the banking APIs provided by HSBC in Hong Kong.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://pdf-to-ppt.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">PDF to PPT converter</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">Convert a .pdf into a .pptx file.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://qr-codify.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">QR code generator</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">Generate a QR code for any website links or other text.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://quote-image-gen.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Quote Image Generator</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">Generate a randomly chosen inspirational quote and match with an image.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="https://space-invaders-sprites.herokuapp.com/" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Space invader sprites</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">A streamlit wrapper on Eric Davidson's code to generate simple space invader style sprites.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <a href="./posts/covid-hk.html" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Covid sketches</h5>
-                        <span class="text-muted" style="font-size: xx-small;">6 February 2021</span>
-                        </div>
-                        <p class="card-text">On entering the never normal, covid woes, and time travel.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div> -->
-
-            <!-- <div class="row">
-              <div class="col-12 mb-4">
-                <a href="./posts/template.html" class="myCardLink">
-                <div class="card">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <h5 class="card-title">Perlin noise</h5>
-                        <span class="text-muted" style="font-size: xx-small;">October 2021</span>
-                        </div>
-                        <p class="card-text">A simple demo of Perlin noise.</p>
-                    </div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div> -->
-
-
 
           </section>
 
         </div>
 
 
-<!-- 
 
-        <div class="container" id="about" style="margin-top: 60px; max-width: 800px;">
+
+        <div class="container d-flex justify-content-center" id="about" style="margin-top: 60px; max-width: 800px;">
           <section>
             <h4 class="display-6 mb-5">About</h4>
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 d-flex justify-content-center">
                 <div class="card">
                   <div class="card-body">
                     <p class="card-text">
-                      I'm Dan. I am a husband and a dad, living in Hong Kong, and I work in financial services. When I get the chance
-                      outside of these primary interests, I try to further my interests in maths, science and technology, including
-                      computer science, linguistics, machine learning, climate change, veganism and generative art. This is my small
-                      corner of the web, where you can find some links to my personal projects, and maybe my views on some things too.
-                      Nothing serious here.
+                      I'm Dan. I live in Hong Kong. This is my small corner of the web, where you can find some links to personal projects. Nothing serious here.
                     </p>
                   </div>
                 </div>
@@ -299,7 +227,7 @@
 
             </div>
           </section>
-        </div> -->
+        </div>
   
       </main>
       
@@ -327,10 +255,137 @@
 
         <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
           Hacked together by
-          <a class="text-dark" href="#">Daniel Lewis</a>, 2021-2022
+          <a class="text-dark" href="#">Daniel Lewis</a>, 2021-2023
         </div>
 
       </footer>
+
+     <script>
+
+        let titles = ["Ethereal Bits","Pixelated Emotions","Digital Dreams","Code and Culture","Binary Beauty","Technological Tranquility","Algorithmic Artistry","Pixelated Poetry",
+                      "Digital Soul","Creative Code","Code and Creativity","Algorithm and Artistry","Data and Dreams","Syntax and Soul","Technology and Tranquility","Binary and Brushstrokes",
+                      "Circuits and Canvas","Zeroes and Zen","Bits and Brushwork","Computer and Creativity","Chaos and Harmony","Form and Function","Organic and Geometric","Pixelated and Poetic",
+                      "Abstraction and Reality","Digital and Analog","Beauty and Noise","Symmetry and Asymmetry","Surreal and Sublime","Fractals and Flow","Syntactic Sugar",]
+        let index = Math.floor((Math.random() * titles.length))
+        document.getElementById('blogTitle').innerHTML = titles[index]
+      </script>
+
+      <script>
+        let canvas
+        let x1
+        let y1
+        let choice_of_viz
+        let choice_of_color
+        let theta
+
+        function windowResized() {
+            resizeCanvas(windowWidth-20, windowHeight);
+        }
+
+        function setup() {
+            canvas = createCanvas(windowWidth-20, windowHeight);
+            canvas.position(0,0);
+            canvas.style('z-index', '0');
+            // frameRate(frame_rate);
+            background(255);
+            fill(255);
+            noStroke();
+            x1 = width/2;
+            y1 = height/2;
+            choice_of_viz = int(random(3));
+            choice_of_color = int(random(3));
+            theta=0;
+          }
+          
+        function draw() {
+
+            if ( choice_of_viz == 0) {
+                wiener_circles();
+            } else if ( choice_of_viz == 1) {
+                fader();
+            } else if ( choice_of_viz == 2) {
+                rippler();
+            }
+
+        }
+
+        function wiener_circles() {
+            noStroke();
+
+            for (i=0;i<10;i++) {
+                if ( choice_of_color == 0) {
+                    fill(random(255),255,255,80);
+                } else if ( choice_of_color == 1) {
+                    fill(255,random(255),255,80);
+                } else if ( choice_of_color == 2) {
+                    fill(255,255,random(255),80);
+                }
+
+                let r = 100;
+                ellipse(x1, y1, r, r);
+                if ( x1 > width + 50 || y1 > height + 50 || x1 < -50 || y1 < -50) {
+                    x1 = width/2;
+                    y1 = height/2;
+                } else {
+                    x1 = x1+random(100)-50;
+                    y1 = y1+random(100)-50;
+                }
+            }
+        }
+
+        function fader() {
+            noStroke();
+            fill(255,5);
+            rect(0,0,width,height);
+            if ( choice_of_color == 0) {
+                fill(random(255),255,255);
+            } else if ( choice_of_color == 1) {
+              fill(255,random(255),255);
+            } else if ( choice_of_color == 2) {
+              fill(255,255,random(255));
+            }
+
+            r = random(50,300);
+            ellipse(random(width),random(height),r,r);
+        }
+
+        function rippler() {
+            noStroke();
+            fill(255,5);
+            rect(0,0,width,height);
+
+            if ( choice_of_color == 0) {
+                fill(random(0,100),random(0,100),random(100,255),100);
+            } else if ( choice_of_color == 1) {
+              fill(random(0,100),random(100,255),random(0,100),100);
+            } else if ( choice_of_color == 2) {
+              fill(random(100,255),random(0,100),random(0,100),100);
+            }
+            origin_x = width/2;
+            origin_y = height/2;
+
+            radius_x = theta * width/50;
+            radius_y = theta * height/50;
+
+            x1 = origin_x + radius_x * Math.cos(theta); 
+            y1 = origin_y + radius_y * Math.sin(theta);
+
+            if ( theta >= 10 * Math.PI )
+                {
+                  theta = 0;
+                } else {
+                    theta = theta + Math.PI / 10;
+                }
+
+            r1 = 40 + 500*noise(frameCount/1000);
+            r2 = 40 + random(-200,200);
+            
+            noStroke();
+            ellipse(x1,y1,r1,r1);
+            
+
+        }
+     </script>
 
     </body>
 
