@@ -27,10 +27,11 @@
           let ySpeed = 5
           let dithLevels = 3
           let ditherMargin = 1
-          let ditherSquareSizeX = Math.floor(width*.5)
-          let ditherSquareSizeY = Math.floor(height/3)
+          let ditherSquareSizeX = Math.floor(width*.1)
+          let ditherSquareSizeY = Math.floor(height*.1)
           let firstPixelIndex0 = width*4*y + x*4
           let currentPixelIndex0 = firstPixelIndex0
+          p.pixelDensity(1)
 
           p.preload = function() {
             imageLandscape = p.loadImage('assets/gg.png')
@@ -79,7 +80,6 @@
 
             firstPixelIndex0 = width*4*y + x*4
             currentPixelIndex0 = firstPixelIndex0
-            // console.log(x,y)
 
             for (let j = 0; j<ditherSquareSizeY; j++) {
               for (let i = 0; i<ditherSquareSizeX; i++) {
