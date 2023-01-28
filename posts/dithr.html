@@ -27,8 +27,8 @@
           let ySpeed = 5
           let dithLevels = 3
           let ditherMargin = 1
-          let ditherSquareSizeX = Math.floor(width*.1)
-          let ditherSquareSizeY = Math.floor(height*.1)
+          let ditherSquareSizeX = Math.min(Math.floor(width*.5),200)
+          let ditherSquareSizeY = Math.min(Math.floor(height*.5),200)
           let firstPixelIndex0 = width*4*y + x*4
           let currentPixelIndex0 = firstPixelIndex0
           p.pixelDensity(1)
@@ -55,8 +55,8 @@
             height = p.windowHeight
             x = 10
             y = 10
-            ditherSquareSizeX = Math.floor(width*.5)
-            ditherSqareSizeY = Math.floor(height/3)
+            ditherSquareSizeX = Math.min(Math.floor(width*.5),200)
+            ditherSqareSizeY = Math.min(Math.floor(height*.5),200)
             if(width/height>1) {p.image(imageLandscape, 0, 0, width, height)}
             else {p.image(imagePortrait, 0, 0, width, height)}
             
