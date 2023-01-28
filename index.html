@@ -38,7 +38,6 @@
           </nav>
 
           <div id="bannerP5js" class="bg-image vh-100">
-
               <div class="container h-100">
                   <div class="d-flex h-100 text-center align-items-center">
                   <div class="w-100">
@@ -182,7 +181,7 @@
               <img src="./src/day8.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">SDFs</p>
               <p class="text-muted" style="font-size: xx-small;">2023-01-08</p></div></div></div></div></a></div>
               
-              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/moire.html" class="myCardLink"><div class="card">
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/moviepalette.html" class="myCardLink"><div class="card">
               <img src="./src/day7.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Movie palette</p>
               <p class="text-muted" style="font-size: xx-small;">2023-01-07</p></div></div></div></div></a></div>
               
@@ -287,11 +286,11 @@
         let theta
 
         function windowResized() {
-            resizeCanvas(windowWidth-20, windowHeight);
+            resizeCanvas(windowWidth, windowHeight);
         }
 
         function setup() {
-            canvas = createCanvas(windowWidth-20, windowHeight);
+            canvas = createCanvas(windowWidth, windowHeight);
             canvas.position(0,0);
             canvas.style('z-index', '0');
             // frameRate(frame_rate);
