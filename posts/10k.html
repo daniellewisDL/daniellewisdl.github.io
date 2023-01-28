@@ -22,6 +22,7 @@
           let width = p.windowWidth
           let height = p.windowHeight
           let stepSize = 10
+          p.pixelDensity(1)
           
           p.windowResized = function() {
             p.resizeCanvas(p.windowWidth, p.windowHeight);

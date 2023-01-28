@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -28,7 +29,7 @@
           let reds = p.random([reds100,reds200,reds300,reds400,reds500, reds600, reds700])
 
           const hexToDecimal = hex => parseInt(hex, 16);
-
+          p.pixelDensity(1)
           // console.log(hexToDecimal(reds[0].substring(1,2)))
 
           let innerLayerLimit = p.random(5,15)

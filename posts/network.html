@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -26,7 +27,7 @@
           // let numDots = 100
           let cellSizeX = width/10
           let cellSizeY = height/10
-
+          p.pixelDensity(1)
           const threadColors = ['Black','DarkGreen','Navy','Maroon','Green','DarkBlue','DarkRed','MidnightBlue','MediumBlue','DarkSlateGray',
                     'Indigo','ForestGreen','SaddleBrown','DarkOliveGreen','FireBrick','Brown','Blue','Lime','Red','Olive',
                     'Teal','Purple','SeaGreen','DarkSlateBlue','DarkCyan','DarkMagenta','OliveDrab','Sienna','Crimson',

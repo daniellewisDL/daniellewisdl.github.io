@@ -21,6 +21,7 @@
 
           let width = p.windowWidth
           let height = p.windowHeight
+          p.pixelDensity(1)
           
           p.windowResized = function() {
             p.resizeCanvas(p.windowWidth, p.windowHeight);

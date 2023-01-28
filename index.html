@@ -209,6 +209,10 @@
               <img src="./src/day1.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Infinite loop</p>
               <p class="text-muted" style="font-size: xx-small;">2023-01-01</p></div></div></div></div></a></div>
 
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="https://daniellewisdl-streamlit-cheat-sheet-app-ytm9sg.streamlit.app/" class="myCardLink"><div class="card">
+              <img src="./src/scst.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Streamlit cheat sheet</p>
+              <p class="text-muted" style="font-size: xx-small;">2020-08-01</p></div></div></div></div></a></div>
+  
             </div>
 
           </section>
@@ -262,7 +266,7 @@
 
         <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
           Hacked together by
-          <a class="text-dark" href="#">Daniel Lewis</a>, 2021-2023
+          <a class="text-dark" href="#">Daniel Lewis</a>, 2020-2023
         </div>
 
       </footer>
@@ -283,7 +287,9 @@
         let y1
         let choice_of_viz
         let choice_of_color
-        let theta
+        let theta = 0
+ 
+        let lightDark = 255 //alt 0 / 255
 
         function windowResized() {
             resizeCanvas(windowWidth, windowHeight);
@@ -299,19 +305,21 @@
             noStroke();
             x1 = width/2;
             y1 = height/2;
-            choice_of_viz = int(random(3));
+            choice_of_viz = int(random(4));
             choice_of_color = int(random(3));
             theta=0;
           }
           
         function draw() {
-
+            // frameRate(10)
             if ( choice_of_viz == 0) {
                 wiener_circles();
             } else if ( choice_of_viz == 1) {
                 fader();
             } else if ( choice_of_viz == 2) {
                 rippler();
+            } else if ( choice_of_viz == 3) {
+                rippler2();
             }
 
         }
@@ -321,11 +329,11 @@
 
             for (i=0;i<10;i++) {
                 if ( choice_of_color == 0) {
-                    fill(random(255),255,255,80);
+                    fill(random(255),lightDark,lightDark,80);
                 } else if ( choice_of_color == 1) {
-                    fill(255,random(255),255,80);
+                    fill(lightDark,random(255),lightDark,80);
                 } else if ( choice_of_color == 2) {
-                    fill(255,255,random(255),80);
+                    fill(lightDark,lightDark,random(255),80);
                 }
 
                 let r = 100;
@@ -345,18 +353,18 @@
             fill(255,5);
             rect(0,0,width,height);
             if ( choice_of_color == 0) {
-                fill(random(255),255,255);
+                fill(random(255),lightDark,lightDark);
             } else if ( choice_of_color == 1) {
-              fill(255,random(255),255);
+              fill(lightDark,random(255),lightDark);
             } else if ( choice_of_color == 2) {
-              fill(255,255,random(255));
+              fill(lightDark,lightDark,random(255));
             }
 
             r = random(50,300);
             ellipse(random(width),random(height),r,r);
         }
 
-        function rippler() {
+        function rippler2() {
             noStroke();
             fill(255,5);
             rect(0,0,width,height);
@@ -389,9 +397,53 @@
             
             noStroke();
             ellipse(x1,y1,r1,r1);
-            
 
         }
+        
+        function rippler() {
+            noStroke();
+            background(255,5)
+            origin_x = width/2;
+            origin_y = height/2;
+
+            radius = 2*theta * height/50;
+            radiusMain = radius * Math.sin(theta);
+
+            if ( theta >= 5* Math.PI*2 )
+                {
+                  theta = 0
+                  // background(255)
+                } else {
+                    theta = theta + Math.PI / 100;
+                }
+
+            let theta0=degrees(theta) - Math.floor(degrees(theta)/360)*360
+
+            // console.log(theta0)
+            if ( (theta0 > 120 && theta0 < 180) || (theta0 > 300 && theta0 < 360)) {
+              if ( choice_of_color == 0) {
+                fill(lightDark,lightDark,random(100,255),200)
+              } else if ( choice_of_color == 1) {
+                fill(lightDark,random(100,255),lightDark,200)
+              } else if ( choice_of_color == 2) {
+                fill(random(100,255),lightDark,lightDark,200)
+              }
+            }
+            else {
+              if ( choice_of_color == 0) {
+                fill(lightDark,lightDark,200,200)  
+              } else if ( choice_of_color == 1) {
+                fill(lightDark,200,lightDark,200)  
+              } else if ( choice_of_color == 2) {
+                fill(200,lightDark,lightDark,200)  
+              }
+            }
+
+            noStroke();
+            circle(origin_x,origin_y,radiusMain);
+
+        }
+
      </script>
 
     </body>

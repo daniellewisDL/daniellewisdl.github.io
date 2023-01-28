@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -28,7 +29,7 @@
           let piIncrement = 200
           let earthYOffset = -flattenEllipseFactor*earthOrbitSize*Math.sin(3/2*Math.PI)
           let eclipseThreshold = 100*width/600
-
+          p.pixelDensity(1)
 
           const sunColors = ['#DDA0DD','#EE82EE','#F0E68C','#ADD8E6','#D8BFD8','#B0E0E6','#FFB6C1','#D3D3D3','#EEE8AA',
                              '#F5DEB3','#FFDEAD','#FFC0CB','#AFEEEE','#FFDAB9','#DCDCDC','#FFE4B5','#FFE4C4','#FFEBCD',

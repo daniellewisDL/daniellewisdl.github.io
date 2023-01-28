@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -24,7 +25,8 @@
           let maxLevel = 6
           let boxMargin = p.random(-5,10)
           let boxSize = p.random(20,100)
-
+          p.pixelDensity(1)
+          
           function initialiseChars() {
               for (let setupChars = 8; setupChars <= 198; setupChars++) {
                 chars.push(String.fromCharCode(0x2F00+setupChars))

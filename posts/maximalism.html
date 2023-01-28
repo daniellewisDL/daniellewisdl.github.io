@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -18,7 +19,7 @@
           let cellSize = p.random([10,20,30,50,80])
           let dotSize = 0.1
           let dotToRect = 0.5
-
+          p.pixelDensity(1)
           const greenColorsZ = [["#a3cb3b","#c8c8cf","#5c6473"],["white", "grey"]]
           const redColorsZ = [["orange","red","DarkOrange"],["white", "grey"]]
           const charColorsZ = [["#bbc955","#bbc955","#bbc955","#bbc955","#9a3b60","#d03a22","#b4642c"],["#d03a22","#b4642c"]]

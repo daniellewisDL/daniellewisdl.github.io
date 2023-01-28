@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -43,6 +44,7 @@
               'pines in the light','dissolve in the dark','the end of rain','on glass','on the blue iris','of sand sea and sky','in falling snow','without me','for the sun',
               'plum blossoms','autumn leaves','summer break','climbing the moon','from past journeys','of poppy petals','winter jasmine','untouched',
               'of my thoughts','winter apples']
+          p.pixelDensity(1)
 
           p.preload = function() {
               font = p.loadFont("./assets/ChangAndEng-LOBn.ttf")

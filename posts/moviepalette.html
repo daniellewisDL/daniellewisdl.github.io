@@ -3,6 +3,7 @@
   <head>
     <title>Genuary++</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
@@ -20,7 +21,7 @@
           let myArrayOfColors = []
           let windowAR = width/height
           let imageAR
-
+          p.pixelDensity(1)
 
           p.preload = function() {
             myImage = p.loadImage('assets/'+p.random(['shawshank.png','matrix.png','matrix4.png','up.png']))
