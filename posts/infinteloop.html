@@ -29,7 +29,7 @@
           let timeStepCounter = 0 
           let scale = 0
           let piDivisor = 30
-
+          p.pixelDensity(1)
           p.windowResized = function() {
             p.resizeCanvas(p.windowWidth, p.windowHeight);
             fullReset()
