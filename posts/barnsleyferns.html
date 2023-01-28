@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          let strW = 1
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let numBoxesX = 4
+          let numBoxesY = 3
+          let boxWidth = width/numBoxesX
+          let boxHeight = height/numBoxesY
+          let backgroundColor = 0
+          let x = 0
+          let y = 0
+
+          const fernAlpha = 150
+          let circleRadius = 2
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            boxWidth = width/numBoxesX
+            boxHeight = height/numBoxesY
+            
+          }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              p.background(backgroundColor)
+              p.textSize(16)
+              p.textFont('Courier')
+          }
+            
+          p.draw = function() {
+            p.noLoop()
+            for (let xBoxes = 0; xBoxes < width/boxWidth; xBoxes++) {
+              console.log(xBoxes)
+              for (let yBoxes = 0; yBoxes < height/boxHeight; yBoxes++) {
+                let rand1 = randRange(0.005,0.0025)
+                let rand2 = randRange(0.8,0.05)
+                let rand3 = randRange(0.9,0.05)
+                let a1x = randRange(0.05,0.5)
+                let a1y = randRange(0.16,0.1)
+                let a1k = randRange(0,0)
+                let a2xx = randRange(0.85,0.1)
+                let a2xy = randRange(0.04,0.1)
+                let a2yx = randRange(-0.04,0.1)
+                let a2yy = randRange(0.85,0.1)
+                let a2k = randRange(1.6,0.1)
+                let a3xx = randRange(0.20,0.1)
+                let a3xy = randRange(-0.26,0.1)
+                let a3yx = randRange(0.23,0.1)
+                let a3yy = randRange(0.22,0.1)
+                let a3k = randRange(1.6,0.1)
+                let a4xx = randRange(-0.15,0.1)
+                let a4xy = randRange(0.28,0.1)
+                let a4yx = randRange(0.26,0.1)
+                let a4yy = randRange(0.24,0.1)
+                let a4k = randRange(0.44,0.1)
+
+                let basecol = [50+Math.random()*200,50+Math.random()*200,50+Math.random()*200]
+                p.push()
+                p.translate(xBoxes*boxWidth,yBoxes*boxHeight)
+                for (let i = 0; i < 20000; i++) {
+                  drawPoint(basecol)
+                  nextPoint(rand1, rand2,rand3,
+                            a1x, a1y, a1k,
+                            a2xx, a2xy, a2yx, a2yy, a2k,
+                            a3xx, a3xy, a3yx, a3yy, a3k,
+                            a4xx, a4xy, a4yx, a4yy, a4k)
+
+                }
+                p.pop()
+
+              }
+            }
+          }
+
+
+          function randRange(point, plusMinus) {
+            return point + (Math.random()-0.5)*plusMinus*2
+          }
+
+          //range −2.1820 < x < 2.6558 and 0 ≤ y < 9.9983.
+          function drawPoint(basecol) {
+            p.fill(basecol[0],basecol[1],basecol[2],fernAlpha);
+            p.noStroke()
+            // p.strokeWeight(1);
+            let px = p.map(x, -2.1820, 2.6558, 4, boxWidth-4);
+            let py = p.map(y, 0, 11, boxHeight, 0);
+            p.circle(px, py, circleRadius);
+          }
+
+          function nextPoint(r1=0.01,r2=0.86,r3=0.93,
+                            a1x=0,a1y=0.16,a1k=0,
+                            a2xx=0.85,a2xy=0.04,a2yx=-0.04,a2yy=0.85,a2k=1.6,
+                            a3xx=0.20,a3xy=-0.26,a3yx=0.23,a3yy=0.22,a3k=1.6,
+                            a4xx=-0.15,a4xy=0.28,a4yx=0.26,a4yy=0.24,a4k=.44  ) {
+            let nextX;
+            let nextY;
+
+            let r = Math.random();
+
+            if (r < r1) {
+              //1
+              nextX = a1x * x;
+              nextY = a1y * y + a1k;
+            } else if (r < r2) {
+              //2
+              nextX = a2xx * x + a2xy * y;
+              nextY = a2yx * x + a2yy * y + a2k;
+            } else if (r < r3) {
+              //3
+              nextX = a3xx * x + a3xy * y;
+              nextY = a3yx * x + a3yy * y + a3k;
+            } else {
+              //4
+              nextX = a4xx * x + a4xy * y;
+              nextY = a4yx * x + a4yy * y + a4k;
+            }
+
+            x = nextX;
+            y = nextY;
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

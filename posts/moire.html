@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+
+          const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
+                            'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
+                            'LightGray','Silver','Cornsilk','BlanchedAlmond','Bisque','NavajoWhite','Wheat','LightCyan','PaleTurquoise',
+                            'Aquamarine','LightSteelBlue','PowderBlue','LightBlue','SkyBlue','LightSkyBlue','Lavender','Thistle',
+                            'LightYellow','LemonChiffon','LightGoldenrodYellow','PapayaWhip','Moccasin','PeachPuff','PaleGoldenrod',
+                            'Khaki','Pink','LightPink']
+
+          const fgColors = ['DimGray','DarkSlateGray','DarkGoldenrod','Chocolate','SaddleBrown','Sienna','Brown',
+                            'SteelBlue','Blue','MediumBlue',
+                            'MediumSeaGreen','SeaGreen','ForestGreen','OliveDrab','Olive','DarkOliveGreen','LightSeaGreen','DarkCyan',
+                            'Teal','RebeccaPurple','DarkMagenta','Purple','Indigo','DarkSlateBlue','OrangeRed','MediumVioletRed',
+                            'Crimson','Red','FireBrick']
+
+          let bgColor = p.random(bgColors)
+          let fgColor = p.random(fgColors)
+          let choice = p.random([0,1,2,3])
+          let startSize1 = width*2
+          let startSize2 = Math.floor(p.random(width*.66,width*2))
+          // startSize2 = width*2
+          
+          let rotateAngle1 = 0
+          let rotateAngle2 = 0
+         
+          let x1 = width/2
+          let y1 = height/2
+          let x2 = x1
+          let y2 = y1
+
+          let topSpeed = 100
+          let bottomSpeed = 500
+
+          let rorate1 = p.random(topSpeed,bottomSpeed)
+          let rorate2 = p.random(topSpeed,bottomSpeed)
+
+          let numLayers = Math.floor(p.random(40,100))
+          let numLayers2 = Math.floor(p.random(40,100))
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            resetParams()
+
+          }
+
+          if (Math.random()>0.85) {
+            let tempColor = fgColor
+            fgColor=bgColor
+            bgColor=tempColor
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.frameRate(20)
+            p.background(bgColor)
+          }
+
+          p.draw = function() {
+            if ((p.frameCount % 200) == 0) {resetParams()}
+            
+            p.background(bgColor)
+            
+            drawWhotBars(x1,y1,startSize1,numLayers,rotateAngle1)
+            rotateAngle1 += Math.PI/rorate1
+            
+            drawWhotBars(x2,y2,startSize2,numLayers2,rotateAngle2)
+            rotateAngle2 -= Math.PI/rorate2
+
+            
+          }
+
+          function resetParams() {
+            bgColor = p.random(bgColors)
+            fgColor = p.random(fgColors)
+            choice = p.random([0,1,2,3])
+            startSize1 = width*2
+            startSize2 = Math.floor(p.random(width*.66,width*2))
+            
+            rotateAngle1 = 0
+            rotateAngle2 = 0
+            rorate1 = p.random(topSpeed,bottomSpeed)
+           rorate2 = p.random(topSpeed,bottomSpeed)
+          
+            x1 = width/2
+            y1 = height/2
+            x2 = x1
+            y2 = y1
+
+            numLayers = Math.floor(p.random(40,100))
+            numLayers2 = Math.floor(p.random(40,100))
+
+            if (Math.random()>0.85) {
+              tempColor = fgColor
+              fgColor=bgColor
+              bgColor=tempColor
+            }
+          }
+
+
+          function drawWhotBars(x,y,size,numBars,rotator) {
+            
+            let xIncrementor = size/(numBars*2-1)
+            p.noStroke()
+            p.fill(fgColor)
+            p.push()
+            p.translate(x,y)
+            p.rotate(rotator)
+            for (let i=0; i<numBars; i++) {
+              p.rect(-(size/2)+i*xIncrementor*2,-size/2,xIncrementor,size)
+            }
+            
+            p.pop()
+
+
+          }
+
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

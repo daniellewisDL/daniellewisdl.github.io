@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let sunWidth = Math.min(height,width)/2
+          let bgColor = "black"
+          let earthCounter = 0
+          let earthOrbitSize = width*.9/2
+          let minEarthSize = 1
+          let earthSize = 30 // needs to dynamically change
+          let flattenEllipseFactor = p.random(-0.1,0.1)
+          let earthBehindSun = false
+          let earthX = 0
+          let earthY = 0
+          let piIncrement = 200
+          let earthYOffset = -flattenEllipseFactor*earthOrbitSize*Math.sin(3/2*Math.PI)
+          let eclipseThreshold = 100*width/600
+
+
+          const sunColors = ['#DDA0DD','#EE82EE','#F0E68C','#ADD8E6','#D8BFD8','#B0E0E6','#FFB6C1','#D3D3D3','#EEE8AA',
+                             '#F5DEB3','#FFDEAD','#FFC0CB','#AFEEEE','#FFDAB9','#DCDCDC','#FFE4B5','#FFE4C4','#FFEBCD',
+                              '#FAEBD7','#FFEFD5','#FFE4E1','#E6E6FA','#F5F5DC','#FFFACD','#FAFAD2','#FAF0E6','#FFF8DC',
+                              '#FDF5E6','#E0FFFF','#FFFFE0','#F0FFF0','#F5F5F5','#FFF5EE','#FFF0F5','#F0F8FF','#FFFAF0',
+                              '#F5FFFA', '#F0FFFF','#FFFFF0','#F8F8FF','#FFFAFA','#FFFFFF']
+
+
+          const earthColors = ['#0000CD','#2F4F4F','#4B0082','#228B22','#8B4513','#556B2F','#B22222','#A52A2A','#0000FF',
+                                '#00FF00','#FF0000','#808000','#008080','#800080','#2E8B57','#483D8B','#008B8B','#8B008B',
+                                '#6B8E23','#A0522D','#DC143C','#32CD32','#663399','#696969','#FF4500','#B8860B','#D2691E',
+                                '#3CB371','#C71585','#9400D3','#7CFC00','#4682B4','#20B2AA','#7FFF00','#00FF7F','#808080',
+                                '#708090','#CD5C5C','#4169E1','#FF8C00','#CD853F','#6A5ACD','#00FA9A','#8A2BE2','#9932CC',
+                                '#778899','#9ACD32','#5F9EA0','#00CED1','#DAA520','#FFA500','#FF1493','#FF6347','#1E90FF','#00BFFF',]
+
+          let sunColor = p.random(sunColors)
+          let earthColorSea = p.random(earthColors)
+          let earthColorLand = p.random(earthColors)
+          if (Math.random()>0.8) {
+            sunColor="Gold"
+            earthColorSea="DodgerBlue"
+            earthColorLand = "Olive"
+          }
+
+          let starsColor = p.color(p.random(200,255),p.random(200,255),p.random(200,255))
+          let twinkingStars = []
+          for (let i=0; i<100; i++) {
+            twinkingStars.push({x:Math.random()*width,y:Math.random()*height})
+          }
+
+          let continents = []
+          for (let i=0; i<40; i++) {
+            let randR = 0.9*(Math.random() ** 0.5)
+            let randTheta = Math.random()*Math.PI*2
+            continents.push({x:randR*Math.cos(randTheta),y:randR*Math.sin(randTheta)})
+          }
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            sunWidth = Math.min(height,width)/2
+            earthCounter = 0
+            earthOrbitSize = width*.9/2
+            minEarthSize = 1
+            earthSize = 30 // needs to dynamically change
+            flattenEllipseFactor = p.random(-0.1,0.1)
+            earthBehindSun = false
+            earthX = 0
+            earthY = 0
+            earthYOffset = -flattenEllipseFactor*earthOrbitSize*Math.sin(3/2*Math.PI)
+            sunColor = p.random(sunColors)
+            earthColorSea = p.random(earthColors)
+            earthColorLand = p.random(earthColors)
+            starsColor = p.color(p.random(200,255),p.random(200,255),p.random(200,255))
+            eclipseThreshold = 100*width/600
+
+            if (Math.random()>0.8) {
+              sunColor="Gold"
+              earthColorSea="DodgerBlue"
+              earthColorLand = "Olive"
+            }
+            twinkingStars = []
+            for (let i=0; i<100; i++) {
+              twinkingStars.push({x:Math.random()*width,y:Math.random()*height})
+            }
+
+            continents = []
+            for (let i=0; i<40; i++) {
+              let randR = 0.9*(Math.random() ** 0.5)
+              let randTheta = Math.random()*Math.PI*2
+              continents.push({x:randR*Math.cos(randTheta),y:randR*Math.sin(randTheta)})
+            }
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.frameRate(10)
+            p.background(bgColor)
+          }
+
+          p.draw = function() {
+            p.noStroke()
+            p.background(0,80)
+            drawTwinklingStars()
+            drawSun()
+            drawEarth()
+            console.log(Math.floor(p.frameRate()))
+          }
+
+
+          function drawTwinklingStars() {
+            p.stroke(starsColor)
+            twinkingStars.forEach(item=>{
+              p.point(item.x,item.y)
+            })
+            p.noStroke()
+          }
+
+
+          function drawSun() {
+            p.push()
+            p.translate(width/2,height/2)
+            p.fill(sunColor)
+            if (earthCounter > Math.PI && earthX < eclipseThreshold && earthX > -eclipseThreshold) {
+              let coronaLineLength = Math.min(height,width)/600 * 150
+              p.fill(40)
+              p.circle(0,0,sunWidth)
+              for (let i=0;i<2*Math.PI;i+=0.04) {
+                p.stroke(250,80)
+                p.strokeWeight(4)
+                p.line(0,sunWidth/2+Math.random()*coronaLineLength,0+(Math.random()*coronaLineLength/10),sunWidth/2+Math.random()*coronaLineLength)
+                p.rotate(i)
+              }
+            }
+            else {
+              let coronaLineLength = Math.min(height,width)/600 * 50
+              p.circle(0,0,sunWidth)
+              for (let j=0;j<60;j++) {
+                let randR = sunWidth/2 * (Math.random() ** 0.5)
+                let randTheta = Math.random()*Math.PI*2
+                p.fill(0,10)
+                p.circle(randR*Math.cos(randTheta),randR*Math.sin(randTheta),Math.random()*80*sunWidth/200)
+              }
+              for (let i=0;i<2*Math.PI;i+=0.04) {
+                p.stroke(p.red(sunColor),p.green(sunColor),p.blue(sunColor),80)
+                p.strokeWeight(4)
+                p.line(0,-coronaLineLength/2+sunWidth/2+Math.random()*coronaLineLength,Math.random()*coronaLineLength,-coronaLineLength/2+sunWidth/2+Math.random()*coronaLineLength)
+                p.rotate(i)
+              }
+            }
+            p.pop()
+          }
+
+          function drawEarth() {
+            // draw the earth, its size varies
+            let earthCounterDegrees = Math.round(180*earthCounter/Math.PI)
+            let earthDistance = (earthCounterDegrees>270)?p.map(earthCounterDegrees,270,360,1,0.5):(earthCounterDegrees<90)?p.map(earthCounterDegrees,0,90,0.5,0):p.map(earthCounterDegrees,90,270,0,1)
+            
+            earthSize = minEarthSize + (sunWidth - minEarthSize)*earthDistance
+            
+            earthX = earthOrbitSize*Math.cos(earthCounter)
+            earthY = flattenEllipseFactor*earthOrbitSize*Math.sin(earthCounter) + earthYOffset
+
+            p.push()
+            p.translate(width/2 + earthX,height/2 + earthY)
+            p.noStroke()
+            p.fill(earthColorSea)
+            p.circle(0,0,earthSize)
+
+            p.fill(p.red(earthColorLand),p.green(earthColorLand),p.blue(earthColorLand),230)
+            // p.fill(100,100,100,130)
+            p.beginShape()
+            continents.forEach(item=>{
+              p.curveVertex(earthSize/2*item.x,earthSize/2*item.y)
+            })
+            p.endShape()
+
+            p.fill(0,200)
+            let shadowFactor = 0.95
+            let bezierControl1XMax = 4/3*earthSize/2*shadowFactor
+            let bezierControl1Y = -earthSize/2*shadowFactor
+            let bezierControl2X = 4/3*earthSize/2*shadowFactor
+            let bezierControl2Y = earthSize/2*shadowFactor
+            let bezierControl3XMax = -4/3*earthSize/2*shadowFactor
+            let bezierControl3Y = earthSize/2*shadowFactor
+            let bezierControl4X = -4/3*earthSize/2*shadowFactor
+            let bezierControl4Y = -earthSize/2*shadowFactor
+
+            let bezierControl1X = bezierControl1XMax * ((earthCounterDegrees>270||earthCounterDegrees<90)?1:p.map(earthCounterDegrees,90,270,-1,1))
+            let bezierControl3X = bezierControl3XMax * ((earthCounterDegrees<270&&earthCounterDegrees>90)?1:(earthCounterDegrees>=270)?p.map(earthCounterDegrees,270,360,1,0):p.map(earthCounterDegrees,0,90,0,-1))
+
+            p.beginShape()
+            p.vertex(0,-earthSize/2*shadowFactor)
+            p.bezierVertex( bezierControl1X,bezierControl1Y,
+                            bezierControl1X,bezierControl2Y,
+                            0,earthSize/2*shadowFactor)
+            p.bezierVertex( bezierControl3X,bezierControl3Y,
+                            bezierControl3X,bezierControl4Y,
+                            0,-earthSize/2*shadowFactor)
+            p.endShape()
+            p.pop()
+
+
+            earthCounter = earthCounter + Math.PI/piIncrement
+            if (earthCounter > Math.PI*2) {earthCounter = earthCounter - Math.PI*2}
+            // if earth is behind sun, redraw sun here by calling drawSun
+            if (earthCounter < Math.PI && (earthX-earthSize < sunWidth || earthX+earthSize > sunWidth)) {earthBehindSun=true}
+            else (earthBehindSun = false)
+            if (earthBehindSun) {drawSun()}
+
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

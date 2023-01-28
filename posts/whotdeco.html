@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script>
+      
+      var s = function( p ) {
+
+           let width = p.windowWidth
+          let height = p.windowHeight
+          
+
+          const bgColors = ['Snow','HoneyDew','MintCream','Azure','AliceBlue','GhostWhite','WhiteSmoke','SeaShell',
+                            'Beige','OldLace','FloralWhite','Ivory','AntiqueWhite','Linen','LavenderBlush','MistyRose','Gainsboro',
+                            'LightGray','Silver','Cornsilk','BlanchedAlmond','Bisque','NavajoWhite','Wheat','LightCyan','PaleTurquoise',
+                            'Aquamarine','LightSteelBlue','PowderBlue','LightBlue','SkyBlue','LightSkyBlue','Lavender','Thistle',
+                            'LightYellow','LemonChiffon','LightGoldenrodYellow','PapayaWhip','Moccasin','PeachPuff','PaleGoldenrod',
+                            'Khaki','Pink','LightPink']
+
+          const fgColors = ['DimGray','DarkSlateGray','DarkGoldenrod','Chocolate','SaddleBrown','Sienna','Brown',
+                            'SteelBlue','Blue','MediumBlue',
+                            'MediumSeaGreen','SeaGreen','ForestGreen','OliveDrab','Olive','DarkOliveGreen','LightSeaGreen','DarkCyan',
+                            'Teal','RebeccaPurple','DarkMagenta','Purple','Indigo','DarkSlateBlue','OrangeRed','MediumVioletRed',
+                            'Crimson','Red','FireBrick']
+
+          let bgColor = p.random(bgColors)
+          let fgColor = p.random(fgColors)
+
+          if (Math.random()>0.85) {
+            let tempColor = fgColor
+            fgColor=bgColor
+            bgColor=tempColor
+          }
+
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.frameRate(20)
+            p.background(bgColor)
+          }
+
+          p.draw = function() {
+            // p.noLoop()
+            
+            let choice = p.random([0,1,2,3])
+            let startX = Math.random()*width
+            let startY = Math.random()*height
+            let startSize = p.random(20*width/800,100*width/800)
+            if (choice == 0) {drawWhotTriange(startX,startY,startSize)}
+            else if (choice==1) {drawWhotCircle(startX,startY,startSize)}
+            else if (choice==2) {drawWhotCross(startX,startY,startSize)}
+            else {drawWhotSquare(startX,startY,startSize)}
+            
+          }
+
+
+
+          function drawWhotSquare(x,y,size) {
+            let outerProp = 0.87
+            let innerProp = 4
+            let numLayers = p.random([3,4,5,6,7,8,9,10])
+            let thickness = 0.8*3/numLayers*(size-size*outerProp)/2
+            let rectWidthStart = (outerProp*size-size/innerProp)/2
+            let rectIncrement = (rectWidthStart) / (numLayers) // need to reduce this slightly for aesthetics
+            let rectWidthDecrement = (rectWidthStart) / numLayers
+
+            p.rectMode(p.CENTER)
+
+            // Outer square (filled)
+            p.stroke(bgColor)
+            p.strokeWeight(1)
+
+            p.fill(fgColor)
+            p.rect(x,y,size,size)
+
+            p.noStroke()
+
+            // Outer square (background to remove center)
+            p.fill(bgColor)
+            p.rect(x,y,outerProp*size,outerProp*size)
+           
+            // Center square
+            p.fill(fgColor)
+            p.rect(x,y,size/innerProp,size/innerProp)
+            p.rect(x,y,size,thickness)
+            p.rect(x,y,thickness,size)
+    
+            // Rays / layers
+
+            p.push()
+            p.translate(x,y)
+
+            p.fill(fgColor)
+            p.rectMode(p.CENTER)
+            for (let i=0; i<numLayers; i++) {
+              let rectX = 0.5*size/innerProp+rectWidthStart/2+i*rectWidthDecrement/2
+              let rectY = -(i*rectIncrement)-0.5*size/innerProp+thickness/2
+              let rectTempWidth = rectWidthStart-i*rectWidthDecrement
+
+              p.rect(rectX,rectY,rectTempWidth,thickness)
+              p.rect(rectX-rectTempWidth/2-thickness/2,rectY,thickness,thickness)
+
+              p.rect(-rectX,rectY,rectTempWidth,thickness)
+              p.rect(-rectX+rectTempWidth/2+thickness/2,rectY,thickness,thickness)
+
+              p.rect(-rectX,-rectY,rectTempWidth,thickness)
+              p.rect(-rectX+rectTempWidth/2+thickness/2,-rectY,thickness,thickness)
+              
+              p.rect(rectX,-rectY,rectTempWidth,thickness)
+              p.rect(rectX-rectTempWidth/2-thickness/2,-rectY,thickness,thickness)
+
+              p.rect(rectY,rectX,thickness,rectTempWidth)
+              p.rect(-rectY,rectX,thickness,rectTempWidth)
+              p.rect(-rectY,-rectX,thickness,rectTempWidth)
+              p.rect(rectY,-rectX,thickness,rectTempWidth)
+
+            }
+
+            p.pop()
+
+
+
+          }
+
+          function drawWhotCross(x,y,size) {
+            let outerProp = 0.87
+            let crossProp = 4
+            let numLayers = p.random([3,4,5,6,7,8,9,10,11])
+            let thickness = 3/numLayers*(size-size*outerProp)/2
+
+            p.rectMode(p.CENTER)
+            p.stroke(bgColor)
+            p.strokeWeight(1)
+
+            // Outer cross (filled)
+            p.fill(fgColor)
+            p.rect(x,y,size,size/crossProp)
+            p.rect(x,y,size/crossProp,size)
+            p.noStroke()
+
+            // Outer cross (background to remove center)
+            p.fill(bgColor)
+            p.rect(x,y,outerProp*size,size/crossProp - (size - outerProp*size))
+            p.rect(x,y,size/crossProp - (size - outerProp*size),outerProp*size)
+
+            // draw lines
+            p.fill(fgColor)
+            let outerCrossLength = size/2 - size/(2*crossProp)
+            let rectIncrement = outerCrossLength / (numLayers)
+
+            for (let i = 0; i<numLayers; i++) {
+              p.rect(x,y+size/2-(i+1)*rectIncrement,size/crossProp,thickness)
+              p.rect(x,y-size/2+(i+1)*rectIncrement,size/crossProp,thickness)
+              p.rect(x-size/2+(i+1)*rectIncrement,y,thickness,size/crossProp)
+              p.rect(x+size/2-(i+1)*rectIncrement,y,thickness,size/crossProp)
+            }
+
+            // Center cross
+            p.fill(fgColor)
+            p.rect(x,y,size/crossProp,size/crossProp**2)
+            p.rect(x,y,size/crossProp**2,size/crossProp)
+
+            
+          }
+
+          function drawWhotCircle(x,y,size) {
+            let outerProp = 0.8
+            let numArcs = p.random([10,12,14,16,18,20]) // SHOULD ALWAYS BE EVEN FOR SYMMETRY
+            let arcAngleIncrement = 2*Math.PI/numArcs
+            let numLayers = p.random([1,3,5,7,9])
+            let innerProp = 0.3
+            let arcTop = outerProp*size
+            let arcBottom = innerProp*size
+            let arcRadiusIncrement = (arcTop-arcBottom)/numLayers
+
+            p.stroke(bgColor)
+            p.strokeWeight(1)
+
+            // Outer circle (filled)
+            p.fill(fgColor)
+            p.circle(x,y,size)
+
+            p.noStroke()
+
+            // Outer circle (background to remove center)
+            p.fill(bgColor)
+            p.circle(x,y,arcTop)
+
+            // Draw alternating arcs
+            for (let i=0;i<numLayers;i++) {
+              for (let j=0; j<numArcs; j++) {
+                  p.fill(((j%2==0&&i%2==1)||(j%2==1&&i%2==0))?fgColor:bgColor)
+                  p.arc(x,y,arcTop-i*arcRadiusIncrement,arcTop-i*arcRadiusIncrement,j*arcAngleIncrement,(j+1)*arcAngleIncrement)
+              }
+            }
+
+            // Middle circle
+            p.noStroke()
+            p.fill(fgColor)
+            p.circle(x,y,arcBottom)
+
+          }
+
+
+          function drawWhotTriange(x,y,size) {
+            let outerProp = 0.7
+            let innerProp = 0.25
+            let fullMidline = size/2*Math.tan(Math.PI/3)
+            let midlineCentroidBottom = size/2*Math.tan(Math.PI/6)
+            let midlineCentroidTop = fullMidline-midlineCentroidBottom
+            let topY = y - midlineCentroidTop
+            let bottomY = y + midlineCentroidBottom
+            let numLayers = p.random([3,5,7,9])
+            let thickness = 3/numLayers*(midlineCentroidBottom-midlineCentroidBottom*outerProp)/2
+            let rectStart = (outerProp*fullMidline-(outerProp*midlineCentroidBottom))
+            let rectIncrement = (rectStart*.75) / (numLayers) // need to reduce this slightly for aesthetics
+
+            p.stroke(bgColor)
+            p.strokeWeight(1)
+
+            // Outer triangle filled in
+            p.fill(fgColor)
+            p.triangle(x-size/2,bottomY,x+size/2,bottomY,x,topY)
+
+            p.noStroke()
+
+            // Outer triangle hollowed out
+            p.fill(bgColor)
+            p.triangle(x-outerProp*size/2,y+(outerProp*midlineCentroidBottom),x+outerProp*size/2,y+(outerProp*midlineCentroidBottom),x,y-(outerProp*fullMidline-(outerProp*midlineCentroidBottom)))
+
+            // Rays / layers
+
+            p.push()
+            p.translate(x,y)
+
+            p.fill(fgColor)
+            p.rectMode(p.CENTER)
+            for (let i=0; i<numLayers; i++) {
+              p.rect(0,0-rectStart+(i+1)*rectIncrement,thickness*(i+1)*3.5,thickness)
+
+            }
+
+            p.rotate(2*Math.PI/3)
+            for (let i=0; i<numLayers; i++) {
+              p.rect(0,0-rectStart+(i+1)*rectIncrement,thickness*(i+1)*3.5,thickness)
+
+            }
+            p.rotate(2*Math.PI/3)
+            for (let i=0; i<numLayers; i++) {
+              p.rect(0,0-rectStart+(i+1)*rectIncrement,thickness*(i+1)*3.5,thickness)
+
+            }
+            p.pop()
+
+            // Inner triangle
+            p.fill(fgColor)
+            p.triangle(x-innerProp*size/2,y+(innerProp*midlineCentroidBottom),x+innerProp*size/2,y+(innerProp*midlineCentroidBottom),x,y-(innerProp*fullMidline-(innerProp*midlineCentroidBottom)))
+
+
+          }
+
+      }
+      
+      let myp5 = new p5(s, "myCanvas")
+
+    </script>
+  </body>
+</html>

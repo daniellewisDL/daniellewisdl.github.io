@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+  
+  <body>
+    <div id="canvas"></div>
+
+    <script>
+      
+      // Genuary++
+
+      // Day 1 | Infinite Loop
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let strW = 1
+          let leftCanvasBuffer = 10
+          let topCanvasBuffer = 100
+          let xCoord = 0
+          let yCoord = 0
+          let circleRadius = 40
+          let timeStepCounter = 0 
+          let scale = 0
+          let piDivisor = 30
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.background(0)
+            p.noStroke()
+          }
+
+          p.draw = function() {
+            p.fill(0,5)
+              p.rect(0,0,width,height)
+              p.fill(0,200,0)
+              scale = 2 / (3 - Math.cos(2*timeStepCounter))
+              xCoord = scale * Math.cos(timeStepCounter)
+              yCoord = scale * Math.sin(2*timeStepCounter) / 2
+              timeStepCounter = timeStepCounter + Math.PI/piDivisor
+              p.circle(p.map(xCoord,-1.2,1.2,-width/2,width/2)+width/2,p.map(yCoord,-0.5,0.5,-height/2,height/2)+height/2,circleRadius)
+          }
+ 
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

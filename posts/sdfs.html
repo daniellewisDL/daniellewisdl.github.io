@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let backgroundColor = "#432"
+          let delta = 0
+          let timeCounter = 0
+          let circleRadius = 20
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              // p.frameRate(frame_rate)
+              p.background(backgroundColor)
+          }
+            
+          p.draw = function() {
+              p.translate(delta+width/2,height/2)
+              timeCounter+=Math.PI/10
+              delta=100*Math.sin(timeCounter)
+              p.noStroke()
+              for (let i = 0; i < 1000; i++) {
+                let x = Math.random()*width-width/2
+                let y = Math.random()*height-height/2
+                let d = p.dist(x,y,0,0)
+                let col = '#300350'
+                if (d < 100+delta && d > 50+delta) col = '#94167F'
+                if (d < 150+delta && d > 100+delta) col = '#E93479'
+                if (d < 200+delta && d > 150+delta) col = '#F9AC53'
+                if (d < 250+delta && d > 200+delta) col = '#F62E97'
+                if (d > 250+delta) col = '#153CB4'
+                p.fill(col)
+                p.push()
+                p.rotate(timeCounter)
+                if (Math.random()>0.0001) {
+                  p.rect(x,y,50,0.1)
+                }
+                p.pop()
+              }
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          let frameRate = 5
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let imagePortrait
+          let imageLandscape
+          let x = 10
+          let y = 10
+          let xSpeed = 10
+          let ySpeed = 5
+          let dithLevels = 3
+          let ditherMargin = 1
+          let ditherSquareSizeX = Math.floor(width*.5)
+          let ditherSquareSizeY = Math.floor(height/3)
+          let firstPixelIndex0 = width*4*y + x*4
+          let currentPixelIndex0 = firstPixelIndex0
+
+          p.preload = function() {
+            imageLandscape = p.loadImage('assets/gg.png')
+            imagePortrait = p.loadImage('assets/ggP.png')
+          }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              if(width/height>1) {p.image(imageLandscape, 0, 0, width, height)}
+              else {p.image(imagePortrait, 0, 0, width, height)}
+
+            }
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            x = 10
+            y = 10
+            ditherSquareSizeX = Math.floor(width*.5)
+            ditherSqareSizeY = Math.floor(height/3)
+            if(width/height>1) {p.image(imageLandscape, 0, 0, width, height)}
+            else {p.image(imagePortrait, 0, 0, width, height)}
+            
+            firstPixelIndex0 = width*4*y + x*4
+            currentPixelIndex0 = firstPixelIndex0
+          }
+
+          p.draw = function() {
+            // p.frameRate(10)
+            if(width/height>1) {p.image(imageLandscape, 0, 0, width, height)}
+              else {p.image(imagePortrait, 0, 0, width, height)}
+
+            x = Math.floor(x+xSpeed)
+            y = Math.floor(y+ySpeed)
+
+            if ((x < ditherMargin) || (x > (width-ditherSquareSizeX-ditherMargin))) {xSpeed = -xSpeed}
+            if ((y < ditherMargin) || (y > (height-ditherSquareSizeY-ditherMargin))) {ySpeed = -ySpeed}
+
+
+            p.loadPixels()
+
+            firstPixelIndex0 = width*4*y + x*4
+            currentPixelIndex0 = firstPixelIndex0
+            // console.log(x,y)
+
+            for (let j = 0; j<ditherSquareSizeY; j++) {
+              for (let i = 0; i<ditherSquareSizeX; i++) {
+
+                oldPixelR = p.pixels[currentPixelIndex0+0]
+                oldPixelG = p.pixels[currentPixelIndex0+1]
+                oldPixelB = p.pixels[currentPixelIndex0+2]
+                newPixelR = quantize(oldPixelR,dithLevels)[0]
+                quantErrorR = quantize(oldPixelR,dithLevels)[1]
+                newPixelG = quantize(oldPixelG,dithLevels)[0]
+                quantErrorG = quantize(oldPixelG,dithLevels)[1]
+                newPixelB = quantize(oldPixelB,dithLevels)[0]
+                quantErrorB = quantize(oldPixelB,dithLevels)[1]
+
+                // pixels[x][y] := newpixel
+                p.pixels[currentPixelIndex0+0] = newPixelR
+                p.pixels[currentPixelIndex0+1] = newPixelG
+                p.pixels[currentPixelIndex0+2] = newPixelB
+
+                // pixels[x + 1][y    ] := pixels[x + 1][y    ] + quant_error × 7 / 16
+                p.pixels[currentPixelIndex0+4] = p.pixels[currentPixelIndex0+4] + quantErrorR * 7/16
+                p.pixels[currentPixelIndex0+5] = p.pixels[currentPixelIndex0+5] + quantErrorG * 7/16
+                p.pixels[currentPixelIndex0+6] = p.pixels[currentPixelIndex0+6] + quantErrorB * 7/16
+
+                // pixels[x - 1][y + 1] := pixels[x - 1][y + 1] + quant_error × 3 / 16
+                p.pixels[currentPixelIndex0-4+width*4] = p.pixels[currentPixelIndex0-4+width*4] + quantErrorR * 3/16
+                p.pixels[currentPixelIndex0-3+width*4] = p.pixels[currentPixelIndex0-3+width*4] + quantErrorG * 3/16
+                p.pixels[currentPixelIndex0-2+width*4] = p.pixels[currentPixelIndex0-2+width*4] + quantErrorB * 3/16
+
+                // pixels[x    ][y + 1] := pixels[x    ][y + 1] + quant_error × 5 / 16
+                p.pixels[currentPixelIndex0+0+width*4] = p.pixels[currentPixelIndex0+0+width*4] + quantErrorR * 5/16
+                p.pixels[currentPixelIndex0+1+width*4] = p.pixels[currentPixelIndex0+1+width*4] + quantErrorG * 5/16
+                p.pixels[currentPixelIndex0+2+width*4] = p.pixels[currentPixelIndex0+2+width*4] + quantErrorB * 5/16
+
+                // pixels[x + 1][y + 1] := pixels[x + 1][y + 1] + quant_error × 1 / 16
+                p.pixels[currentPixelIndex0+4+width*4] = p.pixels[currentPixelIndex0+4+width*4] + quantErrorR * 1/16
+                p.pixels[currentPixelIndex0+5+width*4] = p.pixels[currentPixelIndex0+5+width*4] + quantErrorG * 1/16
+                p.pixels[currentPixelIndex0+6+width*4] = p.pixels[currentPixelIndex0+6+width*4] + quantErrorB * 1/16
+
+
+                currentPixelIndex0 = currentPixelIndex0 + 4
+              }
+              currentPixelIndex0 = currentPixelIndex0 - 4*ditherSquareSizeX + width*4
+            }
+
+            p.updatePixels()
+          }
+
+
+          function quantize(n,levels) {
+            let quantizedN = Math.floor(p.map(n,0,256,0,levels))
+            let quantizedColor = Math.floor(255/levels * quantizedN)
+            let quantizedError = n-quantizedColor
+
+            return [quantizedColor,quantizedError]
+
+          }
+
+        }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

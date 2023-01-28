@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Genuary++</title>
+    <meta charset="utf-8">
+    <style>body {background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    
+    <script>
+      
+      var s = function( p ) {
+
+          let canvas
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let frameRate = 1
+          let hexMargin = p.random([0,1,2,3,4,5,6,7,8,9,,10,10,10,10])
+          let hexSize = p.random(5,Math.max(width/height)/10)
+          let circleEnscribe = p.random([0,1])
+          let cubeEnscribe = p.random([0,1])
+          let strW = p.random(0.5,3)
+
+          const malevichColors = ["#9c3623","#070709","#9e3825","#29285e","#c2892d", "#31753c", "#e29922", "#d6a7b3", "#e29724", "#e29724", "#e29724", "#e29724"]
+          
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            
+          }
+
+
+          function setParams() {
+            hexMargin = p.random(0,10)
+            hexSize = p.random(5,100)
+            circleEnscribe = p.random([0,1])
+            cubeEnscribe = p.random([0,1])
+            strW = p.random(0.5,3)
+          }
+
+          p.setup = function() {
+              canvas = p.createCanvas(width,height)
+              
+          }
+            
+          p.draw = function() {
+              p.background(240)
+              setParams()
+              
+              p.noStroke()
+
+              for (let i = 0; i < width/hexSize; i++) {
+                for (let j = 0; j < height/hexSize; j++) {
+                  drawHex(-50+i*(hexSize*2+hexMargin)*Math.cos(Math.PI/6),-50+j*(hexSize*2+hexMargin)+i%2*(hexSize+hexMargin/2),hexSize, p.random(malevichColors))
+
+                }
+              }
+              p.frameRate(frameRate)
+              
+          }
+
+          function drawHex(hexX, hexY, size, color="#9e3825") {
+              p.push()
+              p.translate(hexX, hexY)
+              p.noStroke()
+              p.fill(color)
+              p.beginShape()
+              p.vertex(-size*Math.tan(Math.PI/6),-size)
+              p.vertex(+size*Math.tan(Math.PI/6),-size)
+              p.vertex(+size/Math.cos(Math.PI/6),0)
+              p.vertex(+size*Math.tan(Math.PI/6),+size)
+              p.vertex(-size*Math.tan(Math.PI/6),+size)
+              p.vertex(-size/Math.cos(Math.PI/6),0)
+              p.endShape(p.CLOSE)
+
+              if (circleEnscribe && Math.random()<0.4) {
+              p.noFill(0)
+              p.stroke(50)
+              p.strokeWeight(strW)              
+              p.circle(0,0,size/Math.cos(Math.PI/6))
+              }
+
+              if (cubeEnscribe && Math.random()<0.4) {
+                p.stroke(50)
+                p.strokeWeight(strW)
+                p.line(0,0,-size*Math.tan(Math.PI/6)+strW,-size+strW)
+                p.line(0,0,-size*Math.tan(Math.PI/6)+strW,+size-strW)
+                p.line(0,0,+size/Math.cos(Math.PI/6)-strW,0)
+              }
+
+              p.pop()
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
