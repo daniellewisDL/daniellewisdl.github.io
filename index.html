@@ -62,11 +62,14 @@
             <div class="row">
 
               
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/negative.html" class="myCardLink"><div class="card">
+              <img src="./src/negative.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">negative</p>
+              <p class="text-muted" style="font-size: xx-small;">2023-02-08</p></div></div></div></div></a></div>
+                
               <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/movement.html" class="myCardLink"><div class="card">
               <img src="./src/movement.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">movement</p>
               <p class="text-muted" style="font-size: xx-small;">2023-02-07</p></div></div></div></div></a></div>
       
-  
               <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 mx-auto d-flex justify-content-center"><a href="./posts/dithr.html" class="myCardLink"><div class="card">
               <img src="./src/dithr.png" class="card-img-top"><div class="col-12"><div class="card-body"><div class="my-card-header"><p class="card-title">Dithr</p>
               <p class="text-muted" style="font-size: xx-small;">2023-02-06</p></div></div></div></div></a></div>
@@ -235,9 +238,12 @@
               <div class="col-12 d-flex justify-content-center">
                 <div class="card">
                   <div class="card-body">
-                    <p class="card-text">
-                      I'm Dan. I live in Hong Kong. This is my small corner of the web, where you can find some links to personal projects. Nothing serious here.
-                    </p>
+                    <p class="card-text">I'm Dan. I live in Hong Kong. This is my small corner of the web, where you can find some links to personal projects.</p>
+                    <!-- <p class="card-text">Nothing too serious here.</p> -->
+                    <hr>
+                    <p class="card-text">Tools used are <a href="https://p5js.org/">p5.js</a>, <a href="https://d3js.org/">d3.js</a>, and some python.</p>
+                    <hr>
+                    <p class="card-text">If you want to contact me, see the social links below or at the top of the page.</p>
                   </div>
                 </div>
               </div>
@@ -282,7 +288,8 @@
         let titles = ["Ethereal Bits","Pixelated Emotions","Digital Dreams","Code and Culture","Binary Beauty","Technological Tranquility","Algorithmic Artistry","Pixelated Poetry",
                       "Digital Soul","Creative Code","Code and Creativity","Algorithm and Artistry","Data and Dreams","Syntax and Soul","Technology and Tranquility","Binary and Brushstrokes",
                       "Circuits and Canvas","Zeroes and Zen","Bits and Brushwork","Computer and Creativity","Chaos and Harmony","Form and Function","Organic and Geometric","Pixelated and Poetic",
-                      "Abstraction and Reality","Digital and Analog","Beauty and Noise","Symmetry and Asymmetry","Surreal and Sublime","Fractals and Flow","Syntactic Sugar",]
+                      "Abstraction and Reality","Digital and Analog","Beauty and Noise","Symmetry and Asymmetry","Surreal and Sublime","Fractals and Flow","Syntactic Sugar",
+                    "Poetic Programming", "Analog Bytes"]
         let index = Math.floor((Math.random() * titles.length))
         document.getElementById('blogTitle').innerHTML = titles[index]
       </script>

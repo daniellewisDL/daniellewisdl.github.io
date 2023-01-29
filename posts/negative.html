@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>-ve</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body {background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let rotation = 0
+          let secondaryCounter = 0
+          let tertiaryCounter = 0
+          let sizeFraction = 1.1
+          let sizeCircs = p.random([50,80,100,120,140])
+          const colors = [p.color('#94167F'),p.color('#E93479'),p.color('#F9AC53'),p.color('#F62E97'),p.color('#153CB4'),p.color('green'),p.color('red')]
+          let colorCircs = p.random(colors)
+
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            rotation = 0
+            secondaryCounter = 0
+            tertiaryCounter = 0
+            sizeFraction = 1.1
+            sizeCircs = p.random([50,80,100,120,140])
+            colorCircs = p.random(colors)
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            // p.frameRate(20)
+          }
+
+          p.draw = function() {
+            p.background(255)
+
+            if (rotation==0||(rotation<Math.PI*1.02&&rotation>Math.PI*.98)) {
+              secondaryCounter+=1
+              if (secondaryCounter>50) {
+                rotation += Math.PI/30
+                secondaryCounter=0
+              }
+            } else {
+              rotation += Math.PI/30
+              if (rotation>=2*Math.PI) {rotation=0}
+            }
+            drawQuartCircles(sizeCircs,rotation)
+            tertiaryCounter++
+            if (tertiaryCounter>290) {
+              fullReset()
+            }
+          }
+
+          function drawQuartCircles(size,rotation) {
+            let numCirclesX = width / (size*sizeFraction)
+            let numCirclesY = height / (size*sizeFraction)
+            for (let i=0;i<numCirclesY;i++) {
+              for (let j=0;j<numCirclesX;j++) {
+                let subRotation = Math.PI/2
+                subRotation += (j%2==0&&i%2==0)?0:
+                               (j%2==0&&i%2==1)?-Math.PI/2:
+                               (j%2==1&&i%2==0)?Math.PI/2:Math.PI
+
+                drawQuartCircle(size*sizeFraction/2+j*(size*sizeFraction),size*sizeFraction/2+i*(size*sizeFraction),size,subRotation+rotation)
+              }
+            }
+          }
+
+          function drawQuartCircle(x,y,size,rotation) {
+            p.fill(colorCircs)
+            p.stroke(40)
+            p.strokeWeight(3)
+            p.arc(x,y,size,size,rotation,rotation+3*Math.PI/2,p.PIE)
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

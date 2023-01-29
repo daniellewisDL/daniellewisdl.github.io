@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   </head>
 
-  <body style="background-color: rgb(0, 0, 0);">
+  <body style="background-color: rgb(255, 255, 255);">
     <div id="canvas"></div>
 
     <script>
@@ -21,6 +21,16 @@
 
           let width = p.windowWidth
           let height = p.windowHeight
+          let x = width/2
+          let y = height/2
+
+          let numCircles = 25
+          let circles = []
+          for (let i=0;i<numCircles;i++) {
+            circles.push({xOff:100+i*100,yOff:200+i*200,color:[Math.random()*200,Math.random()*200,Math.random()*200,50],size:p.random(10,50)})
+          }
+          let offsetIncrements = 0.01
+          // console.log(circles)
           p.pixelDensity(1)
           
           p.windowResized = function() {
@@ -31,18 +41,37 @@
           function fullReset() {
             width = p.windowWidth
             height = p.windowHeight
+            numCircles = 25
+            circles = []
+            for (let i=0;i<numCircles;i++) {
+              circles.push({xOff:100+i*100,yOff:200+i*200,color:[Math.random()*200,Math.random()*200,Math.random()*200,50],size:p.random(10,50)})
+            }
+            offsetIncrements = 0.01
           }
 
           p.setup = function() {
             p.createCanvas(width,height)
-            p.background(10)
+            // p.background(255)
           }
 
           p.draw = function() {
-            p.background(10,5)
-            p.noStroke()
-            p.fill(Math.random()*255,Math.random()*255,Math.random()*255,Math.random()*255,)
-            p.circle(Math.random()*width,Math.random()*height,Math.random()*width/2)
+            p.background(255,5)
+            circles.forEach(item => {
+              p.stroke(0)
+              p.fill(item.color[0],item.color[1],item.color[2],item.color[3])
+              p.circle(p.map(p.noise(item.xOff),0,1,0,width),p.map(p.noise(item.yOff),0,1,0,height),item.size)
+              item.xOff+=offsetIncrements
+              item.yOff+=offsetIncrements
+            })
+
+            // xOff+=offsetIncrements
+            // yOff+=offsetIncrements
+            // x = p.map(p.noise(xOff),0,1,0,width)
+            // y = p.map(p.noise(yOff),0,1,0,height)
+            
+            // p.stroke(0)
+            // p.fill(200,50,50,50)
+            // p.circle(x,y,50)
           }
  
 
