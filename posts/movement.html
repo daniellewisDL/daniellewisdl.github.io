@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Moving</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body {background-color: rgb(255,255,233); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas"></div>
+    <script>
+      
+      var s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let offsetIncrements = 0.05
+          let horizLineCount = 100
+          let vertLineCount = p.random(30,80)
+          let widthMultiplier = p.random(2,20)
+          let topYMultiplier = p.random([1/6,2/6,3/6,4/6])
+          let speed = 10
+          const colors = [p.color('#94167F'),p.color('#E93479'),p.color('#F9AC53'),p.color('#F62E97'),p.color('#153CB4'),p.color('green'),p.color('red')]
+          let gridColor = p.random(colors)
+          let color1 = p.random(colors)
+          let color2 = p.random(colors)
+          while (color2 == color1) {
+            color2 = p.random(colors)
+          }
+          let starsColor = p.random(colors)
+          let twinkingStars = []
+          for (let i=0; i<100; i++) {
+            twinkingStars.push({x:Math.random()*width,y:Math.random()*topYMultiplier*height,sw:p.random([1,2,3])})
+          }
+          let numLayers = p.random([3,4,5,6,7])
+          let layerMaxHeight = (topYMultiplier*height)*0.25*width/1200
+          let numBottomVertices = p.random([15,20,30,40])
+          let mountains = []
+          for (let j=0; j<numLayers; j++) {
+            mountains[j] = []
+            for (let k=-1;k<numBottomVertices+2;k++) {
+              let xIncrementorMountain = (width/numBottomVertices)
+              mountains[j].push({x:xIncrementorMountain*k,y:topYMultiplier*height})
+              mountains[j].push({x:xIncrementorMountain*k+Math.random()*xIncrementorMountain,y:topYMultiplier*height-Math.random()*(numLayers-j+1)*layerMaxHeight/numLayers})
+            }
+            mountains[j].pop()
+          }
+          let sunX = width/4 + Math.random()*width/2
+          let sunY = Math.random()*topYMultiplier*height
+          let sunSize = Math.random()*300+100
+          let sunStrips = 10
+
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            horizLineCount = 100
+            vertLineCount = p.random(30,80)
+            widthMultiplier = p.random(2,20)
+            topYMultiplier = p.random([1/6,2/6,3/6,4/6])
+            
+            gridColor = p.random(colors)
+            color1 = p.random(colors)
+            color2 = p.random(colors)
+            while (color2 == color1) {
+               color2 = p.random(colors)
+            }
+            starsColor = p.random(colors)
+            twinkingStars = []
+            for (let i=0; i<100; i++) {
+              twinkingStars.push({x:Math.random()*width,y:Math.random()*topYMultiplier*height,sw:p.random([1,2,3])})
+            }
+            numLayers = p.random([3,4,5,6,7])
+            layerMaxHeight = (topYMultiplier*height)*0.25
+            numBottomVertices = p.random([15,20,30,40])
+            mountains = []
+            for (let j=0; j<numLayers; j++) {
+            mountains[j] = []
+            for (let k=-1;k<numBottomVertices+2;k++) {
+              let xIncrementorMountain = (width/numBottomVertices)
+              mountains[j].push({x:xIncrementorMountain*k,y:topYMultiplier*height})
+              mountains[j].push({x:xIncrementorMountain*k+Math.random()*xIncrementorMountain,y:topYMultiplier*height-Math.random()*(numLayers-j+1)*layerMaxHeight/numLayers})
+            }
+            mountains[j].pop()
+            }
+            sunX = width/4 + Math.random()*width/2
+            sunY = Math.random()*topYMultiplier*height
+            sunSize = Math.random()*300+100
+            sunStrips = 10
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.frameRate(20)
+            p.background(255, 254, 233)
+           
+          }
+
+          p.draw = function() {
+            // p.background(255, 254, 233)
+            p.background(0)
+            if (horizLineCount>50) {
+              horizLineCount-=1} else {
+                fullReset()
+                horizLineCount = 100
+              }
+            
+            setGradient(0, 0, width, topYMultiplier*height, color1, color2, 1)
+            drawTwinklingStars()
+            drawSun()
+            drawMountains()
+            drawGrid()
+            
+            
+            
+          }
+
+          function drawSun() {
+            p.rectMode(p.CENTER)
+            p.stroke(color2)
+            p.fill(color1)
+            p.circle(sunX,sunY,sunSize)
+            // p.arc(sunX,sunY,sunSize,sunSize, Math.PI+0.1, Math.PI*2-0.1, p.CHORD)
+            // let yIncrementSunStrips = 0.5*sunSize/sunStrips
+            // let yThickness = yIncrementSunStrips *0.7
+            // for (let i =0;i<sunStrips;i++) {
+            //   let yOffset = sunY+yIncrementSunStrips*i
+            //   p.rect(sunX,yOffset,((sunSize)**2-yOffset**2)**0.5,yThickness)
+            //   console.log(i)
+            // }
+
+
+          }
+
+          function drawTwinklingStars() {
+            p.fill(starsColor)
+            p.noStroke()
+            twinkingStars.forEach(item=>{
+              p.circle(item.x,item.y,p.random([2,item.sw]))
+            })
+           
+          }
+
+          function drawGrid() {
+            p.rectMode(p.CORNER)
+            p.noStroke()
+            p.fill("black")
+            p.rect(0,topYMultiplier*height,width,height)
+
+            p.stroke(gridColor)
+            p.strokeWeight(2)
+
+            // draw horiz lines
+            let topY = topYMultiplier*height
+            let horizSpace = height - topY
+            let yIncrementorBase = Math.log(horizSpace) / Math.log (horizLineCount)
+            for (let i = 0; i < horizLineCount; i++) {
+              p.line(0,topY+yIncrementorBase**i,width,topY+yIncrementorBase**i)
+            }
+
+            // draw vert lines
+            let xIncrementor = width/vertLineCount
+            for (let i = 0; i < vertLineCount; i++) {
+              p.line(i*xIncrementor,topY+1,p.map(i*xIncrementor,0,width,-width*widthMultiplier,width*widthMultiplier),height)
+            }
+
+          }
+
+          function drawMountains() {
+            
+            p.fill("black")
+            p.stroke(gridColor)
+            p.strokeWeight(2)
+            for (let j=0; j<numLayers; j++) {
+              p.beginShape(p.TRIANGLE_STRIP)
+              mountains[j].forEach(item=>{
+                p.vertex(item.x,item.y)
+              })
+              p.endShape()
+            }
+
+          }
+
+
+            function setGradient(x, y, w, h, c1, c2, axis) {
+              p.noFill();
+
+              if (axis === 1) {
+                // Top to bottom gradient
+                for (let i = y; i <= y + h; i++) {
+                  let inter = p.map(i, y, y + h, 0, 1);
+                  let c = p.lerpColor(c1, c2, inter);
+                  p.stroke(c);
+                  p.line(x, i, x + w, i);
+                }
+              } else if (axis === 0) {
+                // Left to right gradient
+                for (let i = x; i <= x + w; i++) {
+                  let inter = p.map(i, x, x + w, 0, 1);
+                  let c = p.lerpColor(c1, c2, inter);
+                  p.stroke(c);
+                  p.line(i, y, i, y + h);
+                }
+              }
+            }
+
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
