@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>flow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			let offsetIncrements = 0.01
+			let cellSize = p.random([30,40,50,60])
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let cols = Math.floor(width / cellSize)-2
+			let rows = Math.floor(height / cellSize)-2
+			let zoff = 0
+			let flowfield = []
+			let colorChoice = Math.floor(Math.random()*3)
+			let sizeMultZ = cellSize*p.random([0.4,0.8,1.5,2])
+			for (let i=0;i<rows*cols;i++) {
+				let tempVector = returnVec(0)
+				tempVector.setMag(1)
+				if      (colorChoice==1) {flowfield.push({vector:tempVector,r:Math.random()*55,g:Math.random()*255,b:Math.random()*255,size:Math.random()})}
+				else if (colorChoice==2) {flowfield.push({vector:tempVector,r:Math.random()*255,g:Math.random()*55,b:Math.random()*255,size:Math.random()})}
+				else 					 {flowfield.push({vector:tempVector,r:Math.random()*255,g:Math.random()*255,b:Math.random()*55,size:Math.random()})}
+			}
+
+			let cellSizeMultX = p.random(0.1,1.2)
+			let cellSizeMultY = p.random(0.5,1.5)
+			if (cellSizeMultX > 0.8) {cellSizeMultY/=2}
+			p.pixelDensity(1)
+			
+
+
+			p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight)
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+			cellSize = p.random([30,40,50,60])
+			cols = p.floor(width / cellSize)-2
+			rows = p.floor(height / cellSize)-2
+			zoff = 0
+			flowfield = []
+			colorChoice = Math.floor(Math.random()*3)
+			sizeMultZ = cellSize*p.random([0.4,0.8,1.5,2])
+			for (let i=0;i<rows*cols;i++) {
+				let tempVector = returnVec(0)
+				tempVector.setMag(1)
+				if      (colorChoice==1) {flowfield.push({vector:tempVector,r:Math.random()*55,g:Math.random()*255,b:Math.random()*255,size:Math.random()})}
+				else if (colorChoice==2) {flowfield.push({vector:tempVector,r:Math.random()*255,g:Math.random()*55,b:Math.random()*255,size:Math.random()})}
+				else 					 {flowfield.push({vector:tempVector,r:Math.random()*255,g:Math.random()*255,b:Math.random()*55,size:Math.random()})}
+			}
+			cellSizeMultX = p.random(0.1,1.2)
+			cellSizeMultY = p.random(0.5,1.5)
+			if (cellSizeMultX > 0.8) {cellSizeMultY/=2}
+          }
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.rectMode(p.CENTER)			
+				p.noStroke()
+				// p.strokeWeight(8)
+			}
+
+			p.draw = function() {
+				if (p.frameCount%300==0) {fullReset()}
+				p.background(0,200)
+
+				let yoff = 0
+				for (let y = 1; y < rows; y++) {
+					let xoff = 0
+					for (let x = 1; x < cols; x++) {
+						let index = x + y * cols
+						let angle = p.noise(xoff, yoff, zoff) * p.TWO_PI * 5
+						let proxyAngle = (angle>p.TWO_PI)?angle-Math.floor(angle/p.PI)*p.PI:angle
+						let reds = p.map(proxyAngle,0,p.TWO_PI,150,255)
+						let v = returnVec(angle)
+						v.setMag(1)
+						flowfield[index].vector = v
+						xoff += offsetIncrements
+						
+						p.push()
+						p.translate((x+1) * cellSize, (y+1) * cellSize)
+						p.rotate(v.heading())
+						p.fill(flowfield[index].r,flowfield[index].g,flowfield[index].b,150)
+						// p.stroke(flowfield[index].r,flowfield[index].g,flowfield[index].b)
+						// p.line(0,0,cellSize*2,0)
+						p.circle(cellSize*2,0,flowfield[index].size*sizeMultZ)
+						// p.rect(cellSize*2,0,cellSize/2,cellSize/2)
+						// p.ellipse(0,0, cellSize*cellSizeMultX, cellSize*cellSizeMultY)
+						p.pop()
+					}
+					yoff += offsetIncrements
+
+					zoff += 0.0003
+				}
+
+			}
+
+			function returnVec(angle) {
+				return p5.Vector.fromAngle(angle)
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
