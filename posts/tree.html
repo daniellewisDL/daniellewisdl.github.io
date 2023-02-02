@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>packs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let colorChoiceBranch = [Math.random()*255,Math.random()*255,Math.random()*255,p.random(100,200)]
+			let colorChoiceLeaf = [Math.random()*255,Math.random()*255,Math.random()*255,p.random(100,200)]
+			let fixedStart = p.random([true,false])
+			let initialAngle = p.random(-1,1)
+			p.pixelDensity(1)
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight)
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+			colorChoiceBranch = [Math.random()*255,Math.random()*255,Math.random()*255,p.random(100,200)]
+			colorChoiceLeaf = [Math.random()*255,Math.random()*255,Math.random()*255,p.random(100,200)]
+			fixedStart = p.random([true,false])
+			initialAngle = p.random(-1,1)
+			p.background(255)
+          }
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.strokeWeight(1)
+				p.background(255)
+				
+			}
+
+			p.draw = function() {
+				p.stroke(colorChoiceBranch[0],colorChoiceBranch[1],colorChoiceBranch[2],colorChoiceBranch[3])
+				p.fill(colorChoiceLeaf[0],colorChoiceLeaf[1],colorChoiceLeaf[2],colorChoiceLeaf[3])
+				if (p.frameCount%300==0) {fullReset()}
+
+				
+				p.push()
+				p.translate(width/2,height)
+				branch(height/3,fixedStart?initialAngle:p.random(-1,1))
+				p.pop()
+
+			}
+
+			function branch(len,angle) {
+				
+				if (len>10) {
+					p.line(0,0,0,-len)
+					p.push()
+					p.translate(0,-len)
+					p.rotate(angle)
+					branch(len*.6,p.random(-1,1))
+					p.pop()
+				} else {
+					p.fill(255,100,100,50)
+					p.ellipse(0,0,len*2,len*3)
+				}
+
+
+
+			}
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
