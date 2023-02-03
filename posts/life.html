@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>packs</title>
+    <title>life</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
@@ -25,8 +25,6 @@
 			let colorChoice = p.random(colors)
 			let circlesNotSquares = p.random([true,false])
 			let myAlpha = p.random([10,100,255])
-
-			console.log(generation0)
 
 			p.pixelDensity(1)
 
@@ -114,9 +112,24 @@
 				return arr
 			}
 
-			function mousePressed() {
-				console.log(p.mouseX,p.mouseY)
+			p.mousePressed = function() {
+				if (p.mouseX>0&&p.mouseX<width&&p.mouseY>0&&p.mouseY<height) {
+					// work out which cell you're on
+					mouseCol = Math.floor(p.mouseX/cellSize)
+					mouseRow = Math.floor(p.mouseY/cellSize)
+					generation0[mouseRow][mouseCol] = 1
 				}
+				}
+
+			p.mouseDragged = function() {
+				// console.log(p.mouseX,p.mouseY)
+				if (p.mouseX>0&&p.mouseX<width&&p.mouseY>0&&p.mouseY<height) {
+					// work out which cell you're on
+					mouseCol = Math.floor(p.mouseX/cellSize)
+					mouseRow = Math.floor(p.mouseY/cellSize)
+					generation0[mouseRow][mouseCol] = 1
+				}
+			}
 
 		}
 
