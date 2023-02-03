@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>rule30</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			const colors = [p.color('#94167F'),p.color('#E93479'),p.color('#F9AC53'),p.color('#F62E97'),p.color('#153CB4'),p.color('green'),p.color('red')]
+   	        let cellSize = p.random([3,4,5,6,7,8])
+			let numCellsX = Math.floor(width/cellSize)
+			let numCellsY = Math.floor(height/cellSize)
+			let generation0 = []
+			generation0 = initaliseGeneration0(generation0)
+			generation0[Math.floor(generation0.length/2)] = true
+			let generationCount = 0
+			let colorChoice = p.random(colors)
+			let circlesNotSquares = p.random([true,false])
+			let looper = true
+
+			p.pixelDensity(1)
+
+          	p.windowResized = function() {
+				p.resizeCanvas(p.windowWidth, p.windowHeight)
+				fullReset()
+          	}
+
+			function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				cellSize = p.random([3,4,5,6,7,8])
+			    numCellsX = Math.floor(width/cellSize)
+			    numCellsY = Math.floor(height/cellSize)
+				generation0 = []
+				generation0 = initaliseGeneration0(generation0)
+				generation0[Math.floor(generation0.length/2)] = true
+				generationCount = 0
+				colorChoice = p.random(colors)
+				circlesNotSquares = p.random([true,false])
+				looper = true
+				p.background(0)
+			}
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.noStroke()
+				p.background(0)
+			}
+
+			p.draw = function() {
+				if(p.frameCount%350==0) {
+					fullReset()
+				} 
+
+				if (looper) {
+
+					for (let i=0; i<numCellsX; i++) {
+						if (generation0[i]) {
+							p.fill(colorChoice)
+							if (circlesNotSquares) {p.circle(i*cellSize+cellSize,generationCount*cellSize+cellSize,cellSize)}
+							else {p.rect(i*cellSize+cellSize/2,generationCount*cellSize+cellSize/2,cellSize,cellSize)}
+						}
+					
+					}
+
+					let generation1 = []
+					generation1 = initaliseGeneration0(generation1)
+
+					for (let i=0; i<numCellsX; i++) {
+						generation1[i] = liveOrDie(generation0, i)
+					}
+
+					generation0 = generation1
+					generationCount++
+
+					if (generationCount>numCellsY) {
+						looper = false
+					} 
+				}
+			}
+
+			function liveOrDie(generation, index) {
+				if (index==numCellsX) {
+					return false;
+				} else {
+					let a = (index==0)?generation[generation.length-1]:generation[index-1]
+					let b = generation[index  ]
+					let c = generation[index+1]
+					let alive
+					if ( (a && !b && !c) || (!a && b && c) || (!a && b && !c) || (!a && !b && c) ) alive = true;
+					if ( (a && b && c) || (a && b && !c) || (a && !b && c) || (!a && !b && !c) ) alive = false;
+					return alive
+				}
+			}
+
+
+			function initaliseGeneration0(arr) {
+				for (let i=0;i<numCellsX;i++) {arr.push(false)}
+				return arr
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
