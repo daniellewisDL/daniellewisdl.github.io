@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>julia</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			// width = 400
+			// height = 400
+			let minVal = -1.5
+			let maxVal = 1.5
+			let constantReal = 1
+			let constantImag = 1
+			let maxIterations = 100
+			let cReal = -0.647
+			let cImag = 0.407
+			let angle = 0
+			const reds = []
+			const greens = []
+			const blues = []
+			p.pixelDensity(1)
+			p.colorMode(p.HSB, 1)
+			for (let i=0;i<maxIterations;i++) {
+				let myHue = Math.sqrt(i/maxIterations)
+				let myColor = p.color(myHue,255,255)
+				reds[i] = p.red(myColor)
+				greens[i] = p.green(myColor)
+				blues[i] = p.blue(myColor)
+			}
+			
+            p.windowResized = function() {
+                p.resizeCanvas(p.windowWidth, p.windowHeight)
+                fullReset()
+            }
+
+          	function fullReset() {
+            	width = p.windowWidth
+            	height = p.windowHeight
+			}
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+
+			}
+
+			p.draw = function() {
+				// p.noLoop()
+				// cReal = 0.7885*Math.cos(angle)
+				// cImag = 0.7885*Math.sin(angle)
+				// angle += 0.02
+				// if (angle>=7) angle=5;
+				// console.log(Math.floor(angle))
+				cReal = p.map(p.mouseX,0,width,minVal,maxVal)
+				cImag = p.map(p.mouseY,0,height,minVal,maxVal)
+				console.log(cReal,cImag)
+
+
+				p.loadPixels()
+
+				for (let j=0;j<height;j++) {
+					for (let i=0;i<width;i++) {
+
+						let n = 0
+						let x = p.map(i,0,width,minVal,maxVal)
+						let y = p.map(j,0,height,minVal,maxVal)
+						let real0 = x
+						let imag0 = y
+						let realNext, imagNext
+
+						while (n<maxIterations) {
+							realNext = real0**2 - imag0**2 + cReal
+							imagNext = 2*real0*imag0 + cImag
+
+							if ((realNext**2+imagNext**2)>4) break;
+							n++
+							real0 = realNext
+							imag0 = imagNext
+						}
+
+						let pixRef = i*4 + (width*j)*4
+						p.pixels[pixRef + 0] = greens[n]
+						p.pixels[pixRef + 1] = greens[n]
+						p.pixels[pixRef + 2] = blues[n]
+						p.pixels[pixRef + 3] = 255
+					}
+				}
+				p.updatePixels()
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
