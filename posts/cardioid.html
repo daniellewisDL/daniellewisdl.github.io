@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>cardioid</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			const htmlColors = ['Black','DarkGreen','Navy','Maroon','Green','DarkBlue','DarkRed','MidnightBlue','MediumBlue','DarkSlateGray','Indigo','ForestGreen','SaddleBrown','DarkOliveGreen','FireBrick','Brown',
+								'Blue','Lime','Red','Olive','Teal','Purple','SeaGreen','DarkSlateBlue','DarkCyan','DarkMagenta','OliveDrab','Sienna','Crimson','LimeGreen','RebeccaPurple','DimGray','OrangeRed','DarkGoldenrod',
+								'Chocolate','MediumSeaGreen','MediumVioletRed','DarkViolet','LawnGreen','SteelBlue','LightSeaGreen','Chartreuse','SpringGreen','Gray','SlateGray','IndianRed','RoyalBlue','DarkOrange',
+								'Peru','SlateBlue','MediumSpringGreen','BlueViolet','DarkOrchid','LightSlateGray','YellowGreen','CadetBlue','DarkTurquoise','Goldenrod','Orange','DeepPink','Tomato','DodgerBlue','DeepSkyBlue',
+								'Coral','MediumSlateBlue','MediumSlateBlue','DarkSeaGreen','Gold','RosyBrown','GreenYellow','MediumAquamarine','PaleVioletRed','MediumPurple','DarkKhaki','MediumOrchid','MediumTurquoise',
+								'CornflowerBlue','Salmon','Turquoise','LightCoral','SandyBrown','DarkSalmon','DarkGray','Aqua','Cyan','Fuchsia','Magenta','Yellow','LightGreen','Tan','LightSalmon','LightSalmon','HotPink',
+								'BurlyWood','Orchid','PaleGreen','SkyBlue','Silver','LightSkyBlue','Aquamarine','LightSteelBlue','Plum','Violet','Khaki','LightBlue','Thistle','PowderBlue','LightPink','LightGray','PaleGoldenrod',
+								'Wheat','NavajoWhite','Pink','PaleTurquoise','PeachPuff','Gainsboro','Moccasin','Bisque','BlanchedAlmond','AntiqueWhite','PapayaWhip','MistyRose','Lavender','Beige','LemonChiffon',
+								'LightGoldenrodYellow','Linen','Cornsilk','OldLace','LightCyan','LightYellow','HoneyDew','WhiteSmoke','SeaShell','LavenderBlush','AliceBlue','FloralWhite','MintCream','Azure','Ivory','GhostWhite',
+								'Snow','White']
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			p.pixelDensity(1)
+			let numPoints = 200
+			let multipliers = 0.01
+			let myHue = 0
+			p.colorMode(p.HSB)
+
+
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight)
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+			p.background(0,5)
+			p.draw()
+          }
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.strokeWeight(1)
+				p.stroke(0.5)
+				// p.background(0)
+			}
+
+			p.draw = function() {
+				// p.noLoop()
+				p.background(0)
+				let angleIncrement = 2*Math.PI/numPoints
+				let margin=0.1
+				let rectSize = Math.min(height,width)*(1-margin)
+				p.rectMode(p.CENTER)
+				p.noFill()
+				// p.rect(width/2,height/2,rectSize)
+				p.circle(width/2,height/2,rectSize)
+				let angle = Math.PI
+				// p.fill(255)
+				p.strokeWeight(2)
+				for (let i=0; i<numPoints; i++) {
+					myHue = (myHue>360) ? 0 : myHue + 0.01
+					p.stroke(myHue,200,100)
+					let x = width/2 + rectSize/2*Math.cos(angle+i*angleIncrement)
+					let y = height/2 + rectSize/2*Math.sin(angle+i*angleIncrement)
+					// p.circle(x, y, 10)
+					let nextPoint = (i*multipliers)%numPoints
+					let nextPointX = width/2 + rectSize/2*Math.cos(angle+nextPoint*angleIncrement)
+					let nextPointY = height/2 + rectSize/2*Math.sin(angle+nextPoint*angleIncrement)
+					p.line(x,y, nextPointX, nextPointY)
+
+				}
+				multipliers+=0.01
+				// myHue = (myHue>360) ? 0 : myHue + 1
+				
+				// p.frameRate(5)
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
