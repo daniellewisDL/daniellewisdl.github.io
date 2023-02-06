@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>marching</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			const malevichColors = ["#9c3623","#070709","#29285e","#c2892d", "#31753c", "#d6a7b3", "#e29724"]
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*0.9
+
+			let numCells = p.random([10,30,50,60])
+			let cellSize = squareWidth/numCells
+			let cols = Math.floor(squareWidth / cellSize)+1
+			let rows = Math.floor(squareWidth / cellSize)+1
+
+			let color1 = p.random(malevichColors)
+			let color2 = p.random(malevichColors)
+			while (color2==color1) {color2 = p.random(malevichColors)}
+
+			p.pixelDensity(1)
+
+			let xOff = 1000
+			let yOff = 1000
+			let zOff = 0
+			let offsetIncrements = 0.001
+			let marchingArray = []
+
+			for (let y = 0; y < rows; y++) {
+				for (let x = 0; x < cols; x++) {
+					marchingArray.push((p.noise(xOff,yOff,zOff)<0.6)?0:1)
+					xOff+=offsetIncrements
+				}
+				xOff-=offsetIncrements*cols
+				yOff+=offsetIncrements
+			}
+			yOff-=offsetIncrements*rows
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				squareWidth = Math.min(width,height)*0.9
+
+				numCells = p.random([10,30,50,60])
+				cellSize = squareWidth/numCells
+				cols = Math.floor(squareWidth / cellSize)+1
+				rows = Math.floor(squareWidth / cellSize)+1
+
+				color1 = p.random(malevichColors)
+				color2 = p.random(malevichColors)
+				while (color2==color1) {color2 = p.random(malevichColors)}
+
+				p.pixelDensity(1)
+
+				xOff = 0
+				yOff = 0
+				zOff = 0
+				offsetIncrements = 0.0001
+				marchingArray = []
+
+				for (let y = 0; y < rows; y++) {
+					for (let x = 0; x < cols; x++) {
+						marchingArray.push((p.noise(xOff,yOff,zOff)<0.6)?0:1)
+						xOff+=offsetIncrements
+					}
+					xOff-=offsetIncrements*cols
+					yOff+=offsetIncrements
+				}	
+				yOff-=offsetIncrements*rows
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.rectMode(p.CENTER)
+				p.textSize(10)
+				p.textAlign(p.CENTER)
+			}
+
+			p.draw = function() {
+
+				if (p.frameCount%300==0) {fullReset()}
+				p.background(255)
+				p.strokeWeight(3)
+				p.fill(color1)
+				p.rect(width/2,height/2,squareWidth)
+
+				
+				for (let y = 0; y < rows; y++) {
+					for (let x = 0; x < cols; x++) {
+						p.push()
+						p.translate(width/2-squareWidth/2 +x*cellSize,height/2-squareWidth/2 +y*cellSize)
+						p.noStroke()
+						p.fill(marchingArray[y*cols + x]*255)
+						p.circle(0,0,2)
+						p.pop()
+					}
+				}
+
+				p.stroke(color2)
+				p.noFill()
+				for (let y = 0; y < rows-1; y++) {
+					for (let x = 0; x < cols-1; x++) {
+						p.push()
+						p.translate(width/2-squareWidth/2 + x*cellSize, height/2-squareWidth/2 + y*cellSize)
+
+						let a = marchingArray[y*cols + x]
+						let b = marchingArray[y*cols + x + 1]
+						let c = marchingArray[(y+1)*cols + x + 1]
+						let d = marchingArray[(y+1)*cols + x]
+
+						let state = getState(a,b,c,d)
+						
+						// p.text(state,cellSize/2,cellSize/2)
+
+						if (state == 0) {
+							// do nothing
+						} else if (state == 1) {
+							p.line(0,cellSize/2,cellSize/2,cellSize)
+						} else if (state == 2) {
+							p.line(cellSize/2,cellSize,cellSize,cellSize/2)
+						} else if (state == 3) {
+							p.line(0,cellSize/2,cellSize,cellSize/2)
+						} else if (state == 4) {
+							p.line(cellSize/2,0,cellSize,cellSize/2)
+						} else if (state == 5) {
+							p.line(cellSize/2,0,cellSize,cellSize/2)
+							p.line(0,cellSize/2,cellSize/2,cellSize)
+						} else if (state == 6) {
+							p.line(cellSize/2,0,cellSize/2,cellSize)
+						} else if (state == 7) {
+							p.line(cellSize/2,0,0,cellSize/2)
+						} else if (state == 8) {
+							p.line(cellSize/2,0,0,cellSize/2)
+						} else if (state == 9) {
+							p.line(cellSize/2,0,cellSize/2,cellSize)
+						} else if (state == 10) {
+							p.line(cellSize/2,0,cellSize,cellSize/2)
+							p.line(0,cellSize/2,cellSize/2,cellSize)
+						} else if (state == 11) {
+							p.line(cellSize/2,0,cellSize,cellSize/2)
+						} else if (state == 12) {
+							p.line(0,cellSize/2,cellSize,cellSize/2)
+						} else if (state == 13) {
+							p.line(cellSize/2,cellSize,cellSize,cellSize/2)
+						} else if (state == 14) {
+							p.line(0,cellSize/2,cellSize/2,cellSize)
+						} else if (state == 15) {
+							//do nothing
+						}
+						p.pop()
+						
+					}
+				}
+
+				xOff = 1000
+				yOff = 1000
+				// zOff = 0
+				offsetIncrements = 0.1
+				marchingArray = []
+
+				for (let j = 0; j < rows; j++) {
+					for (let i = 0; i < cols; i++) {
+						marchingArray.push((p.noise(xOff,yOff,zOff)<0.5)?0:1)
+						xOff+=offsetIncrements
+					}
+					xOff-=offsetIncrements*cols
+					yOff+=offsetIncrements
+				}	
+				yOff-=offsetIncrements*rows
+				zOff = zOff + 0.01
+				// p.frameRate(10)
+			}
+
+			function getState(a,b,c,d) {
+				return a*8 + b*4 + c*2 + d
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
