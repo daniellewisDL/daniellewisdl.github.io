@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>metaballs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			const malevichColors = ["#9c3623","#070709","#29285e","#c2892d", "#31753c", "#d6a7b3", "#e29724"]
+			let width = p.windowWidth
+			if (width%2!=0) width+=1;
+          	let height = p.windowHeight
+			if (height%2!=0) height+=1;
+			let initialMargin = 0.5
+			let squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+			if (squareWidth%2!=0) squareWidth+=1;
+
+			let color1 = p.random(malevichColors)
+			let color2 = p.random(malevichColors)
+			while (color2==color1) {color2 = p.random(malevichColors)}
+
+			let blobs = []
+			for (let b = 0; b<5; b++) {
+					blobs.push({x:Math.random()*squareWidth,
+								y:Math.random()*squareWidth,
+								xSpeed:p.random([2,3,4]),
+								ySpeed:p.random([2,3,4]),
+								r: p.random(5,20)})
+				}
+			let pixelOffset = p.random([0,1,2])
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				if (width%2!=0) width+=1;
+				if (height%2!=0) height+=1;
+				initialMargin = 0.5
+				squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+				if (squareWidth%2!=0) squareWidth+=1;
+
+				color1 = p.random(malevichColors)
+				color2 = p.random(malevichColors)
+				while (color2==color1) {color2 = p.random(malevichColors)}
+				blobs = []
+				for (let b = 0; b<5; b++) {
+					blobs.push({x:Math.random()*squareWidth,
+								y:Math.random()*squareWidth,
+								xSpeed:p.random([2,3,4]),
+								ySpeed:p.random([2,3,4]),
+								r: p.random(5,20)})
+				}
+				pixelOffset = p.random([0,1,2])
+				p.pixelDensity(1)
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+				p.colorMode(p.HSB)
+			}
+
+			p.draw = function() {
+
+				// if (p.frameCount%300==0) {fullReset()}
+				p.background(255)
+				p.strokeWeight(3)
+				p.fill(color1)
+				p.rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth)
+
+				for (let b=0; b<blobs.length; b++) {
+					blobs[b].x += blobs[b].xSpeed
+					blobs[b].y += blobs[b].ySpeed
+					if (blobs[b].x < 0 || blobs[b].x > squareWidth) blobs[b].xSpeed*=-1;
+					if (blobs[b].y < 0 || blobs[b].y > squareWidth) blobs[b].ySpeed*=-1;
+				}
+
+				p.loadPixels()
+					for (let j=0; j<squareWidth; j++) {
+						for (let i=0; i<squareWidth; i++) {
+							let pixelIndex = 4*((j+height/2-squareWidth/2)*width + (i + width/2-squareWidth/2))
+							let sum = 0
+							for (let b=0; b<blobs.length; b++) {
+								let distance = p.dist(blobs[b].x + width/2-squareWidth/2, blobs[b].y+height/2-squareWidth/2, i + width/2-squareWidth/2, j+height/2-squareWidth/2)
+								sum += 300 * blobs[b].r/distance
+							}
+							
+							p.pixels[pixelIndex+pixelOffset] = sum
+							// p.pixels[pixelIndex] = p.red(p.color(sum,255,255))
+							// p.pixels[pixelIndex+1] = p.green(p.color(sum,255,255))
+							// p.pixels[pixelIndex+2] = p.blue(p.color(sum,255,255))
+							
+
+
+						}
+					}
+
+				p.updatePixels()
+				console.log("LOop")
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
