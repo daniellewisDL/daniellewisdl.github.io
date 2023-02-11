@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>sol564</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <div id="canvas"></div>
+
+    <script>
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let initialMargin = 0.7
+			    let squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+          let margin = Math.floor(Math.min(width,height)*(1-initialMargin))
+          const backgroundColors = ["#715a5d","#9f712e","#f8ce45","#9f9794","#66423f","#cb6d39","#6a7787","#c1b6ad","#c1ae53","#a44834","#667a3f","#704952"]
+          const jewelColors = ["#5d857d", "#6b4d4f", "#9e785d", "#f9d456", "#7d9ab1", "#709c86", "#988983", "#f1a268", "#c87260", "#86826f", "#aa8261", "#6f6761"]
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            initialMargin = 0.7
+			      squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+            margin = Math.floor(Math.min(width,height)*(1-initialMargin))
+            p.background(255)
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            p.rectMode(p.CENTER)
+          }
+
+          p.draw = function() {
+            p.background(255)
+            sol564(width/2,height/2,squareWidth+p.random(-margin,margin),squareWidth+p.random(-margin,margin))
+            p.frameRate(1/2)
+          }
+ 
+
+          function sol564(x,y,w,h) {
+            p.push()
+            p.translate(x,y)
+
+            // Outer rectangle
+            let outerThickness = 18*w/600
+            p.strokeWeight(outerThickness)
+            p.stroke(0)
+            p.fill(p.random(backgroundColors))
+            p.rect(0,0,w,h)
+
+            let numRows = p.random([2,3,4,5,6,7,8])
+            let numCols = p.random([2,3,4,5,6,7,8])
+            let innerMargin = 0.7
+            let cellSizeX = w*innerMargin / numCols
+            let cellSizeY = h*innerMargin / numRows
+            let points = []
+            let cellSizeFactor = p.random([2,2.5,3,3.5,4])
+
+            for (let i=0; i<numRows; i++) {
+              for (let j=0; j<numCols; j++) {
+                let initialX = -w*innerMargin/2+cellSizeX*j+cellSizeX/2
+                let initialY = -h*innerMargin/2+cellSizeY*i+cellSizeY/2
+                initialX += p.random(-cellSizeX/cellSizeFactor,cellSizeX/cellSizeFactor)
+                initialY += p.random(-cellSizeY/cellSizeFactor,cellSizeY/cellSizeFactor)
+                points.push({x:initialX,y:initialY})
+                // p.point(initialX,initialY)
+              }
+            }
+
+            
+            p.noStroke()
+            for (let i=0; i<numRows-1; i++) {
+              p.beginShape(p.TRIANGLE_STRIP)
+              for (let j=0; j<numCols; j++) {
+                p.fill(p.random(jewelColors))
+                p.vertex(points[i*numCols+j].x,points[i*numCols+j].y)
+                p.fill(p.random(jewelColors))
+                p.vertex(points[(i+1)*numCols+j].x,points[(i+1)*numCols+j].y)
+              }
+              p.endShape()
+            }
+
+            if (Math.random()<0.2) {
+              p.strokeWeight(outerThickness)
+              p.stroke(0)
+              p.noFill()
+              
+              let partition = p.random([0,1,2])
+
+              if (partition == 0) {
+                // Down the middle
+                p.rect(w/4,0,w/2,h)
+              } else if (partition == 1) {
+                // The "H"
+                p.rect(0,h/4,h/2)
+                p.rect(0,-h/4,h/2)
+              } else {
+                // The "4"
+                p.rect(0,-h/4,w,h/2)
+                p.rect(-2*w/6,-h/4,w/3,h/2)
+                p.rect(2*w/6,h/4,w/3,h/2)
+              }
+
+
+            }
+
+            p.pop()
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
