@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>scape</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <div id="canvas"></div>
+
+    <script>
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let aspect = width/height
+
+          const colors = [p.color('#94167F'),p.color('#E93479'),p.color('#F9AC53'),p.color('#F62E97'),p.color('#153CB4'),p.color('green'),p.color('red')]
+
+          let gridColor = p.random(colors)
+          let secondaryColor = p.random(colors)
+          while (secondaryColor==gridColor) {secondaryColor = p.random(colors)}
+
+          let numCols = 50
+          let numRows = 30
+          let cellSize = width/numCols
+          let cellSizeY = height/numRows
+          let arrayOfZs = []
+
+          let xOff = 0
+          let yOff = 0
+          let flying = 0
+          let offsetIncrements = 0.2
+          let sunAngle = 0
+          let sunAngleIncrements = Math.PI/100
+          let sunX = p.random(-width/2,width/2)
+          let sunSize = p.random(30,120)
+          let sunY = -height/2 + sunSize + p.random(30,80)
+          let sunTilt = p.random(-1,1)
+          let maxTerrain = 100*aspect
+          let minTerrain = -maxTerrain
+
+          for (let i = 0; i< numRows; i++) {
+            for (let j = 0; j< numCols; j++) {
+              arrayOfZs.push(0)
+            }
+          }
+
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            aspect = width/height
+            gridColor = p.random(colors)
+            secondaryColor = p.random(colors)
+            while (secondaryColor==gridColor) {secondaryColor = p.random(colors)}
+            numCols = 50
+            numRows = 30
+            cellSize = width/numCols
+            cellSizeY = height/numRows
+            arrayOfZs = []
+            sunX = p.random(-width/2,width/2)
+            sunSize = p.random(30,120)
+            sunY = -height/2 + sunSize + p.random(30,80)
+            sunTilt = p.random(-1,1)
+            maxTerrain = 100*aspect
+            minTerrain = -maxTerrain
+
+            xOff = 0
+            yOff = 0
+            flying = 0
+            offsetIncrements = 0.2
+
+            for (let i = 0; i< numRows; i++) {
+              for (let j = 0; j< numCols; j++) {
+                arrayOfZs.push(0)
+              }
+            }
+            p.background(255)
+          }
+
+          p.setup = function() {
+            p.createCanvas(width, height, p.WEBGL)
+          }
+
+          p.draw = function() {
+
+            if (p.frameCount%50==0) fullReset();
+            flying-=0.1
+            yOff = flying
+            for (let i = 0; i< numRows; i++) {
+              xOff = 0
+              for (let j = 0; j< numCols; j++) {
+                arrayOfZs[i*numCols+j]=p.map(p.noise(xOff,yOff),0,1,minTerrain,maxTerrain)
+                xOff+=offsetIncrements
+              }
+              yOff+=offsetIncrements
+            }
+            
+
+            p.background(p.red(gridColor)/4,p.green(gridColor)/4,p.blue(gridColor)/4)
+            p.ambientLight(255)
+
+            p.push()
+            p.stroke(gridColor)
+            p.ambientMaterial(secondaryColor)
+            p.translate(sunX,sunY)
+            p.rotateX(sunTilt)
+            p.rotateY(sunAngle)
+            p.sphere(sunSize)
+            sunAngle+=sunAngleIncrements
+            p.pop()
+
+
+            p.push()
+            p.translate(-cellSize*numCols/2,-height/4)
+            // p.rotateX(p.map(aspect,2,0.5,Math.PI/3,Math.PI/10))
+            p.rotateX(Math.PI/3)
+            p.stroke(gridColor)
+            // p.ambientMaterial(p.red(gridColor)/2,p.green(gridColor)/2,p.blue(gridColor)/2)
+            p.ambientMaterial("black")
+            
+            for (let i = 0; i< numRows-1; i++) {
+              p.beginShape(p.TRIANGLE_STRIP)
+              for (let j = 0; j< numCols; j++) {
+                p.vertex(j*cellSize,i*cellSizeY,arrayOfZs[i*numCols+j])
+                p.vertex(j*cellSize,(i+1)*cellSizeY,arrayOfZs[(i+1)*numCols+j])
+              }
+              p.endShape()
+            }
+            p.pop()
+
+          }
+ 
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
