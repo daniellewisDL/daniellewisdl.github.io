@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>10print</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			const malevichColors = ["#9c3623","#070709","#29285e","#c2892d", "#31753c", "#d6a7b3", "#e29724"]
+			let cellSize = p.random([10,20,30,40,50,60])
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let cols = Math.floor(width / cellSize)+1
+			let rows = Math.floor(height / cellSize)+1
+			let color1 = p.random(malevichColors)
+			let color2 = p.random(malevichColors)
+			while (color2==color1) {color2 = p.random(malevichColors)}
+			let color3 = p.random(malevichColors)
+			while (color3==color1||color3==color2) {color3 = p.random(malevichColors)}
+			let halfMargin = p.random(cellSize/10, cellSize/3)
+			let horizVaries = p.random([false,true])
+			p.pixelDensity(1)
+			
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				cellSize = p.random([10,20,30,40,50,60])
+				cols = p.floor(width / cellSize)+1
+				rows = p.floor(height / cellSize)+1
+				color1 = p.random(malevichColors)
+				color2 = p.random(malevichColors)
+				while (color2==color1) {color2 = p.random(malevichColors)}
+				color3 = p.random(malevichColors)
+				while (color3==color1||color3==color2) {color3 = p.random(malevichColors)}
+				halfMargin = p.random(cellSize/10, cellSize/3)
+				horizVaries = p.random([false,true])
+			}
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.rectMode(p.CENTER)
+				p.noStroke()
+			}
+
+			p.draw = function() {
+
+				p.background(color1)
+				let typeChosen = p.random(["10print","10printhoriz","10printthicc","10printcircles"])
+				// typeChosen = "10printcircles"
+				p.strokeWeight(p.random(0.5,6))
+				let horizThickness = p.random(1,cellSize*0.8)
+				for (let y = 0; y < rows; y++) {
+					for (let x = 0; x < cols; x++) {
+						draw10print(x*cellSize + cellSize/2, y*cellSize + cellSize/2,cellSize,typeChosen,color1,color2,horizThickness)
+					}
+				}
+				fullReset()
+				p.frameRate(1/2)
+			}
+
+			function draw10print(x,y,size,type,c1,c2,horizU) {
+				if (type=="10print") {
+					p.stroke(color2)
+					p.push()
+					p.translate(x,y)
+					if (Math.random()<0.5) p.line(-size/2,-size/2,size/2,size/2);
+					else p.line(-size/2,size/2,size/2,-size/2)
+					p.pop()
+				} else if (type=="10printhoriz") {
+					p.stroke(color2)
+					p.push()
+					p.translate(x,y)
+					if (Math.random()<0.5) p.line(-size/2,0,size/2,0);
+					else p.line(0,size/2,0,-size/2)
+					p.pop()
+				} else if (type=="10printthicc") {
+					p.push()
+					p.translate(x,y)
+					p.noStroke()
+					let horiz = horizU
+					if (horizVaries) {horiz = p.random(0.1,horizU)}
+					if (Math.random()<0.5) {
+						p.fill("white")
+						p.beginShape()
+						p.vertex(-size/2-horiz/2,size/2)
+						p.vertex(-size/2+horiz/2,size/2)
+						p.vertex(size/2+horiz/2,-size/2)
+						p.vertex(size/2-horiz/2,-size/2)
+						p.endShape(p.CLOSE)
+					}
+					else {
+						p.fill("black")
+						p.beginShape()
+						p.vertex(-size/2-horiz/2,-size/2)
+						p.vertex(-size/2+horiz/2,-size/2)
+						p.vertex(size/2+horiz/2,size/2)
+						p.vertex(size/2-horiz/2,size/2)
+						p.endShape(p.CLOSE)
+
+					}
+					p.pop()
+				} else if (type == "10printcircles") {
+					p.stroke(color2)
+					p.strokeWeight(horizU)
+					p.fill(color3)
+					p.push()
+					p.translate(x,y)
+					if (Math.random()<0.6) p.circle(x,y,size*2);
+					p.pop()					
+				}
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>

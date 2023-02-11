@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>circles2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <div id="canvas"></div>
+
+    <script>
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          const colors = ["#2E294E", "#541388", "#F1E9DA", "#FFD400", "#D90368"]
+          let initialMargin = 0.9
+			    let squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            initialMargin = 0.9
+			      squareWidth = Math.floor(Math.min(width,height)*initialMargin)
+            p.background(255)
+          }
+
+          p.setup = function() {
+            p.createCanvas(width,height)
+            
+          }
+
+          p.draw = function() {
+            if (p.frameCount%200==0) {fullReset()}
+            p.background(255,5)
+            p.stroke(0)
+            p.strokeWeight(3)
+            p.fill(p.random(colors))
+            p.rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth)
+            divide(width/2,height/2,squareWidth)
+            // p.noLoop()
+            p.frameRate(1)
+          }
+ 
+          function divide(x,y,size) {
+            if (size<10) {
+              p.stroke(p.random(colors))
+              p.strokeWeight(size/100)
+              p.fill(p.random(colors))
+              p.circle(x,y,size)
+              return;
+            }
+            else {
+              let myChance = Math.random()
+              if (myChance<0.1) {
+                p.stroke(p.random(colors))
+                p.strokeWeight(size/100)
+                p.fill(p.random(colors))
+                p.circle(x,y,size)
+              } else {
+                divide(x-size/4,y-size/4,size/2)
+                divide(x+size/4,y-size/4,size/2)
+                divide(x-size/4,y+size/4,size/2)
+                divide(x+size/4,y+size/4,size/2)
+              }
+
+            }
+          }
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
