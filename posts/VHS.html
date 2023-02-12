@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>VHS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.8
+			let vhsAspect = 1.6
+			let	vhsHeight = height*initialMargin
+			let	vhsWidth = vhsHeight/vhsAspect
+			if (vhsWidth>width*initialMargin) {
+				vhsWidth = width*initialMargin
+				vhsHeight = vhsWidth*vhsAspect
+			}
+			const baseColors = [[0,0,0],[0,0,94],[30,18,18],[5,64,48],[34,36,59],[356,12,27]]
+			let baseColor = p.random(baseColors)
+
+			let vhsLogo
+			let textSize = 100
+			
+
+			p.pixelDensity(1)
+
+
+			p.preload = function() {
+            	vhsLogo = p.loadImage('./assets/vhs.png')
+				font = p.loadFont("./assets/Neon80s400.ttf")
+          	}
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.8
+				vhsAspect = 1.6
+				vhsHeight = height*initialMargin
+				vhsWidth = vhsHeight/vhsAspect
+				if (vhsWidth>width*initialMargin) {
+					vhsWidth = width*initialMargin
+					vhsHeight = vhsWidth*vhsAspect
+				}
+				baseColor = p.random(baseColors)
+				textSize = 100
+				// p.pixelDensity(1)
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+				p.colorMode(p.HSB,360,100,100,1)
+				p.textFont(font)
+				p.textSize(textSize)
+				p.textAlign(p.CENTER,p.CENTER)
+			}
+
+			p.draw = function() {
+				p.background(0,0,100)
+				vhs(width/2-vhsWidth/2,height/2-vhsHeight/2,vhsWidth,vhsHeight)
+				p.frameRate(1)
+				fullReset()
+
+			}
+
+			function vhs(x,y,w,h) {
+
+				
+
+				// Draw skelington
+				{
+					let tabDelta = 30
+
+					// Bottom Wedge
+					p.fill(baseColor[0],baseColor[1],baseColor[2]/3)
+
+					p.beginShape()
+					p.vertex(x,y+h)
+					p.vertex(x+tabDelta,y+h+tabDelta)
+					p.vertex(x+w+tabDelta,y+h+tabDelta)
+					p.vertex(x+w,y+h)
+					p.endShape(p.CLOSE)
+
+					// Side Wedge
+
+					p.fill(0,0,30)
+					p.beginShape()
+					p.vertex(x+w+tabDelta,y+h+tabDelta)
+					p.vertex(x+w+tabDelta,y+tabDelta)
+					p.vertex(x+w,y)
+					p.vertex(x+w,y+h)
+					p.endShape(p.CLOSE)
+
+					// Main front cover rect
+					p.fill(baseColor[0],baseColor[1],baseColor[2])
+					p.rect(x,y,w,h)
+
+				}
+				// Draw grid or lines
+				{
+					if (Math.random()<0.3) {
+						p.stroke(0,0,40)
+						let cols = p.random([20,30])
+						let colWidth = w/cols
+						let rows = Math.floor(h/colWidth)
+						for (let i=0; i<cols; i++) {
+							p.line(x +colWidth/2 + i*colWidth, y, x +colWidth/2 + i*colWidth, y+h)
+						}
+						for (let j=0; j<rows; j++) {
+							p.line(x, y+colWidth/2+j*colWidth, x+w, y+colWidth/2+j*colWidth)
+						}
+					} else if (Math.random()<0.3) {
+						p.stroke(0,0,40)
+						let cols = p.random([20,30])
+						let colWidth = w/cols
+						let rows = Math.floor(h/colWidth)
+						for (let j=0; j<rows; j++) {
+							p.line(x, y+colWidth/2+j*colWidth, x+w, y+colWidth/2+j*colWidth)
+						}
+					} else if (Math.random()<0.3) {
+						p.stroke(0,0,40)
+						let cols = p.random([20,30])
+						let colWidth = w/cols
+						let rows = 1.5*Math.floor(((h**2+h**2)**0.5)/colWidth)
+						let newCounterX = 0
+						let newCounterY = 0
+						for (let j=0; j<rows; j++) {
+							if ((y+colWidth/2 + j*colWidth)>(y+h)) newCounterX++;
+							if (((x+colWidth/2 + j*colWidth)>w+x)) newCounterY++;
+							let n = Math.floor((w)/(colWidth*1.5))
+							let m = Math.floor((h)/(colWidth*1.5))
+							let x1 = ((y+colWidth/2 + j*colWidth)>(y+h)) ? x + colWidth/2 + (newCounterX-1)*colWidth:x
+							let y1 = Math.min(y+colWidth/2+j*colWidth,y+h)
+							let x2 = Math.min(x+colWidth/2 + j*colWidth,w+x)
+							let y2 = ((x+colWidth/2 + j*colWidth)>w+x)?y+colWidth/2+(newCounterY-1)*colWidth:y
+							if (y1>y+h||y2>y+h||x1>x+w||x2>x+w) break;
+							p.line(	x1,y1,x2,y2)
+						}
+					}
+				}
+
+
+				// Draw colour wedgies
+				{
+					let colourWedgie = p.random([0,1,2,3])
+					if (colourWedgie == 0) {
+						p.noStroke()
+						p.fill(33,36,39)
+						if (Math.random()>0.5) p.fill(0,0,0);
+						let hStart = p.random(0.6,0.7)
+						let hEnd = p.random(0.72,0.9)
+						let hColorBand = (hEnd-hStart)*p.random(0.3,0.8)
+						let hColorBandStart = hStart+(hEnd-hStart-hColorBand)*p.random(0.1,0.5)
+						p.rect(x,y+h*hStart,w,h*(hEnd-hStart))
+						for (let i=0;i<w-2;i++) {
+							p.fill(p.map(i,0,w,0,250),100,100,100)
+							p.rect(x+i,y+h*hColorBandStart,2,h*hColorBand)
+						}
+					} else if (colourWedgie == 1) {
+						p.noStroke()
+						let hStart = p.random(0.6,0.7)
+						let hEnd = p.random(0.72,0.9)
+						let numStrips = p.random([5,9,11,50])
+						for (let i=0;i<numStrips;i++){
+							p.fill(p.map(i,0,numStrips,0,250),80,100)
+							p.rect(x,y+h*hStart+i*h*(hEnd-hStart)/numStrips,w,2+h*(hEnd-hStart)/numStrips)
+						}
+					} else if (colourWedgie == 2) {
+						p.noStroke()
+						let wStart = p.random(0.05,0.1)
+						let wEnd = p.random(0.15,0.23)
+						let numStrips = p.random([5,9,11,50])
+						for (let i=0;i<numStrips;i++){
+							p.fill(p.map(i,0,numStrips,0,250),80,100)
+							p.rect(x+w*wStart + i*w*(wEnd-wStart)/numStrips, y,
+								   2+w*(wEnd-wStart)/numStrips,              h )
+						}
+					} else if (colourWedgie == 3) {
+						p.noStroke()
+						let wStart = p.random(0.2,0.3)
+						let wEnd = 1-wStart
+						let radius = 2*(0.5-wStart)*w
+
+						p.fill(0,0,50)
+						p.rect(x+w*wStart,y,radius,h)
+						for (let i=Math.floor(h*0.05);i<h;i++) {
+							p.fill(0,0,p.map(i,0,h,80,40))
+							p.rect(x+w*wStart,y+i,radius,2)
+						}
+						
+						let numWedges = p.random([9,15,25,50])
+						for (let i=0;i<numWedges;i++){
+							p.fill(p.map(i,0,numWedges,0,250),80,100)
+
+							p.arc(x+w/2, y+h*0.9, radius, radius, Math.PI + i*Math.PI/numWedges, Math.min(2*Math.PI,Math.PI + (i+1.1)*Math.PI/numWedges))
+						}
+					}
+
+
+				}
+
+				// Draw logos
+
+				{
+					let logoX = x+w/2+Math.max(0,(Math.random()*w/2-textSize*2))
+					let logoY = y+textSize+Math.max(0,Math.random()*h/2)
+					let logoSize = w/4
+					p.fill(0,0,0)
+					p.stroke(0,0,100)
+					p.strokeWeight(4)
+					p.textSize(w/8)
+					p.text("VIDEO",logoX,logoY)
+
+					p.fill(0,0,100)
+					let logoXProp = 0.9
+					let logoYProp = 0.48
+					p.rect(logoX-logoSize/2+(logoSize*(1-logoXProp)/2),10+logoY+(logoSize*(1-logoYProp)/2),logoSize*logoXProp,logoSize*logoYProp)
+					p.image(vhsLogo,logoX-logoSize/2,10+logoY,logoSize,logoSize)
+					p.noStroke()
+					p.strokeWeight(1)
+				}
+
+				// Side tab
+				{
+					let tabTop = Math.random()*h*0.5+h*0.3
+					let tabHeight = h*0.2
+					let tabWidth = w*0.1
+					let tabTaper = Math.random()*0.5
+					p.fill(0,0,30)
+					p.beginShape()
+					p.vertex(x+w,y+tabTop)
+					p.vertex(x+w-tabWidth,y+tabTop+tabHeight*tabTaper)
+					p.vertex(x+w-tabWidth,y+tabTop+tabHeight-tabHeight*tabTaper)
+					p.vertex(x+w,y+tabTop+tabHeight)
+					p.endShape(p.CLOSE)
+				}
+
+			}
+
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
