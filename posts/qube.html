@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>qube</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body { font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body style="background-color: rgb(255, 255, 255);">
+    <div id="canvas"></div>
+
+    <script>
+
+      let s = function( p ) {
+
+          let width = p.windowWidth
+          let height = p.windowHeight
+          let angle = 0
+          let colorChoice = Math.floor(Math.random()*360)
+          p.colorMode(p.HSB,360,100,100,100)
+          let boxes = p.random([3,4,5,7,9,14,21])
+          let boxSize = width/boxes
+          let angleIncrement = p.random(0.01,0.05)
+          let translateSize = width/600 * 100
+
+
+          p.pixelDensity(1)
+          
+          p.windowResized = function() {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+            fullReset()
+          }
+
+          function fullReset() {
+            width = p.windowWidth
+            height = p.windowHeight
+            p.background(255)
+            colorChoice = Math.floor(Math.random()*360)
+            boxes = p.random([3,4,5,7,9,14,21])
+            boxSize = width/boxes
+            angleIncrement = p.random(0.01,0.05)
+            angle=0
+            translateSize = width/600 * 100
+
+          }
+
+          p.setup = function() {
+            p.createCanvas(width, height, p.WEBGL)
+          }
+
+          p.draw = function() {
+
+            if (p.frameCount%100==0) fullReset();
+            p.noStroke()
+            p.background(240)
+
+            p.ambientLight(255)
+            p.directionalLight(255,255,255,0,0,-1)
+            p.ambientMaterial(colorChoice,50,50)
+
+            for (let i=0; i<boxes; i++){
+              p.push()
+              p.translate(Math.cos(angle+i*(2*Math.PI/boxes))*translateSize,Math.sin(angle+i*(2*Math.PI/boxes))*translateSize,0)
+              p.rotateX(angle)
+              p.rotateY(angle/2)
+              p.rotateZ(angle/3)
+              p.box(boxSize)
+              p.pop()
+            }
+
+            angle+=angleIncrement
+
+          }
+ 
+
+      }
+      
+      let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
