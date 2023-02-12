@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>paletteer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let s = function( p ) {
+
+			const paletteer = ["#264653","#2a9d8f","#e9c46a","#f4a261","#e76f51"]
+			const blendModeListFull = [p.DODGE,p.BURN, p.BLEND, p.DARKEST, p.LIGHTEST, p.DIFFERENCE, p.MULTIPLY, p.EXCLUSION, p.SCREEN, p.REPLACE, p.OVERLAY, p.HARD_LIGHT, p.SOFT_LIGHT, p.ADD, p.REMOVE]
+			const blendModeList = [p.DODGE,p.BURN, p.BLEND, p.DARKEST, p.LIGHTEST, p.DIFFERENCE, p.MULTIPLY, p.EXCLUSION, p.SCREEN]
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let bgColor = p.random(paletteer)
+			let numCellsX = 100
+			let cellSize = width/numCellsX
+			let numCellsY = Math.floor(height/cellSize)+1
+			
+
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				bgColor = p.random(paletteer)
+				numCellsX = 100
+				cellSize = width/numCellsX
+				numCellsY = Math.floor(height/cellSize)+1
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				// p.background(bgColor)
+				p.noStroke()
+			}
+
+			p.draw = function() {
+
+				// if (p.frameCount%300==0) {fullReset()}
+				// p.background(255)
+
+				numCellsX = Math.floor(p.random([10,20,35,55,80,100]))
+				cellSize = width/numCellsX
+				numCellsY = Math.floor(height/cellSize)+1
+				let colourChoice = p.random(paletteer)
+				
+				p.blendMode(p.BLEND)
+				for (let k=0;k<8;k++) {
+					numCellsX = Math.floor(p.random([10,20,35,55,80,100]))
+					cellSize = width/numCellsX
+					numCellsY = Math.floor(height/cellSize)+1
+					for (let j=0;j<numCellsY;j++) {
+						for (let i=0;i<numCellsX;i++) {
+							colourChoice = p.random(paletteer)
+							if (Math.random()<0.1) p.blendMode(p.random(blendModeList));
+							p.fill(p.red(colourChoice),p.green(colourChoice),p.blue(colourChoice),255)
+							p.rect(i*cellSize,j*cellSize,cellSize,cellSize)
+						}
+					}
+				}
+				// fullReset()
+				p.frameRate(1/2)
+
+			}
+
+		}
+
+		let myp5 = new p5(s, "canvas")
+
+    </script>
+  </body>
+</html>
