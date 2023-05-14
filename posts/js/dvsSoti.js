@@ -449,7 +449,7 @@ function go() {
             genderGroup.append("text").attr("x", 10).attr("y", 40).text("♀").style("stroke-width", genderStroke).attr("font-size", "40px").attr("font-weight", "bold")
                     .attr("stroke", ()=>(d.Gender=="Woman")?"DeepPink":"#cccccc").style("opacity", ()=>(d.Gender=="Woman")?1:0.2)
             genderGroup.append("text").attr("x", 43).attr("y", 43).text("?").style("stroke-width", 1).attr("font-size", "40px").attr("font-weight", "bold")
-                    .attr("stroke", ()=>(d.Gender=="Undisclosed")?"black":"#cccccc").style("opacity", ()=>(d.Gender=="Undisclosed")?1:0.2)
+                    .attr("stroke", ()=>(d.Gender=="Undisclosed")?"black":"#cccccc").style("opacity", ()=>(d.Gender=="Undisclosed")?0.1:0.1)
             genderGroup.append("text").attr("x", 70).attr("y", 40).text("\u2642").style("stroke-width", genderStroke).attr("font-size", "40px").attr("font-weight", "bold")
                     .attr("stroke", ()=>(d.Gender=="Man")?"blue":"#cccccc").style("opacity", ()=>(d.Gender=="Man")?1:0.2)
 
