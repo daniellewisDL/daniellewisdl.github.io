@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>DVS SOTI</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+    body {font-family: sans-serif; font-size: 8pt;}
+    select {font-family: sans-serif; font-size: 8pt;}
+</style>
+
+<body>
+
+    <div id="input_group" style="display: inline; position: absolute; left: 10px;">
+    <b><a href="https://www.datavisualizationsociety.org/">Data Visualization Society</a> | State of the Industry <a href="https://www.datavisualizationsociety.org/survey">Survey</a> | Pirouette Table </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pivot dimension 1:
+        <select name="dropdown_1" id="dropdown_1"></select>
+        &nbsp;&nbsp; Pivot dimension 2:
+        <select name="dropdown_2" id="dropdown_2"></select>
+        &nbsp;&nbsp; Response color:
+        <select name="dropdown_3" id="dropdown_3"></select>
+    <!-- . . . Search:
+        <input type="text" id="search" placeholder="Search..." spellcheck="false">
+    . . . Toggle:
+        <input class="checkbox" type="checkbox" id="toggle" checked>  -->
+    </div>
+
+    <br>
+    <br>
+    <div id="chart"></div>
+
+    <script src="./js/dvsSoti.js"></script>
+
+</body>
