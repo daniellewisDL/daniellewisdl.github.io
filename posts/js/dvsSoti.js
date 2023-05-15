@@ -246,19 +246,39 @@ function go() {
         
         
         responses.on("mouseover", function(e, d) {
-            sidebar.style("opacity", 1)
-            sidebar.selectAll("g").remove()
-            populateSidebar(d)
-           
+            if (d3.select(this).attr("opacity") == 1) {
+                sidebar.style("opacity", 1)
+                sidebar.selectAll("g").remove()
+                populateSidebar(d)
+            }
         })
 
-        responses.on("mouseout", ()=> sidebar.style("opacity", 1))
+        responses.on("mouseout", ()=> sidebar.style("opacity", 0.5))
 
         renderKey("Random", ["Just", "Random", "Colors"], dvsColors)
 
         d3.select("#dropdown_1").on("change", updateData)
         d3.select("#dropdown_2").on("change", updateData)
         d3.select("#dropdown_3").on("change", updateData)
+        d3.select("#search").on("keyup", (d)=>{
+            let textSearchTerm = d3.select("#search").node().value.toLowerCase()
+            responses.attr("opacity", d=>{
+                let textToSearch = "".concat(d.DataVizGoTo_Persons__.toLowerCase(), " ",
+                                             d.DataVizGoTo_Resources__.toLowerCase(), " ",
+                                             d.WorkSitu.toLowerCase(), " ",
+                                             d.WorkSituPref.toLowerCase(), " ",
+                                             d.DataVizRole.toLowerCase(), " ",
+                                             d.Education.toLowerCase(), " ",
+                                             d.Loc1Country.toLowerCase(), " ",
+                                             getTools(d).toString().toLowerCase(), " ",
+                                            getChallenges(d).toString().toLowerCase(), " ",
+                                            getChannels(d).toString().toLowerCase(), " ",
+                                            getCharts(d).toString().toLowerCase(), " "                             
+                                             )
+                
+                return textToSearch.toLowerCase().includes(textSearchTerm) ? 1 : 0.1
+            })
+        })
 
 
         function populateSidebar(d) {
@@ -715,13 +735,21 @@ function go() {
             
             // Transition the responses to the new colors if the category has changed
 
-            responses.transition().duration(transitionDuration)
+            // globalSurveyData.sort((a,b)=>{
+            //     if (a[selectedVariable3current] < b[selectedVariable3current]) {return -1}
+            //     if (a[selectedVariable3current] > b[selectedVariable3current]) {return 1}
+            //     return 0
+            // })
+
+            responses
+                .transition().duration(transitionDuration)
                 .attr("fill", d=>{
                     if (selectedVariable3current=="Random") {return dvsColors[Math.floor(Math.random()*3)]}
                     if (selectedVariable3current=="Gender") {return color(d.Gender)}
                     if (selectedVariable3current=="Education") {return color(d.Education)}
                     if (selectedVariable3current=="DVSMembership") {return color(d.DVSMembership)}
                 })
+
 
             // Render key
 
@@ -740,6 +768,13 @@ function go() {
             //     if (a[selectedVariable3current] > b[selectedVariable3current]) {return 1}
             //     return 0
             // })
+            // resetResponsePositions()
+            // if (selectedVariable1current=="None" && selectedVariable2current=="None") {resetResponsePositions()}
+            // else if (selectedVariable1current=="PayCcy" || selectedVariable2current=="PayCcy") {setResponsesCcy()}
+            // else if (selectedVariable1current=="Location" || selectedVariable2current=="Location") {setResponsesLoc()}
+            // else if (selectedVariable1current=="None") {xPivot()}
+            // else if (selectedVariable2current=="None") {yPivot()}
+            // else {crossPivot()}
 
             // selectedVariable3previous = selectedVariable3current
             // selectedVariable1previous = ""
