@@ -149,7 +149,7 @@ const countryData = [{fullname: "Argentina",shortCode: "ARG",lat: -38,long: -70}
     
 
 
-const colorVariableNames = ["Random","Gender", "Education", "DVSMembership"]
+const colorVariableNames = ["Random", "YearsDataVisExp", 'YearsWorkExp', 'Pay', "Education", "Gender", "DVSMembership"]
 
 const dvsColors = ["#ddb32b", "#a05e9c", "#2db2a5"]
 
@@ -174,11 +174,25 @@ const scaleFactor = (Math.min(2200, window.innerWidth-50) / width)
 const yTranslateMe = (scaleFactor*height - height) / 2
 const xTranslateMe = (scaleFactor*width - width) / 2
 
-const palette0 = ["#A6CEE3","#1F78B4","#B2DF8A","#33A02C","#FB9A99","#E31A1C","#FDBB86","#FF7F00","#CAB2D6","#6A3D9A","#FFFF99","#B15928","#F48024","#24F480","#8024F4","#2480F4"]
-const palette1 = ["#0000FF", "#00BFFF", "#40E0D0", "#87CEFA", "#B2DF8A", "#D2B48C", "#FCC09E", "#FFA07A", "#FF69B4", "#FF00FF", "#F48024", "#FFFF00", "#FFFFC0", "#FAFAD2", "#F5DEB3", "#F0E68C"]
-const palette2 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
-const palette3 = ["#000000", "#FFFFFF", "#999999", "#666666", "#333333", "#000088", "#0000CC", "#0000FF", "#008800", "#00CC00", "#00FF00", "#880000", "#CC0000", "#FF0000", "#880088", "#CC00CC"]
-const color = d3.scaleOrdinal(palette2)
+// Color schemes from: https://observablehq.com/@jotasolano/paul-tol-schemes
+
+const tol_bright = ["#4477AA","#EE6677","#228833","#CCBB44","#66CCEE","#AA3377"]
+const tol_highContrast = ["#004488","#DDAA33","#BB5566"]
+const tol_vibrant = ["#EE7733","#0077BB","#33BBEE","#EE3377","#CC3311","#009988"]
+const tol_muted = ["#CC6677","#332288","#DDCC77","#117733","#88CCEE","#882255","#44AA99","#999933","#AA4499"]
+const tol_light = ["#77AADD","#EE8866","#EEDD88","#FFAABB","#99DDFF","#44BB99","#BBCC33","#AAAA00"]
+
+// 3 options
+const colorGender = d3.scaleOrdinal(tol_highContrast)
+const colorDVSMembership = d3.scaleOrdinal(tol_highContrast)
+
+// 6 options
+const colorYDVE = d3.scaleOrdinal(tol_bright)
+const colorYWE = d3.scaleOrdinal(tol_vibrant)
+
+// 7 or 8 options
+const colorPay = d3.scaleOrdinal(tol_light)
+const colorEducation = d3.scaleOrdinal(tol_muted)
 
 const underlinepath = "M 19 2 C 2 -1 -8 2 -7 4 C -5 7 -6 0 16 3 Z"
 
@@ -869,7 +883,14 @@ function go() {
             // Render key
 
             let uniqueValues = getUniqueValues(globalSurveyData, selectedVariable3current)
-            let uniqueColors = getColors(uniqueValues)
+            let uniqueColors = getColors(uniqueValues, (selectedVariable3current=="Gender") ? colorGender :
+                                                       (selectedVariable3current=="Education") ? colorEducation : 
+                                                       (selectedVariable3current=="DVSMembership") ? colorDVSMembership :
+                                                       (selectedVariable3current=="YearsDataVisExp") ? colorYDVE : 
+                                                       (selectedVariable3current=="YearsWorkExp") ? colorYWE : 
+                                                       (selectedVariable3current=="Pay") ? colorPay : colorGender)
+
+            
             if (selectedVariable3current=="Random") {
                 uniqueValues = ["Just", "Random", "Colors"]
                 uniqueColors = dvsColors
@@ -883,9 +904,13 @@ function go() {
                 .transition().duration(1000)
                 .attr("fill", d=>{
                     if (selectedVariable3current=="Random") {return dvsColors[Math.floor(Math.random()*3)]}
-                    if (selectedVariable3current=="Gender") {return color(d.Gender)}
-                    if (selectedVariable3current=="Education") {return color(d.Education)}
-                    if (selectedVariable3current=="DVSMembership") {return color(d.DVSMembership)}
+                    if (selectedVariable3current=="Gender") {return colorGender(d.Gender)}
+                    if (selectedVariable3current=="Education") {return colorEducation(d.Education)}
+                    if (selectedVariable3current=="DVSMembership") {return colorDVSMembership(d.DVSMembership)}
+                    if (selectedVariable3current=="YearsDataVisExp") {return colorYDVE(d.YearsDataVisExp)}
+                    if (selectedVariable3current=="YearsWorkExp") {return colorYWE(d.YearsWorkExp)}
+                    if (selectedVariable3current=="Pay") {return colorPay(d.Pay)}
+
                 }).end()
 
             if (selectedVariable3current!="Random") {
@@ -920,10 +945,10 @@ function go() {
             return [...uniqueValues].sort();
           }
 
-        function getColors(uniqueValues) {
+        function getColors(uniqueValues, colorFunction) {
             const colors = []
             for (let i=0; i<uniqueValues.length; i++) {
-                colors.push(color(uniqueValues[i]))
+                colors.push(colorFunction(uniqueValues[i]))
             }
             return colors
         }
