@@ -6,67 +6,66 @@ const dropDownVariableNames =
     'YearsDataVisExp',
     'YearsWorkExp',
     'Pay',
-    // 'PayCcy',
+    'PayCcy',
     'Location',
     'Education',
     'Gender',
     'DVSMembership'
     ]
 
-const currencyData = 
-    [
-        {currency: 'ARS', country: 'Argentina', long: -58.38, lat: -34.6, ccyname: 'Argentina Peso'},
-        {currency: 'AUD', country: 'Australia', long: 149.13, lat: -35.28, ccyname: 'Australia Dollar'},
-        {currency: 'BAM', country: 'Bosnia and Herzegovina', long: 17.97, lat: 43.92, ccyname: 'Bosnia and Herzegovina Convertible Mark'},
-        {currency: 'BDT', country: 'Bangladesh', long: 90.42, lat: 23.72, ccyname: 'Bangladesh Taka'},
-        {currency: 'BRL', country: 'Brazil', long: -49.26, lat: -15.78, ccyname: 'Brazil Real'},
-        {currency: 'BYN', country: 'Belarus', long: 27.57, lat: 53.95, ccyname: 'Belarus Ruble'},
-        {currency: 'CAD', country: 'Canada', long: -79.42, lat: 45.42, ccyname: 'Canada Dollar'},
-        {currency: 'CHF', country: 'Switzerland', long: 8.58, lat: 47.17, ccyname: 'Switzerland Franc'},
-        {currency: 'CLP', country: 'Chile', long: -70.67, lat: -33.5, ccyname: 'Chile Peso'},
-        {currency: 'CNY', country: 'China', long: 116.4, lat: 39.91, ccyname: 'China Yuan Renminbi'},
-        {currency: 'COP', country: 'Colombia', long: -74.08, lat: 4.58, ccyname: 'Colombia Peso'},
-        {currency: 'CZK', country: 'Czech Republic', long: 15.47, lat: 50.08, ccyname: 'Czech Republic Koruna'},
-        {currency: 'DKK', country: 'Denmark', long: 9.5, lat: 55.67, ccyname: 'Denmark Krone'},
-        {currency: 'ETB', country: 'Ethiopia', long: 38.75, lat: 9.08, ccyname: 'Ethiopia Birr'},
-        {currency: 'EUR', country: 'European Union', long: 13.42, lat: 47.17, ccyname: 'Euro Member Countries'},
-        {currency: 'GBP', country: 'United Kingdom', long: -0.13, lat: 51.5, ccyname: 'United Kingdom Pound'},
-        {currency: 'GHS', country: 'Ghana', long: -2.08, lat: 5.58, ccyname: 'Ghana Cedi'},
-        {currency: 'HKD', country: 'Hong Kong', long: 114.17, lat: 22.25, ccyname: 'Hong Kong Dollar'},
-        {currency: 'HRK', country: 'Croatia', long: 15.92, lat: 45.83, ccyname: 'Croatia Kuna'},
-        {currency: 'HUF', country: 'Hungary', long: 19.08, lat: 47.17, ccyname: 'Hungary Forint'},
-        {currency: 'IDR', country: 'Indonesia', long: 115.21, lat: -6.17, ccyname: 'Indonesia Rupiah'},
-        {currency: 'ILS', country: 'Israel', long: 34.83, lat: 31.5, ccyname: 'Israel Shekel'},
-        {currency: 'INR', country: 'India', long: 77.22, lat: 28.67, ccyname: 'India Rupee'},
-        {currency: 'JPY', country: 'Japan', long: 139.69, lat: 35.69, ccyname: 'Japan Yen'},
-        {currency: 'KES', country: 'Kenya', long: 34.83, lat: -1.25, ccyname: 'Kenya Shilling'},
-        {currency: 'KRW', country: 'South Korea', long: 127.08, lat: 37.5, ccyname: 'Korea (South) Won'},
-        {currency: 'KZT', country: 'Kazakhstan', long: 66.92, lat: 48.67, ccyname: 'Kazakhstan Tenge'},
-        {currency: 'LKR', country: 'Sri Lanka', long: 80.75, lat: 6.92, ccyname: 'Sri Lanka Rupee'},
-        {currency: 'MNT', country: 'Mongolia', long: 106.92, lat: 47.92, ccyname: 'Mongolia Tughrik'},
-        {currency: 'MUR', country: 'Mauritius', long: 57.55, lat: -20.35, ccyname: 'Mauritius Rupee'},
-        {currency: 'MXN', country: 'Mexico', long: -99.17, lat: 19.44, ccyname: 'Mexico Peso'},
-        {currency: 'MYR', country: 'Malaysia', long: 101.75, lat: 2.5, ccyname: 'Malaysia Ringgit'},
-        {currency: 'NGN', country: 'Nigeria', long: 7.5, lat: 9.08, ccyname: 'Nigeria Naira'},
-        {currency: 'NOK', country: 'Norway', long: 10.75, lat: 60.33, ccyname: 'Norway Krone'},
-        {currency: 'NPR', country: 'Nepal', long: 85.31, lat: 27.72, ccyname: 'Nepal Rupee'},
-        {currency: 'NZD', country: 'New Zealand', long: 174.75, lat: -41.25, ccyname: 'New Zealand Dollar'},
-        {currency: 'PEN', country: 'Peru', long: -75, lat: -10, ccyname: 'Peru Sol'},
-        {currency: 'PHP', country: 'Philippines', long: 122.5, lat: 15, ccyname: 'Philippines Peso'},
-        {currency: 'PKR', country: 'Pakistan', long: 73.08, lat: 30.31, ccyname: 'Pakistan Rupee'},
-        {currency: 'PLN', country: 'Poland', long: 21, lat: 52, ccyname: 'Poland Zloty'},
-        {currency: 'RON', country: 'Romania', long: 25.67, lat: 45, ccyname: 'Romania Leu'},
-        {currency: 'RUB', country: 'Russia', long: 37.62, lat: 55.75, ccyname: 'Russia Ruble'},
-        {currency: 'SAR', country: 'Saudi Arabia', long: 44.67, lat: 24.67, ccyname: 'Saudi Arabia Riyal'},
-        {currency: 'SEK', country: 'Sweden', long: 18, lat: 60.17, ccyname: 'Sweden Krona'},
-        {currency: 'SGD', country: 'Singapore', long: 103.83, lat: 1.33, ccyname: 'Singapore Dollar'},
-        {currency: 'THB', country: 'Thailand', long: 100.5, lat: 15, ccyname: 'Thailand Baht'},
-        {currency: 'TZS', country: 'Tanzania', long: 39.17, lat: -6.33, ccyname: 'Tanzania Shilling'},
-        {currency: 'UGX', country: 'Uganda', long: 32.25, lat: 0.33, ccyname: 'Uganda Shilling'},
-        {currency: 'USD', country: 'United States', long: -96.83, lat: 37, ccyname: 'United States Dollar'},
-        {currency: 'ZAR', country: 'South Africa', long: 27.83, lat: -25.67, ccyname: 'South Africa Rand'},
-        {currency: 'Unknown', country: 'Unknown', long: 0, lat: 0, ccyname: 'Unknown'}
-        ]
+const currencyData = [
+    {currency: 'ARS', country: 'Argentina', lat: -38, long: -70, ccyname: 'Argentina Peso'},
+    {currency: 'AUD', country: 'Australia', lat: -28, long: 95, ccyname: 'Australia Dollar'},
+    {currency: 'BDT', country: 'Bangladesh', lat: 7, long: 102, ccyname: 'Bangladesh Taka'},
+    {currency: 'BYN', country: 'Belarus', lat: 54.6, long: 95, ccyname: 'Belarus Ruble'},
+    {currency: 'BAM', country: 'Bosnia and Herzegovina', lat: 20, long: 60, ccyname: 'Bosnia and Herzegovina Convertible Mark'},
+    {currency: 'BRL', country: 'Brazil', lat: -25, long: -80, ccyname: 'Brazil Real'},
+    {currency: 'CAD', country: 'Canada', lat: 56, long: -97, ccyname: 'Canada Dollar'},
+    {currency: 'CLP', country: 'Chile', lat: -30, long: -95, ccyname: 'Chile Peso'},
+    {currency: 'CNY', country: 'China', lat: 36, long: 124, ccyname: 'China Yuan Renminbi'},
+    {currency: 'COP', country: 'Colombia', lat: -17, long: -75, ccyname: 'Colombia Peso'},
+    {currency: 'HRK', country: 'Croatia', lat: 20, long: 54, ccyname: 'Croatia Kuna'},
+    {currency: 'CZK', country: 'Czech Republic', lat: 39, long: 35, ccyname: 'Czech Republic Koruna'},
+    {currency: 'DKK', country: 'Denmark', lat: 59, long: 17, ccyname: 'Denmark Krone'},
+    {currency: 'ETB', country: 'Ethiopia', lat: 0, long: 39, ccyname: 'Ethiopia Birr'},
+    {currency: 'EUR', country: 'European Union',  lat: 35,  long: -10, ccyname: 'Euro Member Countries'},
+    {currency: 'GHS', country: 'Ghana', lat: -2, long: 5, ccyname: 'Ghana Cedi'},
+    {currency: 'HKD', country: 'Hong Kong',  lat: 22,  long: 114, ccyname: 'Hong Kong Dollar'},
+    {currency: 'HUF', country: 'Hungary', lat: 39, long: 78, ccyname: 'Hungary Forint'},
+    {currency: 'INR', country: 'India', lat: 15, long: 90, ccyname: 'India Rupee'},
+    {currency: 'IDR', country: 'Indonesia', lat: -15, long: 140, ccyname: 'Indonesia Rupiah'},
+    {currency: 'ILS', country: 'Israel', lat: 10, long: 55, ccyname: 'Israel Shekel'},
+    {currency: 'JPY', country: 'Japan', lat: 35, long: 160, ccyname: 'Japan Yen'},
+    {currency: 'KZT', country: 'Kazakhstan', lat: 50, long: 110, ccyname: 'Kazakhstan Tenge'},
+    {currency: 'KES', country: 'Kenya', lat: -12, long: 37, ccyname: 'Kenya Shilling'},
+    {currency: 'MYR', country: 'Malaysia', lat: -5, long: 115, ccyname: 'Malaysia Ringgit'},
+    {currency: 'MUR', country: 'Mauritius', lat: -21, long: 60, ccyname: 'Mauritius Rupee'},
+    {currency: 'MXN', country: 'Mexico', lat: -12, long: -97, ccyname: 'Mexico Peso'},
+    {currency: 'MNT', country: 'Mongolia', lat: 45, long: 125, ccyname: 'Mongolia Tughrik'},
+    {currency: 'NPR', country: 'Nepal', lat: 22, long: 105, ccyname: 'Nepal Rupee'},
+    {currency: 'NZD', country: 'New Zealand', lat: -40, long: 130, ccyname: 'New Zealand Dollar'},
+    {currency: 'NGN', country: 'Nigeria', lat: -2, long: 14, ccyname: 'Nigeria Naira'},
+    {currency: 'NOK', country: 'Norway', lat: 63, long: 0, ccyname: 'Norway Krone'},
+    {currency: 'PKR', country: 'Pakistan', lat: 22, long: 85, ccyname: 'Pakistan Rupee'},
+    {currency: 'PEN', country: 'Peru', lat: -20, long: -97, ccyname: 'Peru Sol'},
+    {currency: 'PHP', country: 'Philippines', lat: 0, long: 130, ccyname: 'Philippines Peso'},
+    {currency: 'PLN', country: 'Poland', lat: 45, long: 75, ccyname: 'Poland Zloty'},
+    {currency: 'RON', country: 'Romania', lat: 30, long: 78, ccyname: 'Romania Leu'},
+    {currency: 'RUB', country: 'Russia', lat: 55, long: 110, ccyname: 'Russia Ruble'},
+    {currency: 'SAR', country: 'Saudi Arabia', lat: 5, long: 65, ccyname: 'Saudi Arabia Riyal'},
+    {currency: 'SGD', country: 'Singapore', lat: -11, long: 115, ccyname: 'Singapore Dollar'},
+    {currency: 'ZAR', country: 'South Africa', lat: -25, long: 35, ccyname: 'South Africa Rand'},
+    {currency: 'KRW', country: 'South Korea', lat: 37, long: 142, ccyname: 'Korea (South) Won'},
+    {currency: 'LKR', country: 'Sri Lanka', lat: 7, long: 90, ccyname: 'Sri Lanka Rupee'},
+    {currency: 'SEK', country: 'Sweden', lat: 63, long: 58, ccyname: 'Sweden Krona'},
+    {currency: 'CHF', country: 'Switzerland', lat: 39, long: 0, ccyname: 'Switzerland Franc'},
+    {currency: 'TZS', country: 'Tanzania', lat: -18, long: 40, ccyname: 'Tanzania Shilling'},
+    {currency: 'THB', country: 'Thailand', lat: 5, long: 115, ccyname: 'Thailand Baht'},
+    {currency: 'UGX', country: 'Uganda', lat: -6, long: 33, ccyname: 'Uganda Shilling'},
+    {currency: 'GBP', country: 'United Kingdom', lat: 50, long: -10, ccyname: 'United Kingdom Pound'},
+    {currency: 'USD', country: 'United States', lat: 45, long: -97, ccyname: 'United States Dollar'},
+    {currency: 'Unknown', country: 'Unknown', lat: -32, long: 0, ccyname: 'Unknown'}
+]
 
 const countryData = [{fullname: "Argentina",shortCode: "ARG",lat: -38,long: -70},
     {fullname: "Australia",shortCode: "AUS",lat: -28,long: 95},
@@ -89,7 +88,7 @@ const countryData = [{fullname: "Argentina",shortCode: "ARG",lat: -38,long: -70}
     {fullname: "Ethiopia",shortCode: "ETH",lat: 0,long: 39},
     {fullname: "Finland",shortCode: "FIN",lat: 63,long: 27},
     {fullname: "France",shortCode: "FRA",lat: 30,long: -10},
-    {fullname: "Germany",shortCode: "DEU",lat: 35,long: 13.07806},
+    {fullname: "Germany",shortCode: "DEU",lat: 35,long: 13},
     {fullname: "Ghana",shortCode: "GHA",lat: -2,long: 5},
     {fullname: "Greece",shortCode: "GRC",lat: 15,long: 40},
     {fullname: "Hungary",shortCode: "HUN",lat: 39,long: 78},
@@ -181,10 +180,7 @@ const palette2 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8
 const palette3 = ["#000000", "#FFFFFF", "#999999", "#666666", "#333333", "#000088", "#0000CC", "#0000FF", "#008800", "#00CC00", "#00FF00", "#880000", "#CC0000", "#FF0000", "#880088", "#CC00CC"]
 const color = d3.scaleOrdinal(palette2)
 
-const silhouette = "M0,0 L0,25 A25,25 0 0 1 25,50 L75,50 A25,25 0 0 1 100,25 L100,0 Z M25,50 A12.5,12.5 0 0 1 37.5,62.5 L62.5,62.5 A12.5,12.5 0 0 1 75,50 Z"
-const circlepath = "M 0,0 A 50,50 0 0 1 0,50 A 50,50 0 0 1 0,0 Z"
 const underlinepath = "M 19 2 C 2 -1 -8 2 -7 4 C -5 7 -6 0 16 3 Z"
-
 
 const svg = d3.select("body").append("svg").attr("width", width).attr("height", height)
 svg.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).attr("fill", "none").attr("stroke", "grey").attr("stroke-width", 2)
@@ -253,7 +249,7 @@ function go() {
             }
         })
 
-        responses.on("mouseout", ()=> sidebar.style("opacity", 0.5))
+        responses.on("mouseout", ()=> sidebar.style("opacity", .8))
 
         renderKey("Random", ["Just", "Random", "Colors"], dvsColors)
 
@@ -288,11 +284,20 @@ function go() {
 
             const header = sidebar.append("g").attr("id", "header").attr("transform", `translate(20, 50)`)
             header.append("text").text(d.DataVizRole).attr("font-size", 40).attr("font-weight", "bold").attr("fill", "grey")
-            const icon = header.append("g").attr("id", "icon").attr("transform", `scale(7) translate(7, 1)`)
+            const icon = header.append("g").attr("id", "icon").attr("transform", `scale(7) translate(7, 0)`)
             icon.append("path").attr("d", underlinepath).attr("fill", "grey").attr("stroke", "none").attr("stroke-width", 0)
+            let ccyOffset = 15
             if (d.Loc1Country != "[^not answered]" && d.Loc1Country != "[\\unfinished]") {
-                header.append("text").text(d.Loc1Country).attr("font-size", 20).attr("font-weight", "bold").attr("fill", "grey").attr("transform", `translate(25, 50)`)
+                header.append("text").attr("font-size", 20).attr("font-weight", "bold").attr("fill", "grey").attr("transform", `translate(35, 40)`)
+                    .text((d.Loc1Country=="Bosnia and Herzegovina" ? "Bosnia" : (d.Loc1Country=="Czech Republic (Czechia)") ? "Czechia" : d.Loc1Country) )
+            } else {
+                ccyOffset = 0
             }
+            if (d.PayCurrency_cleaned != "[^not answered]" && d.PayCurrency_cleaned != "[\\unfinished]" && d.PayCurrency_cleaned != "[other info]" && d.PayCurrency_cleaned != "[not paid for DV]") {
+                header.append("text").attr("font-size", 10).attr("font-weight", "bold").attr("fill", "grey").attr("transform", `translate(35, ${40+ccyOffset})`).attr("font-style", "italic")
+                    .text("Paid in " + d.PayCurrency_cleaned)
+            }
+
             header.append("text").text(". . . RESPONDENT PROFILE . . .").attr("font-size", 12).attr("font-weight", "bold").attr("fill", "green").attr("transform", `translate(0, -37)`).style("font-family", "fixed-width")
 
             // Work style indicators device
@@ -547,163 +552,271 @@ function go() {
                 
         }
 
-        function crossPivot() {
-            mainChartArea.selectAll("#yAxis").remove()
-            mainChartArea.selectAll("#xAxis").remove()
-            mainChartArea.selectAll("#locAxis").remove()
-            mainChartArea.selectAll("#ccyAxis").remove()
+        function crossPivot(resetAxesFlag=true) {
 
             let xScaleCross = d3.scaleBand().domain(getUniqueValues(globalSurveyData, selectedVariable2current)).range([150, mainChartAreaWidth]).padding(chartPadding)
             let yScaleCross = d3.scaleBand().domain(getUniqueValues(globalSurveyData, selectedVariable1current)).range([chartYDataStart, mainChartAreaHeight]).padding(chartPadding)
             let responseSizeCross = 5
             let numWideCrossPivot = Math.floor(xScaleCross.bandwidth()/responseSizeCross)
+            
+            if (resetAxesFlag) {
+                mainChartArea.selectAll("#yAxis").remove()
+                mainChartArea.selectAll("#xAxis").remove()
+                mainChartArea.selectAll("#locAxis").remove()
+                mainChartArea.selectAll("#ccyAxis").remove()
+                let xAxisCross = mainChartArea.append("g").attr("id", "xAxis")
+                let xAxisLabelsCross = xAxisCross.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable2current)).enter().append("text")
+                    .text(d=>d).attr("x", ()=>Math.random()*mainChartAreaWidth).attr("y", -100).attr("text-anchor", "start").attr("font-size", 10).attr("fill", "black")
+                xAxisLabelsCross.transition().duration(transitionDuration).attr("x", d=>xScaleCross(d)-20).attr("y", chartYAxisStart)
+    
+                let yAxisCross = mainChartArea.append("g").attr("id", "yAxis")
+                let yAxisLabelsCross = yAxisCross.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable1current)).enter().append("text")
+                    .text(d=>d).attr("x", -100).attr("y", ()=>Math.random()*mainChartAreaHeight).attr("text-anchor", "end").attr("font-size", 10).attr("fill", "black")
+                yAxisLabelsCross.transition().duration(transitionDuration).attr("x", 120).attr("y", d=>yScaleCross(d)-20+10)
+            }
+
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            
+            let offsetObjects = []
+            getUniqueValues(globalSurveyData, selectedVariable1current).forEach(e1 => {
+                getUniqueValues(globalSurveyData, selectedVariable2current).forEach(e2 => {
+                    let offsetList = []
+                    for (let i=0; i<uniqueValuesColors.length; i++) {
+                        if (i==0) {offsetList.push(0)}
+                        else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => (item[selectedVariable1current] == e1 && item[selectedVariable2current] == e2 && item[selectedVariable3current] == uniqueValuesColors[i-1])).length)}
+                    }
+                    offsetObjects.push({category1: e1, category2: e2, offsets: offsetList})
+                })
+            })
 
             responses.transition().duration(transitionDuration)
                 .attr("x", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => (item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable1current] == d[selectedVariable1current])).findIndex(e => {return e.refID == d.refID})
-                    return xScaleCross(d[selectedVariable2current])+(i_prime%numWideCrossPivot)*(responseSizeCross+1)
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable1current] == d[selectedVariable1current] && item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>(e.category1==d[selectedVariable1current] && e.category2==d[selectedVariable2current]))[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return xScaleCross(d[selectedVariable2current])+(i_primePrime%numWideCrossPivot)*(responseSizeCross+1)
                 })
                 .attr("y", (d,i)=>{
-                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable1current] == d[selectedVariable1current]))
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable1current] == d[selectedVariable1current] && item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable3current] == d[selectedVariable3current]))
                     let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
-                    return yScaleCross(d[selectedVariable1current])+(Math.floor(i_prime/numWideCrossPivot))*(responseSizeCross+1)
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>(e.category1==d[selectedVariable1current] && e.category2==d[selectedVariable2current]))[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return yScaleCross(d[selectedVariable1current])+(Math.floor(i_primePrime/numWideCrossPivot))*(responseSizeCross+1)
                 }
                 )
                 .attr("width", responseSizeCross)
                 .attr("height", responseSizeCross)
 
-            let xAxisCross = mainChartArea.append("g").attr("id", "xAxis")
-            let xAxisLabelsCross = xAxisCross.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable2current)).enter().append("text")
-                .text(d=>d).attr("x", ()=>Math.random()*mainChartAreaWidth).attr("y", -100).attr("text-anchor", "start").attr("font-size", 10).attr("fill", "black")
-            xAxisLabelsCross.transition().duration(transitionDuration).attr("x", d=>xScaleCross(d)-20).attr("y", chartYAxisStart)
 
-            let yAxisCross = mainChartArea.append("g").attr("id", "yAxis")
-            let yAxisLabelsCross = yAxisCross.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable1current)).enter().append("text")
-                .text(d=>d).attr("x", -100).attr("y", ()=>Math.random()*mainChartAreaHeight).attr("text-anchor", "end").attr("font-size", 10).attr("fill", "black")
-            yAxisLabelsCross.transition().duration(transitionDuration).attr("x", 120).attr("y", d=>yScaleCross(d)-20+10)
             }
 
 
-        function xPivot() {
-            mainChartArea.selectAll("#yAxis").remove()
-            mainChartArea.selectAll("#xAxis").remove()
-            mainChartArea.selectAll("#locAxis").remove()
-            mainChartArea.selectAll("#ccyAxis").remove()
+        function xPivot(resetAxesFlag=true) {
 
-            
             let xScaleX = d3.scaleBand().domain(getUniqueValues(globalSurveyData, selectedVariable2current)).range([150, mainChartAreaWidth]).padding(chartPadding)
             let responseSizeXPivot = 10
             let numWideXPivot = Math.floor(xScaleX.bandwidth()/responseSizeXPivot)
 
+            if (resetAxesFlag) {
+                mainChartArea.selectAll("#yAxis").remove()
+                mainChartArea.selectAll("#xAxis").remove()
+                mainChartArea.selectAll("#locAxis").remove()
+                mainChartArea.selectAll("#ccyAxis").remove()
+                let xAxisX = mainChartArea.append("g").attr("id", "xAxis")
+                let xAxisLabels = xAxisX.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable2current)).enter().append("text")
+                    .text(d=>d).attr("x", ()=>Math.random()*mainChartAreaWidth).attr("y", -100).attr("text-anchor", "start").attr("font-size", 10).attr("fill", "black")
+                xAxisLabels.transition().duration(transitionDuration).attr("x", d=>xScaleX(d)-20).attr("y", chartYAxisStart)
+            }
+            
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            
+            let offsetObjects = []
+            getUniqueValues(globalSurveyData, selectedVariable2current).forEach(e => {
+                let offsetList = []
+                for (let i=0; i<uniqueValuesColors.length; i++) {
+                    if (i==0) {offsetList.push(0)}
+                    else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => (item[selectedVariable2current] == e && item[selectedVariable3current] == uniqueValuesColors[i-1])).length)}
+                }
+                offsetObjects.push({category: e, offsets: offsetList})
+            })
+
             responses.transition().duration(transitionDuration)
                 .attr("x", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item[selectedVariable2current] == d[selectedVariable2current]).findIndex(e => {return e.refID == d.refID})
-                    return xScaleX(d[selectedVariable2current])+(i_prime%numWideXPivot)*(responseSizeXPivot+1)
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.category==d[selectedVariable2current])[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return xScaleX(d[selectedVariable2current])+(i_primePrime%numWideXPivot)*(responseSizeXPivot+1)
                 })
                 .attr("y", (d,i)=>{
-                    let filteredData = globalSurveyData.filter(item => item[selectedVariable2current] == d[selectedVariable2current])
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable2current] == d[selectedVariable2current] && item[selectedVariable3current] == d[selectedVariable3current]))
                     let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
-                    return chartYDataStart+15+Math.floor(i_prime/numWideXPivot)*(responseSizeXPivot+1)
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.category==d[selectedVariable2current])[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return chartYDataStart+15+Math.floor(i_primePrime/numWideXPivot)*(responseSizeXPivot+1)
                 })
                 .attr("width", responseSizeXPivot)
                 .attr("height", responseSizeXPivot)
             
-            let xAxisX = mainChartArea.append("g").attr("id", "xAxis")
-            let xAxisLabels = xAxisX.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable2current)).enter().append("text")
-                .text(d=>d).attr("x", ()=>Math.random()*mainChartAreaWidth).attr("y", -100).attr("text-anchor", "start").attr("font-size", 10).attr("fill", "black")
-            xAxisLabels.transition().duration(transitionDuration).attr("x", d=>xScaleX(d)-20).attr("y", chartYAxisStart)
+
                     
         }
 
-        function yPivot() {
-            mainChartArea.selectAll("#yAxis").remove()
-            mainChartArea.selectAll("#xAxis").remove()
-            mainChartArea.selectAll("#locAxis").remove()
-            mainChartArea.selectAll("#ccyAxis").remove()
-
+        function yPivot(resetAxesFlag=true) {
 
             let yScaleY = d3.scaleBand().domain(getUniqueValues(globalSurveyData, selectedVariable1current)).range([chartYDataStart, mainChartAreaHeight]).padding(chartPadding)
-            let responseSizeYPivot = 9.5
+            let responseSizeYPivot = 9.5 // MAGIC NUMBER - should be dynamically calculated
             let numTallYPivot = Math.floor(yScaleY.bandwidth()/responseSizeYPivot)
+
+            if (resetAxesFlag) {
+                mainChartArea.selectAll("#yAxis").remove()
+                mainChartArea.selectAll("#xAxis").remove()
+                mainChartArea.selectAll("#locAxis").remove()
+                mainChartArea.selectAll("#ccyAxis").remove()
+                let yAxisY = mainChartArea.append("g").attr("id", "yAxis")
+                let yAxisLabels = yAxisY.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable1current)).enter().append("text")
+                    .text(d=>d).attr("x", -100).attr("y", ()=>Math.random()*mainChartAreaHeight).attr("text-anchor", "end").attr("font-size", 10).attr("fill", "black")
+                yAxisLabels.transition().duration(transitionDuration).attr("x", 120).attr("y", d=>yScaleY(d)-20+10)
+            }
+
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            
+            let offsetObjects = []
+            getUniqueValues(globalSurveyData, selectedVariable1current).forEach(e => {
+                let offsetList = []
+                for (let i=0; i<uniqueValuesColors.length; i++) {
+                    if (i==0) {offsetList.push(0)}
+                    else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => (item[selectedVariable1current] == e && item[selectedVariable3current] == uniqueValuesColors[i-1])).length)}
+                }
+                offsetObjects.push({category: e, offsets: offsetList})
+            })
 
             responses.transition().duration(transitionDuration)
                 .attr("x", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item[selectedVariable1current] == d[selectedVariable1current]).findIndex(e => {return e.refID == d.refID})
-                    return 150+Math.floor(i_prime/numTallYPivot)*(responseSizeYPivot+1)
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable1current] == d[selectedVariable1current] && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.category==d[selectedVariable1current])[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return 150+Math.floor(i_primePrime/numTallYPivot)*(responseSizeYPivot+1)
                 })
                 .attr("y", (d,i)=>{
-                    let filteredData = globalSurveyData.filter(item => item[selectedVariable1current] == d[selectedVariable1current])
+                    let filteredData = globalSurveyData.filter(item => (item[selectedVariable1current] == d[selectedVariable1current] && item[selectedVariable3current] == d[selectedVariable3current]))
                     let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
-                    return yScaleY(d[selectedVariable1current]) + (i_prime%numTallYPivot)*(responseSizeYPivot+1)
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.category==d[selectedVariable1current])[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+                    return yScaleY(d[selectedVariable1current]) + (i_primePrime%numTallYPivot)*(responseSizeYPivot+1)
                 })
                 .attr("width", responseSizeYPivot)
                 .attr("height", responseSizeYPivot)
             
-            let yAxisY = mainChartArea.append("g").attr("id", "yAxis")
-            let yAxisLabels = yAxisY.selectAll("text").data(getUniqueValues(globalSurveyData, selectedVariable1current)).enter().append("text")
-                .text(d=>d).attr("x", -100).attr("y", ()=>Math.random()*mainChartAreaHeight).attr("text-anchor", "end").attr("font-size", 10).attr("fill", "black")
-            yAxisLabels.transition().duration(transitionDuration).attr("x", 120).attr("y", d=>yScaleY(d)-20+10)
         }
 
-        function setResponsesLoc() {
-            mainChartArea.selectAll("#yAxis").remove()
-            mainChartArea.selectAll("#xAxis").remove()
-            mainChartArea.selectAll("#locAxis").remove()
-            mainChartArea.selectAll("#ccyAxis").remove()
+        function setResponsesLoc(resetAxesFlag=true) {
+            
+            if (resetAxesFlag) {
+                mainChartArea.selectAll("#yAxis").remove()
+                mainChartArea.selectAll("#xAxis").remove()
+                mainChartArea.selectAll("#locAxis").remove()
+                mainChartArea.selectAll("#ccyAxis").remove()
+                let locAxis = mainChartArea.append("g").attr("id", "locAxis")
+                let locLabels = locAxis.selectAll("text").data(getUniqueValues(globalSurveyData, "Location")).enter().append("text")
+                    .text(d=>d)
+                    .attr("x", (d)=>Math.random()*mainChartAreaWidth)
+                    .attr("y", (d)=>Math.random()>0.5?-100:height+100)
+                    .attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "black")
 
+                locLabels.transition().duration(transitionDuration)
+                    .attr("x", d=>geoScaleXCcy(countryData.filter(e=>e.shortCode==d)[0].long)-10)
+                    .attr("y", d=>geoScaleYCcy(countryData.filter(e=>e.shortCode==d)[0].lat)-22)
+            }
+
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            
+            let offsetObjects = []
+            getUniqueValues(globalSurveyData, "Location").forEach(e => {
+                let offsetList = []
+                for (let i=0; i<uniqueValuesColors.length; i++) {
+                    if (i==0) {offsetList.push(0)}
+                    else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => (item.Location == e && item[selectedVariable3current] == uniqueValuesColors[i-1])).length)}
+                }
+                offsetObjects.push({Location: e, offsets: offsetList})
+            })
 
             let locSize = 12
             let numLocWide = 30
 
             responses.transition().duration(transitionDuration)
                 .attr("x", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item.Location == d.Location).findIndex(e => {return e.refID == d.refID})
+                    let filteredData = globalSurveyData.filter(item => (item.Location == d.Location && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.Location==d.Location)[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
                     countryDataX = countryData.filter(e=>e.shortCode==d.Location)[0].long
-                    return geoScaleXCcy(countryDataX) + (i_prime%numLocWide)*(locSize+1)
+                    return geoScaleXCcy(countryDataX) + (i_primePrime%numLocWide)*(locSize+1)
                 })
                 .attr("y", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item.Location == d.Location).findIndex(e => {return e.refID == d.refID})
+                    let filteredData = globalSurveyData.filter(item => (item.Location == d.Location && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.Location==d.Location)[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
                     countryDataY = countryData.filter(e=>e.shortCode==d.Location)[0].lat
-                    return geoScaleYCcy(countryDataY) + Math.floor(i_prime/numLocWide)*(locSize+1)
+                    return geoScaleYCcy(countryDataY) + Math.floor(i_primePrime/numLocWide)*(locSize+1)
                 }
                 )
                 .attr("width", locSize)
                 .attr("height", locSize)
             
-            let locAxis = mainChartArea.append("g").attr("id", "locAxis")
-            let locLabels = locAxis.selectAll("text").data(getUniqueValues(globalSurveyData, "Location")).enter().append("text")
-                .text(d=>d)
-                .attr("x", (d)=>Math.random()*mainChartAreaWidth)
-                .attr("y", (d)=>Math.random()>0.5?-100:height+100)
-                .attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "black")
 
-            locLabels.transition().duration(transitionDuration)
-                .attr("x", d=>geoScaleXCcy(countryData.filter(e=>e.shortCode==d)[0].long)-10)
-                .attr("y", d=>geoScaleYCcy(countryData.filter(e=>e.shortCode==d)[0].lat)-22)
 
         }
 
 
-        function setResponsesCcy() {
-            mainChartArea.selectAll("#yAxis").remove()
-            mainChartArea.selectAll("#xAxis").remove()
-            mainChartArea.selectAll("#locAxis").remove()
-            mainChartArea.selectAll("#ccyAxis").remove()
+        function setResponsesCcy(resetAxesFlag=true) {
 
+            if (resetAxesFlag) {
+                mainChartArea.selectAll("#yAxis").remove()
+                mainChartArea.selectAll("#xAxis").remove()
+                mainChartArea.selectAll("#locAxis").remove()
+                mainChartArea.selectAll("#ccyAxis").remove()
+                let ccyAxis = mainChartArea.append("g").attr("id", "ccyAxis")
+                let ccyLabels = ccyAxis.selectAll("text").data(getUniqueValues(globalSurveyData, "PayCcy")).enter().append("text")
+                    .text(d=>d)
+                    .attr("x", (d)=>Math.random()*mainChartAreaWidth)
+                    .attr("y", (d)=>Math.random()>0.5?-100:height+100)
+                    .attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "black")
+
+                ccyLabels.transition().duration(transitionDuration)
+                    .attr("x", d=>geoScaleXCcy(currencyData.filter(e=>e.currency==d)[0].long)-10)
+                    .attr("y", d=>geoScaleYCcy(currencyData.filter(e=>e.currency==d)[0].lat)-22)
+            }
+
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            
+            let offsetObjects = []
+            getUniqueValues(globalSurveyData, "PayCcy").forEach(e => {
+                let offsetList = []
+                for (let i=0; i<uniqueValuesColors.length; i++) {
+                    if (i==0) {offsetList.push(0)}
+                    else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => (item.PayCcy == e && item[selectedVariable3current] == uniqueValuesColors[i-1])).length)}
+                }
+                offsetObjects.push({currency: e, offsets: offsetList})
+            })
 
             let ccySize = 12
-            let numCcyWide = 15
+            let numCcyWide = 30
 
             responses.transition().duration(transitionDuration)
                 .attr("x", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item.PayCcy == d.PayCcy).findIndex(e => {return e.refID == d.refID})
+                    let filteredData = globalSurveyData.filter(item => (item.PayCcy == d.PayCcy && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.currency==d.PayCcy)[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
                     currencyDataX = currencyData.filter(e=>e.currency==d.PayCcy)[0].long
-                    return geoScaleXCcy(currencyDataX) + (i_prime%numCcyWide)*(ccySize+1)
+                    return geoScaleXCcy(currencyDataX) + (i_primePrime%numCcyWide)*(ccySize+1)
                 })
                 .attr("y", (d,i)=>{
-                    let i_prime = globalSurveyData.filter(item => item.PayCcy == d.PayCcy).findIndex(e => {return e.refID == d.refID})
+                    let filteredData = globalSurveyData.filter(item => (item.PayCcy == d.PayCcy && item[selectedVariable3current] == d[selectedVariable3current]))
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i_prime:(i_prime+offsetObjects.filter(e=>e.currency==d.PayCcy)[0].offsets[uniqueValuesColors.indexOf(d[selectedVariable3current])])
                     currencyDataY = currencyData.filter(e=>e.currency==d.PayCcy)[0].lat
-                    return geoScaleYCcy(currencyDataY) + Math.floor(i_prime/numCcyWide)*(ccySize+1)
+                    return geoScaleYCcy(currencyDataY) + Math.floor(i_primePrime/numCcyWide)*(ccySize+1)
                 }
                 )
                 .attr("width", ccySize)
@@ -716,9 +829,29 @@ function go() {
             mainChartArea.selectAll("#locAxis").remove()
             mainChartArea.selectAll("#ccyAxis").remove()
 
+            let uniqueValuesColors = []
+            if (selectedVariable3current!="Random") {uniqueValuesColors = getUniqueValues(globalSurveyData, selectedVariable3current)}
+            let offsetList = []
+            for (let i=0; i<uniqueValuesColors.length; i++) {
+                if (i==0) {offsetList.push(0)}
+                else {offsetList.push(offsetList[i-1]+globalSurveyData.filter(item => item[selectedVariable3current] == uniqueValuesColors[i-1]).length)}
+            }
+
             responses.transition().duration(transitionDuration)
-                .attr("x", (d,i)=>60+(i%initialNumWide)*(initialResponseSize+1))
-                .attr("y", (d,i)=>height-40-initialResponseSize-Math.floor(i/initialNumWide)*(initialResponseSize+1))
+                .attr("x", (d,i)=>{
+                    let filteredData = globalSurveyData.filter(item => item[selectedVariable3current] == d[selectedVariable3current])
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i:(i_prime+offsetList[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+
+                    return 60+(i_primePrime%initialNumWide)*(initialResponseSize+1)
+                })
+                .attr("y", (d,i)=>{
+                    let filteredData = globalSurveyData.filter(item => item[selectedVariable3current] == d[selectedVariable3current])
+                    let i_prime = filteredData.findIndex(e => {return e.refID == d.refID})
+                    let i_primePrime = (selectedVariable3current=="Random")?i:(i_prime+offsetList[uniqueValuesColors.indexOf(d[selectedVariable3current])])
+
+                    return height-40-initialResponseSize-Math.floor(i_primePrime/initialNumWide)*(initialResponseSize+1)
+                })
                 .attr("width", initialResponseSize)
                 .attr("height", initialResponseSize)
         }
@@ -731,25 +864,7 @@ function go() {
             .attr("height", 5)
         }
         
-        function setResponsesColors() {
-            
-            // Transition the responses to the new colors if the category has changed
-
-            // globalSurveyData.sort((a,b)=>{
-            //     if (a[selectedVariable3current] < b[selectedVariable3current]) {return -1}
-            //     if (a[selectedVariable3current] > b[selectedVariable3current]) {return 1}
-            //     return 0
-            // })
-
-            responses
-                .transition().duration(transitionDuration)
-                .attr("fill", d=>{
-                    if (selectedVariable3current=="Random") {return dvsColors[Math.floor(Math.random()*3)]}
-                    if (selectedVariable3current=="Gender") {return color(d.Gender)}
-                    if (selectedVariable3current=="Education") {return color(d.Education)}
-                    if (selectedVariable3current=="DVSMembership") {return color(d.DVSMembership)}
-                })
-
+        async function setResponsesColors() {
 
             // Render key
 
@@ -761,26 +876,27 @@ function go() {
             }
 
             renderKey(selectedVariable3current, uniqueValues, uniqueColors)
+            
+            // Transition the responses to the new colors if the category has changed
 
-            // Sort the data by the selected variable
-            // globalSurveyData.sort((a,b)=>{
-            //     if (a[selectedVariable3current] < b[selectedVariable3current]) {return -1}
-            //     if (a[selectedVariable3current] > b[selectedVariable3current]) {return 1}
-            //     return 0
-            // })
-            // resetResponsePositions()
-            // if (selectedVariable1current=="None" && selectedVariable2current=="None") {resetResponsePositions()}
-            // else if (selectedVariable1current=="PayCcy" || selectedVariable2current=="PayCcy") {setResponsesCcy()}
-            // else if (selectedVariable1current=="Location" || selectedVariable2current=="Location") {setResponsesLoc()}
-            // else if (selectedVariable1current=="None") {xPivot()}
-            // else if (selectedVariable2current=="None") {yPivot()}
-            // else {crossPivot()}
+            await responses
+                .transition().duration(1000)
+                .attr("fill", d=>{
+                    if (selectedVariable3current=="Random") {return dvsColors[Math.floor(Math.random()*3)]}
+                    if (selectedVariable3current=="Gender") {return color(d.Gender)}
+                    if (selectedVariable3current=="Education") {return color(d.Education)}
+                    if (selectedVariable3current=="DVSMembership") {return color(d.DVSMembership)}
+                }).end()
 
-            // selectedVariable3previous = selectedVariable3current
-            // selectedVariable1previous = ""
-            // rerender()
-            // selectedVariable2previous = ""
-            // rerender()
+            if (selectedVariable3current!="Random") {
+                if (selectedVariable1current=="None" && selectedVariable2current=="None") {resetResponsePositions()}
+                else if (selectedVariable1current=="PayCcy" || selectedVariable2current=="PayCcy") {setResponsesCcy(false)}
+                else if (selectedVariable1current=="Location" || selectedVariable2current=="Location") {setResponsesLoc(false)}
+                else if (selectedVariable1current=="None") {xPivot(false)}
+                else if (selectedVariable2current=="None") {yPivot(false)}
+                else {crossPivot(false)}
+            }
+
         }
 
         function renderKey(keyTitle, keyCategories, keyColors) {
