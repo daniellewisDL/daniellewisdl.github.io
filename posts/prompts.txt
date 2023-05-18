@@ -1,9 +1,5 @@
-Prompts
-=======
 The next next Fidenza
-Destroy a square
 Trade styles with a friend
-Sol LeWitt Wall Drawing
 Single curve only
 Architecture
 Machine learning, wrong answers only
@@ -14,7 +10,6 @@ Something you’d never make
 Sand 
 Color gradients gone wrong
 3 colors
-VHS
 Use text/typography
 Make a sea of shapes
 Combine two previous pieces
@@ -23,12 +18,10 @@ Abstract vegetation
 Create a random number generator w/ visuals
 Perspective
 Airport carpet
-#2E294E #541388 #F1E9DA #FFD400 #D90368
 Self portrait
 Isometric perspective
-Organic looking output using rectanglea
+Organic looking output using rectangles
 TRIPLE NESTED LOOP
-Rule 30 (elementary cellular automaton)
 Make something human
 Small areas of symmetry
 Code golf
@@ -36,20 +29,16 @@ Triangle subdivision
 Generate some rules, follow them on paper
 Curve only
 Interference patterns
-TREE
 Non-computer
 Use an API
 Do not repeat
 SUBDIVISION
 Let someone else decide the rules
-Circles only
-Draw a line, pick a new color, move a bit
 One process grows, another process prunes
 19 Increase the randomness along the Y-axis
 No loops
 function f(x) { DRAW(x); f(1 * x / 4); f(2 * x / 4); f(3 * x / 4); }
 Draw a line Wrong answers only
-#264653 #2a9d8f #e9c46a #f4a261 #e76f51, no gradients, optionally black or white bg
 500 lines
 Make a grid of permutations of something
 2D Perspective
