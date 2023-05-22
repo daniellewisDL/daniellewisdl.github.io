@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PNQX1JJWVB');
+    </script>
+    <meta charset="utf-8">
+    <title>GSIBs</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {font-family: 'Courier New', Courier, monospace; font-size: 10pt;}
+        select {font-family: 'Courier New', Courier, monospace; font-size: 10pt;}
+        button {font-family: 'Courier New', Courier, monospace; font-size: 10pt;}
+    </style>
+</head>
+
+<body>
+
+    <div id="input_group" style="display: inline;">
+    <b>Global Systemically Important Banks (<a href="https://www.bis.org/bcbs/gsib/">GSIBs</a>)</b> | 
+        Indicator: <select name="dropdown_1" id="dropdown_1"></select>
+        Racers: <select name="dropdown_2" id="dropdown_2"></select>
+        <button name="replay_button" id="replay_button">Replay</button>
+         | Based on <a href="https://observablehq.com/@d3/bar-chart-race-explained">this</a> Observable notebook.
+    </div>
+
+    <br>
+    <br>
+    <div id="chart"></div>
+    
+
+    <script src="./js/gsibs.js"></script>
+
+</body>
