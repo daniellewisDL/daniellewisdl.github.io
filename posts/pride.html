@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>pride</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			const prideColorsBars = ["#e50000", // red
+								 	"#ff8d00", // orange
+								 	"#ffee00", // yellow
+								 	"#008121", // green
+								 	"#004cff", // blue
+								 	"#760188" // purple
+									]
+			const prideColorsTriangles = ["#000000", // black
+								 "#61360d", // brown
+								 "#75d8ef", // lightblue
+								 "#ffb1c9", // pink
+								 "#ffffff", // white
+								]
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let flagRatio = 1.7
+			let triRatio = 0.478
+			let flagWidth = width*0.9
+			let flagHeight
+			if (flagWidth/flagRatio>height*initialMargin) {
+				flagHeight = height*initialMargin
+				flagWidth = flagHeight*flagRatio
+			} else {
+				flagHeight = flagWidth/flagRatio
+			}
+			let triBarWidth = ((flagWidth*triRatio - flagHeight/2)/2)/flagWidth
+			
+			let offsetIncrements = 0.01
+			let offset = 0
+
+
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				flagWidth = width*0.9
+				if (flagWidth/flagRatio>height*initialMargin) {
+					flagHeight = height*initialMargin
+					flagWidth = flagHeight*flagRatio
+				} else {
+					flagHeight = flagWidth/flagRatio
+				}
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(255)
+				p.rect(0,0,width,height)
+				// p.frameRate(4)
+				// Draw bars
+				let barHeight = flagHeight/prideColorsBars.length
+				for (let i=0; i<prideColorsBars.length; i++) {
+					barWidth = flagWidth*p.map(p.noise(offset+i*100),0,1,0.7,1)
+					p.fill(p.red(prideColorsBars[i]),p.green(prideColorsBars[i]),p.blue(prideColorsBars[i]),p.map(p.noise(offset+4000),0,1,100,255))
+					p.rect(width/2-flagWidth/2, height/2-flagHeight/2+i*barHeight, barWidth, barHeight)
+				}
+				
+				// Draw triangles
+				let initalTrianglePointX = width/2-flagWidth/2 + (triRatio*p.map(p.noise(offset+1000),0,1,0.9,1.1))*flagWidth
+				let initalTrianglePointY = height/2
+				let triBarWidthPrime = triBarWidth*p.map(p.noise(offset+2000),0,1,0.9,1.1)
+				for (let i=0; i<5; i++) {
+					p.fill(p.red(prideColorsTriangles[i]),p.green(prideColorsTriangles[i]),p.blue(prideColorsTriangles[i]),p.map(p.noise(offset+3000),0,1,100,255))
+					p.beginShape()
+					p.vertex(width/2-flagWidth/2, height/2-flagHeight/2)
+					p.vertex(width/2-flagWidth/2, height/2+flagHeight/2)
+					p.vertex(initalTrianglePointX-triBarWidthPrime*flagWidth*i-flagHeight/2, height/2+flagHeight/2)
+					p.vertex(initalTrianglePointX-triBarWidthPrime*flagWidth*i, initalTrianglePointY)
+					p.vertex(initalTrianglePointX-triBarWidthPrime*flagWidth*i-flagHeight/2, height/2-flagHeight/2)
+					p.endShape(p.CLOSE)
+				}
+
+				// Clip flag shape
+
+				p.fill(255)
+				p.rect(0,0,width/2-flagWidth/2,height)
+				p.rect(width/2+flagWidth/2,0,width/2-flagWidth/2,height)
+				p.rect(0,0,width,height/2-flagHeight/2)
+				p.rect(0,height/2+flagHeight/2,width,height/2-flagHeight/2)
+
+				offset+=offsetIncrements
+				// p.noLoop()
+			}
+
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
