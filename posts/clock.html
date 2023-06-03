@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>clock</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			const clockColors = [p.color('#94167F'),p.color('#E93479'),p.color('#F9AC53'),p.color('#F62E97'),p.color('#153CB4'),p.color('green'),p.color('red')]
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.rectMode(p.CENTER)
+			}
+
+			p.draw = function() {
+				p.fill(0)
+				p.rect(width/2,height/2,width,height)
+
+				let time = updateTime()
+				let hrs = +time[0]
+				let mins = +time[1]
+				let secs = +time[2]
+				let mils = +time[3]
+				if (hrs > 12) {
+					hrs -= 12
+				}
+				let decimalTimeHrs = hrs + mins/60 + secs/3600 + mils/3600000
+				let decimalTimeMins = mins + secs/60 + mils/60000
+				let decimalTimeSecs = secs + mils/1000
+				let squareWidth = Math.min(width, height)*initialMargin
+
+
+				let timeString = hrs + ":" + (mins<10?'0':'') + mins + ":" + (secs<10?'0':'') + secs //+ ":" + (mils<10?'00':(mils<100?'0':'')) + mils
+				let outerCircleDiameter = squareWidth * 0.8
+
+				p.stroke(255)
+				p.strokeWeight(1)
+				p.noFill()
+				p.rect(width/2, height/2, squareWidth, squareWidth)
+
+				p.push()
+				p.translate(width/2, height/2-squareWidth*.05	)
+				p.rotate(-Math.PI/2)
+				p.noStroke()
+				p.fill(clockColors[0])
+				p.arc(0, 0,outerCircleDiameter, outerCircleDiameter, 0, p.map(decimalTimeHrs,0,12,0,2*Math.PI))
+				p.fill(clockColors[1])
+				p.arc(0, 0,outerCircleDiameter*.75, outerCircleDiameter*.75, 0, p.map(decimalTimeMins,0,60,0,2*Math.PI))
+				p.fill(clockColors[2])
+				p.arc(0, 0,outerCircleDiameter*.5, outerCircleDiameter*0.5, 0, p.map(decimalTimeSecs,0,60,0,2*Math.PI))
+				p.fill(clockColors[4])
+				p.arc(0, 0,outerCircleDiameter*.25, outerCircleDiameter*0.25, 0, p.map(mils,0,1000,0,2*Math.PI))
+
+				for (let i = 0; i < 60; i++) {
+					p.push()
+					p.rotate(i*2*Math.PI/60)
+					p.stroke(255)
+					if (i%5==0){
+						p.strokeWeight(3)
+						p.line(outerCircleDiameter/2, 0, outerCircleDiameter/2-outerCircleDiameter/2*0.1, 0)
+					} else {
+						p.strokeWeight(1)
+						p.line(outerCircleDiameter/2, 0, outerCircleDiameter/2-outerCircleDiameter/2*0.05, 0)
+					}
+
+					p.pop()
+				}
+
+				p.pop()
+
+				p.fill(clockColors[3])
+				p.noStroke()
+				p.textSize(70)
+				p.textAlign(p.CENTER, p.CENTER)
+				p.text(timeString, width/2, height/2+squareWidth*.43)
+
+
+
+
+			}
+
+			function updateTime(){
+				let currentTime = new Date();
+				
+				let hrs = (currentTime.getHours()<10?'0':'') + currentTime.getHours();
+				let mins = (currentTime.getMinutes()<10?'0':'') + currentTime.getMinutes();
+				let secs = (currentTime.getSeconds()<10?'0':'') + currentTime.getSeconds();
+				let mils = (currentTime.getMilliseconds()<10?'00':(currentTime.getMilliseconds()<100?'0':'')) + currentTime.getMilliseconds();
+
+				return [hrs, mins, secs, mils]
+			}
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
