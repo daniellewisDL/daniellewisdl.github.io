@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>mondrian</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<!-- NB this draws heavily from Eric Davidson's algorithm
+		https://github.com/erdavids/Mondrian-Tiles/tree/master
+	-->
+	<div id="canvas"></div>
+    <script>
+
+		
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let frame_rate = 1
+
+			let attemptsToSplit = 5000
+			let minimumQuadSize = 100
+			let quadSeparation = 1
+			let strokeWeight = 2
+			let quadSplits = [.5, 1, 1.5]
+
+			const colors1 = ["#041d2c","#06314e","#18527e","#2e77ab","#d1b252","#a97f2f","#7e5522","#472c0b"]
+			const colors2 = ["#fa3b20", "#084071", "#f7dc5a", "#e4e9ea", "#e4e9ea", "#e4e9ea", "#e4e9ea"]
+			const colors3 = ["#a40000","#16317d","#007e2f","#ffcd12","#b86092","#721b3e","#00b7a7"]
+			const colors4 = ["#591d06","#96410e","#e5a335","#556219","#418979","#2b614e","#053c29"]
+			let colors = p.random([colors1, colors2, colors3, colors4])
+			
+			// Canvas Border
+			let margin = 20
+
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				p.frameRate(frame_rate)
+				p.stroke(0)
+				
+			}
+
+			p.draw = function() {
+				
+				minimumQuadSize = p.random([5,10,20,40,80,100,110,200])
+				quadSeparation = p.random([1,2,3,4])
+				strokeWeight = p.random([0.1,1,2])
+				colors = p.random([colors1, colors2, colors3, colors4])
+				quadSplits = p.random([[.3],[.2, 1, 1.8],[.3, 1, 1.5],[.5, 1, 1.5],[1, 1.5]])
+				attemptsToSplit = p.random([100, 1000, 3000, 9000, 10000])
+				if (Math.random()<0.5) {p.background(0)} else {p.background(255)}
+				p.stroke(0)				
+				p.strokeWeight(strokeWeight)
+
+
+				let quadsList = []
+				quadsList.push({ax: margin, ay: margin, dx: width-margin, dy: height-margin})
+
+				for (i=0; i<attemptsToSplit; i++){
+
+					let chosenQuadIndex = p.int(p.random(quadsList.length))
+					let chosenQuad = quadsList[chosenQuadIndex]
+
+					let currentSplit = p.random(quadSplits)
+					let splitHorizontally = p.random([true, false])
+
+					if (splitHorizontally) {
+						if ((chosenQuad.dx - chosenQuad.ax) > minimumQuadSize) {
+							let x_split = ((chosenQuad.dx - chosenQuad.ax)/2 * currentSplit + chosenQuad.ax)
+							quadsList.splice(chosenQuadIndex, 1)
+							quadsList.push({ax: chosenQuad.ax, ay: chosenQuad.ay, dx: x_split-quadSeparation, dy: chosenQuad.dy})
+							quadsList.push({ax: x_split+quadSeparation, ay: chosenQuad.ay, dx: chosenQuad.dx, dy: chosenQuad.dy})
+						} 
+					} else {
+						if ((chosenQuad.dy - chosenQuad.ay) > minimumQuadSize) {
+							let y_split = ((chosenQuad.dy - chosenQuad.ay)/2 * currentSplit + chosenQuad.ay)
+							quadsList.splice(chosenQuadIndex, 1)
+							quadsList.push({ax: chosenQuad.ax, ay: chosenQuad.ay, dx: chosenQuad.dx, dy: y_split-quadSeparation})
+							quadsList.push({ax: chosenQuad.ax, ay: y_split+quadSeparation, dx: chosenQuad.dx, dy: chosenQuad.dy})
+						}
+					}
+				}
+
+				// Draw each quadrilateral
+
+				quadsList.forEach(quad => {
+					p.fill(p.random(colors))
+					p.beginShape()
+					p.vertex(quad.ax, quad.ay)
+					p.vertex(quad.dx, quad.ay)
+					p.vertex(quad.dx, quad.dy)
+					p.vertex(quad.ax, quad.dy)
+					p.endShape(p.CLOSE)
+				})
+	
+			}
+
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
