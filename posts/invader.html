@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>invader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+			let myInvaders = []
+			let x1 = 0
+			let y1 = 0
+			let xSpeed = 10
+			let ySpeed = 30
+
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				squareWidth = Math.min(width,height)*initialMargin
+				x1 = 0
+				y1 = 0
+				xSpeed = 10
+				ySpeed = 30
+				myInvaders = []
+				for (let i = 0; i < 80; i++) {
+					myInvaders.push(createInvader(p.random([4,5,7,8,9,10,11,12,13,14,15]),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200))))
+				}
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+				for (let i = 0; i < 80; i++) {
+					myInvaders.push(createInvader(p.random([4,5,7,8,9,10,11,12,13,14,15]),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200))))
+				}
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(0, 7)
+				p.rect(0,0,width,height)
+
+				let myInvader = createInvader(p.random([4,5,7,8,9,10,11,12,13,14,15]),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200)),p.color(p.random(200),p.random(200),p.random(200)))
+				let myInvaderSize = Math.random()*150
+				drawInvader(width/2-squareWidth/2 + Math.random()*(squareWidth-myInvaderSize), height/2-squareWidth/2 + Math.random()*(squareWidth-myInvaderSize), myInvaderSize, myInvader)
+
+				// let invaderSwarmWidth = squareWidth/1.5
+				// let invaderPadding = 10
+				// let invaderSizeActual = invaderSwarmWidth/8 - invaderPadding
+
+				// for (let i = 0; i < myInvaders.length; i++) {
+				// 	drawInvader(width/2-squareWidth/2 + 10 + i%8 * (invaderSizeActual + invaderPadding) + x1, height/2-squareWidth/2 + 10 + Math.floor(i/8)*(invaderSizeActual + invaderPadding) + y1, invaderSizeActual, myInvaders[i])
+				// }
+				
+				// if (x1 + invaderSwarmWidth + invaderPadding + xSpeed > squareWidth) {
+				// 	xSpeed = -xSpeed
+				// 	y1 += ySpeed
+				// }
+				// else if (x1 + xSpeed - invaderPadding< 0) {
+				// 	xSpeed = -xSpeed
+				// 	y1 += ySpeed
+				// }
+				// else if (y1>squareWidth) {
+				// 	fullReset()
+				// }
+				// else {
+				// 	x1 += xSpeed
+				// 	// console.log("speed")
+				// }
+
+				// Clip the outside with black rectangles
+
+				// p.noStroke()
+				// p.fill(0)
+				// p.rect(0,0,width/2-squareWidth/2,height)
+				// p.rect(width/2+squareWidth/2,0,width/2-squareWidth/2,height)
+				// p.rect(0,0,width,height/2-squareWidth/2)
+				// p.rect(0,height/2+squareWidth/2,width,height/2-squareWidth/2)
+
+				p.stroke(50)
+				p.noFill()
+				p.rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+				// p.frameRate(14)
+			}
+
+			function createInvader(invaderDims, invaderPrimaryColor, invaderSecondaryColor, invaderTeritaryColor) {
+				let invaderRandomColors = [invaderPrimaryColor, invaderPrimaryColor, invaderPrimaryColor,
+										   invaderSecondaryColor, invaderSecondaryColor,
+										   invaderTeritaryColor,
+										   p.color(0), p.color(0), p.color(0), p.color(0)]
+				let invaderCellList = []
+				for (let j = 0; j < invaderDims; j++) {
+					for (let i = 0; i < invaderDims; i++) {
+						if (i<(invaderDims/2)) {invaderCellList.push({invaderDims: invaderDims, invaderCellColor: p.random(invaderRandomColors)})}
+						else {invaderCellList.push(invaderCellList[j*invaderDims + invaderDims - 1 - i])}
+					}
+				}
+				return(invaderCellList)
+			}
+
+			function drawInvader(ax, ay, invaderSizeActual, invader) {
+				
+				let cellSize = invaderSizeActual/invader[0].invaderDims
+				
+				p.push()
+				p.translate(ax,ay)
+				p.noStroke()
+
+				for (let j = 0; j < invader[0].invaderDims; j++) {
+					for (let i = 0; i < invader[0].invaderDims; i++) {
+						p.fill(invader[j*invader[0].invaderDims+i].invaderCellColor)	
+						p.rect(i*cellSize,j*cellSize,cellSize,cellSize)
+					}
+				}
+			 	
+				p.pop()
+			}
+
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
