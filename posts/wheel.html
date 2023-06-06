@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script> -->
+	<!-- <script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>wheel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+			let paperStrokeLength = 100
+			let angle = 0
+			let offsetIncrements = 0.01
+			let angleSpeed = Math.PI/200
+			let angleSpeedOff = 0
+			let circleSize = squareWidth * 0.8
+			
+		  
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				squareWidth = Math.min(width,height)*initialMargin
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)	
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(0)
+				p.rect(0,0,width,height)
+
+				p.stroke(255)
+				p.strokeWeight(1)
+				p.fill(255)
+
+
+				p.drawingContext.shadowBlur = 100
+				p.drawingContext.shadowColor = "white"
+				p.circle(width/2,height/2,squareWidth)
+
+				p.drawingContext.shadowBlur = 0
+				p.fill("black")
+				p.circle(width/2,height/2,squareWidth-20)
+
+				angleSpeedOff += offsetIncrements
+				angleSpeed = p.map(p.noise(angleSpeedOff),0,1,Math.PI/10000,Math.PI/50)
+				angle = angle + angleSpeed
+				// angleSpeed+=0.001
+				
+				p.noStroke()
+
+				p.drawingContext.shadowBlur = 100
+				
+				p.fill(200,0,0)
+				p.drawingContext.shadowColor = p.color(200,0,0)	
+				p.arc(width/2,height/2,circleSize,circleSize,angle,angle+0.9*p.radians(120))
+
+				p.fill(0,200,0)
+				p.drawingContext.shadowColor = p.color(0, 200,0)	
+				p.arc(width/2,height/2,circleSize,circleSize,angle+p.radians(120),angle+1.9*p.radians(120))
+
+				p.fill(0,0,200)
+				p.drawingContext.shadowColor = p.color(0,0,200)
+				p.arc(width/2,height/2,circleSize,circleSize,angle+2*p.radians(120),angle+2.9*p.radians(120))
+
+				p.drawingContext.shadowBlur = 0
+				p.fill("black")
+				p.circle(width/2,height/2,circleSize-20)
+
+
+				let innerCircleSize = 0.6 * circleSize
+				let offsetAngle = p.radians(60)
+				p.drawingContext.shadowBlur = 100
+
+				p.fill(200,200,0)
+				p.drawingContext.shadowColor = p.color(200,200,0)
+				p.arc(width/2,height/2,innerCircleSize,innerCircleSize,offsetAngle+angle,offsetAngle+angle+0.9*p.radians(120))
+
+				p.fill(0,200,200)
+				p.drawingContext.shadowColor = p.color(0, 200,200)	
+				p.arc(width/2,height/2,innerCircleSize,innerCircleSize,offsetAngle+angle+p.radians(120),offsetAngle+angle+1.9*p.radians(120))
+
+				p.fill(200,0,200)
+				p.drawingContext.shadowColor = p.color(200,0,200)
+				p.arc(width/2,height/2,innerCircleSize,innerCircleSize,offsetAngle+angle+2*p.radians(120),offsetAngle+angle+2.9*p.radians(120))
+
+				p.drawingContext.shadowBlur = 0
+				p.fill("black")
+				p.circle(width/2,height/2,circleSize*.6-20)
+
+				let centerCircleSize = 0.4 * innerCircleSize
+				p.drawingContext.shadowBlur = 100
+				p.fill("white")
+				p.drawingContext.shadowColor = p.color("white")
+				p.circle(width/2,height/2,centerCircleSize)
+
+
+				// p.frameRate(1/3)
+				// p.noLoop()
+			}
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
