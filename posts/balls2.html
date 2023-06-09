@@ -10,7 +10,7 @@
 
 		gtag('config', 'G-PNQX1JJWVB');
 	</script>
-    <title>balls</title>
+    <title>balls2</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
@@ -25,10 +25,13 @@
 		const width = window.innerWidth
 		const height = window.innerHeight
 		const margin = 0.05
-		const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height)
+		const canvas = d3.select("#chart").append("canvas").attr("width", width).attr("height", height)
+    const context = canvas.node().getContext("2d")
+    const customBase = document.createElement("custom")
+    const custom = d3.select(customBase)
 		const numBalls = 100
 		const balls = []
-		const ballRadius = 25
+		const ballRadius = 15
 		const ballSpeed = 30
 		MetPalettes = [
     {
@@ -417,13 +420,31 @@
 			})
 		}
 
-		const ball = svg.selectAll("circle").data(balls).enter().append("circle").attr("r", d => d.radius).attr("cx", d => d.x).attr("cy", d => d.y)
+    
+		const ball = custom.selectAll("circle").data(balls).enter().append("circle").attr("r", d => d.radius).attr("cx", d => d.x).attr("cy", d => d.y)
 				.attr("fill", d => d.color).style("opacity", ()=>Math.random())
 
+        
 		function tick() {
 			ball.attr("cx", d => d.x += d.vx).attr("cy", d => d.y += d.vy)
 			ball.each(edgeReflect)
+      draw()
 		}
+
+    function draw() {
+      // context.beginPath();
+      context.fillStyle = "#ffffff13";
+      context.fillRect(0, 0, width, height);
+      // context.closePath();
+      ball.each(function(d) {
+        context.beginPath();
+        context.arc(d.x, d.y, d.radius, 0, 2 * Math.PI, true);
+        context.fillStyle = d.color+"23";
+        context.fill();
+        // context.stroke();
+      })
+      // context.closePath();
+    }
 
 		function edgeReflect(d) {
 			if (d.x < d.radius) {
@@ -442,71 +463,9 @@
 				d.y = height - d.radius
 				d.vy *= -1
 			}
-			// collide(d)
 		}
 
-
-		// function collide(d) {
-		// 	ball.each(function (d2) {
-		// 		if (d !== d2) {
-		// 			collide2(d, d2)
-		// 		}
-		// 	})
-		// }
-
-		// function collide2(ball1, ball2) {
-		// 	const dx = ball2.x - ball1.x;
-		// 	const dy = ball2.y - ball1.y;
-		// 	const distance = Math.sqrt(dx * dx + dy * dy);
-		// 	const minDistance = ball1.radius + ball2.radius;
-
-		// 	if (distance < minDistance) {
-		// 		// Calculate the collision normal
-		// 		const nx = dx / distance;
-		// 		const ny = dy / distance;
-
-		// 		// Calculate the relative velocity
-		// 		const rvx = ball2.vx - ball1.vx;
-		// 		const rvy = ball2.vy - ball1.vy;
-
-		// 		// Calculate the relative velocity in the normal direction
-		// 		const velAlongNormal = rvx * nx + rvy * ny;
-
-		// 		// If the balls are moving away from each other, no collision response is needed
-		// 		if (velAlongNormal > 0) {
-		// 			return;
-		// 		}
-
-		// 		// Calculate the impulse scalar
-		// 		const e = 0.9; // Coefficient of restitution (adjust as desired)
-		// 		const j = -(1 + e) * velAlongNormal / (1 / ball1.mass + 1 / ball2.mass);
-
-		// 		// Apply the impulse
-		// 		const impulseX = j * nx;
-		// 		const impulseY = j * ny;
-
-		// 		ball1.vx -= impulseX / ball1.mass;
-		// 		ball1.vy -= impulseY / ball1.mass;
-		// 		ball2.vx += impulseX / ball2.mass;
-		// 		ball2.vy += impulseY / ball2.mass;
-
-		// 		// Separate the balls to prevent overlap
-		// 		const overlap = minDistance - distance;
-		// 		const separationX = nx * overlap * 0.5;
-		// 		const separationY = ny * overlap * 0.5;
-				
-				
-
-		// 		ball1.x -= separationX;
-		// 		ball1.y -= separationY;
-		// 		ball2.x += separationX;
-		// 		ball2.y += separationY;
-
-		// 		console.log(ball1.x, ball1.y, ball2.x, ball2.y)
-		// 	}
-		// }
-
-
+    
 		d3.timer(tick)
 
 
