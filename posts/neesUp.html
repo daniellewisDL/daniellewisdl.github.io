@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>neesUp</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let innerMargin = 0.05
+			let squareWidth = Math.min(width,height)*initialMargin
+			let numSquares = p.random([10,15,20,25,30,35,40])
+	
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				innerMargin = 0.05
+				squareWidth = Math.min(width,height)*initialMargin
+				numSquares = p.random([10,15,20,25,30,35,40])
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(255,255,255)
+				p.rect(0,0,width,height)
+
+				// Draw Molnar squares
+
+				let onein20 = Math.random()>0.95
+				let simpleSquareWidth = (squareWidth*(1-innerMargin*2))/numSquares
+				let colorScheme = p.random([0,1,2])
+				let randomFactorType = p.random([0,1,2])
+
+				for (let j = 0; j < numSquares; j++) {
+					for (let i = 0; i < numSquares; i++) {
+						let x = width/2 - squareWidth/2 + squareWidth*innerMargin + i*simpleSquareWidth + simpleSquareWidth/2
+						let y = height/2 - squareWidth/2 + squareWidth*innerMargin + j*simpleSquareWidth + simpleSquareWidth/2
+						let w = simpleSquareWidth*0.95
+						let h = simpleSquareWidth*0.95
+						p.stroke(10,200)
+						p.strokeWeight(0.5)
+						p.noFill()
+						if (colorScheme == 0) {p.fill(p.random(0,200),255,p.random(0,200),200)}
+						if (colorScheme == 1) {p.fill(p.random(0,200),p.random(0,200),255,200)}
+						if (colorScheme == 2) {p.fill(255,p.random(0,200),p.random(0,200),200)}
+						p.push()
+						p.translate(x,y)
+						p.rectMode(p.CENTER)
+						let randomFactor = (randomFactorType==0) ? 0.5*(j+i)/numSquares :
+										   (randomFactorType==1) ? j/numSquares : i/numSquares
+						p.rotate(randomFactor*(p.random(0,Math.PI*randomFactor)-Math.PI*randomFactor/2))
+						p.translate(randomFactor*p.random(0,simpleSquareWidth/2),randomFactor*p.random(0,simpleSquareWidth/2))
+						p.rect(0,0,w,h)
+						p.rectMode(p.CORNER)
+						p.pop()
+					}
+				}
+
+
+				p.noFill()
+				p.stroke(0,0,0)
+				p.strokeWeight(10)
+				p.rect(width/2 - squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+				p.frameRate(1/2)
+				fullReset()
+			}
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
