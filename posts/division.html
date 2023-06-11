@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>division</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let innerMargin = 0.05
+			let squareWidth = Math.min(width,height)*initialMargin
+			let numLines = 10
+			let numSteps = 10
+	
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				innerMargin = 0.05
+				squareWidth = Math.min(width,height)*initialMargin
+				numLines = 10
+				numSteps = 10
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(255,255,255)
+				p.rect(0,0,width,height)
+
+				// Draw Joy Division lines
+
+				// let onein20 = Math.random()>0.95
+				
+				numLines = Math.floor(p.random(50,100))
+				numSteps = 30
+				let lineWidth = (squareWidth*(1-innerMargin*2))
+				let jitterMax = 50
+				let lineYSep = (squareWidth*(1-innerMargin*2))/numLines
+				let step = lineWidth/numSteps
+				let lines = []
+				let distanceSchemaStart = p.random(0.1,0.9)
+				let distanceSchemaEnd = p.random(0.1,0.9)
+				for (let i=2; i<=numLines; i++) {
+					let line = []
+
+					for (let j=0; j<=lineWidth+step; j=j+step) {
+						let distanceFromCenter = Math.abs(j-lineWidth*p.map(i,0,numLines,distanceSchemaStart,distanceSchemaEnd))
+						let jitterSize = p.map(Math.max(0,lineWidth/2-p.map(i,0,numLines,100,50)-distanceFromCenter*2),0,lineWidth/2-50,0,jitterMax)
+						let randomJitter = Math.random()*jitterSize/2
+						let x = width/2 - squareWidth/2 + squareWidth*innerMargin + j
+						let y = height/2 - squareWidth/2 + squareWidth*innerMargin + i*lineYSep - randomJitter
+						line.push([x,y])
+					}
+					lines.push(line)
+				}
+
+				let colorScheme = 0
+				if (Math.random()>0.67) {colorScheme = 1}
+				else if (Math.random()>0.5) {colorScheme = 2}
+
+				lines.forEach(line => {
+
+					if (colorScheme==0) {p.fill(255, p.random(200), p.random(200), 200)}
+					else if (colorScheme==1) {p.fill(p.random(200), 255, p.random(200), 200)}
+					else {p.fill(p.random(200), p.random(200), 255, 200)}	
+					
+					p.noStroke()
+					p.beginShape()
+					line.forEach(point => {
+						p.curveVertex(point[0],point[1])
+					})
+					p.curveVertex(line[line.length-1][0],line[line.length-1][1]+lineYSep)
+					p.curveVertex(line[0][0],line[0][1]+lineYSep)
+					p.endShape(p.CLOSE)
+
+					p.fill(255)
+					p.noStroke()
+					p.rect(0,0,width/2 - squareWidth/2 + squareWidth*innerMargin + step,height)
+
+					p.noStroke()
+					p.rect(width - (width/2 - squareWidth/2 + squareWidth*innerMargin + step),0,width/2 - squareWidth/2 + squareWidth*innerMargin + step,height)
+
+					p.stroke(0,0,0)
+					p.strokeWeight(1)
+					p.noFill()
+					p.beginShape()
+					line.forEach(point => {
+						p.curveVertex(point[0],point[1])
+					})
+					p.endShape()
+	
+				})
+
+
+				p.noFill()
+				p.stroke(0,0,0)
+				p.strokeWeight(10)
+				p.rect(width/2 - squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+				p.frameRate(1/2)
+				fullReset()
+			}
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
