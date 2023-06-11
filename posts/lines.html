@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>lines</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+			let t=0
+			let colorShade = 0
+			let offset = 0.1
+			let numLines = 20
+			let offsetIncrements = 0.0005
+			let iFactor = 1.05
+	
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+        	}
+
+          	function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				squareWidth = Math.min(width,height)*initialMargin
+				t=0
+				colorShade = 0
+				offset = 0.1
+				numLines = 20
+				iFactor = 1.05
+				offsetIncrements = 0.0005
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+				p.colorMode(p.HSB, 360, 100, 100, 100)	
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(50, 20, 100)
+				p.rect(0,0,width,height)
+
+				p.strokeWeight(p.map(p.noise(offset+1400),0,1,0.5,10))
+				
+				p.push()
+				p.translate(width/2,height/2)
+				for (let i=0; i<numLines; i++) {
+					p.stroke((colorShade+(i*10))%360,100,100,50)
+					p.line(x1(t+iFactor*i),y1(t+iFactor*i),x2(t+iFactor*i),y2(t+iFactor*i))
+				}
+				p.pop()
+				t+=p.map(p.noise(offset+1500),0,1,0.2,1)
+
+				p.noFill()
+				p.stroke(0,0,0)
+				p.strokeWeight(1)
+				p.rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+				offset += offsetIncrements
+				colorShade = colorShade + 1
+				
+
+			}
+
+			function x1(t) {
+				let angleOffsetInner = p.map(p.noise(offset),0,1,0,Math.PI/2)
+				let angleOffsetOuter = p.map(p.noise(offset+100),0,1,0,Math.PI/2)
+				let freqDivisor = p.map(p.noise(offset+200),0,1,5,20)
+				let sizeMultiplier = p.map(p.noise(offset+300),0,1,0.5,0.9)
+
+				return Math.sin((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+			function y1(t) {
+				let angleOffsetInner = p.map(p.noise(offset+400),0,1,0,Math.PI/2)
+				let angleOffsetOuter = p.map(p.noise(offset+500),0,1,0,Math.PI/2)
+				let freqDivisor = p.map(p.noise(offset+600),0,1,5,20)
+				let sizeMultiplier = p.map(p.noise(offset+700),0,1,0.5,0.9)
+
+				return Math.cos((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+			function x2(t) {
+				let angleOffsetInner = p.map(p.noise(offset+800),0,1,0,Math.PI/2)
+				let angleOffsetOuter = p.map(p.noise(offset+900),0,1,0,Math.PI/2)
+				let freqDivisor = p.map(p.noise(offset+1000),0,1,5,20)
+				let sizeMultiplier = p.map(p.noise(offset+1100),0,1,0.5,0.9)
+
+				return Math.cos((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+			function y2(t) {
+				let angleOffsetInner = p.map(p.noise(offset+1200),0,1,0,Math.PI/2)
+				let angleOffsetOuter = p.map(p.noise(offset+1300),0,1,0,Math.PI/2)
+				let freqDivisor = p.map(p.noise(offset+1400),0,1,5,20)
+				let sizeMultiplier = p.map(p.noise(offset+1500),0,1,0.5,0.9)
+
+				return Math.sin((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
