@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>wibble</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+		let sketch = function( p ) {
+
+			let width = p.windowWidth
+          	let height = p.windowHeight
+			let initialMargin = 0.9
+			let innerMargin = 0.05
+			let squareWidth = Math.min(width,height)*initialMargin
+			let myColors = p.random(["#a40000","#16317d","#007e2f","#ffcd12","#b86092","#721b3e","#00b7a7"])
+      let offsetX = 0
+      let offsetY = 0
+      let offsetIncrements = 0.002
+
+	
+			p.pixelDensity(1)
+
+			p.windowResized = function() {
+	            p.resizeCanvas(p.windowWidth, p.windowHeight)
+    	        fullReset()
+      }
+
+      function fullReset() {
+				width = p.windowWidth
+				height = p.windowHeight
+				initialMargin = 0.9
+				innerMargin = 0.05
+				squareWidth = Math.min(width,height)*initialMargin
+			
+			}		
+
+			p.setup = function() {
+				p.createCanvas(width, height)
+			}
+
+			p.draw = function() {
+				p.noStroke()
+				p.fill(200,200,200,3)
+				p.rect(0,0,width,height)
+
+        // Populate points on circle
+
+        let points = []
+        let numPoints = 50
+        let radiusProportion = 0.7
+        let radius = squareWidth/2 * radiusProportion
+        let iMult = 1
+        let angleStep = 2 * Math.PI / numPoints
+        let angle = 0
+        for (let i = 0; i < numPoints; i++) {
+          let x = width/2 + (radius+p.map(p.noise(offsetX+i*iMult, offsetY+i*iMult),0,1,-radius*.9,radius/3)) * Math.cos(angle) 
+          let y = height/2 + (radius+p.map(p.noise(offsetX+i*iMult, offsetY+i*iMult),0,1,-radius*.9,radius/3)) * Math.sin(angle)
+          points.push([x,y])
+          angle += angleStep
+        }
+
+
+        // Draw lines between points
+
+        p.stroke(myColors)
+        // p.stroke("Gold")
+        p.strokeWeight(1)
+        p.noFill()
+
+        p.beginShape()
+        for (let i = 0; i < numPoints-1; i++) {
+            p.curveVertex(points[i][0],points[i][1])
+        }
+        // p.curveVertex(points[numPoints-1][0],points[numPoints-1][1])
+        // p.curveVertex(points[0][0],points[0][1])
+        p.endShape(p.CLOSE)
+
+			
+			
+        // Clip with white rectangles
+
+				// p.noStroke()
+				// p.fill(255,255,255)
+				// p.rect(0,0,width/2 - squareWidth/2,height)
+				// p.rect(width/2 + squareWidth/2,0,width/2 - squareWidth/2,height)
+				// p.rect(0,0,width,height/2 - squareWidth/2)
+				// p.rect(0,height/2 + squareWidth/2,width,height/2 - squareWidth/2)
+
+				// Draw outer frame rectangle
+
+				p.noFill()
+				p.stroke(0,0,0)
+				p.strokeWeight(10)
+				p.rect(width/2 - squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+        offsetX += offsetIncrements
+        offsetY += offsetIncrements
+
+				// p.frameRate(1/2)
+				// fullReset()
+				// p.noLoop()
+			}
+
+		}
+
+		let myp5 = new p5(sketch, "canvas")
+
+    </script>
+  </body>
+</html>
