@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>ascii</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsList = [5,10,15,20,30,40,50,60,70,80,90,100]
+      let reversing = false
+      let numCellsCounter = 0
+      let numCells = numCellsList[numCellsCounter]
+	    let numCellsX = numCells
+      let numCellsY = numCells
+			let cellWidth = squareWidth/numCellsX
+			let cellHeight = squareWidth/numCellsY
+      let mars
+      let mode = 0
+      const density = 'Ñ@#W$9876543210?!abc;:+=-,._ '
+			
+      preload = () => {
+        mars = loadImage("./assets/vermeer.jpg")
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        textAlign(CENTER, CENTER)
+        mars.loadPixels()
+			}
+
+			draw = () => {
+				background(0,150)
+        
+        let marsCellXFloat = mars.width/numCellsX
+        let marsCellX = Math.floor(marsCellXFloat)
+        let offsetX = (marsCellXFloat - marsCellX >0.5) ? 1 : 0
+        let marsCellYFloat = mars.height/numCellsY
+        let marsCellY = Math.floor(marsCellYFloat)
+        let offsetY = (marsCellYFloat - marsCellY >0.5) ? 1 : 0
+        // console.log(mars.height/numCells,mars.width/numCells)
+        
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        for (let j=0; j < numCellsY; j++) {
+          for (let i=0; i < numCellsX; i++) {
+
+            // Set up values for each of rgb
+
+            let totalRed = 0
+            let totalGreen = 0
+            let totalBlue = 0
+
+            let maxRed = 0
+            let maxGreen = 0
+            let maxBlue = 0
+
+            // Loop through each pixel in the larger cell
+
+            for (let l=0; l < marsCellYFloat; l++) {
+              for (let k=0; k < marsCellXFloat; k++) {
+
+                let x = Math.floor(i*marsCellXFloat) + k
+                let y = Math.floor(j*marsCellYFloat) + l
+                let index = (x + y * (mars.width)) * 4
+                
+                let r = mars.pixels[index + 0]
+                let g = mars.pixels[index + 1]
+                let b = mars.pixels[index + 2]
+
+                totalRed += r
+                totalGreen += g
+                totalBlue += b
+
+                maxRed = Math.max(maxRed,r)
+                maxGreen = Math.max(maxGreen,g)
+                maxBlue = Math.max(maxBlue,b)
+                
+              }
+            }
+
+            let averageRed = totalRed/(marsCellX*marsCellY)
+            let averageGreen = totalGreen/(marsCellX*marsCellY)
+            let averageBlue = totalBlue/(marsCellX*marsCellY)
+            let averageBrightness = (averageRed+averageGreen+averageBlue)/3
+            let maxBrightness = (maxRed+maxGreen+maxBlue)/3
+            let char = density.charAt(Math.floor(map(maxBrightness,0,255,density.length,0)))
+            stroke(averageRed,averageGreen,averageBlue)
+            fill(averageRed,averageGreen,averageBlue)
+            
+            if (mode%2==0) {
+              textSize(cellWidth)
+              text(char,i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2)
+            }
+            // else if (mode%3==1){ rect(i*cellWidth,j*cellHeight,cellWidth,cellWidth*.8)}
+            else {circle(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2,cellWidth*.8,cellWidth*.8)}
+            
+          }
+        }
+        pop()
+
+        // Draw Cells
+        // push()
+        // translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        // for (let i = 0; i < numCellsX; i++) {
+        //   for (let j = 0; j < numCellsY; j++) {
+        //     let x = i*cellWidth
+        //     let y = j*cellHeight
+        //     stroke(40)
+        //     fill(10,10)
+        //     rect(x,y,cellWidth,cellHeight)
+        //   }
+        // }
+        // pop()
+        numCells += 10
+	      numCellsX = numCells
+        numCellsY = numCells
+			  cellWidth = squareWidth/numCellsX
+			  cellHeight = squareWidth/numCellsY
+
+        frameRate(10)
+        if (reversing) {numCellsCounter--}
+        else {numCellsCounter++}
+        if (numCellsCounter == numCellsList.length-1) {
+          reversing = true
+          if (Math.random() < 0.01) {
+            mode++
+            // background(0)
+          }
+        }
+        else if (numCellsCounter == 0) {
+          reversing = false
+          if (Math.random() < 0.01) {
+            mode++
+            // background(0)
+          }
+        }
+        numCells = numCellsList[numCellsCounter]
+			}
+		
+
+    </script>
+  </body>
+</html>
