@@ -34,8 +34,9 @@
       let height = window.innerHeight
 			let initialMargin = 0.9
 			let squareWidth = Math.min(width,height)*initialMargin
-      let numCellsList = [5,10,15,20,30,40,50,60,70,80,90,100]
+      let numCellsList = [5,6,7,8,10,15,20,30,40,50,60,70]
       let reversing = false
+      let modeCounter = 0
       let numCellsCounter = 0
       let numCells = numCellsList[numCellsCounter]
 	    let numCellsX = numCells
@@ -43,11 +44,18 @@
 			let cellWidth = squareWidth/numCellsX
 			let cellHeight = squareWidth/numCellsY
       let mars
+      let mona
+      let vermeer
       let mode = 0
       const density = 'Ñ@#W$9876543210?!abc;:+=-,._ '
+      const density3 = " `.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@"
+      const density2 = " .'_^;<!c/?LvJ(F{}I1l[eZYja2SqPhdVObAXmR#B0NQ&"
 			
       preload = () => {
-        mars = loadImage("./assets/vermeer.jpg")
+        vermeer = loadImage("./assets/vermeer.jpg")
+        mona = loadImage("./assets/mona.jpg")
+        starry = loadImage("./assets/starry.jpg")
+        mars = vermeer
       }
 
 			setup = () => {
@@ -55,10 +63,12 @@
         pixelDensity(1)
         textAlign(CENTER, CENTER)
         mars.loadPixels()
+        
 			}
 
 			draw = () => {
-				background(0,150)
+        frameRate(3)
+				background(0)
         
         let marsCellXFloat = mars.width/numCellsX
         let marsCellX = Math.floor(marsCellXFloat)
@@ -112,7 +122,7 @@
             let averageBlue = totalBlue/(marsCellX*marsCellY)
             let averageBrightness = (averageRed+averageGreen+averageBlue)/3
             let maxBrightness = (maxRed+maxGreen+maxBlue)/3
-            let char = density.charAt(Math.floor(map(maxBrightness,0,255,density.length,0)))
+            let char = density2.charAt(Math.floor(map(maxBrightness,0,255,0,density2.length)))
             stroke(averageRed,averageGreen,averageBlue)
             fill(averageRed,averageGreen,averageBlue)
             
@@ -146,21 +156,24 @@
 			  cellWidth = squareWidth/numCellsX
 			  cellHeight = squareWidth/numCellsY
 
-        frameRate(10)
         if (reversing) {numCellsCounter--}
         else {numCellsCounter++}
         if (numCellsCounter == numCellsList.length-1) {
           reversing = true
-          if (Math.random() < 0.01) {
-            mode++
-            // background(0)
+          modeCounter++
+          if (modeCounter%6==0) {mode++}
+          if (modeCounter%2==0) {
+            mars = (mars == vermeer) ? mona : (mars == mona) ? starry : vermeer
+            mars.loadPixels()
           }
         }
         else if (numCellsCounter == 0) {
           reversing = false
-          if (Math.random() < 0.01) {
-            mode++
-            // background(0)
+          modeCounter++
+          if (modeCounter%6==0) {mode++}
+          if (modeCounter%2==0) {
+            mars = (mars == vermeer) ? mona : (mars == mona) ? starry : vermeer
+            mars.loadPixels()
           }
         }
         numCells = numCellsList[numCellsCounter]
