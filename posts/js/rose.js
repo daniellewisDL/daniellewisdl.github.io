@@ -17,7 +17,7 @@ let colorCountries = d3.scaleOrdinal(tols)
 
 function getMonthName(monthNumber) {
   const date = new Date()
-  date.setMonth(monthNumber - 1)
+  date.setMonth(monthNumber)
 
   return date.toLocaleString('en-US', { month: 'long' })
 }
@@ -400,11 +400,6 @@ function go() {
         legendTitle.text(`Deaths by Cause`)
      }
 
-
-     // Chart junk x4
-     // 1. Dashed line from roseRight to roseLeft
-     // 2. Crimea and Bulgaria extra labels
-     // 3. Nightingale link
 
 
   })
