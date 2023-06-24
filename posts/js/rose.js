@@ -31,6 +31,7 @@ svg.attr("transform", `translate(${xTranslateMe}, ${yTranslateMe}) scale(${scale
 
 function go() {
   d3.csv("./data/rose.csv").then(data => {
+    
     data.forEach(d => {
       d.date = new Date(d.date)
       d.strength = +d.strength
@@ -51,8 +52,8 @@ function go() {
     title.append("text").text("Diagram of the Causes of Mortality in the Army in the East").attr("text-anchor", "middle").attr("font-size", 30).attr("font-weight", "bold")
 
     const nightingaleLink = svg.append("g").attr("transform", `translate(${width/2}, ${height/2 - height/2 * 0.9 + 30})`)
-    const nightingaleLinkLink = nightingaleLink.append("a").attr("href", "https://www.florence-nightingale.co.uk/coxcomb-diagram-1858/")
-    nightingaleLinkLink.append("text").text("by Florence Nightingale").attr("text-anchor", "middle").attr("font-size", 24).attr("font-weight", "normal").attr("font-style", "italic").attr("fill", "blue")
+    const nightingaleLinkLink = nightingaleLink.append("a").attr("href", "https://www.florence-nightingale.co.uk/coxcomb-diagram-1858/").attr("target", "_blank")
+    nightingaleLinkLink.append("text").text("by Nightingale and Farr").attr("text-anchor", "middle").attr("font-size", 24).attr("font-weight", "normal").attr("font-style", "italic").attr("fill", "blue")
 
     const titleOffsetPercentage = 0.63
     
@@ -82,9 +83,10 @@ function go() {
           .attr("d", (d,i)=>arcRose(d,i,d.deathsZymotic))
           .attr("fill","LightBlue")
           .attr("stroke","black")
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .style("opacity", 0.5)
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
     
     roseRight.selectAll(".rightRoseOther")
           .data(dataFirstHalf)
@@ -95,9 +97,9 @@ function go() {
           .attr("fill","grey")
           .attr("stroke","black")
           .style("opacity", 0.5)
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
 
     roseRight.selectAll(".rightRoseWounds")
           .data(dataFirstHalf)
@@ -108,9 +110,9 @@ function go() {
           .attr("fill","pink")
           .attr("stroke","black")
           .style("opacity", 0.5)
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
 
     roseRight.selectAll(".rightRoseDateLabelYearPaths")
           .data(dataFirstHalf)
@@ -184,11 +186,11 @@ function go() {
           .text((d,i) => getMonthName(d.date.getMonth()).slice(0,3))
           .style("pointer-events", "none")
           
-    roseRight.append("text").text("Bulgaria").attr("x", 0).attr("y", 0).attr("font-size", 12).attr("font-weight", "bold").attr("text-anchor", "middle")
+    roseRight.append("text").text("Bulgaria").attr("x", 0).attr("y", 0).attr("font-size", 12).attr("font-weight", "normal").attr("text-anchor", "middle")
         .attr("fill", "grey")
         .attr("transform", "translate(-8 -150) rotate(-90)")
 
-    roseRight.append("text").text("Crimea").attr("x", 0).attr("y", 0).attr("font-size", 12).attr("font-weight", "bold").attr("text-anchor", "middle")
+    roseRight.append("text").text("Crimea").attr("x", 0).attr("y", 0).attr("font-size", 12).attr("font-weight", "normal").attr("text-anchor", "middle")
         .attr("fill", "grey")
         .attr("transform", "translate(200 15)")
 
@@ -203,9 +205,10 @@ function go() {
           .attr("d", (d,i)=>arcRose(d,i,d.deathsZymotic))
           .attr("fill","LightBlue")
           .attr("stroke","black")
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .style("opacity", 0.5)
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
 
     roseLeft.selectAll(".leftRoseOther")
           .data(dataSecondHalf)
@@ -216,9 +219,9 @@ function go() {
           .attr("fill","grey")
           .attr("stroke","black")
           .style("opacity", 0.5)
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
 
     roseLeft.selectAll(".leftRoseWounds")
           .data(dataSecondHalf)
@@ -229,9 +232,9 @@ function go() {
           .attr("fill","pink")
           .attr("stroke","black")
           .style("opacity", 0.5)
-          .on("mouseover", (e,d)=>showToolTip(d))
-          .on("mousemove", (e,d)=>showToolTip(d))
-          .on("mouseout", (e,d)=>hideToolTip(d))
+          .on("mouseover", (e,d)=>showToolTip(e,d))
+          .on("mousemove", (e,d)=>showToolTip(e,d))
+          .on("mouseout", (e,d)=>hideToolTip(e,d))
 
     roseLeft.selectAll(".leftRoseDateLabelYearPaths")
           .data(dataSecondHalf)
@@ -339,7 +342,9 @@ function go() {
     
     const pieDonut = d3.pie()
 
-    function showToolTip(item) {
+    function showToolTip(event, item) {
+        
+        d3.select(event.currentTarget).style("opacity", 1).style("stroke-width", 2)
 
         const roseLegendBars = roseLegendBarsGroup.selectAll(".roseLegendBars").data(deathCausesList).enter().append("g").attr("class", "roseLegendBars")
         roseLegendBars.append("rect")
@@ -394,7 +399,8 @@ function go() {
 
     }
 
-     function hideToolTip(item) {
+     function hideToolTip(event, item) {
+        d3.select(event.currentTarget).style("opacity", 0.5).style("stroke-width", 1)
         roseLegendBarsGroup.selectAll("g").remove()
         roseLegendDonut.selectAll("g").remove()
         legendTitle.text(`Deaths by Cause`)

@@ -1,0 +1,13 @@
+name,start,end,commonwealth
+"Elizabeth",1565,1603,false
+"James I",1603,1625,false
+"Charles I",1625,1649,false
+"Cromwell",1649,1660,true
+"Charles II",1660,1685,false
+"James II",1685,1689,false
+"W&M",1689,1702,false
+"Anne",1702,1714,false
+"George I",1714,1727,false
+"George II",1727,1760,false
+"George III",1760,1820,false
+"George IV",1820,1821,false
