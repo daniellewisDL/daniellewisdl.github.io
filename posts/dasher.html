@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>dasher</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsList = [4,6,8,10]
+      let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
+      let numCellsX = numCells
+      let numCellsY = numCells
+			let cellWidth = squareWidth/numCellsX
+			let cellHeight = squareWidth/numCellsY
+      let cellsArray = []
+
+      let worldmapimage
+      
+		  const MetPalettes = [
+    {
+      name: "Austria",
+      colors: [
+        "#a40000",
+        "#16317d",
+        "#007e2f",
+        "#ffcd12",
+        "#b86092",
+        "#721b3e",
+        "#00b7a7",
+      ],
+      order: [1, 2, 3, 4, 6, 5, 7],
+    },
+    {
+      name: "Cassatt",
+      colors: [
+        "#b1615c",
+        "#d88782",
+        "#e3aba7",
+        "#edd7d9",
+        "#c9c9dd",
+        "#9d9dc7",
+        "#8282aa",
+        "#5a5a83",
+      ],
+      order: [3, 6, 1, 8, 4, 5, 2, 7],
+    },
+    {
+      name: "Cross",
+      colors: [
+        "#c969a1",
+        "#ce4441",
+        "#ee8577",
+        "#eb7926",
+        "#ffbb44",
+        "#859b6c",
+        "#62929a",
+        "#004f63",
+        "#122451",
+      ],
+      order: [4, 7, 1, 8, 2, 6, 3, 5, 9],
+    },
+    {
+      name: "Degas",
+      colors: [
+        "#591d06",
+        "#96410e",
+        "#e5a335",
+        "#556219",
+        "#418979",
+        "#2b614e",
+        "#053c29",
+      ],
+      order: [5, 2, 4, 3, 7, 1, 6],
+    },
+    {
+      name: "Egypt",
+      colors: ["#dd5129", "#0f7ba2", "#43b284", "#fab255"],
+      order: [1, 2, 3, 4],
+    },
+    {
+      name: "Gauguin",
+      colors: ["#b04948", "#811e18", "#9e4013", "#c88a2c", "#4c6216", "#1a472a"],
+      order: [2, 5, 4, 3, 1, 6],
+    },
+    {
+      name: "Greek",
+      colors: ["#3c0d03", "#8d1c06", "#e67424", "#ed9b49", "#f5c34d"],
+      order: [2, 3, 5, 1, 4],
+    },
+    {
+      name: "Hokusai",
+      colors: [
+        "#6d2f20",
+        "#b75347",
+        "#df7e66",
+        "#e09351",
+        "#edc775",
+        "#94b594",
+        "#224b5e",
+      ],
+      order: [2, 7, 4, 6, 5, 1, 3],
+    },
+    {
+      name: "Ingres",
+      colors: [
+        "#041d2c",
+        "#06314e",
+        "#18527e",
+        "#2e77ab",
+        "#d1b252",
+        "#a97f2f",
+        "#7e5522",
+        "#472c0b",
+      ],
+      order: [4, 5, 3, 6, 2, 7, 1, 8],
+    },
+    {
+      name: "Isfahan1",
+      colors: [
+        "#4e3910",
+        "#845d29",
+        "#d8c29d",
+        "#4fb6ca",
+        "#178f92",
+        "#175f5d",
+        "#1d1f54",
+      ],
+      order: [5, 2, 4, 6, 3, 7, 1],
+    },
+    {
+      name: "Isfahan2",
+      colors: ["#d7aca1", "#ddc000", "#79ad41", "#34b6c6", "#4063a3"],
+      order: [4, 2, 3, 5, 1],
+    },
+    {
+      name: "Juarez",
+      colors: ["#a82203", "#208cc0", "#f1af3a", "#cf5e4e", "#637b31", "#003967"],
+      order: [1, 2, 3, 4, 5, 6],
+    },
+    {
+      name: "Klimt",
+      colors: ["#df9ed4", "#c93f55", "#eacc62", "#469d76", "#3c4b99", "#924099"],
+      order: [5, 2, 3, 4, 6, 1],
+    },
+    {
+      name: "Manet",
+      colors: [
+        "#3b2319",
+        "#80521c",
+        "#d29c44",
+        "#ebc174",
+        "#ede2cc",
+        "#7ec5f4",
+        "#4585b7",
+        "#225e92",
+        "#183571",
+        "#43429b",
+        "#5e65be",
+      ],
+      order: [8, 3, 10, 4, 7, 9, 11, 2, 6, 1, 5],
+    },
+    {
+      name: "Monet",
+      colors: [
+        "#4e6d58",
+        "#749e89",
+        "#abccbe",
+        "#e3cacf",
+        "#c399a2",
+        "#9f6e71",
+        "#41507b",
+        "#7d87b2",
+        "#c2cae3",
+      ],
+      order: [2, 5, 8, 3, 4, 9, 1, 6, 7],
+    },
+    {
+      name: "Moreau",
+      colors: [
+        "#421600",
+        "#792504",
+        "#bc7524",
+        "#8dadca",
+        "#527baa",
+        "#104839",
+        "#082844",
+      ],
+      order: [2, 5, 3, 4, 7, 1, 6],
+    },
+    {
+      name: "Morgenstern",
+      colors: [
+        "#7c668c",
+        "#b08ba5",
+        "#dfbbc8",
+        "#ffc680",
+        "#ffb178",
+        "#db8872",
+        "#a56457",
+      ],
+      order: [6, 5, 4, 7, 3, 2, 1],
+    },
+    {
+      name: "Nattier",
+      colors: [
+        "#52271c",
+        "#944839",
+        "#c08e39",
+        "#7f793c",
+        "#565c33",
+        "#184948",
+        "#022a2a",
+      ],
+      order: [1, 6, 5, 2, 3, 4, 7],
+    },
+    {
+      name: "NewKingdom",
+      colors: ["#e1846c", "#9eb4e0", "#e6bb9e", "#9c6849", "#735852"],
+      order: [2, 1, 3, 4, 5],
+    },
+    {
+      name: "Pillement",
+      colors: ["#a9845b", "#697852", "#738e8e", "#44636f", "#2b4655", "#0f252f"],
+      order: [4, 3, 2, 5, 1, 6],
+    },
+    {
+      name: "Pissaro",
+      colors: [
+        "#134130",
+        "#4c825d",
+        "#8cae9e",
+        "#8dc7dc",
+        "#508ca7",
+        "#1a5270",
+        "#0e2a4d",
+      ],
+      order: [5, 2, 3, 6, 4, 7, 1],
+    },
+    {
+      name: "Redon",
+      colors: [
+        "#5b859e",
+        "#1e395f",
+        "#75884b",
+        "#1e5a46",
+        "#df8d71",
+        "#af4f2f",
+        "#d48f90",
+        "#732f30",
+        "#ab84a5",
+        "#59385c",
+        "#d8b847",
+        "#b38711",
+      ],
+      order: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    },
+    {
+      name: "Renoir",
+      colors: [
+        "#17154f",
+        "#2f357c",
+        "#6c5d9e",
+        "#9d9cd5",
+        "#b0799a",
+        "#f6b3b0",
+        "#e48171",
+        "#bf3729",
+        "#e69b00",
+        "#f5bb50",
+        "#ada43b",
+        "#355828",
+      ],
+      order: [2, 5, 9, 12, 3, 8, 7, 10, 4, 1, 6, 11],
+    },
+    {
+      name: "Robert",
+      colors: ["#11341a", "#375624", "#6ca4a0", "#487a7c", "#18505f", "#062e3d"],
+      order: [3, 2, 4, 5, 1, 6],
+    },
+    {
+      name: "Stevens",
+      colors: ["#042e4e", "#307d7f", "#598c4c", "#ba5c3f", "#a13213", "#470c00"],
+      order: [4, 2, 3, 5, 1, 6],
+    },
+    {
+      name: "Tara",
+      colors: ["#eab1c6", "#d35e17", "#e18a1f", "#e9b109", "#829d44"],
+      order: [1, 3, 2, 5, 4],
+    },
+    {
+      name: "Thomas",
+      colors: [
+        "#b24422",
+        "#c44d76",
+        "#4457a5",
+        "#13315f",
+        "#b1a1cc",
+        "#59386c",
+        "#447861",
+        "#7caf5c",
+      ],
+      order: [3, 2, 8, 6, 1, 4, 7, 5],
+    },
+    {
+      name: "Tiepolo",
+      colors: [
+        "#802417",
+        "#c06636",
+        "#ce9344",
+        "#e8b960",
+        "#646e3b",
+        "#2b5851",
+        "#508ea2",
+        "#17486f",
+      ],
+      order: [1, 2, 8, 6, 3, 5, 7, 4],
+    },
+    {
+      name: "Troy",
+      colors: [
+        "#421401",
+        "#6c1d0e",
+        "#8b3a2b",
+        "#c27668",
+        "#7ba0b4",
+        "#44728c",
+        "#235070",
+        "#0a2d46",
+      ],
+      order: [2, 7, 4, 5, 1, 8, 3, 6],
+    },
+    {
+      name: "VanGogh1",
+      colors: [
+        "#2c2d54",
+        "#434475",
+        "#6b6ca3",
+        "#969bc7",
+        "#87bcbd",
+        "#89ab7c",
+        "#6f9954",
+      ],
+      order: [3, 5, 7, 4, 6, 2, 1],
+    },
+    {
+      name: "VanGogh2",
+      colors: [
+        "#bd3106",
+        "#d9700e",
+        "#e9a00e",
+        "#eebe04",
+        "#5b7314",
+        "#c3d6ce",
+        "#89a6bb",
+        "#454b87",
+      ],
+      order: [1, 5, 8, 2, 7, 4, 6, 3],
+    },
+    {
+      name: "Veronese",
+      colors: [
+        "#67322e",
+        "#99610a",
+        "#c38f16",
+        "#6e948c",
+        "#2c6b67",
+        "#175449",
+        "#122c43",
+      ],
+      order: [5, 1, 7, 2, 3, 6, 4],
+    },
+    {
+      name: "Wissing",
+      colors: ["#4b1d0d", "#7c291e", "#ba7233", "#3a4421", "#2d5380"],
+      order: [2, 3, 5, 4, 1],
+    },
+  ];
+      const myPalette = MetPalettes[Math.floor(Math.random() * MetPalettes.length)]
+
+      
+      const cellMargin = 0.7
+      const barGap = 0.7
+      const outerArc = 0.8
+      const innerArc = 0.4
+
+      let barOffset = 0
+      const barOffsetsIncrementinTime = 0.001
+      const barOffsetsIncrementinSpace = 100
+
+      let banOffset = 0
+      const banOffsetsIncrement = 0.0001
+
+      let donutOffset = 0
+      const donutOffsetsIncrementinTime = 0.001
+      const donutOffsetsIncrementinSpace = 100
+
+      let gaugeOffset = 0
+      const gaugeOffsetsIncrementinTime = 0.001
+
+      let treeMapOffset = 0
+      const treeMapOffsetsIncrementinTime = 0.001
+      const treeMapOffsetsIncrementinSpace = 100
+
+      let timeSeriesOffset = 0
+      const timeSeriesOffsetsIncrementinTime = 0.001
+      const timeSeriesOffsetsIncrementinSpace = 100
+
+      let scatterPlotOffset = 0
+      const scatterPlotOffsetsIncrementinTime = 0.001
+      const scatterPlotOffsetsIncrementinSpace = 100
+
+      let heatmapOffset = 0
+      const heatmapOffsetsIncrementinTime = 0.005
+      const heatmapOffsetsIncrementinSpace = 100
+
+      let worldMapOffset = 0
+      const worldMapOffsetsIncrementinTime = 0.001
+      const worldMapOffsetsIncrementinSpace = 100
+			
+      preload = () => {
+        worldmapimage = loadImage("./assets/worldmap.png")
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        noStroke()
+        textAlign(CENTER, CENTER)
+        pixelDensity(1)
+        for (let j=0; j < numCellsY; j++) {
+          for (let i=0; i < numCellsX; i++) {
+            let cellTypes = ["barChart", "donutChart", "bigAssNumber", "treeMap", "gaugeChart", "timeSeries", "scatterPlot", "heatmap", "worldMap"]
+            // cellTypes = ["worldMap"]
+            let cellType = cellTypes[Math.floor(Math.random()*cellTypes.length)]
+
+            if (cellType == "barChart") {
+              let color1 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              while (color1 == color2) {
+                color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color3 == color1 || color3 == color2) {
+                color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color4 == color1 || color4 == color2 || color4 == color3) {
+                color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              let barRandomNumber = Math.random()*100000
+              cellsArray.push({type: "barChart",
+                               barRandom: barRandomNumber,
+                               data: [noise(barRandomNumber+barOffset+barOffsetsIncrementinSpace*0),
+                                      noise(barRandomNumber+barOffset+barOffsetsIncrementinSpace*1),
+                                      noise(barRandomNumber+barOffset+barOffsetsIncrementinSpace*2),
+                                      noise(barRandomNumber+barOffset+barOffsetsIncrementinSpace*3)],
+                               colors: [color1, color2, color3, color4]})
+
+            }
+            else if (cellType=="donutChart") {
+              let color1 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              while (color1 == color2) {
+                color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color3 == color1 || color3 == color2) {
+                color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              let donutRandom = Math.random()*100000
+              cellsArray.push({type: "donutChart",
+                               donutRandom: donutRandom,
+                               data: [
+                                  noise(donutRandom+donutOffset+donutOffsetsIncrementinSpace*0),
+                                  noise(donutRandom+donutOffset+donutOffsetsIncrementinSpace*1),
+                                  noise(donutRandom+donutOffset+donutOffsetsIncrementinSpace*2)
+                               ],
+                               colors: [color1, color2, color3]})
+            }
+            else if (cellType=="bigAssNumber") {
+              let banRandom = Math.random()*100000
+              cellsArray.push({type: "bigAssNumber",
+                               banRandom: banRandom,
+                               data: Math.floor(noise(banRandom+banOffset)*1000),
+                               colors: [myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]]})
+            }
+            else if (cellType=="treeMap") {
+              let color1 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              while (color1 == color2) {
+                color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color3 == color1 || color3 == color2) {
+                color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color4 == color1 || color4 == color2 || color4 == color3) {
+                color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+
+              let treeMapRandom = Math.random()*100000
+              let data = [noise(treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*0),
+                          noise(treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*1),
+                          noise(treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*2),
+                          noise(treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*3)]
+                          
+              cellsArray.push({type: "treeMap",
+                                treeMapRandom: treeMapRandom,
+                               data: data,
+                               colors: [color1, color2, color3, color4]})
+            }
+            else if (cellType=="gaugeChart") {
+
+              let gaugeRandom = Math.random()*100000
+
+              cellsArray.push({type: "gaugeChart",
+                               gaugeRandom: gaugeRandom,
+                               data: noise(gaugeRandom+gaugeOffset),
+                               colors: [myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]]})
+            }
+            else if (cellType=="timeSeries") {
+
+              let timeSeriesRandom = Math.random()*100000
+
+              let data = [noise(timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*0),
+                          noise(timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*1),
+                          noise(timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*2),
+                          noise(timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*3)]
+
+              let color1 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              let color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              while (color1 == color2) {
+                color2 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color3 == color1 || color3 == color2) {
+                color3 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+              while (color4 == color1 || color4 == color2 || color4 == color3) {
+                color4 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+              }
+
+
+              cellsArray.push({type: "timeSeries",
+                               timeSeriesRandom: timeSeriesRandom,
+                               data: data,
+                               colors: [color1, color2, color3, color4]})
+
+            }
+            else if (cellType=="scatterPlot") {
+
+              let color1 = myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]
+
+
+              let scatterPlotRandom = Math.random()*100000
+
+              let data = [
+                
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*0),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*1)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*2),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*3)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*4),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*5)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*6),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*7)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*8),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*9)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*10),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*11)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*12),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*13)],
+
+                          [noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*14),
+                          noise(scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*15)]]
+
+              cellsArray.push({type: "scatterPlot",
+                               scatterPlotRandom: scatterPlotRandom,
+                               data: data,
+                               colors: [color1]})
+            }
+            else if (cellType=="heatmap") {
+
+              let heatmapRandom = Math.random()*100000
+
+              cellsArray.push({type: "heatmap",
+                               heatmapRandom: heatmapRandom,
+                               colors: [myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]]})
+            }
+
+            else if (cellType=="worldMap") {
+
+              let worldMapRandom = Math.random()*100000
+
+              cellsArray.push({type: "worldMap",
+                               worldMapRandom: worldMapRandom,
+                               colors: [myPalette.colors[Math.floor(Math.random()*myPalette.colors.length)]]})
+            }
+            
+          }
+        }
+
+			}
+
+			draw = () => {
+				background(255)
+        
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        for (let j=0; j < numCellsY; j++) {
+          for (let i=0; i < numCellsX; i++) {
+            if (cellsArray[j*numCellsX+i].type == "barChart") {
+              let bar1Width = cellsArray[j*numCellsX+i].data[0]*cellWidth*cellMargin
+              let bar2Width = cellsArray[j*numCellsX+i].data[1]*cellWidth*cellMargin
+              let bar3Width = cellsArray[j*numCellsX+i].data[2]*cellWidth*cellMargin
+              let bar4Width = cellsArray[j*numCellsX+i].data[3]*cellWidth*cellMargin
+              let bar1Height = cellHeight*cellMargin/4
+              for (let z = 0; z < 4; z++) {
+                fill(cellsArray[j*numCellsX+i].colors[z])
+                rect(i*cellWidth + cellWidth*(1-cellMargin)/2 , j*cellHeight + cellWidth*(1-cellMargin)/2 + bar1Height*z, cellsArray[j*numCellsX+i].data[z]*cellWidth*cellMargin, bar1Height*barGap)
+              }
+
+              barOffset = barOffset + barOffsetsIncrementinTime
+              cellsArray[j*numCellsX+i].data = [noise(cellsArray[j*numCellsX+i].barRandom+barOffset+barOffsetsIncrementinSpace*0),
+                                                noise(cellsArray[j*numCellsX+i].barRandom+barOffset+barOffsetsIncrementinSpace*1),
+                                                noise(cellsArray[j*numCellsX+i].barRandom+barOffset+barOffsetsIncrementinSpace*2),
+                                                noise(cellsArray[j*numCellsX+i].barRandom+barOffset+barOffsetsIncrementinSpace*3)]
+              
+            }
+            else if (cellsArray[j*numCellsX+i].type == "donutChart") {
+              let arcTotal = cellsArray[j*numCellsX+i].data[0] + cellsArray[j*numCellsX+i].data[1] + cellsArray[j*numCellsX+i].data[2]
+              let arc1 = cellsArray[j*numCellsX+i].data[0]/arcTotal*2*Math.PI
+              let arc2 = cellsArray[j*numCellsX+i].data[1]/arcTotal*2*Math.PI
+              let arc3 = cellsArray[j*numCellsX+i].data[2]/arcTotal*2*Math.PI
+              fill(cellsArray[j*numCellsX+i].colors[0])
+              arc(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2,cellWidth*outerArc,cellWidth*outerArc,0,arc1)
+              fill(cellsArray[j*numCellsX+i].colors[1])
+              arc(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2,cellWidth*outerArc,cellWidth*outerArc,arc1,arc1+arc2)
+              fill(cellsArray[j*numCellsX+i].colors[2])
+              arc(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2,cellWidth*outerArc,cellWidth*outerArc,arc1+arc2,arc1+arc2+arc3)
+
+              fill(255)
+              circle(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2,cellWidth*innerArc,cellWidth*innerArc)
+
+              donutOffset = donutOffset + donutOffsetsIncrementinTime
+              cellsArray[j*numCellsX+i].data = [noise(cellsArray[j*numCellsX+i].donutRandom+donutOffset+donutOffsetsIncrementinSpace*0),
+                                                noise(cellsArray[j*numCellsX+i].donutRandom+donutOffset+donutOffsetsIncrementinSpace*1),
+                                                noise(cellsArray[j*numCellsX+i].donutRandom+donutOffset+donutOffsetsIncrementinSpace*2)]
+
+
+            }
+            else if (cellsArray[j*numCellsX+i].type == "bigAssNumber") {
+                let bigAssNumber = cellsArray[j*numCellsX+i].data
+                fill(cellsArray[j*numCellsX+i].colors[0])
+                textSize(cellWidth*0.3)
+                textStyle(BOLD)
+                text(bigAssNumber,i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2)
+
+                banOffset = banOffset + banOffsetsIncrement
+                cellsArray[j*numCellsX+i].data = Math.floor(noise(cellsArray[j*numCellsX+i].banRandom+banOffset)*1000)
+                
+            }
+            else if (cellsArray[j*numCellsX+i].type == "treeMap") {
+              // stroke(50)
+              // noFill()
+              // rect(i*cellWidth, j*cellHeight, cellWidth, cellHeight)
+              // noStroke()
+              let treeMapTotal = cellsArray[j*numCellsX+i].data[0] + cellsArray[j*numCellsX+i].data[1] + cellsArray[j*numCellsX+i].data[2] + cellsArray[j*numCellsX+i].data[3]
+              let treeMap1 = cellsArray[j*numCellsX+i].data[0]/treeMapTotal
+              let treeMapSubtotal = cellsArray[j*numCellsX+i].data[1] + cellsArray[j*numCellsX+i].data[2] + cellsArray[j*numCellsX+i].data[3]
+              let treeMap2 = cellsArray[j*numCellsX+i].data[1]/treeMapSubtotal
+              let treeMapSubSubtotal = cellsArray[j*numCellsX+i].data[2] + cellsArray[j*numCellsX+i].data[3]
+              let treeMap3 = cellsArray[j*numCellsX+i].data[2]/treeMapSubSubtotal
+              let firstX = i*cellWidth + cellWidth*(1-cellMargin)/2
+              let firstY = j*cellHeight + cellWidth*(1-cellMargin)/2 + cellHeight*cellMargin/6 
+              let fullWidth = cellWidth*cellMargin
+              let fullHeight = cellHeight*cellMargin*2/3
+              fill(cellsArray[j*numCellsX+i].colors[0])
+              rect(firstX, firstY, fullWidth*treeMap1, fullHeight)
+              fill(cellsArray[j*numCellsX+i].colors[1])
+              rect(firstX + fullWidth*treeMap1, firstY, fullWidth*(1-treeMap1), fullHeight*treeMap2)
+              fill(cellsArray[j*numCellsX+i].colors[2])
+              rect(firstX + fullWidth*treeMap1, firstY + fullHeight*treeMap2, fullWidth*(1-treeMap1)*treeMap3, fullHeight*(1-treeMap2))
+              fill(cellsArray[j*numCellsX+i].colors[3])
+              rect(firstX + fullWidth*treeMap1 + fullWidth*(1-treeMap1)*treeMap3, firstY + fullHeight*treeMap2, fullWidth*(1-treeMap1)*(1-treeMap3), fullHeight*(1-treeMap2))
+
+              treeMapOffset = treeMapOffset + treeMapOffsetsIncrementinTime
+              cellsArray[j*numCellsX+i].data = [noise(cellsArray[j*numCellsX+i].treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*0),
+                                                noise(cellsArray[j*numCellsX+i].treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*1),
+                                                noise(cellsArray[j*numCellsX+i].treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*2),
+                                                noise(cellsArray[j*numCellsX+i].treeMapRandom+treeMapOffset+treeMapOffsetsIncrementinSpace*3)]
+
+
+            }
+            else if (cellsArray[j*numCellsX+i].type == "gaugeChart") {
+              let gaugeChart = cellsArray[j*numCellsX+i].data
+              let percentageOfCircle = 0.7
+              let gaugeStart = 0 + 2*Math.PI*(1-percentageOfCircle/2)
+              let maxGauge = 2*Math.PI*percentageOfCircle
+              let innerGauge = 0.7
+              let outerGauge = 0.9
+
+              push()
+              translate(i*cellWidth+cellWidth/2,j*cellHeight+cellHeight/2)
+              rotate(-Math.PI/2)
+              
+              fill("LightGray")
+              arc(0,0,cellWidth*outerGauge,cellWidth*outerGauge, gaugeStart , maxGauge + gaugeStart)
+              fill(cellsArray[j*numCellsX+i].colors[0])
+              arc(0,0,cellWidth*outerGauge,cellWidth*outerGauge, gaugeStart , gaugeChart*maxGauge + gaugeStart)
+              fill(255)
+              circle(0,0,cellWidth*innerGauge,cellWidth*innerGauge)
+
+              rotate(Math.PI/2)
+              fill(cellsArray[j*numCellsX+i].colors[0])
+              textSize(cellWidth*0.2)
+              textStyle(BOLD)
+              text((gaugeChart*100).toFixed(1)+"%",0,0)
+              
+              pop()
+
+              gaugeOffset = gaugeOffset + gaugeOffsetsIncrementinTime
+              cellsArray[j*numCellsX+i].data = noise(cellsArray[j*numCellsX+i].gaugeRandom+gaugeOffset)
+
+            }
+            else if (cellsArray[j*numCellsX+i].type == "timeSeries") {
+              
+              // stroke(50)
+              // noFill()
+              // rect(i*cellWidth, j*cellHeight, cellWidth, cellHeight)
+              // noStroke()
+
+              push()
+              translate(i*cellWidth,j*cellHeight+cellHeight*(1-cellMargin)/2)
+
+              fill(cellsArray[j*numCellsX+i].colors[0])
+              circle(cellWidth*cellMargin,cellsArray[j*numCellsX+i].data[0]*cellHeight*cellMargin,cellWidth*cellMargin/10)
+
+              for (z=0; z < 10; z++) {
+                circle(cellWidth*cellMargin-(z+1)*cellWidth*cellMargin/12,
+                      cellHeight*cellMargin*noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset + timeSeriesOffsetsIncrementinSpace*0-timeSeriesOffsetsIncrementinTime*(100*z+1)),
+                       cellWidth*cellMargin/50)
+              }
+
+              fill(cellsArray[j*numCellsX+i].colors[1])
+              circle(cellWidth*cellMargin,cellsArray[j*numCellsX+i].data[1]*cellHeight*cellMargin,cellWidth*cellMargin/10)
+
+              for (z=0; z < 10; z++) {
+                circle(cellWidth*cellMargin-(z+1)*cellWidth*cellMargin/12,
+                      cellHeight*cellMargin*noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset + timeSeriesOffsetsIncrementinSpace*1-timeSeriesOffsetsIncrementinTime*(100*z+1)),
+                       cellWidth*cellMargin/50)
+              }
+
+              fill(cellsArray[j*numCellsX+i].colors[2])
+              circle(cellWidth*cellMargin,cellsArray[j*numCellsX+i].data[2]*cellHeight*cellMargin,cellWidth*cellMargin/10)
+
+              for (z=0; z < 10; z++) {
+                circle(cellWidth*cellMargin-(z+1)*cellWidth*cellMargin/12,
+                      cellHeight*cellMargin*noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset + timeSeriesOffsetsIncrementinSpace*2-timeSeriesOffsetsIncrementinTime*(100*z+1)),
+                       cellWidth*cellMargin/50)
+              }
+
+
+              pop()
+              
+              timeSeriesOffset = timeSeriesOffset + timeSeriesOffsetsIncrementinTime
+              cellsArray[j*numCellsX+i].data = [noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*0),
+                                                noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*1),
+                                                noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*2),
+                                                noise(cellsArray[j*numCellsX+i].timeSeriesRandom+timeSeriesOffset+timeSeriesOffsetsIncrementinSpace*3)]
+
+            }
+            else if (cellsArray[j*numCellsX+i].type == "heatmap") {
+              let colorHeatmap = cellsArray[j*numCellsX+i].colors[0]
+              let heatmapCellWidth = cellWidth*cellMargin / 4
+              let heatmapCellHeight = heatmapCellWidth
+              push()
+              translate(i*cellWidth + cellWidth*(1-cellMargin)/2 ,j*cellHeight + cellHeight*(1-cellMargin)/2)
+              for (a=0; a < 4; a++) {
+                for (b=0; b < 3; b++) {
+                  fill(red(colorHeatmap),green(colorHeatmap),blue(colorHeatmap),255*noise(cellsArray[j*numCellsX+i].heatmapRandom+heatmapOffset + heatmapOffsetsIncrementinSpace*(a+b*4)-heatmapOffsetsIncrementinTime*(100*a+1)))
+                  rect(a*heatmapCellWidth,b*heatmapCellHeight + (cellHeight*cellMargin - heatmapCellHeight*3)/2,heatmapCellWidth-1,heatmapCellHeight-1)
+                }
+              }
+              pop()
+              heatmapOffset = heatmapOffset + heatmapOffsetsIncrementinTime
+            }
+            else if (cellsArray[j*numCellsX+i].type == "scatterPlot") {
+              // stroke(50)
+              // noFill()
+              // rect(i*cellWidth, j*cellHeight, cellWidth, cellHeight)
+              // noStroke()
+              push()
+              translate(i*cellWidth + cellWidth*(1-cellMargin)/2 ,j*cellHeight + cellHeight*(1-cellMargin)/2)
+              
+              stroke(150)
+              noFill()
+              line(-5,cellHeight*cellMargin,cellWidth*cellMargin,cellHeight*cellMargin)
+              line(0,cellHeight*cellMargin+5,0,0)
+
+              noStroke()
+              fill(red(cellsArray[j*numCellsX+i].colors[0]),green(cellsArray[j*numCellsX+i].colors[0]),blue(cellsArray[j*numCellsX+i].colors[0]),100)
+
+              for (a=0; a < 8; a++) {
+                circle(cellsArray[j*numCellsX+i].data[a][0]*cellWidth*cellMargin, cellsArray[j*numCellsX+i].data[a][1]*cellWidth*cellMargin,cellWidth*cellMargin/10)
+              }
+              pop()
+              scatterPlotOffset = scatterPlotOffset + scatterPlotOffsetsIncrementinTime
+
+              for (a=0; a < 8; a++) {
+                cellsArray[j*numCellsX+i].data[a] = [noise(cellsArray[j*numCellsX+i].scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*a*2),
+                                                     noise(cellsArray[j*numCellsX+i].scatterPlotRandom+scatterPlotOffset+scatterPlotOffsetsIncrementinSpace*a*2+1)]
+              }
+
+            }
+            else if (cellsArray[j*numCellsX+i].type == "worldMap") {
+
+              // stroke(50)
+              // noFill()
+              // rect(i*cellWidth, j*cellHeight, cellWidth, cellHeight)
+              // noStroke()
+              const continents = {"continents": [
+                                      {"name": "Africa","centroid": {"latitude": 10,"longitude": 22}},
+                                      {"name": "Asia","centroid": {"latitude": 34,"longitude": 90}},
+                                      {"name": "Europe","centroid": {"latitude": 45,"longitude": 15}},
+                                      {"name": "North America","centroid": {"latitude": 40,"longitude": -80}},
+                                      {"name": "Oceania","centroid": {"latitude": -38,"longitude": 135}},
+                                      {"name": "South America","centroid": {"latitude": -20,"longitude": -45}}
+                                    ]
+                                  }
+
+              let longConv = d => map(d, -130, 180, 0, cellWidth)
+              let latConv = d => map(d, -90, 90, cellHeight,0)
+
+              let colorWorldMap = cellsArray[j*numCellsX+i].colors[0]
+
+              push()
+              translate(i*cellWidth ,j*cellHeight )
+
+              image(worldmapimage,
+                    10,20,
+                    cellWidth,
+                    cellHeight*worldmapimage.height/worldmapimage.width*1.8
+                    )
+
+              fill(red(colorWorldMap),green(colorWorldMap),blue(colorWorldMap),200)
+              continents.continents.forEach((d,k)=> {
+                let x = longConv(d.centroid.longitude)
+                let y = latConv(d.centroid.latitude)
+                let r = map(noise(cellsArray[j*numCellsX+i].worldMapRandom+worldMapOffset+worldMapOffsetsIncrementinSpace*k),0,1,0,cellWidth*cellMargin/3)
+                circle(x,y,r)
+              })
+
+              pop()
+
+              worldMapOffset = worldMapOffset + worldMapOffsetsIncrementinTime
+
+            }
+
+
+          }
+        }
+
+        if (frameCount % 400 == 0) {
+          location.reload();
+        }
+			}
+		
+
+    </script>
+  </body>
+</html>
