@@ -932,8 +932,24 @@ function go() {
             const keyItems = keyGroup.selectAll("g").data(keyCategories).enter().append("g").attr("transform", (d,i)=>`translate(0, ${i*20})`)
             keyItems.append("rect").attr("x", 0).attr("y", 0).attr("width", 14).attr("height", 14).attr("fill", (d,i)=>keyColors[i])
             keyItems.append("text").text(d=>d).attr("x", 30).attr("y", 15).attr("font-size", 14).attr("fill", "grey")
-            if (keyTitle=="Random") {
-                keyGroup.append("text").text("Hint: Use the dropdown to change color meaning").attr("x", 140).attr("y", -35).attr("font-size", 10).attr("fill", "red").attr("font-weight", "bold")
+            // if (keyTitle=="Random") {
+            if (true) {
+
+                let xStartKeyGroup = 240
+                let yStartKeyGroup = 60
+                let keyHintsColor = dvsColors[Math.floor(Math.random()*3)]
+                keyHintsColor = "grey"
+
+                keyGroup.append("text").text("Tips").attr("x", xStartKeyGroup).attr("y", yStartKeyGroup).attr("font-size", 14).attr("fill", keyHintsColor).attr("font-weight", "bold").attr("text-anchor", "start")
+                keyGroup.append("text").text("1. Mouseover blocks to see").attr("x", xStartKeyGroup).attr("y", yStartKeyGroup+15*1).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("individual responses").attr("x", xStartKeyGroup+11).attr("y", yStartKeyGroup+15*2-4).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("2. Use the dropdown to").attr("x", xStartKeyGroup).attr("y", yStartKeyGroup+15*3).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("change color meaning").attr("x", xStartKeyGroup+11).attr("y", yStartKeyGroup+15*4-4).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("3. Pivot using dropdowns").attr("x", xStartKeyGroup).attr("y", yStartKeyGroup+15*5).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("4. Search for any term").attr("x", xStartKeyGroup).attr("y", yStartKeyGroup+15*6.3).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                keyGroup.append("text").text("using the search box").attr("x", xStartKeyGroup+11).attr("y", yStartKeyGroup+15*7.3-4).attr("font-size", 10).attr("fill", keyHintsColor).attr("font-weight", "normal").attr("text-anchor", "start")
+                
+
             }
         }
 
