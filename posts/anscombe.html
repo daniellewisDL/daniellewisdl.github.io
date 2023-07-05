@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>anscombe</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsList = [4,6,8,10]
+      let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
+      numCells = 2
+      let numCellsX = numCells
+      let numCellsY = numCells
+			let cellWidth = squareWidth/numCellsX
+			let cellHeight = squareWidth/numCellsY
+      let cellsArray = []
+      let backgroundColor = 255
+      let myTextColor = 40
+      let sampleRadius = 30*width/1600
+
+      let minX = 0
+      let maxX = 20
+      let minY = 0
+      let maxY = 14
+
+      let noiseInitialX = 500
+      let noiseInitialY = 500
+      let noiseInitialRadius = 0.5
+      let noiseOffset = 1000
+      let noiseAngle = 0
+      let noiseStep = Math.PI/200
+      let noiseX = noiseInitialRadius * Math.cos(noiseAngle) + noiseInitialX
+      let noiseY = noiseInitialRadius * Math.sin(noiseAngle) + noiseInitialY
+
+      let origX
+      let origY
+
+		  const MetPalettes = [{name: "Austria", colors: ["#a40000", "#16317d", "#007e2f", "#ffcd12", "#b86092", "#721b3e", "#00b7a7"], order: [1, 2, 3, 4, 6, 5, 7] }, 
+        {name: "Cassatt", colors: ["#b1615c", "#d88782", "#e3aba7", "#edd7d9", "#c9c9dd", "#9d9dc7", "#8282aa", "#5a5a83"], order: [3, 6, 1, 8, 4, 5, 2, 7] }, 
+        {name: "Cross", colors: ["#c969a1", "#ce4441", "#ee8577", "#eb7926", "#ffbb44", "#859b6c", "#62929a", "#004f63", "#122451"], order: [4, 7, 1, 8, 2, 6, 3, 5, 9] }, 
+        {name: "Degas", colors: ["#591d06", "#96410e", "#e5a335", "#556219", "#418979", "#2b614e", "#053c29"], order: [5, 2, 4, 3, 7, 1, 6] }, 
+        {name: "Egypt", colors: ["#dd5129", "#0f7ba2", "#43b284", "#fab255"], order: [1, 2, 3, 4] }, 
+        {name: "Gauguin", colors: ["#b04948", "#811e18", "#9e4013", "#c88a2c", "#4c6216", "#1a472a"], order: [2, 5, 4, 3, 1, 6] }, 
+        {name: "Greek", colors: ["#3c0d03", "#8d1c06", "#e67424", "#ed9b49", "#f5c34d"], order: [2, 3, 5, 1, 4] }, 
+        {name: "Hokusai", colors: ["#6d2f20", "#b75347", "#df7e66", "#e09351", "#edc775", "#94b594", "#224b5e"], order: [2, 7, 4, 6, 5, 1, 3] }, 
+        {name: "Ingres", colors: ["#041d2c", "#06314e", "#18527e", "#2e77ab", "#d1b252", "#a97f2f", "#7e5522", "#472c0b"], order: [4, 5, 3, 6, 2, 7, 1, 8] }, 
+        {name: "Isfahan1", colors: ["#4e3910", "#845d29", "#d8c29d", "#4fb6ca", "#178f92", "#175f5d", "#1d1f54"], order: [5, 2, 4, 6, 3, 7, 1] }, 
+        {name: "Isfahan2", colors: ["#d7aca1", "#ddc000", "#79ad41", "#34b6c6", "#4063a3"], order: [4, 2, 3, 5, 1] }, 
+        {name: "Juarez", colors: ["#a82203", "#208cc0", "#f1af3a", "#cf5e4e", "#637b31", "#003967"], order: [1, 2, 3, 4, 5, 6] }, 
+        {name: "Klimt", colors: ["#df9ed4", "#c93f55", "#eacc62", "#469d76", "#3c4b99", "#924099"], order: [5, 2, 3, 4, 6, 1] }, 
+        {name: "Manet", colors: ["#3b2319", "#80521c", "#d29c44", "#ebc174", "#ede2cc", "#7ec5f4", "#4585b7", "#225e92", "#183571", "#43429b", "#5e65be"], order: [8, 3, 10, 4, 7, 9, 11, 2, 6, 1, 5] }, 
+        {name: "Monet", colors: ["#4e6d58", "#749e89", "#abccbe", "#e3cacf", "#c399a2", "#9f6e71", "#41507b", "#7d87b2", "#c2cae3"], order: [2, 5, 8, 3, 4, 9, 1, 6, 7] }, 
+        {name: "Moreau", colors: ["#421600", "#792504", "#bc7524", "#8dadca", "#527baa", "#104839", "#082844"], order: [2, 5, 3, 4, 7, 1, 6] }, 
+        {name: "Morgenstern", colors: ["#7c668c", "#b08ba5", "#dfbbc8", "#ffc680", "#ffb178", "#db8872", "#a56457"], order: [6, 5, 4, 7, 3, 2, 1] }, 
+        {name: "Nattier", colors: ["#52271c", "#944839", "#c08e39", "#7f793c", "#565c33", "#184948", "#022a2a"], order: [1, 6, 5, 2, 3, 4, 7] }, 
+        {name: "NewKingdom", colors: ["#e1846c", "#9eb4e0", "#e6bb9e", "#9c6849", "#735852"], order: [2, 1, 3, 4, 5] }, 
+        {name: "Pillement", colors: ["#a9845b", "#697852", "#738e8e", "#44636f", "#2b4655", "#0f252f"], order: [4, 3, 2, 5, 1, 6] }, 
+        {name: "Pissaro", colors: ["#134130", "#4c825d", "#8cae9e", "#8dc7dc", "#508ca7", "#1a5270", "#0e2a4d"], order: [5, 2, 3, 6, 4, 7, 1] }, 
+        {name: "Redon", colors: ["#5b859e", "#1e395f", "#75884b", "#1e5a46", "#df8d71", "#af4f2f", "#d48f90", "#732f30", "#ab84a5", "#59385c", "#d8b847", "#b38711"], order: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }, 
+        {name: "Renoir", colors: ["#17154f", "#2f357c", "#6c5d9e", "#9d9cd5", "#b0799a", "#f6b3b0", "#e48171", "#bf3729", "#e69b00", "#f5bb50", "#ada43b", "#355828"], order: [2, 5, 9, 12, 3, 8, 7, 10, 4, 1, 6, 11] }, 
+        {name: "Robert", colors: ["#11341a", "#375624", "#6ca4a0", "#487a7c", "#18505f", "#062e3d"], order: [3, 2, 4, 5, 1, 6] }, 
+        {name: "Stevens", colors: ["#042e4e", "#307d7f", "#598c4c", "#ba5c3f", "#a13213", "#470c00"], order: [4, 2, 3, 5, 1, 6] }, 
+        {name: "Tara", colors: ["#eab1c6", "#d35e17", "#e18a1f", "#e9b109", "#829d44"], order: [1, 3, 2, 5, 4] }, 
+        {name: "Thomas", colors: ["#b24422", "#c44d76", "#4457a5", "#13315f", "#b1a1cc", "#59386c", "#447861", "#7caf5c"], order: [3, 2, 8, 6, 1, 4, 7, 5] }, 
+        {name: "Tiepolo", colors: ["#802417", "#c06636", "#ce9344", "#e8b960", "#646e3b", "#2b5851", "#508ea2", "#17486f"], order: [1, 2, 8, 6, 3, 5, 7, 4] }, 
+        {name: "Troy", colors: ["#421401", "#6c1d0e", "#8b3a2b", "#c27668", "#7ba0b4", "#44728c", "#235070", "#0a2d46"], order: [2, 7, 4, 5, 1, 8, 3, 6] }, 
+        {name: "VanGogh1", colors: ["#2c2d54", "#434475", "#6b6ca3", "#969bc7", "#87bcbd", "#89ab7c", "#6f9954"], order: [3, 5, 7, 4, 6, 2, 1] }, 
+        {name: "VanGogh2", colors: ["#bd3106", "#d9700e", "#e9a00e", "#eebe04", "#5b7314", "#c3d6ce", "#89a6bb", "#454b87"], order: [1, 5, 8, 2, 7, 4, 6, 3] }, 
+        {name: "Veronese", colors: ["#67322e", "#99610a", "#c38f16", "#6e948c", "#2c6b67", "#175449", "#122c43"], order: [5, 1, 7, 2, 3, 6, 4] }, 
+        {name: "Wissing", colors: ["#4b1d0d", "#7c291e", "#ba7233", "#3a4421", "#2d5380"], order: [2, 3, 5, 4, 1] } ]
+      
+      let myPalette = MetPalettes[Math.floor(Math.random() * MetPalettes.length)]
+
+      const origQuartet = [{name: "one", coords: [{x: 10, y: 8.04},{x: 8, y: 6.95},{x: 13, y: 7.58},{x: 9, y: 8.81},{x: 11, y: 8.33},{x: 14, y: 9.96},{x: 6, y: 7.24},{x: 4, y: 4.26},{x: 12, y: 10.84},{x: 7, y: 4.82},{x: 5, y: 5.68}]},
+                        {name: "two", coords: [{x: 10, y: 9.14},{x: 8, y: 8.14},{x: 13, y: 8.74},{x: 9, y: 8.77},{x: 11, y: 9.26},{x: 14, y: 8.1},{x: 6, y: 6.13},{x: 4, y: 3.1},{x: 12, y: 9.13},{x: 7, y: 7.26},{x: 5, y: 4.74}]},
+                        {name: "three", coords: [{x: 10, y: 7.46},{x: 8, y: 6.77},{x: 13, y: 12.74},{x: 9, y: 7.11},{x: 11, y: 7.81},{x: 14, y: 8.84},{x: 6, y: 6.08},{x: 4, y: 5.39},{x: 12, y: 8.15},{x: 7, y: 6.42},{x: 5, y: 5.73}]},
+                        {name: "four", coords: [{x: 8, y: 6.58},{x: 8, y: 5.76},{x: 8, y: 7.71},{x: 8, y: 8.84},{x: 8, y: 8.47},{x: 8, y: 7.04},{x: 8, y: 5.25},{x: 19, y: 12.5},{x: 8, y: 5.56},{x: 8, y: 7.91},{x: 8, y: 6.89}]}]
+
+      const quartet = [{name: "one", coords: [{x: 10, y: 8.04},{x: 8, y: 6.95},{x: 13, y: 7.58},{x: 9, y: 8.81},{x: 11, y: 8.33},{x: 14, y: 9.96},{x: 6, y: 7.24},{x: 4, y: 4.26},{x: 12, y: 10.84},{x: 7, y: 4.82},{x: 5, y: 5.68}]},
+                        {name: "two", coords: [{x: 10, y: 9.14},{x: 8, y: 8.14},{x: 13, y: 8.74},{x: 9, y: 8.77},{x: 11, y: 9.26},{x: 14, y: 8.1},{x: 6, y: 6.13},{x: 4, y: 3.1},{x: 12, y: 9.13},{x: 7, y: 7.26},{x: 5, y: 4.74}]},
+                        {name: "three", coords: [{x: 10, y: 7.46},{x: 8, y: 6.77},{x: 13, y: 12.74},{x: 9, y: 7.11},{x: 11, y: 7.81},{x: 14, y: 8.84},{x: 6, y: 6.08},{x: 4, y: 5.39},{x: 12, y: 8.15},{x: 7, y: 6.42},{x: 5, y: 5.73}]},
+                        {name: "four", coords: [{x: 8, y: 6.58},{x: 8, y: 5.76},{x: 8, y: 7.71},{x: 8, y: 8.84},{x: 8, y: 8.47},{x: 8, y: 7.04},{x: 8, y: 5.25},{x: 19, y: 12.5},{x: 8, y: 5.56},{x: 8, y: 7.91},{x: 8, y: 6.89}]}]
+
+      
+      const cellMargin = 0.95
+			
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        textFont("Courier")
+			}
+
+			draw = () => {
+
+				fill(backgroundColor)
+        rect(0,0,width,height)
+        
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+
+        stroke("gray")
+        strokeWeight(0.5)
+        noFill()
+        // rect(0,0,squareWidth,squareWidth)
+
+        let xMargin = cellWidth*(1-cellMargin)/2
+        let yMargin = cellHeight*(1-cellMargin)/2
+        let w = squareWidth/2 - xMargin*2
+        let h = squareWidth/2 - yMargin*2
+
+        for (let i=0; i<2; i++) {
+          for (let j=0; j<2; j++) {
+
+            let x = i*squareWidth/2
+            let y = j*squareWidth/2
+
+            let summary = summaryStats(extractXs(quartet[i*2+j].coords),extractYs(quartet[i*2+j].coords))
+            // console.log(summary)
+
+            
+            noFill()
+            stroke("LightGray")
+            strokeWeight(1)
+
+            let x1 = x+xMargin
+            let x2 = x+xMargin+w
+            let y1 = map(summary.y1, minY, maxY, y+yMargin+h, y+yMargin)
+            let y2 = map(summary.y2, minY, maxY, y+yMargin+h, y+yMargin)
+            
+            if (summary.y1 < minY) {
+              // find point on baseline where y = minY
+              x1 = x+xMargin + map((0 - summary.a) / summary.b, minX, maxX, 0, w)
+              y1 = y+yMargin + h
+            } else if (summary.y1 > maxY) {
+              // find point on topline where y = maxY
+              x1 = x+xMargin + map((maxY - summary.a) / summary.b, minX, maxX, 0, w)
+              y1 = y+yMargin
+            }
+
+            if (summary.y2 < minY) {
+              // find point on baseline where y = minY
+              x2 = x+xMargin + map((0 - summary.a) / summary.b, minX, maxX, 0, w)
+              y2 = y+yMargin+h
+            } else if (summary.y2 > maxY) {
+              // find point on topline where y = maxY
+              x2 = x+xMargin + map((maxY - summary.a) / summary.b, minX, maxX, 0, w)
+              y2 = y+yMargin
+            }
+
+            line(x1, y1, x2, y2)
+
+            noStroke()
+            fill(myTextColor)
+            
+            textSize(20*w/400)
+            let textBuffer = textSize()*1.8
+            
+            // console.log(textBuffer)
+
+            text(`Mx:`, x+xMargin+textSize()/2, y+yMargin+h-textBuffer)
+            text(`${summary.xMean.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer, y+yMargin+h-textBuffer)
+            text(`My:`, x+xMargin+textSize()/2+textBuffer*2.5, y+yMargin+h-textBuffer)
+            text(`${summary.yMean.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer*3.5, y+yMargin+h-textBuffer)
+            text(`r:`, x+xMargin+textSize()/2+textBuffer*5, y+yMargin+h-textBuffer)
+            text(`${summary.corr.toFixed(3)}`, x+xMargin+textSize()/2+textBuffer*6, y+yMargin+h-textBuffer)
+            text(`a:`, x+xMargin+textSize()/2+textBuffer*8, y+yMargin+h-textBuffer)
+            text(`${summary.a.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer*9, y+yMargin+h-textBuffer)
+            
+            text(`Vx:`, x+xMargin+textSize()/2, y+yMargin+h-10)
+            text(`${summary.s2x.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer, y+yMargin+h-10)
+            text(`Vy:`, x+xMargin+textSize()/2+textBuffer*2.5, y+yMargin+h-10)
+            text(`${summary.s2y.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer*3.5, y+yMargin+h-10)
+            text(`r2:`, x+xMargin+textSize()/2+textBuffer*5, y+yMargin+h-10)
+            text(`${summary.coeffDet.toFixed(2)}`, x+xMargin+textSize()/2+textBuffer*6, y+yMargin+h-10)
+            text(`b:`, x+xMargin+textSize()/2+textBuffer*8, y+yMargin+h-10)
+            text(`${summary.b.toFixed(1)}`, x+xMargin+textSize()/2+textBuffer*9, y+yMargin+h-10)
+
+            stroke("gray")
+            strokeWeight(0.5)
+            noFill()
+            rect(x+xMargin,y+yMargin,w,h)
+
+            for (let k=0; k<quartet[i*2+j].coords.length; k++) {
+              let x1 = quartet[i*2+j].coords[k].x
+              let y1 = quartet[i*2+j].coords[k].y
+              let x1p = map(x1, minX, maxX, x+xMargin, x+xMargin+w)
+              let y1p = map(y1, minY, maxY, y+yMargin+h, y+yMargin)
+              let myColor = myPalette.colors[k%myPalette.colors.length]
+              fill(red(myColor),green(myColor),blue(myColor),200)
+              circle(x1p,y1p,sampleRadius)
+
+              x1 = origQuartet[i*2+j].coords[k].x
+              y1 = origQuartet[i*2+j].coords[k].y
+              x1p = map(x1, minX, maxX, x+xMargin, x+xMargin+w)
+              y1p = map(y1, minY, maxY, y+yMargin+h, y+yMargin)
+              noFill()
+              stroke("gray")
+              circle(x1p,y1p,sampleRadius)
+              
+
+            }
+
+          }
+        }
+
+        pop()
+
+        // if (frameCount % 400 == 0) {
+        //   location.reload();
+        // }
+
+        for (let coordsLoop = 0; coordsLoop < quartet.length; coordsLoop++) {
+          for (let i = 0; i < quartet[coordsLoop].coords.length; i++) {
+            let tempNewX = map(noise(noiseX+noiseOffset*(i+coordsLoop), noiseY+noiseOffset*(i+coordsLoop)), 0, 1, -origQuartet[coordsLoop].coords[i].x, maxX-origQuartet[coordsLoop].coords[i].x)
+            let tempNewY = map(noise(noiseX+noiseOffset+noiseOffset*(i+coordsLoop), noiseY+noiseOffset+noiseOffset*(i+coordsLoop)), 0, 1, -origQuartet[coordsLoop].coords[i].y, maxY-origQuartet[coordsLoop].coords[i].y)
+            quartet[coordsLoop].coords[i].x = origQuartet[coordsLoop].coords[i].x + (tempNewX/2) *Math.sin(noiseAngle/2)
+            quartet[coordsLoop].coords[i].y = origQuartet[coordsLoop].coords[i].y + (tempNewY/2) *Math.sin(noiseAngle/2)
+          }
+        }
+
+        noiseAngle += noiseStep
+        noiseX = noiseInitialRadius * Math.cos(noiseAngle) + noiseInitialX
+        noiseY = noiseInitialRadius * Math.sin(noiseAngle) + noiseInitialY
+        
+        if (noiseAngle/(2*Math.PI) > 1) {
+          backgroundColor = (backgroundColor==255)?50:255
+          myTextColor = (myTextColor==255)?40:255
+          // backgroundColor = color(255,0,0)
+          myPalette = MetPalettes[Math.floor(Math.random() * MetPalettes.length)]
+          noiseAngle = 0
+        }
+
+        
+			}
+
+      function squareWave(angle) {
+        let squareWave = 0
+        for (let n = 1; n <= 3; n++) {
+          const coefficient = (4 / (n * Math.PI)) * (n % 2 === 0 ? -1 : 1)
+          const term = coefficient * Math.sin(n * angle)
+          squareWave += term
+        }
+        return squareWave
+      }
+
+      function extractXs(item) {
+        let xValues = []
+        for (let i=0; i<item.length; i++) {
+          xValues.push(item[i].x)
+        }
+        return xValues
+      }
+      
+      function extractYs(item) {
+        let yValues = []
+        for (let i=0; i<item.length; i++) {
+          yValues.push(item[i].y)
+        }
+        return yValues
+      }
+
+      function summaryStats(xValues, yValues) {
+        /*
+          Property            Value              Accuracy
+          Mean of x           9                  exact
+          Samp vce of x s2x    11            	   exact
+          Mean of y           7.50               2dp
+          Samp vce of y s2y   4.125              ±0.003
+          Corr x and y        0.816              3dp
+          Lin reg line        y = 3.00 + 0.500x	 2dp and 3dp
+          Coeff det lin reg   0.67               2dp
+        */
+
+        let xMean = 0
+        for (let i=0; i<xValues.length; i++) {xMean += xValues[i]}
+        xMean = xMean / xValues.length
+
+        let yMean = 0
+        for (let i=0; i<yValues.length; i++) {yMean += yValues[i]}
+        yMean = yMean / yValues.length
+
+        let s2x = 0
+        for (let i=0; i<xValues.length; i++) {s2x += (xValues[i] - xMean) * (xValues[i] - xMean)}
+        s2x = s2x / (xValues.length - 1)
+
+        let s2y = 0
+        for (let i=0; i<yValues.length; i++) {s2y += (yValues[i] - yMean) * (yValues[i] - yMean)}
+        s2y = s2y / (yValues.length - 1)
+
+        let corr = 0
+        for (let i=0; i<xValues.length; i++) {corr += (xValues[i] - xMean) * (yValues[i] - yMean)}
+        corr = corr / ((xValues.length - 1) * Math.sqrt(s2x) * Math.sqrt(s2y))
+
+        let b = corr * Math.sqrt(s2y) / Math.sqrt(s2x)
+        let a = yMean - b * xMean
+
+        let y1 = a + b * minX
+        let y2 = a + b * maxX
+
+        let coeffDet = corr * corr
+
+        return {xMean: xMean,s2x: s2x,yMean: yMean,s2y: s2y,corr: corr,a: a,b: b,y1: y1,y2: y2,coeffDet: coeffDet}
+
+
+      }
+
+    </script>
+  </body>
+</html>
