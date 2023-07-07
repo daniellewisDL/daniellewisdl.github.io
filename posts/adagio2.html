@@ -10,7 +10,7 @@
 
 		gtag('config', 'G-PNQX1JJWVB');
 	</script>
-    <title>adagio</title>
+    <title>adagio2</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -22,7 +22,7 @@
         overflow: hidden;
       }
     </style>
-    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <style>body { background-color: rgb(255,255,255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   </head>
 
@@ -36,24 +36,24 @@
 			let squareWidth = Math.min(width,height)*initialMargin
       let numCellsList = [15,16,17,18,19,20,25,30,40]
       let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
-      // numCells = 30
+      numCells = 30
       let cellSize = squareWidth/numCells
 
       const cellMargin = 0.95
       let t=0
       let tOffset
-      let myColor = "#9e4448"
+      let myColor = "#632a21"
 
-      let rectWidth = 1
+      let rectWidth = 1.02
       let rectHeight = 1
 
-      let colorMappingBottom = 0
+      let colorMappingBottom = 20
       let colorMappingTop = 255
 
       let rotateBottom = 0
-      let rotateTop = 6*Math.PI
+      let rotateTop = 0
 
-      let offsetMult = 0.5
+      let offsetMult = 0.0001
 
       let periodicSizeBottom = 1
       let periodicSizeTop = 0.2
@@ -66,25 +66,27 @@
         pixelDensity(1)
         rectMode(CENTER)
         tOffset = random(0.001, 0.015)
-        rectWidth = random([0.2,0.4,0.6,0.8,1])
-        rectHeight = random([.8,1,1.2,1.5,3,2,3])
-        colorMappingBottom = random(0,255)
-        colorMappingTop = random(0,100)
-        rotateBottom = random(0,6*Math.PI)
-        rotateTop = random(0,6*Math.PI)
-        offsetMult = random([0.5,0.05,0.005,0.0005])
-        periodicSizeBottom = random(0.5,1)
-        periodicSizeTop = random(0.1,0.5)
+        // rectWidth = random([0.2,0.4,0.6,0.8,1])
+        // rectHeight = random([.8,1,1.2,1.5,3,2,3])
+        // colorMappingBottom = random(0,255)
+        // colorMappingTop = random(0,100)
+        // rotateBottom = random(0,6*Math.PI)
+        // rotateTop = random(0,6*Math.PI)
+        // offsetMult = random([0.5,0.05,0.005,0.0005])
+        // periodicSizeBottom = random(0.5,1)
+        // periodicSizeTop = random(0.1,0.5)
 			}
 
 			draw = () => {
 
         noStroke()
-				fill(0,15)
+				fill(255)
         rect(width/2,height/2,width,height)
         
         push()
         translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        // stroke(255,50,0,250)
+        // strokeWeight(1)
         
         for (let i=0; i<numCells; i++) {
           for (let j=0; j<numCells; j++) {
@@ -93,13 +95,12 @@
             let a = t + offset(x,y)
             let s = periodicSize(a)
             // s=10
-            // stroke(255,50,0,250)
-            // strokeWeight(1)
             fill(red(myColor),green(myColor),blue(myColor),map(s,1,0.2,colorMappingBottom,colorMappingTop))
             push()
             translate(x+cellSize/2,y+cellSize/2)
-            rotate(periodicRotate(a))
-            rect(0,0,s*cellSize*rectWidth,s*cellSize*rectHeight)
+            // rotate(periodicRotate(a))
+            // circle(0,0,s*cellSize*rectWidth)
+            rect(0,0,s*cellSize*rectWidth,s*cellSize*rectWidth)
             pop()
           }
         }
@@ -108,13 +109,15 @@
 
         t=t+tOffset
 
-        if (frameCount % 300 == 0) {
-          location.reload()
-        }
+        offsetMult+=0.00001
+
+        // if (frameCount % 300 == 0) {
+        //   location.reload()
+        // }
       }
 
       function offset(x,y) {
-        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/Math.PI
       }
 
       function periodicRotate(a) {
