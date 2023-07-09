@@ -1,4 +1,113 @@
+const width = 1400
+const height = 1400
+const primaryContainerWidth = 1000
+const primaryContainerHeight = 480
+const secondaryContainerWidth = 1400-80
+const secondaryContainerHeight = 360
+const passengerDetailContainerWidth = 310
+const passengerDetailContainerHeight = 380
+const scaleFactor = window.innerWidth/width
+const yTranslateMe = (scaleFactor*height - height)/2
+const xTranslateMe = (scaleFactor*width - width)/2
+const bottomOfPrimaryContainer = (110 + primaryContainerHeight)*scaleFactor+yTranslateMe
 
+const svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 1)
+svgFrontPage.attr("viewBox", `0 0 ${width} ${height}`).attr("preserveAspectRatio", "xMidYMid meet")
+
+const masthead = svgFrontPage.append("g").attr("id", "masthead")
+
+// const newspaperName = "The New York Times."
+const newspaperName = "The New York Gazette."
+const mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",44)")
+mainHero.append("text").attr("x", 0).attr("y", 0).text(newspaperName).attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
+
+const fitToPrint = masthead.append("g").attr("id", "fitToPrint").attr("transform", "translate(50,7)")
+fitToPrint.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 150).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+fitToPrint.append("text").attr("x", 75).attr("y", 20).text('"All the News That').attr("text-anchor", "middle").attr("font-size", "10pt").style("font-family", "Castoro, serif")
+fitToPrint.append("text").attr("x", 75).attr("y", 35).text('Fits the Print"').attr("text-anchor", "middle").attr("font-size", "10pt").style("font-family", "Castoro, serif")
+
+const theWeather = masthead.append("g").attr("id", "theWeather").attr("transform", `translate(${width-200},7)`)
+theWeather.append("rect").attr("class", "mastheadRect").attr("x", 0).attr("y", 0).attr("width", 150).attr("height", 45).attr("stroke", "black").attr("fill", "none")
+theWeather.append("text").attr("x", 75).attr("y", 13).text("THE WEATHER").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold").style("font-family", "'Roboto', sans-serif")
+theWeather.append("line").attr("x1", 35).attr("x2", 115).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+theWeather.append("text").attr("x", 75).attr("y", 23).text("Unsettled Tuesday; Wednesday,").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+theWeather.append("text").attr("x", 75).attr("y", 29).text("fair, cooler; moderate southerly").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+theWeather.append("text").attr("x", 75).attr("y", 35).text("winds, becoming variable.").attr("text-anchor", "middle").attr("font-size", "4.5pt")
+theWeather.append("text").attr("x", 75).attr("y", 40).text("For full weather report see Page 21.").attr("text-anchor", "middle").attr("font-size", "3pt")
+
+const dateLine = masthead.append("g").attr("id", "dateLine").attr("transform", "translate(40,58)")
+dateLine.append("line").attr("x1", 0).attr("x2", width-80).attr("y1", 0).attr("y2", 0).attr("stroke", "black")
+dateLine.append("line").attr("x1", 0).attr("x2", width-80).attr("y1", 2).attr("y2", 2).attr("stroke", "black")
+dateLine.append("line").attr("x1", 0).attr("x2", width-80).attr("y1", 14).attr("y2", 14).attr("stroke", "black")
+dateLine.append("line").attr("x1", 0).attr("x2", width-80).attr("y1", 16).attr("y2", 16).attr("stroke", "black")
+dateLine.append("text").attr("x", 10).attr("y", 11).text("VOL. LXI . NO. 15,806").attr("text-anchor", "left").attr("font-size", "6pt").attr("font-weight", "bold")
+dateLine.append("text").attr("x", width/2-40).attr("y", 11).text("NEW YORK, TUESDAY, APRIL 16, 1912. - TWENTY-FOUR PAGES,").attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-weight", "bold")
+dateLine.append("text").attr("x", width-250).attr("y", 11).text("ONE CENT").attr("font-size", "6pt").attr("font-weight", "bold")
+dateLine.append("text").attr("x", width-165).attr("y", 7.5).text("In Greater New York,").attr("text-anchor", "middle").attr("font-size", "4pt")
+dateLine.append("text").attr("x", width-165).attr("y", 12).text("Jersey City, and Newark.").attr("text-anchor", "middle").attr("font-size", "4pt")
+dateLine.append("line").attr("x1", width-125).attr("x2", width-125).attr("y1", 5).attr("y2", 12).attr("stroke", "black").style("stroke-width", 0.5)
+dateLine.append("text").attr("x", width-105).attr("y", 7).text("Elsewhere").attr("text-anchor", "middle").attr("font-size", "3pt")
+dateLine.append("text").attr("x", width-105).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
+
+const mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", `translate( ${width/2-160} ,110)`)
+mainHeadline.append("text").attr("x", 0).attr("y", 0).attr("id", "mainHeadlineText").text("TITANIC SINKS AFTER HITTING ICEBERG; 1,514 SOULS LOST").attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-family", "Castoro Titling").style("font-weight", "bold")
+
+const primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,125) scale(1,1)")
+primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+const secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,615)")
+secondaryContainer.append("rect").attr("class", "secondaryContainerRect").attr("x", 0).attr("y", 0).attr("width", secondaryContainerWidth).attr("height", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+const passengerDetailContainer = svgFrontPage.append("g").attr("id", "passengerDetailContainer").attr("transform", `translate(${width-350},225)`)
+passengerDetailContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", `translate(${width-350},85) scale(1,1)`)
+lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
+lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
+lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("RMS Titanic departing Southampton on April 10, 1912.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold").style("font-family", "'Castoro', serif")
+lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
+
+const firstLeftHeadlines = lostTitanic.append("g").attr("transform", "translate(250,15) scale (1.5,1.8)")
+firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)
+firstLeftHeadlines.append("text").text("Col. Astor and Bride,").attr("x", 0).attr("y",0).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("Isidor Straus and Wife,").attr("x", 0).attr("y",7).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("and Maj. Butt Aboard.").attr("x", 0).attr("y",14).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 19).attr("y2", 19).attr("stroke", "black").style("stroke-width", 0.5)
+firstLeftHeadlines.append("text").text('"RULE OF SEA" FOLLOWED').attr("x", 0).attr("y",29).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", "scale(0.8,1)")
+firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 34).attr("y2", 34).attr("stroke", "black").style("stroke-width", 0.5)
+firstLeftHeadlines.append("text").text("Women and Children Put Over").attr("x", 0).attr("y",43).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("in Lifeboats and Are Supposed").attr("x", 0).attr("y",49).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("to be Safe on Carpathia.").attr("x", 0).attr("y",55).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 61).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
+// firstLeftHeadlines.append("line").attr("x1", 35/0.8).attr("x2", 35/0.8).attr("y1", -8).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
+
+const boilerPlate = svgFrontPage.append("g").attr("id", "boilerPlate").attr("transform", "translate(40,985) scale(1.0,1.0)")
+
+const lowerLeftCol1 = boilerPlate.append("g").attr("transform", "translate(0,0) scale(0.5,0.5)")
+lowerLeftCol1.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol1.png").style("opacity", 0.8)
+
+const lowerLeftCol2 = boilerPlate.append("g").attr("transform", "translate(140,-10) scale(0.5,0.52)")
+lowerLeftCol2.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol2.png").style("opacity", 0.8)
+
+const captSmith = boilerPlate.append("g").attr("id", "captSmith").attr("transform", "translate(290,7) scale(1.5,1.5)")
+captSmith.append("image").attr("x", 0).attr("y", 0).attr("width", 120).attr("height", 160).attr("xlink:href", "./src/capt-smith.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
+captSmith.append("rect").attr("x", -1).attr("y", -1).attr("width", 122).attr("height", 162).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+captSmith.append("rect").attr("x", -2).attr("y", -2).attr("width", 124).attr("height", 164).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+captSmith.append("rect").attr("x", -3).attr("y", -3).attr("width", 126).attr("height", 166).attr("stroke", "black").style("stroke-width", 0.5).attr("fill", "none")
+captSmith.append("text").attr("x", 60).attr("y", 170).text("CAPT. E. J. SMITH,").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold")
+captSmith.append("text").attr("x", 60).attr("y", 175).text("Commander of the Titanic.").attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "bold")
+
+const lowerLeftCol3 = boilerPlate.append("g").attr("transform", "translate(280,270) scale(0.37,0.48)")
+lowerLeftCol3.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol3.png").style("opacity", 0.8)
+
+const partialList = boilerPlate.append("g").attr("transform", "translate(480,0) scale(0.7,0.5)")
+partialList.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/partialList.png").style("opacity", 0.8)
+
+const lowerLeftCol4 = boilerPlate.append("g").attr("transform", "translate(1040,0) scale(0.5,0.5)")
+lowerLeftCol4.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol1.png").style("opacity", 0.8)
+
+const lowerLeftCol5 = boilerPlate.append("g").attr("transform", "translate(1180,-10) scale(0.5,0.52)")
+lowerLeftCol5.append("image").attr("x", 0).attr("y", 0).attr("xlink:href", "./src/lowerLeftCol2.png").style("opacity", 0.8)
 
 function shuffle(array) {
     let currentIndex = array.length,  randomIndex;
@@ -52,8 +161,8 @@ const globalTotalStates = 7
 
 let t = 1309 *2
 
-var defaultSC = secondaryContainer.append("g").attr("id", "defaultSC")
-var defaultPD = passengerDetailContainer.append("g").attr("id", "defaultPD")
+let defaultSC = secondaryContainer.append("g").attr("id", "defaultSC")
+let defaultPD = passengerDetailContainer.append("g").attr("id", "defaultPD")
 
 let linerPath = "M 0 0 L -2 0 C -4 0 -5 -7 -5 -20 C -5 -52 -6 -38 -6 -65 C -6 -90 0 -100 0 -100 C 0 -100 6 -90 6 -65 C 6 -38 5 -52 5 -20 C 5 -7 4 0 2 0 Z"
 
@@ -150,8 +259,8 @@ function setDefaultSC() {
     arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 3, outerRadius: 5})
 
     clockTimeLine.append("clipPath").attr("id", "clockClip").append("rect").attr("x", -40).attr("y", -150).attr("width", 180).attr("height", 180)
-    clockTimeLine.append("text").text("KEY").attr("x", 145).attr("y", 5).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
-    clockTimeLine.append("text").text("EVENTS").attr("x", 145).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+    clockTimeLine.append("text").text("KEY").attr("x", 145).attr("y", 5).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
+    clockTimeLine.append("text").text("EVENTS").attr("x", 145).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
 
     let clockFace = clockTimeLine.append("g").attr("id", "clockFace")
 
@@ -222,7 +331,7 @@ function setDefaultSC() {
 
 
     let mapInfographicHeadline = defaultSC
-        .append("text").text("TITANIC'S FATEFUL PATH").attr("x", 680).attr("y", 330).attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-weight", "bold").attr("font-style", "italic")
+        .append("text").text("TITANIC'S FATEFUL PATH").attr("x", 685).attr("y", 330).attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-weight", "bold").attr("font-style", "normal")
     
     let outerTitanicChart = defaultSC.append("g").attr("id", "outerTitanicChart").attr("transform", "translate(480,0) scale(1.8,2)").attr("clip-path", "url(#chartClipInner)")
     outerTitanicChart.append("clipPath").attr("id", "chartClipInner").append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z")
@@ -241,6 +350,7 @@ function setDefaultSC() {
         d3.select("#otherVessels").transition().duration(1000).style("opacity", 1)
         mapInfographicHeadline.transition().duration(500).style("opacity", 0).transition().duration(500).style("opacity", 1).text("NEARBY VESSELS")
         }
+
     function zoomOut() {
         titanicChart.transition().duration(1000).call(zoom.transform, transformOut)
         d3.select("#otherVessels").transition().duration(1000).style("opacity", 0.5)
@@ -277,7 +387,7 @@ function setDefaultSC() {
             graticulePaths
                 .append("path")
                 .attr("clip-path", "url(#chartClip)")
-                .attr("d", path(d3.geoGraticule().step([5,5])()))
+                .attr("d", path(d3.geoGraticule().step([10,10])()))
                 .style("stroke", "grey")
                 .style("stroke-width", 0.6)
                 .attr("fill", "none")
@@ -292,40 +402,66 @@ function setDefaultSC() {
                 .style("opacity", 0.7)
                 .attr("d", (d)=>{ return path(d)})
                 .style("stroke", "none")
-    
-            const keyGeoPaths = titanicChart.append("g").attr("id", "keyGeoPaths")
 
-            const keyGeoPathsData = [path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.4049,50.9105], [-1.6222,49.6339]]}}),
-                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-1.6222,49.6339], [-6.7893,49.6339]]}}),
-                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-6.7893,49.6339], [-8.2943,51.8503]]}}),
-                                        path({type: 'Feature', geometry: {type: 'LineString', coordinates: [[-8.2943,51.8503], [-49.9467,41.7250]]}})]
+            const alternativeGeoPathsData = [
+                        {source: {"lat": 54.5973, "lon": -5.9301}, destination: {"lat": 50.0000, "lon": -6.5000}, rx: 5, ry: 5},  // Belfast to control point (to Soton)
+                        {source: {"lat": 50.0000, "lon": -6.5000}, destination: {"lat": 50.9105, "lon": -1.4049}, rx: 5, ry: 5},  // control point (to Soton) to Soton
+                        {source: {"lat": 50.9105, "lon": -1.4049}, destination: {"lat": 49.6339, "lon": -1.6222}, rx: 0, ry: 0},  // Soton to Cherbourg  
+                        {source: {"lat": 49.6339, "lon": -1.6222}, destination: {"lat": 49.5000, "lon": -6.9000}, rx: -5, ry: 8},  // Cherbourg to control point (to Queenstown)
+                        {source: {"lat": 49.5000, "lon": -6.9000}, destination: {"lat": 51.8503, "lon": -8.2943}, rx: -8, ry: -6},  // control point (to Queenstown) to Queenstown
+                        {source: {"lat": 51.8503, "lon": -8.2943}, destination: {"lat": 41.7250, "lon": -49.9467}, rx: -50, ry: 30}] // Queenstown to Titanic wreck
 
-            keyGeoPaths
-                .selectAll("path").data(keyGeoPathsData).enter()
-                .append("path")
-                // .attr("clip-path", "url(#chartClip)")
-                .attr("d", d=>d)
-                .attr("stroke", "green")
-                .attr("fill", "none")
-                .style("opacity", 1)
+            const alternativeGeoPaths = titanicChart.append("g").attr("id", "alternativeGeoPaths")
+                alternativeGeoPaths.selectAll("path").data(alternativeGeoPathsData).enter()
+                    .append("path")
+                    .attr("d", d=>{
+                        let pathToReturn = "M "
+                        pathToReturn += projection([d.source.lon,d.source.lat])[0] + " " + projection([d.source.lon,d.source.lat])[1] + " "
+                        pathToReturn += "Q "
+                        pathToReturn += (+projection([d.source.lon,d.source.lat])[0]+d.rx) + " " + (+projection([d.source.lon,d.source.lat])[1]+d.ry) + " "
+                        pathToReturn += projection([d.destination.lon,d.destination.lat])[0] + " " + projection([d.destination.lon,d.destination.lat])[1] + " "
+                        return pathToReturn
+                    })
+                    .attr("fill", "none")
+                    .style("stroke", "red")
+                    .style("stroke-width", 1)
+                    .style("line-cap", "round")
 
         
             const keyLocations = titanicChart.append("g").attr("id", "keyLocations")
 
-            const keyLocationsData = [{name: "Southampton", lat: 50.9105, long: -1.4049},
-                                      {name: "Cherbourg", lat: 49.6339, long: -1.6222},
+            const keyLocationsData = [{name: "Belfast", lat: 54.5973, long: -5.9301},
+                                      {name: "Soton", lat: 50.9105, long: -1.4049},
+                                      {name: "Ch'bg", lat: 49.6339, long: -1.6222},
                                       {name: "Queenstown", lat: 51.8503, long: -8.2943},
                                       {name: "New York", lat: 40.7128, long: -74.0060} ]
 
-            keyLocations
-                .selectAll("circle").data(keyLocationsData).enter()
-                .append("circle")
+            keyLocationsGroups = keyLocations.selectAll("g").data(keyLocationsData).enter()
+                .append("g")
+                .attr("transform", d=>`translate(${projection([d.long,d.lat])[0]},${projection([d.long,d.lat])[1]})`)
+
+            keyLocationsGroups
+                .append("rect")
                 .attr("clip-path", "url(#chartClip)")
-                .attr("cx", (d)=>{ return projection([d.long,d.lat])[0] })
-                .attr("cy", (d)=>{ return projection([d.long,d.lat])[1] })
-                .attr("r", 2)
-                .attr("fill", "blue")
+                .attr("x", -2)
+                .attr("y", -2)
+                .attr("width", 3)
+                .attr("height", 3)
+                .attr("fill", "black")
                 .style("opacity", 1)
+
+            keyLocationsGroups
+                .append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("dx", d=>d.name=="Ch'bg"?7:0)
+                .attr("dy", d=>d.name=="Ch'bg"?8:-3)
+                .attr("font-size", 7)
+                .attr("fill", "black")
+                .attr("font-weight", "bold")
+                .attr("font-family", "Courier")
+                .text(d=>d.name)
+                .attr("text-anchor", d=>((d.name=="Queenstown"||d.name=="Belfast")?"end":(d.name=="New York"||d.name=="Soton")?"start":"middle"))
 
             const otherVessels = titanicChart.append("g").attr("id", "otherVessels").style("opacity", 0.5)
 
@@ -358,7 +494,8 @@ function setDefaultSC() {
 
             otherVesselsGroups.append("text")
                 .attr("x", (d)=>(d.long>-49.95?1:-1))
-                .attr("y", 0.5).text(d=>d.vessel)
+                .attr("y", 0.5)
+                .text(d=>d.vessel)
                 .attr("dx", d=>d.vessel=="Titanic"?2:0)
                 .attr("dy", d=>d.vessel=="Titanic"?-1:0)
                 .attr("text-anchor", (d)=>(d.long>-49.95?"start":"end"))
@@ -375,7 +512,7 @@ function setDefaultSC() {
     // LINER INFOGRAPHIC
 
     let liners = defaultSC.append("g").attr("id", "linersInfographic").attr("transform", "translate(1100,300) scale(1.8)")
-    liners.append("text").text("GREATEST LINERS").attr("x", 15).attr("y", -135).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "italic")
+    liners.append("text").text("GREATEST LINERS").attr("x", 15).attr("y", -135).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
 
     let linerPaths = liners.selectAll("path").data(linersList).enter()
         .append("path")
@@ -387,8 +524,8 @@ function setDefaultSC() {
         .attr("fill", (d,i)=>(i==4?"red":"black"))
     let linerText1Default = "Along with the Olympic, Titanic"
     let linerText2Default = "was the biggest liner in the world."
-    linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 50).attr("y", 10).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
-    linerText2 = liners.append("text").attr("id", "linerText2").text(linerText2Default).attr("x", 50).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "italic")
+    linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 50).attr("y", 10).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "normal")
+    linerText2 = liners.append("text").attr("id", "linerText2").text(linerText2Default).attr("x", 50).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "normal")
 
     let linerDeetsStartY = -70
     let linerDeetsSpacingY = 11
@@ -450,11 +587,11 @@ function setDefaultSC() {
 
 const extractColumn = (arr, column) => arr.map(x=>x[column]);
 
-var sunburstRadius = 0.9*Math.min(primaryContainerWidth, primaryContainerHeight) / 2
+let sunburstRadius = 0.9*Math.min(primaryContainerWidth, primaryContainerHeight) / 2
 
-var radius = 7.5
+let radius = 6
 let cornerRadius = radius
-var originalRadius = radius
+let originalRadius = radius
 
 
 const palette1 = ["#3b3122", "#8a7350", "#66553b"]
@@ -467,13 +604,13 @@ let gs1Legend = primaryContainer.append("g").attr("id", "gs1LegendGroup")
 
 let headlinesEtc = primaryContainer.append("g").attr("id", "headlinesEtc")
 
-let subHeadlines = ["OVER 1,300 PASSENGERS ON RMS TITANIC",
-                    "MOST PASSENGERS BOARDED AT SOUTHAMPTON",
-                    "MALE PASSENGERS OUTNUMBERED FEMALES BY 2:1",        // 466 female, 843 male
-                    "HALF OF PASSENGERS WERE UNDER 30 YRS OLD",
-                    "ONE QTR OF PASSENGERS WERE IN 1st CLASS",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
-                    "RMS OLYMPIC: IDENTITY OF THE SURVIVORS",
-                    "CARPATHIA NEWS: SURVIVORS & CREW",
+let subHeadlines = ["There were over 1,300 passengers on RMS Titanic",
+                    "Most passengers boarded at Southampton",
+                    "Male passengers outnumbered females by 2:1",        // 466 female, 843 male
+                    "Half of all passengers were under 30 years old",
+                    "One quarter of passengers were in 1st class",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
+                    "Survivors were mostly female and 1st class",
+                    "Including Crew, there were 2,224 people on board",
                     "SCALE OF TRAGEDY SHOWN BY 'SANKEY' CHART"
                     ]
             
@@ -482,10 +619,11 @@ let subHeadlines = ["OVER 1,300 PASSENGERS ON RMS TITANIC",
 let subHeadline = d3.select("#headlinesEtc").append("text")
             .text(subHeadlines[0])
             .attr("x", 10)
-            .attr("y", primaryContainerHeight-42)
-            .style("font-style", "italic")
-            .style("font-size", "20px")
+            .attr("y", primaryContainerHeight-32)
+            // .style("font-style", "normal")
+            .style("font-size", "25px")
             .style("font-weight", "bold")
+            .style("font-family", "Castoro, serif")
 
 
 function subHeadlineTransition(textToTransition) {
@@ -507,7 +645,7 @@ let oneOfN = d3.select("#headlinesEtc").append("text")
             .text(" 1 / "+globalTotalStates)
             .attr("x", 10)
             .attr("y", primaryContainerHeight-10)
-            .style("font-style", "italic")
+            .style("font-style", "normal")
             .style("font-size", "12px")
 
 let clickForMore = d3.select("#headlinesEtc").append("g").attr("id", "clickForMore")
@@ -523,15 +661,18 @@ clickForMoreRect = clickForMore.append("rect")
 clickForMore
     .append("path")
     .attr("d", `M ${primaryContainerWidth-87.5-15} ${primaryContainerHeight-35-20} L ${primaryContainerWidth-87.5+15} ${primaryContainerHeight-35-5} L ${primaryContainerWidth-87.5-15} ${primaryContainerHeight-35+10} Z`)
-    .style("opacity", 0.4)
+    .style("opacity", 0.7)
+
 
 clickForMore.append("text")
             .text("Click here for more details ...")
-            .attr("x", primaryContainerWidth-155)
+            .attr("x", primaryContainerWidth-170+165/2)
             .attr("y", primaryContainerHeight-10)
-            .style("font-style", "italic")
+            .style("font-style", "normal")
             .style("font-size", "12px")
             .style("pointer-events", "none")
+            .attr("text-anchor", "middle")
+            .style("font-family", "Castoro, serif")
 
 
 // const searchBox = d3.select("#searchBox")
@@ -562,8 +703,8 @@ let sunburstGroup = primaryContainer
             .attr('id', 'sunburstGroup')
             .attr('transform', 'translate(' + primaryContainerWidth / 2 + ',' + ((primaryContainerHeight)-85) + ') scale(1.8,1.8) rotate(-90)')
 
-var partition = d3.partition().size([Math.PI, sunburstRadius])
-var root = d3.hierarchy(group).sum(function (d) { return d.number})
+let partition = d3.partition().size([Math.PI, sunburstRadius])
+let root = d3.hierarchy(group).sum(function (d) { return d.number})
 partition(root)
 
 arc = d3.arc()
@@ -573,14 +714,14 @@ arc = d3.arc()
             .outerRadius(d => { return d.y1 })
 
 function computeTextRotation(d) {
-    var angle = (d.x0 + d.x1) / Math.PI * 90
+    let angle = (d.x0 + d.x1) / Math.PI * 90
     return (angle < 90) ? angle + 90 : angle - 90
     }
 
 function arcTweenPath(a, i) {
-    var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a)
+    let oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a)
     function tween(t) {
-        var b = oi(t)
+        let b = oi(t)
         // a.x0s = b.x0
         // a.x1s = b.x1
         return arc(b)
@@ -589,9 +730,9 @@ function arcTweenPath(a, i) {
     }
 
 function arcTweenText(a, i) {
-    var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a)
+    let oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a)
     function tween(t) {
-        var b = oi(t)
+        let b = oi(t)
         return "translate(" + arc.centroid(b) + ")rotate(" + computeTextRotation(b) + ")"
         }
     return tween
@@ -615,13 +756,14 @@ function redraw(newRoot) {
     bigNumber = bigNumberGroup.append("text").text("2,224").attr("transform", "translate(20,0) rotate(90)")
         .style("font-size", "28px").style("text-anchor", "middle").style("vertical-align", "middle")
     bigNumberSubtitle = bigNumberGroup.append("text").text("All passengers and crew").attr("transform", "translate(5,0) rotate(90)")
-        .style("font-style", "italic").style("font-size", "8px").style("text-anchor", "middle").style("vertical-align", "middle")
+        .style("font-style", "normal").style("font-size", "8px").style("text-anchor", "middle").style("vertical-align", "middle").style("font-family", "Castoro, serif")
 
     clickToRedraw = sunburstGroup.append("g").attr("id", "clickToRedraw")
-    clickToRedrawText = clickToRedraw.append("text").text("Click to redraw by").attr("transform", "translate(200,170) rotate(90)")
-        .style("font-style", "italic").style("font-size", "8px").style("text-anchor", "middle").style("vertical-align", "middle").style("opacity", 0)
-    clickToRedrawValue = clickToRedraw.append("text").text("").attr("transform", "translate(185,170) rotate(90)")
-        .style("font-style", "italic").style("font-size", "14px").style("text-anchor", "middle").style("vertical-align", "middle").style("opacity", 0)
+    const clickToRedrawRect = clickToRedraw.append("rect").attr("x", -50).attr("y", -10).attr("width", 100).attr("height", 30).attr("transform", "translate(200,200) rotate(90)").attr("fill", "white").style("opacity", 0)
+    const clickToRedrawText = clickToRedraw.append("text").text("Click to redraw by").attr("transform", "translate(200,200) rotate(90)")
+        .style("font-style", "normal").style("font-size", "8px").style("text-anchor", "middle").style("vertical-align", "middle").style("opacity", 0).style("font-family", "Castoro, serif")
+    const clickToRedrawValue = clickToRedraw.append("text").text("").attr("transform", "translate(185,200) rotate(90)")
+        .style("font-style", "normal").style("font-size", "14px").style("text-anchor", "middle").style("vertical-align", "middle").style("opacity", 0).style("font-family", "Castoro, serif")
 
     slice
         .append('path')
@@ -633,7 +775,7 @@ function redraw(newRoot) {
             return ageSexColor(d.depth) })
 
 
-    var text = slice
+    let text = slice
         .append("text")
         .attr('display', d => (d.x1-d.x0>0.05) ? null : 'none')
         .attr("transform", function(d) {
@@ -645,26 +787,29 @@ function redraw(newRoot) {
         .style("pointer-events", "none")
         .text(function(d) { return (d.depth==3) ? ((newRoot=="ageSex" || newRoot =="cabinClass") ? (d.data.survived) : d.data.cabinClass) :
                                     d.parent    ? d.data[0] : "" })
+        .style("font-family", "Castoro, serif")
 
     slice.selectAll("path").transition().duration(750).attrTween("d", arcTweenPath)
     slice.selectAll("text").transition().duration(750).attrTween("transform", arcTweenText)
 
     sunburstGroup.selectAll('path')
         .on("mouseover", (e,d)=>{
-            var sequenceArray = d.ancestors().reverse()
+            let sequenceArray = d.ancestors().reverse()
             sequenceArray.shift()
-            var textValues = sequenceArray[0].data[0]
+            let textValues = sequenceArray[0].data[0]
             if (sequenceArray.length == 1) {
                 bigNumber.text(d3.format(",")(sequenceArray[0].value))
             } else if (sequenceArray.length == 2) {
                 textValues += ", " + sequenceArray[1].data[0]
                 bigNumber.text(d3.format(",")(sequenceArray[1].value))
+                clickToRedrawRect.style("opacity", 0.3)
                 clickToRedrawText.style("opacity", 1)
                 clickToRedrawValue.style("opacity", 1).text(
                     (sequenceArray[1].data[0]=="Men" || sequenceArray[1].data[0]=="Women" || sequenceArray[1].data[0]=="Children") ? "Sex" :
                         (sequenceArray[1].data[0]=="Lost" || sequenceArray[1].data[0]=="Survived") ? "Survivorship" : "Cabin class"
                     )
             } else if (sequenceArray.length == 3) {
+                clickToRedrawRect.style("opacity", 0.3)
                 clickToRedrawText.style("opacity", 1)
                 clickToRedrawValue.style("opacity", 1)
                 if (newRoot=="ageSex" || newRoot =="cabinClass") {
@@ -693,9 +838,10 @@ function redraw(newRoot) {
                 .style("opacity", 1)
             })
         .on("click", (e,d)=>{
+            clickToRedrawRect.style("opacity", 0)
             clickToRedrawText.style("opacity", 0)
             clickToRedrawValue.style("opacity", 0)
-            var sequenceArray = d.ancestors().reverse()
+            let sequenceArray = d.ancestors().reverse()
             sequenceArray.shift()
             if (sequenceArray.length == 3 && (newRoot=="cabinClass" || newRoot =="ageSex")) {
                 redraw("survived")
@@ -711,6 +857,7 @@ function redraw(newRoot) {
             slice.selectAll("path").style("opacity", 1)
             bigNumber.text("2,224")
             bigNumberSubtitle.text("All passengers and crew")
+            clickToRedrawRect.style("opacity", 0)
             clickToRedrawText.style("opacity", 0)
             clickToRedrawValue.style("opacity", 0)
             })
@@ -736,8 +883,8 @@ d3.csv('./data/titanic.csv').then(
         .transition()
             .duration((d,i)=>i*2)
             .attr("transform", (d, i) => {
-                    let leftRightBuffer = 15
-                    let topBuffer = (radius*2+1)
+                    let leftRightBuffer = 120
+                    let topBuffer = 50
                     let unitSize = (radius*2+1)
                     let numUnitsWide = 1 * Math.floor(Math.floor(( primaryContainerWidth-(leftRightBuffer*2) ) / unitSize))
                     let initialX = leftRightBuffer + radius + (i % numUnitsWide ) * unitSize
@@ -828,8 +975,8 @@ d3.csv('./data/titanic.csv').then(
                 .transition()
                 .duration((d,i)=>(i))
                 .attr("transform", (d, i) => {
-                    let leftRightBuffer = 15
-                    let topBuffer = (radius*2+1)
+                    let leftRightBuffer = 120
+                    let topBuffer = 50
                     let unitSize = (radius*2+1)
                     let numUnitsWide = 1 * Math.floor(Math.floor(( primaryContainerWidth-(leftRightBuffer*2) ) / unitSize))
                     let initialX = leftRightBuffer + radius + (i % numUnitsWide ) * unitSize
@@ -895,7 +1042,7 @@ d3.csv('./data/titanic.csv').then(
             gs1LegendQueenstown.append("text").text("Departed 1:30pm, 11 April 1912").attr("x", -85).attr("y", -63).attr("font-size", "8pt")
             gs1LegendQueenstown.append("text").text(queenstownJoined + " passengers boarded").attr("x", -85).attr("y", -53).attr("font-size", "6pt")
             gs1LegendQueenstown.append("path").attr("d", arrowPath).attr("transform", "translate(-30,65) scale(-3,3)").style("opacity", 0.6)
-            gs1LegendQueenstown.append("text").text("... to New York City").attr("x", -165).attr("y", 135).attr("font-size", "16pt").style("font-weight", "bold").style("font-style", "italic")
+            gs1LegendQueenstown.append("text").text("... to New York City").attr("x", -165).attr("y", 135).attr("font-size", "10pt").style("font-weight", "bold").style("font-style", "normal")
             gs1LegendUnknown = gs1Legend.append("g").attr("id", "gs1LegendUnknown").attr("transform", `translate(${unknownCentroid[0]},${unknownCentroid[1]})`)
             gs1LegendUnknown.append("text").text("Unknown").attr("x", 18).attr("y", -10).attr("font-size", "8pt").style("font-weight", "bold")
             gs1LegendUnknown.append("text").text(unknownJoined + " passengers").attr("x", 18).attr("y", 2).attr("font-size", "6pt")
@@ -907,7 +1054,7 @@ d3.csv('./data/titanic.csv').then(
                 .duration((d,i)=>(i*2))
                     .attr("transform", (d,i) => {
                         let i_prime = passengerData.filter(item => item.kBoarded == d.kBoarded).findIndex(e => {return e.openmlid == d.openmlid})
-                        let spiralRadius = 1.3
+                        let spiralRadius = 1.21
                         let theta = 2*Math.PI*Math.sqrt(2*spiralRadius*i_prime/unitSize)
                         let initialX = (i_prime==0) ? 1 : spiralRadius * theta * Math.cos(theta)
                         let initialY = (i_prime==0) ? 2 : spiralRadius * theta * Math.sin(theta)
@@ -959,15 +1106,15 @@ d3.csv('./data/titanic.csv').then(
                         .attr("id", "gs1LegendMale")
                         .attr("transform", `translate(${-100},${0.8*primaryContainerHeight+15})`)
             
-            gs1LegendMale.append("text").text("Male").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "16px").attr("text-anchor", "end")
-            gs1LegendMale.append("text").text("843").attr("x", 0).attr("y", 10).style("font-style", "italic").style("font-size", "10px").attr("text-anchor", "end")
+            gs1LegendMale.append("text").text("Male").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "16px").attr("text-anchor", "end")
+            gs1LegendMale.append("text").text("843").attr("x", 0).attr("y", 10).style("font-style", "normal").style("font-size", "10px").attr("text-anchor", "end")
             
             gs1LegendFemale = gs1Legend.append("g")
                         .attr("id", "gs1LegendFemale")
                         .attr("transform", `translate(${primaryContainerWidth+100},${0.8*primaryContainerHeight+15})`)
             
-            gs1LegendFemale.append("text").text("Female").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "16px")
-            gs1LegendFemale.append("text").text("466").attr("x", 0).attr("y", 10).style("font-style", "italic").style("font-size", "10px")
+            gs1LegendFemale.append("text").text("Female").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "16px")
+            gs1LegendFemale.append("text").text("466").attr("x", 0).attr("y", 10).style("font-style", "normal").style("font-size", "10px")
 
             gs1LegendMale.transition().duration(t)
                 .attr("transform", `translate(${primaryContainerWidth/2-midBuffer+xOffset},${0.8*primaryContainerHeight+15})`)
@@ -1031,29 +1178,29 @@ d3.csv('./data/titanic.csv').then(
 
 
             gs1LegendUnk = gs1Legend.append("g").attr("id", "gs1LegendUnknown").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1LegendUnk.append("text").text("Unknown").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1LegendUnk.append("text").text("263").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1LegendUnk.append("text").text("Unknown").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1LegendUnk.append("text").text("263").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend60 = gs1Legend.append("g").attr("id", "gs1Legend60").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend60.append("text").text("60 yrs +").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend60.append("text").text("40").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend60.append("text").text("60 yrs +").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend60.append("text").text("40").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend40 = gs1Legend.append("g").attr("id", "gs1Legend40").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend40.append("text").text("40 - 59 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend40.append("text").text("205").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend40.append("text").text("40 - 59 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend40.append("text").text("205").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend30 = gs1Legend.append("g").attr("id", "gs1Legend30").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend30.append("text").text("30 - 39 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend30.append("text").text("232").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend30.append("text").text("30 - 39 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend30.append("text").text("232").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend25 = gs1Legend.append("g").attr("id", "gs1Legend25").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend25.append("text").text("25 - 29 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend25.append("text").text("160").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend25.append("text").text("25 - 29 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend25.append("text").text("160").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend20 = gs1Legend.append("g").attr("id", "gs1Legend20").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend20.append("text").text("20 - 24 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend20.append("text").text("184").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend20.append("text").text("20 - 24 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend20.append("text").text("184").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend10 = gs1Legend.append("g").attr("id", "gs1Legend10").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend10.append("text").text("10 - 19 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend10.append("text").text("143").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend10.append("text").text("10 - 19 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend10.append("text").text("143").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend0 = gs1Legend.append("g").attr("id", "gs1Legend0").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend0.append("text").text("0 - 9 yrs").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend0.append("text").text("82").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend0.append("text").text("0 - 9 yrs").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend0.append("text").text("82").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
 
             gs1LegendUnk.transition().duration(t).attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${topBuffer+ageBucketHeight*0.5})`).style("opacity", 1)
             gs1Legend60.transition().duration(t).attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${topBuffer+ageBucketHeight*1.5})`).style("opacity", 1)
@@ -1137,14 +1284,14 @@ d3.csv('./data/titanic.csv').then(
             // Tot	843 	466 	1309
 
             gs1Legend1st = gs1Legend.append("g").attr("id", "gs1Legend1st").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend1st.append("text").text("First Class").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend1st.append("text").text("323").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend1st.append("text").text("First Class").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend1st.append("text").text("323").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend2nd = gs1Legend.append("g").attr("id", "gs1Legend2nd").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend2nd.append("text").text("Second Class").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend2nd.append("text").text("277").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend2nd.append("text").text("Second Class").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend2nd.append("text").text("277").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
             gs1Legend3rd = gs1Legend.append("g").attr("id", "gs1Legend3rd").attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${0})`).style("opacity", 0)
-            gs1Legend3rd.append("text").text("Third Class").attr("x", 0).attr("y", 0).style("font-style", "italic").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
-            gs1Legend3rd.append("text").text("709").attr("x", 0).attr("y", 11).style("font-style", "italic").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend3rd.append("text").text("Third Class").attr("x", 0).attr("y", 0).style("font-style", "normal").style("font-size", "12px").style("text-anchor", "middle").style("vertical-align", "middle")
+            gs1Legend3rd.append("text").text("709").attr("x", 0).attr("y", 11).style("font-style", "normal").style("font-size", "10px").style("text-anchor", "middle").style("vertical-align", "middle")
 
             d3.select("#gs1Legend1st").transition().duration(t).attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${topBuffer+classHeight*0.5})`).style("opacity", 1)
             d3.select("#gs1Legend2nd").transition().duration(t).attr("transform", `translate (${primaryContainerWidth/2 + xOffset},${topBuffer+classHeight*1.5})`).style("opacity", 1)
@@ -1191,14 +1338,16 @@ d3.csv('./data/titanic.csv').then(
 
             survivorKey = primaryContainer.append("g").attr("id", "survivorKey").attr("transform", "translate(-300, 100)")
 
-            survivorKey.append("text").text("Survived").attr("x", 0).attr("y", -1).style("font-size", "14px") //.style("font-style", "italic")
+            let survivorKeyRadiusMult = 10
+            survivorKey.append("text").text("Survived").attr("x", 0).attr("y", 0).attr("dy", -radius*survivorKeyRadiusMult/2).style("font-size", "14px").style("alignment-baseline", "middle").style("font-style", "normal")
                         .style("vertical-align", "middle")
-            survivorKey.append("text").text("Lost").attr("x", 0).attr("y", 19).style("font-size", "14px") //.style("font-style", "italic")
+            survivorKey.append("text").text("Lost").attr("x", 0).attr("y", 5).attr("dy", radius*survivorKeyRadiusMult/2).style("font-size", "14px").style("alignment-baseline", "middle").style("font-style", "normal")
                         .style("vertical-align", "middle")
-            survivorKey.append("rect").attr("x", -5-radius*3).attr("y", -radius*3).attr("width", radius*3).attr("height", radius*3).style("opacity", 1).style("fill", "#4b371c")
-            survivorKey.append("rect").attr("x", -5-radius*3).attr("y", 20-radius*3).attr("width", radius*3).attr("height", radius*3).style("opacity", 0.3).style("fill", "#4b371c")
 
-            survivorKey.transition().duration(t).attr("transform", "translate(100,100)")
+            survivorKey.append("rect").attr("x", -5-radius*survivorKeyRadiusMult).attr("y", -radius*survivorKeyRadiusMult).attr("width", radius*survivorKeyRadiusMult).attr("height", radius*survivorKeyRadiusMult).style("opacity", 1).style("fill", "#4b371c")
+            survivorKey.append("rect").attr("x", -5-radius*survivorKeyRadiusMult).attr("y", 5).attr("width", radius*survivorKeyRadiusMult).attr("height", radius*survivorKeyRadiusMult).style("opacity", 0.3).style("fill", "#4b371c")
+
+            survivorKey.transition().duration(t).attr("transform", "translate(250,100)")
 
             passengers.selectAll("rect")
                 .transition().duration(t)
@@ -1231,34 +1380,6 @@ d3.csv('./data/titanic.csv').then(
             // globalState +=1
             globalState = 0
         }
-        else if (globalState = 7) {
-            // Draw me a Sankey
-
-            // sunburstGroup.selectAll("g").remove()
-            // subHeadlineTransition(subHeadlines[globalState])
-
-            // sankeyObject = {
-            //     "nodes":[
-            //             {"node":0,"name":"node0"},
-            //             {"node":1,"name":"node1"},
-            //             {"node":2,"name":"node2"},
-            //             {"node":3,"name":"node3"},
-            //             {"node":4,"name":"node4"}
-            //             ],
-            //     "links":[
-            //             {"source":0,"target":2,"value":2},
-            //             {"source":1,"target":2,"value":2},
-            //             {"source":1,"target":3,"value":2},
-            //             {"source":0,"target":4,"value":2},
-            //             {"source":2,"target":3,"value":2},
-            //             {"source":2,"target":4,"value":2},
-            //             {"source":3,"target":4,"value":4}
-            //             ]}
-
-            // graph = sankey(sankeyObject)
-
-            // globalState = 0
-        }
         })
 
     setPD(passengerData.find(item=>(item.openmlid==11)))
@@ -1269,7 +1390,7 @@ d3.csv('./data/titanic.csv').then(
                 setPD(d)
             })
             .on("mouseout", (e,d)=>{
-                // defaultPD.style("opacity", 0.5)
+                // defaultPD.style("opacity", 0.9)
             })
 
     setPD(passengerData.find(item=>(item.openmlid==11)))
@@ -1278,12 +1399,24 @@ d3.csv('./data/titanic.csv').then(
         // Fare is in Pre-1970 British Pounds. Conversion Factors: 1 = 12s = 240d and 1s = 20d
         // Will come in a decimal e.g. 7.66645
 
+        if (fare == 0 || fare == "?") return "Unknown";
+
         let poundsFare = Math.floor(fare)
         let fractionFare = fare - poundsFare
         let penceFareInitial = Math.floor(fractionFare * 120)
         let shillingsFare = Math.floor(penceFareInitial/12)
         let penceFareFinal = penceFareInitial % 12
-        return '\u00A3'+ poundsFare + " " + shillingsFare + "s. " + penceFareFinal + "d."
+        let fareToReturn = '\u00A3'+ poundsFare + " " + shillingsFare + "s. " + penceFareFinal + "d."
+        fareToReturn = '\u00A3'+ poundsFare + " "
+        if (shillingsFare>0) {
+            fareToReturn += shillingsFare + "/"
+            if (penceFareFinal>0) {
+                fareToReturn += penceFareFinal
+            }
+        }
+        
+        
+        return fareToReturn
     }
 
     function setPD(passenger) {
@@ -1295,110 +1428,141 @@ d3.csv('./data/titanic.csv').then(
 
         const innerColumnWidth = 310 - 10
 
-        let passengerDetailTitle = defaultPD.append("g").attr("id", "passengerDetailTitle").attr("transform", "translate(0,0) scale(1,1)")
-        let mainPassengerTitle = passengerDetailTitle.append("g").attr("id", "mainPassengerTitle")
-        mainPassengerTitle
-            .append("text").attr("id", "mainPassengerName").text(passenger.derivedPassengerTitleName).attr("x", 5).attr("y", 25).attr("font-size", "14pt").attr("font-weight", "bold") //.attr("font-style", "italic")
-        passengerDetailTitle.append("text").attr("id", "mainPassengerSubTitle").text("PASSENGER PROFILE").attr("x", 5).attr("y", 15).attr("font-size", "10pt").attr("font-weight", "bold") //.attr("font-style", "italic")
-        const mainPassengerTitleRequiredWidth = 0.9*(passengerDetailContainerWidth/((d3.select("#mainPassengerName")._groups[0][0].getComputedTextLength())))
-        mainPassengerTitle.attr("transform", `scale(${mainPassengerTitleRequiredWidth},2)`)
+        const passengerProfileTitle = defaultPD.append("g").attr("id", "passengerProfileTitle").attr("transform", "translate(0,0)")
+        passengerProfileTitle.append("text").attr("id", "mainPassengerSubTitle").text("- PASSENGER PROFILE -").attr("x", passengerDetailContainerWidth/2).attr("y", 15).attr("font-size", "9pt").attr("font-weight", "normal").attr("font-style", "normal").attr("text-anchor", "middle")
 
-        const passengerAgeScale = d3.scaleLinear().domain([0,85]).range([0,innerColumnWidth])
+        let passengerDetailTitle = defaultPD.append("g").attr("id", "passengerDetailTitle").attr("transform", "translate(155,45)")
+        passengerDetailTitle.append("text").attr("id", "mainPassengerName").text(passenger.derivedPassengerTitleName).attr("x", 0).attr("y", 0).attr("font-size", "28px").attr("font-weight", "bold").attr("font-style", "normal").attr("text-anchor", "middle")
+        
+        const computedTextLength = (d3.select("#mainPassengerName")._groups[0][0].getComputedTextLength())
+        if (computedTextLength > 0.95 * passengerDetailContainerWidth) {
+            const mainPassengerTitleRequiredWidth = 0.95*passengerDetailContainerWidth/computedTextLength
+            passengerDetailTitle.attr("transform", `translate(155,45) scale(${mainPassengerTitleRequiredWidth},1) `)
+        }
 
-        let passengerFirstColumn = defaultPD.append("g").attr("id", "passengerFirstColumn").attr("transform", `translate(5,42) scale(1,1)`)
+
+        /////////////////////////////
+        // FIRST COLUMN 
+        /////////////////////////////
+
+        const passengerFirstColumn = defaultPD.append("g").attr("id", "passengerFirstColumn").attr("transform", `translate(5,42)`)
         
-        // let passengerAgeGroup = passengerFirstColumn.append("g").attr("id", "passengerAgeGroup")
-        // passengerAgeGroup.append("text").text("Age").attr("x", 0).attr("y", 0).style("font-size", "8px")
-        // passengerAgeGroup.append("rect").attr("x", 0).attr("y", 5).attr("width", innerColumnWidth).attr("height", 1)
-        // passengerAgeGroup.append("rect").attr("x", (passenger.kAge=="?") ? 0 : passengerAgeScale(passenger.kAge)-1).attr("y", 2).attr("width", (passenger.kAge=="?") ? 0 : 3).attr("height", 8).attr("fill", "red")
-        // passengerAgeGroup.append("text").text(((passenger.kAge=="?")?"Age unknown":d3.format(".0f")(passenger.kAge)+" yrs")).attr("x", (passenger.kAge=="?") ? 0 : passengerAgeScale(passenger.kAge)-1).attr("y", 18).style("font-size", "8px").attr("text-anchor", ((passenger.kAge=="?")||passenger.kAge<10) ? "left" :"middle")
+        // AGE WIDGET
+        const passengerAgeScaleMax = 70
+        const passengerAgeScaleXOff = 40
+        const passengerAgeScaleYOff = -5
+        const passengerAgeScale = d3.scaleLinear().domain([0,85]).range([0,passengerAgeScaleMax])
+        let passengerAgeGroup = passengerFirstColumn.append("g").attr("id", "passengerAgeGroup").attr("transform", `translate(0,35)`)
+        passengerAgeGroup.append("text").text("Age").attr("x", 0).attr("y", 0).style("font-size", "16px")
+        passengerAgeGroup.append("rect").attr("x", passengerAgeScaleXOff).attr("y", passengerAgeScaleYOff-1.5).attr("width", passengerAgeScaleXOff+passengerAgeScaleMax).attr("height", 2).attr("fill", "gray").style("opacity", 0.7)
+        passengerAgeGroup.append("rect").attr("x", (passenger.kAge=="?") ? passengerAgeScaleXOff : passengerAgeScaleXOff+passengerAgeScale(passenger.kAge)-1).attr("y", passengerAgeScaleYOff-4).attr("width", (passenger.kAge=="?") ? 0 : 3).attr("height", 8).attr("fill", "red")
+        passengerAgeGroup.append("text").text(((passenger.kAge=="?")?"Age unknown":d3.format(".0f")(passenger.kAge)+" yrs")).attr("x", (passenger.kAge=="?") ? passengerAgeScaleXOff : passengerAgeScaleXOff+passengerAgeScale(passenger.kAge)-1).attr("y", passengerAgeScaleYOff+12).style("font-size", "8px").attr("text-anchor", ((passenger.kAge=="?")||passenger.kAge<10) ? "left" :"middle")
         
-        let passengerBoardedGroup = passengerFirstColumn.append("g").attr("id", "passengerBoardedGroup").attr("transform", "translate(0,32)")
+        // BOARDING LOCATION WIDGET        
+        let passengerBoardedGroup = passengerFirstColumn.append("g").attr("id", "passengerBoardedGroup").attr("transform", "translate(0,67)")
         const boardedBoxWidth = (innerColumnWidth-1)/4
         const boardedBoxHeight = 21
         passengerBoardedGroup.append("text").text("Boarded").attr("x", 0).attr("y", 0).style("font-size", "16px")
-
         passengerBoardedGroup.append("rect").attr("x", 0).attr("y", 3).attr("width", boardedBoxWidth).attr("height", boardedBoxHeight).attr("id", "belfastBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Belfast"?1:0.5)
-        passengerBoardedGroup.append("text").attr("x", boardedBoxWidth/2).attr("y", 18).attr("text-anchor", "middle").text("Belfast").style("font-size", "13px").attr("fill", "white").style("opacity", passenger.kBoarded=="Belfast"?1:0.5)
-
+        passengerBoardedGroup.append("text").attr("x", boardedBoxWidth/2).attr("y", 18).attr("text-anchor", "middle").text("Belfast").style("font-size", "11px").attr("fill", "white").style("opacity", passenger.kBoarded=="Belfast"?1:0.5).style("font-family", "'Castoro', serif")
         passengerBoardedGroup.append("rect").attr("x", 1+boardedBoxWidth).attr("y", 3).attr("width", boardedBoxWidth).attr("height", boardedBoxHeight).attr("id", "southamptonBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Southampton"?1:0.5)
-        passengerBoardedGroup.append("text").attr("x", 1+boardedBoxWidth+boardedBoxWidth/2).attr("y", 18).attr("text-anchor", "middle").text("Southampton").style("font-size", "13px").attr("fill", "white").style("opacity", passenger.kBoarded=="Southampton"?1:0.5)
-
+        passengerBoardedGroup.append("text").attr("x", 1+boardedBoxWidth+boardedBoxWidth/2).attr("y", 18).attr("text-anchor", "middle").text("Southampton").style("font-size", "11px").attr("fill", "white").style("opacity", passenger.kBoarded=="Southampton"?1:0.5).style("font-family", "'Castoro', serif")
         passengerBoardedGroup.append("rect").attr("x", 0).attr("y", 1+3+boardedBoxHeight).attr("width", boardedBoxWidth).attr("height", boardedBoxHeight).attr("id", "cherbourgBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Cherbourg"?1:0.5)
-        passengerBoardedGroup.append("text").attr("x", boardedBoxWidth/2).attr("y", 39).attr("text-anchor", "middle").text("Cherbourg").style("font-size", "13px").attr("fill", "white").style("opacity", passenger.kBoarded=="Cherbourg"?1:0.5)
-
+        passengerBoardedGroup.append("text").attr("x", boardedBoxWidth/2).attr("y", 39).attr("text-anchor", "middle").text("Cherbourg").style("font-size", "11px").attr("fill", "white").style("opacity", passenger.kBoarded=="Cherbourg"?1:0.5).style("font-family", "'Castoro', serif")
         passengerBoardedGroup.append("rect").attr("x", 1+boardedBoxWidth).attr("y", 1+3+boardedBoxHeight).attr("width", boardedBoxWidth).attr("height", boardedBoxHeight).attr("id", "queenstownBox").attr("fill", "brown").style("opacity", passenger.kBoarded=="Queenstown"?1:0.5)
-        passengerBoardedGroup.append("text").attr("x", 1+boardedBoxWidth+boardedBoxWidth/2).attr("y", 39).attr("text-anchor", "middle").text("Queenstown").style("font-size", "13px").attr("fill", "white").style("opacity", passenger.kBoarded=="Queenstown"?1:0.5)
+        passengerBoardedGroup.append("text").attr("x", 1+boardedBoxWidth+boardedBoxWidth/2).attr("y", 39).attr("text-anchor", "middle").text("Queenstown").style("font-size", "11px").attr("fill", "white").style("opacity", passenger.kBoarded=="Queenstown"?1:0.5).style("font-family", "'Castoro', serif")
         
-        let passengerClassGroup = passengerFirstColumn.append("g").attr("id", "passengerClassGroup").attr("transform", `translate(${innerColumnWidth/2+22},32)`)
-        const classBoxSize = ((innerColumnWidth-10)/2) / 4
-        const classCorners = 15
+        // PASSENGER CLASS WIDGET
+        let passengerClassGroup = passengerFirstColumn.append("g").attr("id", "passengerClassGroup").attr("transform", `translate(0,139)`)
+        const classBoxSize = ((innerColumnWidth-10)/2) / 3 - 5
+        const classCorners = 4
+        const yStart = 5
         passengerClassGroup.append("text").text("Class").attr("x", 0).attr("y", 0).style("font-size", "16px")
-        
-        passengerClassGroup.append("rect").attr("x", 0)             .attr("y", 8).attr("width", classBoxSize).attr("height", classBoxSize).attr("id", "firstBox").attr("fill", "red").style("opacity", passenger.kPclass=="1"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
-        passengerClassGroup.append("text").attr("x", 0+classBoxSize/2).attr("y", 12+classBoxSize/2).attr("text-anchor", "middle").text("1st").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="1"?1:0.5)
-        
-        passengerClassGroup.append("rect").attr("x", 0+classBoxSize+1)  .attr("y", 8).attr("width", classBoxSize).attr("height", classBoxSize).attr("id", "secondBox").attr("fill", "red").style("opacity", passenger.kPclass=="2"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
-        passengerClassGroup.append("text").attr("x", 0+classBoxSize+1+classBoxSize/2).attr("y", 12+classBoxSize/2).attr("text-anchor", "middle").text("2nd").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="2"?1:0.5)
-        
-        passengerClassGroup.append("rect").attr("x", 0+classBoxSize*2+2)             .attr("y", 8).attr("width", classBoxSize).attr("height", classBoxSize).attr("id", "thirdBox").attr("fill", "red").style("opacity", passenger.kPclass=="3"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
-        passengerClassGroup.append("text").attr("x", 0+classBoxSize*2+2+classBoxSize/2).attr("y", 12+classBoxSize/2).attr("text-anchor", "middle").text("3rd").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="3"?1:0.5)
+        passengerClassGroup.append("rect").attr("x", 5)             .attr("y", yStart).attr("width", classBoxSize).attr("height", classBoxSize/2).attr("id", "firstBox").attr("fill", "red").style("opacity", passenger.kPclass=="1"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
+        passengerClassGroup.append("text").attr("x", 5+classBoxSize/2).attr("y", yStart+16).attr("text-anchor", "middle").text("1st").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="1"?1:0.5).style("font-family", "'Castoro', serif")
+        passengerClassGroup.append("rect").attr("x", 10+classBoxSize+1)  .attr("y", yStart).attr("width", classBoxSize).attr("height", classBoxSize/2).attr("id", "secondBox").attr("fill", "red").style("opacity", passenger.kPclass=="2"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
+        passengerClassGroup.append("text").attr("x", 10+classBoxSize+1+classBoxSize/2).attr("y", yStart+16).attr("text-anchor", "middle").text("2nd").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="2"?1:0.5).style("font-family", "'Castoro', serif")
+        passengerClassGroup.append("rect").attr("x", 15+classBoxSize*2+2)             .attr("y", yStart).attr("width", classBoxSize).attr("height", classBoxSize/2).attr("id", "thirdBox").attr("fill", "red").style("opacity", passenger.kPclass=="3"?1:0.5).attr("rx", classCorners).attr("ry", classCorners)
+        passengerClassGroup.append("text").attr("x", 15+classBoxSize*2+2+classBoxSize/2).attr("y", yStart+16).attr("text-anchor", "middle").text("3rd").style("font-size", "16px").attr("fill", "white").style("opacity", passenger.kPclass=="3"?1:0.5).style("font-family", "'Castoro', serif")
 
-
-        let passengerDestGroup = passengerFirstColumn.append("g").attr("id", "passengerDestGroup").attr("transform", `translate(0,100)`)
-        passengerDestGroup.append("text").text("Destination").attr("x", 0).attr("y", 0).style("font-size", "16px")
-        passengerDestGroup.append("rect").attr("x", 0).attr("y", 3).attr("width", innerColumnWidth/2).attr("height", 23).attr("fill", "grey")
-        passengerDestination = passengerDestGroup.append("text").attr("id", "passengerDestination").attr("x", 2).attr("y", 10).attr("text-anchor", "left").text(passenger.kDestination).style("font-size", "8px").attr("fill", "white")
-        const passengerDestRequiredWidth = 0.90*((Math.min(innerColumnWidth/2/d3.select("#passengerDestination")._groups[0][0].getComputedTextLength())))
-        passengerDestination.attr("transform", `scale(${passengerDestRequiredWidth},2)`)//.attr("x", 60*passengerDestRequiredWidth)
-
-        let passengerHomeGroup = passengerFirstColumn.append("g").attr("id", "passengerHomeGroup").attr("transform", `translate(${innerColumnWidth/2+1},100)`)
+        // PASSENGER HOMETOWN WIDGET
+        let passengerHomeGroup = passengerFirstColumn.append("g").attr("id", "passengerHomeGroup").attr("transform", `translate(0,195)`)
+        const passengerHomeWidth = 130
         passengerHomeGroup.append("text").text("Hometown").attr("x", 0).attr("y", 0).style("font-size", "16px")
-        passengerHomeGroup.append("rect").attr("x", 0).attr("y", 3).attr("width", innerColumnWidth/2).attr("height", 23).attr("fill", "grey")
-        passengerHome = passengerHomeGroup.append("text").attr("id", "passengerHometown").attr("x", 2).attr("y", 10).attr("text-anchor", "left").text(passenger.kHometown).style("font-size", "8px").attr("fill", "white")
-        const passengerHomeRequiredWidth = 0.90*((Math.min(innerColumnWidth/2/d3.select("#passengerHometown")._groups[0][0].getComputedTextLength())))
-        passengerHome.attr("transform", `scale(${passengerHomeRequiredWidth},2)`)//.attr("x", 60*passengerDestRequiredWidth)
+        passengerHomeGroup.append("rect").attr("x", 0).attr("y", 4).attr("width", passengerHomeWidth).attr("height", 22).attr("fill", "grey")
+        
+        passengerHomeGroupTextGroup = passengerHomeGroup.append("g").attr("id", "passengerHomeGroupTextGroup").attr("transform", `translate(65,20)`)
+        passengerHome = passengerHomeGroupTextGroup.append("text").attr("id", "passengerHometown").attr("x", 0).attr("y", 0).attr("text-anchor", "middle").text(passenger.kHometown).style("font-size", "16px").attr("fill", "white").style("font-family", "'Castoro', serif").style("font-weight", "light")
+        
+        const computedTextLengthHomeTown = (d3.select("#passengerHometown")._groups[0][0].getComputedTextLength())
+        
+        if (computedTextLengthHomeTown > 0.95 * passengerHomeWidth) {
+            const passengerHomeRequiredWidth = 0.95*passengerHomeWidth/computedTextLengthHomeTown
+            passengerHomeGroupTextGroup.attr("transform", `translate(65,20) scale(${passengerHomeRequiredWidth},1) `)
+        }
+
 
         /////////////////////////////////////////////////////
         // SECOND COLUMN
         /////////////////////////////////////////////////////
 
-        let passengerSecondColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(25,180) scale(1.2)")
-        passengerSecondColumn.append("clipPath").attr("id", "portraitClip").append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60)
-        passengerSecondColumn.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60).attr("fill", "grey").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
-        passengerSecondColumn.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 42).attr("ry", 62).attr("fill", "none").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
-        passengerSecondColumn.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).style("opacity", 0.6).style("filter", "blur(1px)").attr("clip-path", "url(#portraitClip)")
+        let passengerSecondColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(158,42)")
+
+        // PASSENGER SURVIVED INDICATOR
+        let passengerSurvivedGroup = passengerSecondColumn.append("g").attr("id", "passengerSurvivedGroup").attr("transform", `translate(0,0)`)
+        passengerSurvivedGroup.append("text").text((passenger.openmlsurvived==1)?"SURVIVOR":"LOST").attr("text-anchor", "middle").attr("x", 72).attr("y", 45).style("font-size", "24px").style("font-weight", "normal").attr("fill", (passenger.openmlsurvived==1)?"grey":"red").style("font-family", "'Roboto', sans-serif")
+
+        // PASSENGER PORTRAIT WIDGET
+        let passengerPortraitGroup = passengerSecondColumn.append("g").attr("id", "passengerPortraitGroup").attr("transform", `translate(40,65) scale(0.8)`)
+        passengerPortraitGroup.append("clipPath").attr("id", "portraitClip").append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60)
+        passengerPortraitGroup.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 40).attr("ry", 60).attr("fill", "grey").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
+        passengerPortraitGroup.append("ellipse").attr("cx", 40).attr("cy", 60).attr("rx", 42).attr("ry", 62).attr("fill", "none").attr("stroke", "black").style("stroke-width", 1).style("opacity", 0.5)
+        passengerPortraitGroup.append("image").attr("class", "portraitImage").attr("x", 0).attr("y", 0).attr("width", 80).attr("height", 120).style("opacity", 0.6).style("filter", "blur(1px)").attr("clip-path", "url(#portraitClip)")
                 .attr("xlink:href", ()=>(passenger.imagePresent=="Y")?"https://www.encyclopedia-titanica.org"+passenger.imageURL:"./src/blank.jpg")
-        // passengerSecondColumn.append("text").text((passenger.openmlsurvived==1)?"SURVIVED":"LOST").attr("text-anchor", "middle").attr("x", 40).attr("y", 140).style("font-size", "16px").style("font-weight", "bold")//.attr("transform", `translate (${5/0.7},0) scale(0.7,1)`)
         
-        /////////////////////////////////////////////////////
-        // THIRD COLUMN
-        /////////////////////////////////////////////////////
-
-        let passengerThirdColumn = defaultPD.append("g").attr("id", "passengerSecondColumn").attr("transform", "translate(155,175)")
-        const thirdColumnBoxWidth = innerColumnWidth/2
-
-        // let passengerFamilyGroup = passengerThirdColumn.append("g").attr("id", "passengerFamilyGroup")
+        // PASSENGER FAMILY WIDGET
+        // let passengerFamilyGroup = passengerSecondColumn.append("g").attr("id", "passengerFamilyGroup")
         // passengerFamilyGroup.append("text").text("Family Aboard: "+passenger.derivedFamily).attr("x", 0).attr("y", 0).style("font-size", "8px")
 
-        let passengerTicketGroup = passengerThirdColumn.append("g").attr("id", "passengerTicketGroup").attr("transform", "translate(0,0)")
+        // PASSENGER DESTINATION WIDGET
+        let passengerDestGroup = passengerSecondColumn.append("g").attr("id", "passengerDestGroup").attr("transform", `translate(5,195)`)
+        const passengerDestWidth = 130
+        passengerDestGroup.append("text").text("Destination").attr("x", 0).attr("y", 0).style("font-size", "16px")
+        passengerDestGroup.append("rect").attr("x", 0).attr("y", 4).attr("width", passengerDestWidth).attr("height", 20).attr("fill", "grey")
+
+        passengerDestGroupTextGroup = passengerDestGroup.append("g").attr("id", "passengerDestGroupTextGroup").attr("transform", `translate(65,20)`)
+        passengerDestination = passengerDestGroupTextGroup.append("text").attr("id", "passengerDestination").attr("x", 0).attr("y", 0).attr("text-anchor", "middle").text(passenger.kDestination).style("font-size", "16px").attr("fill", "white").style("font-family", "'Castoro', serif")
+        
+        const computedTextLengthDestination = (d3.select("#passengerDestination")._groups[0][0].getComputedTextLength())
+
+        if (computedTextLengthDestination > 0.95 * passengerDestWidth) {
+            const passengerDestRequiredWidth = 0.95*passengerDestWidth/computedTextLengthDestination
+            passengerDestGroupTextGroup.attr("transform", `translate(65,20) scale(${passengerDestRequiredWidth},1) `)
+        }
+        
+                
+        // PASSENGER TICKET WIDGET
+        let passengerTicketGroup = passengerFirstColumn.append("g").attr("id", "passengerTicketGroup").attr("transform", "translate(0,250)")
         const ticketBoxHeight = 80
-        passengerTicketGroup.append("rect").attr("x", 0).attr("y", 1).attr("width", thirdColumnBoxWidth).attr("height", ticketBoxHeight).attr("id", "ticketBox").attr("fill", "white").style("opacity", .5)
-        passengerTicketGroup.append("rect").attr("x", 1).attr("y", 2).attr("width", thirdColumnBoxWidth-2).attr("height", ticketBoxHeight-2).attr("id", "ticketBox").attr("fill", "none").style("opacity", .5).attr("stroke", "black").attr("stroke-width", 0.5)
-        passengerTicketGroup.append("rect").attr("x", 2).attr("y", 3).attr("width", thirdColumnBoxWidth-4).attr("height", ticketBoxHeight-4).attr("id", "ticketBox").attr("fill", "none").style("opacity", .5).attr("stroke", "black").attr("stroke-width", 0.5)
-        passengerTicketGroup.append("path").attr("id", "ticketFlag").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 1)
-            .attr("transform", `translate(${thirdColumnBoxWidth-50},${35}) scale(3)`)
+        const ticketBoxWidth = 144
+        passengerTicketGroup.append("text").text("Fare details").attr("x", 0).attr("y", -6).style("font-size", "12px")
+        passengerTicketGroup.append("rect").attr("x", 0).attr("y", 1).attr("width", ticketBoxWidth).attr("height", ticketBoxHeight).attr("id", "ticketBox").attr("fill", "white").style("opacity", .5)
+        passengerTicketGroup.append("rect").attr("x", 1).attr("y", 2).attr("width", ticketBoxWidth-2).attr("height", ticketBoxHeight-2).attr("id", "ticketBox").attr("fill", "none").style("opacity", .5).attr("stroke", "black").attr("stroke-width", 0.5)
+        passengerTicketGroup.append("rect").attr("x", 2).attr("y", 3).attr("width", ticketBoxWidth-4).attr("height", ticketBoxHeight-4).attr("id", "ticketBox").attr("fill", "none").style("opacity", .5).attr("stroke", "black").attr("stroke-width", 0.5)
+        passengerTicketGroup.append("path").attr("id", "ticketFlag").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", .5)
+            .attr("transform", `translate(${15},${30}) scale(2.3)`)
         passengerTicketGroup.append("path").attr("id", "ticketStar").attr("d", starPath).attr("fill", "white").style("opacity", 1)
-            .attr("transform", `translate(${thirdColumnBoxWidth-45},${17}) scale(0.2) rotate(-5)`)
-        passengerTicketGroup.append("text").attr("x", 6).attr("y", 40).attr("text-anchor", "start").text("Tkt: " + passenger.openmlticket).style("font-size", ()=>(passenger.openmlticket.length>13?"10px":"12px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
-        passengerTicketGroup.append("text").attr("x", 6).attr("y", 55).attr("text-anchor", "start").text("Fare: " + formatFare(passenger.openmlfare)).style("font-size", "12px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
-        passengerTicketGroup.append("text").attr("x", 6).attr("y", 70).attr("text-anchor", "start").text("Cabin: " + (passenger.openmlcabin=="?"?"Unknown":passenger.openmlcabin)).style("font-size", ()=>(passenger.openmlcabin.length>12?"10px":"12px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
+            .attr("transform", `translate(${20},${15}) scale(0.18) rotate(-5)`)
+        passengerTicketGroup.append("text").attr("x", 8).attr("y", 44).attr("text-anchor", "start").text("Tkt: " + passenger.openmlticket).style("font-size", ()=>(passenger.openmlticket.length>13?"10px":"10px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
+        passengerTicketGroup.append("text").attr("x", 8).attr("y", 53).attr("text-anchor", "start").text("Fare: " + formatFare(passenger.openmlfare)).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
+        passengerTicketGroup.append("text").attr("x", 8).attr("y", 62).attr("text-anchor", "start").text("Cabin: " + (passenger.openmlcabin=="?"?"Unknown":passenger.openmlcabin)).style("font-size", ()=>(passenger.openmlcabin.length>12?"10px":"10px")).attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
     
-        let passengerLifeboatGroup = passengerThirdColumn.append("g").attr("id", "passengerLifeboatGroup").attr("transform", "translate(0,100)")
-        passengerLifeboatGroup.append("text").text("Lifeboat boarded:").attr("x", 0).attr("y", -3).style("font-size", "12px")
-        // passengerLifeboatGroup.append("rect").attr("x", 0).attr("y", 0).attr("width", thirdColumnBoxWidth).attr("height", 35).attr("fill", "none").attr("stroke", "grey")
+        // PASSENGER LIFEBOAT WIDGET
+        let passengerLifeboatGroup = passengerSecondColumn.append("g").attr("id", "passengerLifeboatGroup").attr("transform", "translate(5,250)")
+        passengerLifeboatGroup.append("text").text("Lifeboat boarded").attr("x", 0).attr("y", -6).style("font-size", "12px")
+        passengerLifeboatGroup.append("rect").attr("x", 0).attr("y", 3).attr("width", ticketBoxWidth-3).attr("height", ticketBoxHeight-4).attr("fill", "none").attr("stroke", "grey")
         const lifeboatRadius = 7
-        lifeboatsMain = passengerLifeboatGroup.append("g").attr("id", "lifeboatsMain")
+        lifeboatsMain = passengerLifeboatGroup.append("g").attr("id", "lifeboatsMain").attr("transform", "translate(0,10)")
         const lifeboatSpaceY = 15
         lifeboatsMain
             .selectAll("circle").data(lifeboatData).enter().append("circle")
@@ -1419,9 +1583,9 @@ d3.csv('./data/titanic.csv').then(
                lifeboatLine3Text = "Aboard: " + lifeboatData.find(item => item.boat == passenger.processedLifeboat).wikiSurvivors + " souls"
         }
 
-        lifeboatLine1 = lifeboatsMain.append("text").attr("x", 4).attr("y", 25).attr("text-anchor", "start").text(lifeboatLine1Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
-        lifeboatLine2 = lifeboatsMain.append("text").attr("x", 4).attr("y", 34).attr("text-anchor", "start").text(lifeboatLine2Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
-        lifeboatLine3 = lifeboatsMain.append("text").attr("x", 4).attr("y", 43).attr("text-anchor", "start").text(lifeboatLine3Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "monospace")
+        lifeboatLine1 = lifeboatsMain.append("text").attr("x", 4).attr("y", 25).attr("text-anchor", "start").text(lifeboatLine1Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
+        lifeboatLine2 = lifeboatsMain.append("text").attr("x", 4).attr("y", 34).attr("text-anchor", "start").text(lifeboatLine2Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
+        lifeboatLine3 = lifeboatsMain.append("text").attr("x", 4).attr("y", 43).attr("text-anchor", "start").text(lifeboatLine3Text).style("font-size", "10px").attr("fill", "black").style("opacity", 1).attr("font-style", "normal").style("font-family", "'Roboto Mono', monospace")
         
         return
     }
