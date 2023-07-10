@@ -247,20 +247,20 @@ function setDefaultSC() {
 
     // CLOCK INFOGRAPHIC
 
-    let clockTimeLine = defaultSC.append("g").attr("id", "clockTimeLine").attr("transform", "translate(80,300) scale(2)")
+    let clockTimeLine = defaultSC.append("g").attr("id", "clockTimeLine").attr("transform", "translate(90,295) scale(2)")
 
     let clockArcGenerator = d3.arc()
 
     let arcData = []
-    for (let i=-4;i<15;i++) {
-        arcData.push({startAngle: i*Math.PI/24, endAngle: (i+1)*Math.PI/24, fill: i%2 ? 'none' : 'none', innerRadius: 100, outerRadius: 105})
+    for (let i=-6;i<15;i++) {
+        arcData.push({startAngle: i*Math.PI/24, endAngle: (i+1)*Math.PI/24, fill: i%2 ? 'none' : 'none', innerRadius: 67, outerRadius: 72})
     }
-    arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 57, outerRadius: 60})
+    arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 42, outerRadius: 45})
     arcData.push({startAngle: 0, endAngle: Math.PI*2, fill: 'none', innerRadius: 3, outerRadius: 5})
 
-    clockTimeLine.append("clipPath").attr("id", "clockClip").append("rect").attr("x", -40).attr("y", -150).attr("width", 180).attr("height", 180)
-    clockTimeLine.append("text").text("KEY").attr("x", 145).attr("y", 5).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
-    clockTimeLine.append("text").text("EVENTS").attr("x", 145).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
+    clockTimeLine.append("clipPath").attr("id", "clockClip").append("rect").attr("x", -40).attr("y", -150).attr("width", 180).attr("height", 178)
+    clockTimeLine.append("text").text("KEY").attr("x", 128).attr("y", 5).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
+    clockTimeLine.append("text").text("EVENTS").attr("x", 128).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
 
     let clockFace = clockTimeLine.append("g").attr("id", "clockFace")
 
@@ -273,9 +273,14 @@ function setDefaultSC() {
         .attr("clip-path", "url(#clockClip)")
         .attr('fill', d=>d.fill)
         .attr('stroke', 'black')
+    
+    const clockArrow = clockFace.append("g").attr("id", "clockArrow").attr("clip-path", "url(#clockClip)")
+    clockArrow.selectAll("path").data([{startAngle: -0.7, endAngle: 4.2, innerRadius: 15, outerRadius: 20}]).enter().append("path").attr("d", clockArcGenerator).attr("fill", "red")
+    clockArrow.append("path").attr("d", "M -15 9 L -9 5 L -17 6 L -20 12 Z").attr("fill", "red")
 
-    let numeralFontSize = "20pt"
-    let numeralStartY = -70
+
+    let numeralFontSize = "12pt"
+    let numeralStartY = -50
     let clockTimeLineLabels = clockFace.append("g").attr("id", "clockTimeLineLabels").attr("clip-path", "url(#clockClip)")
     clockTimeLineLabels.append("text").text("XI").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(-30)`)
     clockTimeLineLabels.append("text").text("XII").attr("x", 0).attr("y", numeralStartY).attr("text-anchor", "middle").attr("font-size", numeralFontSize).attr("transform", `translate(0,0) rotate(0)`)
@@ -301,39 +306,67 @@ function setDefaultSC() {
             d3.select("#"+d.name).selectAll("line").attr("stroke", "red").style("opacity", 1)
             d3.select("#nonKeyEventTime").text(d.realtime).style("opacity", 1)
             d3.select("#nonKeyEventlabel").text(d.narrative).style("opacity", 1)
+            d3.select("#nonKeyEventline").style("opacity", 1)
             
         })
         .on("mouseleave", (e,d)=>{
 
             // reset opacity of alll event rods
-            clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
             clockEvents.selectAll("line").attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
             clockEventsKeyLabels.selectAll("text").style("opacity", 1)
             d3.select("#nonKeyEventTime").style("opacity", 0)
             d3.select("#nonKeyEventlabel").style("opacity", 0)
+            d3.select("#nonKeyEventline").style("opacity", 0)
         })
         
-    clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0).attr("y2", (d)=>(d.key=="key"?125:110)).attr("stroke-width", (d)=>(d.key=="key"?4:3)).attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
-    clockEvents.selectAll("g").append("circle").attr("cx", 0).attr("cy", (d)=>(d.key=="key"?129:113)).attr("r", (d)=>(d.key=="key"?4:3)).attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+    clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0)
+                .attr("y2", (d)=>(d.key=="key"?100:90))
+                .attr("stroke-width", (d)=>(d.key=="key"?4:3))
+                .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
+                .attr("stroke", "black")
+
+    clockEvents.selectAll("g").append("circle").attr("cx", 0)
+                .attr("cy", (d)=>(d.key=="key"?100:90))
+                .attr("r", (d)=>(d.key=="key"?4:3))
+                .style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+                .attr("fill", "black")
+                // .style("opacity", 1)
+
 
     let clockEventsKeyLabels = clockTimeLine.append("g").attr("id", "clockEventsKeyLabels")
     let clockEventsKeyLabelsFontSize = "6pt"
-    clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits iceberg").attr("x", -38).attr("y", -137).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress call sent").attr("x", 12).attr("y", -128).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 55).attr("y", -117).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio transmission").attr("x", 84).attr("y", -85).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "event20label").text("Fully submerged").attr("x", 115).attr("y", -30).attr("font-size", clockEventsKeyLabelsFontSize)
-    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", 90).attr("y", -115).attr("font-size", "10pt").attr("font-weight", "bold").style("opacity", 0)
-    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", 55).attr("y", -100).attr("font-size", "10pt").style("opacity", 0)
+
+    clockEventsKeyLabels.append("text").attr("id", "event2label").text("11:40pm").attr("x", -42).attr("y", -122).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits").attr("x", -42).attr("y", -114).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event2label").text("iceberg").attr("x", -42).attr("y", -106).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("12:05am").attr("x", 4).attr("y", -126).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress").attr("x", 4).attr("y", -118).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("call sent").attr("x", 4).attr("y", -110).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+
+    clockEventsKeyLabels.append("text").attr("id", "event7label").text("12:45am").attr("x", 45).attr("y", -96).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 45).attr("y", -89).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    
+    clockEventsKeyLabels.append("text").attr("id", "event14label").text("1:45am").attr("x", 80).attr("y", -74).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio signal").attr("x", 80).attr("y", -67).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    
+    clockEventsKeyLabels.append("text").attr("id", "event20label").text("2:20 am").attr("x", 103).attr("y", -35).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event20label").text("Fully submerged").attr("x", 103).attr("y", -27).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", -40).attr("y", -130).attr("font-size", "8pt").attr("font-weight", "bold").style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", -40).attr("y", -120).attr("font-size", "8pt").style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("line").attr("id", "nonKeyEventline").attr("x1", -40).attr("y1", -115).attr("x2", 80).attr("y2", -115).attr("stroke", "red").style("stroke-width", 3).style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
+    // clockEventsKeyLabels.append("line").attr("id", "nonKeyEventline2").attr("x1", -40).attr("y1", -115).attr("x2", 40).attr("y2", -115).attr("stroke", "red").style("stroke-width", 1).style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
 
 
     // MAP INFOGRAPHIC
 
 
     let mapInfographicHeadline = defaultSC
-        .append("text").text("TITANIC'S FATEFUL PATH").attr("x", 685).attr("y", 330).attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-weight", "bold").attr("font-style", "normal")
+        .append("text").text("TITANIC'S FATEFUL PATH").attr("x", 685).attr("y", 340).attr("text-anchor", "middle").attr("font-size", "20pt").attr("font-weight", "bold").attr("font-style", "normal")
     
-    let outerTitanicChart = defaultSC.append("g").attr("id", "outerTitanicChart").attr("transform", "translate(480,0) scale(1.8,2)").attr("clip-path", "url(#chartClipInner)")
+    let outerTitanicChart = defaultSC.append("g").attr("id", "outerTitanicChart").attr("transform", "translate(480,10) scale(1.8,2)").attr("clip-path", "url(#chartClipInner)")
     outerTitanicChart.append("clipPath").attr("id", "chartClipInner").append("path").attr("d", "M -50 0 L 280 0 L 230 150 L 0 150 Z")
     outerTitanicChart.append("clipPath").attr("id", "chartClip").append("path").attr("d", "M -100 -100 L 330 -100 L 280 150 L -50 150 Z")
 
@@ -427,7 +460,92 @@ function setDefaultSC() {
                     .style("stroke-width", 1)
                     .style("line-cap", "round")
 
-        
+
+            // Paths for sea ice extent - one for "April maximum ice limit" and one for "April extreme ice limit"
+
+            // April maximum ice limit
+            const seaIceExtentAprilMaxData = [
+                                                {source: {"lat": 46.5, "lon": -53}, destination: {"lat": 45.5, "lon": -49}, rx: -3, ry: 5},
+                                                {source: {"lat": 45.5, "lon": -49}, destination: {"lat": 48.5, "lon": -44}, rx: 15, ry: 5},
+                                                {source: {"lat": 48.5, "lon": -44}, destination: {"lat": 54.5, "lon": -48}, rx: 5, ry: -15},
+                                                {source: {"lat": 54.5, "lon": -48}, destination: {"lat": 59.5, "lon": -56}, rx: -15, ry: -15},
+                                             ]
+
+            const seaIceExtentAprilMax = titanicChart.append("g").attr("id", "seaIceExtentAprilMax")
+            seaIceExtentAprilMax.selectAll("path").data(seaIceExtentAprilMaxData).enter()
+                .append("path")
+                .attr("d", d=>{
+                    let pathToReturn = "M "
+                    pathToReturn += projection([d.source.lon,d.source.lat])[0] + " " + projection([d.source.lon,d.source.lat])[1] + " "
+                    pathToReturn += "Q "
+                    pathToReturn += (+projection([d.source.lon,d.source.lat])[0]+d.rx) + " " + (+projection([d.source.lon,d.source.lat])[1]+d.ry) + " "
+                    pathToReturn += projection([d.destination.lon,d.destination.lat])[0] + " " + projection([d.destination.lon,d.destination.lat])[1] + " "
+                    return pathToReturn
+                })
+                .attr("fill", "none")
+                .style("stroke", "gray")
+                .style("stroke-width", 1)
+                .style("stroke-dasharray", "1,2")
+                .style("line-cap", "round")
+            
+            seaIceExtentAprilMax.append("text")
+                    .attr("x", projection([-41,56])[0])
+                    .attr("y", projection([-41,56])[1])
+                    .attr("dy", -5)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "5px")
+                    .attr("fill", "black")
+                    .text("April maximum ice limit")
+                    .style("font-weight", "bold")
+                    .style("font-family", "'Roboto', sans-serif")
+
+            // April extreme ice limit
+            const seaIceExtentAprilExtremeData = [
+                {source: {"lat": 40.5, "lon": -50.2}, destination: {"lat": 41.5, "lon": -43}, rx: 15, ry: 10},
+                {source: {"lat": 41.5, "lon": -43}, destination: {"lat": 48, "lon": -41}, rx: 15, ry: -10},
+                {source: {"lat": 48, "lon": -41}, destination: {"lat": 52, "lon": -41}, rx: 0, ry: 0},
+             ]
+
+            const seaIceExtentAprilExtreme = titanicChart.append("g").attr("id", "seaIceExtentAprilMax")
+            seaIceExtentAprilExtreme.selectAll("path").data(seaIceExtentAprilExtremeData).enter()
+                .append("path")
+                .attr("d", d=>{
+                    let pathToReturn = "M "
+                    pathToReturn += projection([d.source.lon,d.source.lat])[0] + " " + projection([d.source.lon,d.source.lat])[1] + " "
+                    pathToReturn += "Q "
+                    pathToReturn += (+projection([d.source.lon,d.source.lat])[0]+d.rx) + " " + (+projection([d.source.lon,d.source.lat])[1]+d.ry) + " "
+                    pathToReturn += projection([d.destination.lon,d.destination.lat])[0] + " " + projection([d.destination.lon,d.destination.lat])[1] + " "
+                    return pathToReturn
+                })
+                .attr("fill", "none")
+                .style("stroke", "gray")
+                .style("stroke-width", 1)
+                .style("stroke-dasharray", "1,2")
+                .style("line-cap", "round")
+
+
+            seaIceExtentAprilExtreme.append("text")
+                .attr("x", projection([-35,50.5])[0])
+                .attr("y", projection([-35,50.5])[1])
+                .attr("dy", -5)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "5px")
+                .attr("fill", "black")
+                .text("April extreme")
+                .style("font-weight", "bold")
+                .style("font-family", "'Roboto', sans-serif")
+
+            seaIceExtentAprilExtreme.append("text")
+                .attr("x", projection([-35,49.5])[0])
+                .attr("y", projection([-35,49.5])[1])
+                .attr("dy", -5)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "5px")
+                .attr("fill", "black")
+                .text("iceberg limit")
+                .style("font-weight", "bold")
+                .style("font-family", "'Roboto', sans-serif")
+                
             const keyLocations = titanicChart.append("g").attr("id", "keyLocations")
 
             const keyLocationsData = [{name: "Belfast", lat: 54.5973, long: -5.9301},
@@ -459,7 +577,7 @@ function setDefaultSC() {
                 .attr("font-size", 7)
                 .attr("fill", "black")
                 .attr("font-weight", "bold")
-                .attr("font-family", "Courier")
+                .attr("font-family", "'Roboto', sans-serif")
                 .text(d=>d.name)
                 .attr("text-anchor", d=>((d.name=="Queenstown"||d.name=="Belfast")?"end":(d.name=="New York"||d.name=="Soton")?"start":"middle"))
 
@@ -497,9 +615,9 @@ function setDefaultSC() {
                 .attr("y", 0.5)
                 .text(d=>d.vessel)
                 .attr("dx", d=>d.vessel=="Titanic"?2:0)
-                .attr("dy", d=>d.vessel=="Titanic"?-1:0)
+                .attr("dy", d=>d.vessel=="Titanic"?0:1)
                 .attr("text-anchor", (d)=>(d.long>-49.95?"start":"end"))
-                .attr("font-size", "2pt")
+                .attr("font-size", d=>d.vessel=="Titanic"?"3px":"2.5px")
                 .style("font-weight", d=>d.vessel=="Titanic"?"bold":"normal")
                 .attr("transform", "rotate(15)")
 
@@ -512,42 +630,40 @@ function setDefaultSC() {
     // LINER INFOGRAPHIC
 
     let liners = defaultSC.append("g").attr("id", "linersInfographic").attr("transform", "translate(1100,300) scale(1.8)")
-    liners.append("text").text("GREATEST LINERS").attr("x", 15).attr("y", -135).attr("text-anchor", "middle").attr("font-size", "12pt").attr("font-weight", "bold").attr("font-style", "normal")
+    liners.append("text").text("GREATEST LINERS").attr("x", 30).attr("y", -145).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
+    liners.append("text").text("IN THE WORLD").attr("x", 30).attr("y", -130).attr("text-anchor", "middle").attr("font-size", "8pt").attr("font-weight", "bold").attr("font-style", "normal")
 
     let linerPaths = liners.selectAll("path").data(linersList).enter()
         .append("path")
         .attr("id", "linerPath")
         .attr("class", d=>d.className)
         .attr("d", linerPath)
-        .attr("transform", (d,i) => `translate (${25*i},0) scale(${linerScale(d.length)})`)
+        .attr("transform", (d,i) => `translate (${25*i},5) scale(${linerScale(d.length)})`)
         .style("opacity", 0.5)
         .attr("fill", (d,i)=>(i==4?"red":"black"))
-    let linerText1Default = "Along with the Olympic, Titanic"
-    let linerText2Default = "was the biggest liner in the world."
-    linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 50).attr("y", 10).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "normal")
-    linerText2 = liners.append("text").attr("id", "linerText2").text(linerText2Default).attr("x", 50).attr("y", 20).attr("text-anchor", "middle").attr("font-size", "6pt").attr("font-style", "normal")
-
-    let linerDeetsStartY = -70
+    let linerText1Default = "TITANIC / OLYMPIC"
+    linerText1 = liners.append("text").attr("id", "linerText1").text(linerText1Default).attr("x", 45).attr("y", 22).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-style", "normal")
+    
+    let linerDeetsStartY = -80
     let linerDeetsSpacingY = 11
     let linerDeetsStartX = -15
-    let linerDeetsFontSize = "7pt"
+    let linerDeetsFontSize = "5pt"
 
     linerDeets0 = liners.append("path").attr("id", "linerDeets0").attr("d", whiteStarFlagPath).attr("fill", "red").style("opacity", 0.8).attr("transform", `translate(${linerDeetsStartX-41},${linerDeetsStartY-26}) scale(3,3)`)
     linerDeets00 = liners.append("path").attr("id", "linerDeets00").attr("d", starPath).attr("fill", "white").style("opacity", 0.8).attr("transform", `translate(${linerDeetsStartX-37},${linerDeetsStartY-45}) scale(.25,.25) rotate(-5)`)
-    linerDeets000 = liners.append("text").attr("id", "linerDeets000").text("White Star").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY-linerDeetsSpacingY).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end").style("font-weight", "bold")
-    linerDeets1 = liners.append("text").attr("id", "linerDeets1").text("Length: "+linersList[4].length+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets2 = liners.append("text").attr("id", "linerDeets2").text("Beam: "+linersList[4].beam+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets3 = liners.append("text").attr("id", "linerDeets3").text("Depth: "+linersList[4].depth+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*2).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets4 = liners.append("text").attr("id", "linerDeets4").text("Tonnage: "+d3.format(",")(linersList[4].tonnage)).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*3).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets5 = liners.append("text").attr("id", "linerDeets5").text("Hp: "+d3.format(",")(linersList[4].horsePower)).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*4).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets6 = liners.append("text").attr("id", "linerDeets6").text("Av speed: "+linersList[4].avSpeed+" Kn.").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*5).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets7 = liners.append("text").attr("id", "linerDeets7").text("Built: "+linersList[4].yearBuilt).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*6).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
-    linerDeets8 = liners.append("text").attr("id", "linerDeets7").text(linersList[4].screw).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*7).attr("font-size", linerDeetsFontSize).style("font-family", "sans-serif").attr("text-anchor", "end")
+    linerDeets000 = liners.append("text").attr("id", "linerDeets000").text("White Star").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY-linerDeetsSpacingY).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end").style("font-weight", "bold")
+    linerDeets1 = liners.append("text").attr("id", "linerDeets1").text("Length: "+linersList[4].length+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets2 = liners.append("text").attr("id", "linerDeets2").text("Beam: "+linersList[4].beam+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets3 = liners.append("text").attr("id", "linerDeets3").text("Depth: "+linersList[4].depth+" ft").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*2).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets4 = liners.append("text").attr("id", "linerDeets4").text("Tonnage: "+d3.format(",")(linersList[4].tonnage)).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*3).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets5 = liners.append("text").attr("id", "linerDeets5").text("Hp: "+d3.format(",")(linersList[4].horsePower)).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*4).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets6 = liners.append("text").attr("id", "linerDeets6").text("Av speed: "+linersList[4].avSpeed+" Kn.").attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*5).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets7 = liners.append("text").attr("id", "linerDeets7").text("Built: "+linersList[4].yearBuilt).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*6).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
+    linerDeets8 = liners.append("text").attr("id", "linerDeets7").text(linersList[4].screw).attr("x", linerDeetsStartX).attr("y", linerDeetsStartY+linerDeetsSpacingY*7).attr("font-size", linerDeetsFontSize).style("font-family", "'Roboto Mono', monospace").attr("text-anchor", "end")
 
     d3.selectAll("#linerPath")
         .on("mouseover", (e, d) => {
-            linerText1.text(d.name).attr("font-size", "12pt").attr("y", 18).style("font-weight", "bold")
-            linerText2.text("")
+            linerText1.text(d.name).attr("font-size", "10pt").attr("y", 22).style("font-weight", "normal")
             linerPaths.attr("fill", "black")
             d3.select("."+d.className).attr("fill", "red")
             linerDeets0.style("opacity", 0.8).attr("d", (d.line=="cunard"?cunardFlagPath:whiteStarFlagPath))
@@ -566,7 +682,6 @@ function setDefaultSC() {
         })
         // .on("mouseout", (e, d)=> {
         //     linerText1.text(linerText1Default).attr("font-size", "6pt").attr("y", 10).style("font-weight", "normal")
-        //     linerText2.text(linerText2Default)
         //     d3.select("."+d.className).attr("fill", "black")
         //     d3.select("."+linersList[4].className).attr("fill", "red")
         //     linerDeets0.attr("d", whiteStarFlagPath).attr("fill", "red").attr("transform", `translate(${linerDeetsStartX-41},${linerDeetsStartY-26}) scale(3,3)`)
@@ -674,29 +789,7 @@ clickForMore.append("text")
             .attr("text-anchor", "middle")
             .style("font-family", "Castoro, serif")
 
-
-// const searchBox = d3.select("#searchBox")
-// searchBox
-//     .style("position", "absolute")
-//     .style("background-color", "transparent")
-
-
-// function relocateSearchBox() {
-//     let clickForMoreDims = clickForMore.node().getBoundingClientRect()
-//     console.log(clickForMoreDims)
-//     searchBox
-//         .style("left", ()=>{
-//             return clickForMoreDims.x - 150 + "px"
-//         })
-//         .style("top", ()=>{
-//             return clickForMoreDims.y + clickForMoreDims.height -20  +"px"
-//         })
-// }
-
-// relocateSearchBox()
-
-// window.addEventListener("resize", relocateSearchBox)
-
+const searchBoxGroup = primaryContainer.append("g").attr("id", "searchBoxGroup").attr("transform", "translate(650,454)").style("pointer-events", "none").style("opacity", 0)
 
 let sunburstGroup = primaryContainer
             .append('g')
@@ -903,34 +996,27 @@ d3.csv('./data/titanic.csv').then(
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
             .style("fill", "#4b371c")
-            .style("opacity", 0.5)
-            
-
-    // searchBox
-    //         .append("input")
-    //         .attr("id", "searchBoxInput")
-    //         .attr("type", "text")
-    //         .style("opacity", 0)
-    //         .attr("placeholder", "Search passengers...")
-    //         .on("keyup", ()=>{
-    //             let textSearchTerm = d3.select("#searchBoxInput").node().value.toLowerCase()
-    //             console.log(textSearchTerm)
-    //             // highlight those meeting search criteria
-    //             passengers.style("opacity", d=>{
-    //                 let textToSearch = "".concat(d.openmlname,d.derivedTitle,d.derivedfName,d.derivedSurname,d.derivedPassengerTitleName,d.derivedName,d.openmlhomedest,d.kName,d.kCabin,d.kName_wiki,d.kHometown,d.kBoarded,d.kDestination)
-    //                                      .replace("undefined","")
-    //                                      .replace(",","")
-    //                                      .replace(".","")
-    //                                      .toLowerCase()
-
-    //                 console.log(textToSearch)
-    //                 // let opacityToReturn = 1
-    //                 let opacityToReturn = textToSearch.includes(textSearchTerm) ? 1 : 0.5
-
-    //                 return opacityToReturn
-    //             })
-    //         })
-    //         .transition().duration(2500).style("opacity", 0.5)
+            // .style("opacity", 0.5)
+    
+    searchBoxGroup.style("pointer-events", "auto").style("opacity", 1)
+    const searchBoxTitleGroup = searchBoxGroup.append("g").attr("id", "searchBoxTitleGroup")
+    searchBoxTitleGroup.append("text").text("Search:").attr("x", 0).attr("y", -8).style("font-size", "14px").style("font-family", "Castoro Titling")
+    const searchBoxSearchGroup = searchBoxGroup.append("g").attr("id", "searchBoxSearchGroup").attr("transform", "translate(0,0)")
+    const searchBox = searchBoxSearchGroup.append("foreignObject").attr("x", 0).attr("y", 0).attr("width", 190).attr("height", 20)
+    const searchBoxActual = searchBox.append("xhtml:input").attr("x", 40).attr("id", "searchBoxActual").attr("type", "text").attr("placeholder", "Ohio, Straus, Hong Kong ...")
+                .on("keyup", ()=>{
+                        let textSearchTerm = d3.select("#searchBoxActual").node().value.toLowerCase()
+                        passengers.selectAll("rect").style("opacity", d=>{
+                            let textToSearch = "".concat(d.openmlname," ",d.derivedTitle," ",d.derivedfName," ",d.derivedSurname," ",d.derivedPassengerTitleName," ",d.derivedName," ",d.openmlhomedest," ",d.kName," ",d.kCabin," ",d.kName_wiki," ",d.kHometown," ",d.kBoarded," ",d.kDestination)
+                                                 .replace("undefined","")
+                                                 .replace(",","")
+                                                 .replace(".","")
+                                                 .replace("(","")
+                                                 .replace(")","")
+                                                 .toLowerCase()
+                            return textToSearch.includes(textSearchTerm) ? 1 : 0.3
+                        })
+                    })
 
 
     clickForMore.on("mouseover", ()=>{clickForMoreRect.transition().duration(300).style("opacity", 0.3)})
@@ -943,31 +1029,7 @@ d3.csv('./data/titanic.csv').then(
         if (globalState == 0) {
             sunburstGroup.selectAll("g").remove()
 
-            // searchBox
-            //     .append("input")
-            //     .attr("id", "searchBoxInput")
-            //     .attr("type", "text")
-            //     .style("opacity", 0)
-            //     .attr("placeholder", "Search passengers...")
-            //     .on("keyup", ()=>{
-            //         let textSearchTerm = d3.select("#searchBoxInput").node().value.toLowerCase()
-            //         console.log(textSearchTerm)
-            //         // highlight those meeting search criteria
-            //         passengers.style("opacity", d=>{
-            //             let textToSearch = "".concat(d.openmlname,d.derivedTitle,d.derivedfName,d.derivedSurname,d.derivedPassengerTitleName,d.derivedName,d.openmlhomedest,d.kName,d.kCabin,d.kName_wiki,d.kHometown,d.kBoarded,d.kDestination)
-            //                                 .replace("undefined","")
-            //                                 .replace(",","")
-            //                                 .replace(".","")
-            //                                 .toLowerCase()
-
-            //             console.log(textToSearch)
-            //             // let opacityToReturn = 1
-            //             let opacityToReturn = textToSearch.includes(textSearchTerm) ? 1 : 0.1
-
-            //             return opacityToReturn
-            //         })
-            //     })
-            //     .transition().duration(2500).style("opacity", 0.5)
+            searchBoxGroup.style("pointer-events", "auto").style("opacity", 1)
 
             radius = originalRadius
             subHeadlineTransition(subHeadlines[globalState])
@@ -989,7 +1051,7 @@ d3.csv('./data/titanic.csv').then(
             passengers.selectAll("rect")
                 .transition().duration(t)
                     .style("fill", "#4b371c")
-                    .style("opacity", 0.5)
+                    .style("opacity", 1)
                     .attr("rx", cornerRadius)
                     .attr("ry", cornerRadius)
                     .attr("width", radius*2)
@@ -1001,10 +1063,7 @@ d3.csv('./data/titanic.csv').then(
         else if (globalState == 1) {
 
             subHeadlineTransition(subHeadlines[globalState])
-            // d3.select("#searchBoxInput").node().value = ""
-            // passengers.style("opacity",1)
 
-            // primary container = 720 * 480
             const belfastCentroid = [350,50]
             const southamptonCentroid = [770,210]
             const cherbourgCentroid = [460,320]
@@ -1076,7 +1135,7 @@ d3.csv('./data/titanic.csv').then(
                     .attr("ry", cornerRadius)
                     .attr("width", radius*2)
                     .attr("height", radius*2)
-                    .style("opacity", 0.7)
+                    // .style("opacity", 0.7)
 
             globalState += 1
         }
@@ -1129,7 +1188,7 @@ d3.csv('./data/titanic.csv').then(
                     .attr("width", radius*radiusMult)
                     .attr("height", radius*radiusMult)
                     .style("fill", (d) => (d.kSex == "male" ? "#4b371c" : "#9a7b4f"))
-                    .style("opacity", 0.9)
+                    // .style("opacity", 0.9)
 
             passengers
                 .transition()
@@ -1224,7 +1283,7 @@ d3.csv('./data/titanic.csv').then(
                     .attr("width", radius*radiusMult)
                     .attr("height", radius*radiusMult)
                     .style("fill", (d) => (d.kSex == "male" ? "#4b371c" : "#9a7b4f"))
-                    .style("opacity", 0.9)
+                    // .style("opacity", 0.9)
 
             passengers
                 .transition()
@@ -1307,7 +1366,7 @@ d3.csv('./data/titanic.csv').then(
                     .attr("width", radius*2)
                     .attr("height", radius*2)
                     .style("fill", (d) => (d.kSex == "male" ? "#4b371c" : "#9a7b4f"))
-                    .style("opacity", 0.9)
+                    // .style("opacity", 0.9)
 
             passengers
                 .transition()
@@ -1333,8 +1392,10 @@ d3.csv('./data/titanic.csv').then(
         else if (globalState == 5) {
 
             subHeadlineTransition(subHeadlines[globalState])
-            // d3.select("#searchBoxInput").node().value = ""
-            // passengers.style("opacity",1)
+
+            d3.select("#searchBoxActual").node().value = ""
+            searchBoxGroup.style("pointer-events", "none").style("opacity", 0)
+            
 
             survivorKey = primaryContainer.append("g").attr("id", "survivorKey").attr("transform", "translate(-300, 100)")
 
@@ -1358,9 +1419,7 @@ d3.csv('./data/titanic.csv').then(
         else if (globalState == 6) {
 
             subHeadlineTransition(subHeadlines[globalState])
-            // searchBox.selectAll("input").remove()
-            // passengers.style("opacity",1)
-
+            
             d3.select("#survivorKey").remove()
             gs1Legend.selectAll("g").remove()
             // gs1Legend.selectAll("text").remove()
