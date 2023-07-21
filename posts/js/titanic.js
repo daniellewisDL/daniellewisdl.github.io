@@ -301,6 +301,7 @@ setLifeboatContainer()
 function setLifeboatContainer() {
 
     const transitionDuration = 500
+    
     const lifeboatsContainerTitleGroup = lifeboatsContainer.append("g").attr("id", "lifeboatsContainerTitleGroup").attr("transform", "translate(950,0)")
     const lifeboatsContainerTitle = lifeboatsContainerTitleGroup.append("text").attr("id", "lifeboatsContainerTitle").attr("x", 0).attr("y", lifeboatsContainerHeight-50).text("Lifeboats of the Titanic").attr("font-size", "18pt").attr("text-anchor", "end").attr("font-weight", "bold").attr("font-style", "normal")
     const lifeboatsContainerSubTitle = lifeboatsContainerTitleGroup.append("text").attr("id", "lifeboatsContainerTitle").attr("x", 0).attr("y", lifeboatsContainerHeight-25).text("Many were saved, but lifeboat capacity was insufficient, and not all capacity was used").attr("font-size", "14pt").attr("text-anchor", "end").style("font-weight", "bold").style("font-family", "Castoro, serif")
@@ -422,6 +423,11 @@ setTertiaryContainer()
 function setTertiaryContainer() {
 
 
+    const tertiaryContainerTitleGroup = tertiaryContainer.append("g").attr("id", "tertiaryContainerTitleGroup").attr("transform", "translate(20,400)")
+    const tertiaryContainerTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerTitle").attr("x", 0).attr("y", 0).text("Powering the Titanic").attr("font-size", "18pt").attr("text-anchor", "start").attr("font-weight", "bold").attr("font-style", "normal")
+    const tertiaryContainerSubTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerSubTitle").attr("x", 0).attr("y", 25).text("Three vast propellors were commanded by the Officer in Charge using Engine Order Telegraphs").attr("font-size", "14pt").attr("text-anchor", "start").style("font-weight", "bold").style("font-family", "Castoro, serif")
+
+
     /////////////////////////////////////////////////
     //// PROPELLOR DEVICE
     /////////////////////////////////////////////////
@@ -429,8 +435,8 @@ function setTertiaryContainer() {
     // wing props 23 ft 6
     // centre prop 17 ft
 
-    let centrePropsX = 230
-    let centrePropsY = 120
+    let centrePropsX = 320
+    let centrePropsY = 180
     let centrePropsScale = 0.2 * 1
     let sidePropsOffset = 90
     let leftPropsX = - sidePropsOffset
@@ -439,7 +445,9 @@ function setTertiaryContainer() {
     let rightPropsY = 0
     let sidePropsScale = 23.5/17 * centrePropsScale
 
-    const propellorBladeGroup = tertiaryContainer.append("g").attr("id", "propellorBladeGroup").attr("transform", `translate(${centrePropsX},${centrePropsY}) scale(1)`)
+    const propScale = 1.5
+
+    const propellorBladeGroup = tertiaryContainer.append("g").attr("id", "propellorBladeGroup").attr("transform", `translate(${centrePropsX},${centrePropsY}) scale(${propScale})`)
 
     let currentRotation = 0
     const propellorBladePath = "M 0 0 M 0 -15 C -50 -30 -50 -180 0 -180 C 50 -180 50 -30 0 -15 Z"
@@ -447,7 +455,7 @@ function setTertiaryContainer() {
     const backgroundTitanicFill = propellorBladeGroup.append("path").attr("id", "backgroundTitanicFill").attr("d", backgroundTitanicPath).attr("fill", "gray").attr("stroke", "none").style("opacity", 0.4).attr("pointer-events", "all")
             .attr("transform", `translate(${0},${0}) scale(${0.5})`)
 
-    const propellorGroupCentre = propellorBladeGroup.append("g").attr("id", "propellorGroupCentre").attr("transform", `translate(${0},${0}) scale(${1})`)
+    const propellorGroupCentre = propellorBladeGroup.append("g").attr("id", "propellorGroupCentre").attr("transform", `translate(${0},${0}) scale(${centrePropsScale})`)
     propellorGroupCentre.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 40).attr("fill", "black").attr("stroke", "none")
     propellorGroupCentre.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none")
     propellorGroupCentre.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(120)")
@@ -465,37 +473,49 @@ function setTertiaryContainer() {
     propellorGroupRight.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(120)")
     propellorGroupRight.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(240)")
 
+    const manGroupToScale = propellorBladeGroup.append("g").attr("id", "manGroupToScale").attr("transform", `translate(${170},${0}) scale(${centrePropsScale})`)
+    const propToManScale = 6 * 180 / 17
+    manGroupToScale.append("rect").attr("x", 0).attr("y", 0).attr("width", 20).attr("height", propToManScale).attr("fill", "black").attr("stroke", "none")
+
+    
+
     const backgroundTitanic = propellorBladeGroup.append("path").attr("id", "backgroundTitanic").attr("d", backgroundTitanicPath).attr("fill", "none").attr("stroke", "none").style("opacity", 0.5).attr("pointer-events", "all")
         .attr("transform", `translate(${0},${0}) scale(${0.5})`)
-        .on("mouseover", function() {
-            propAngleIncrement = 0.8
-        })
-        .on("mouseout", function() {
-            propAngleIncrement = 0.1
-        })
+        // .on("mouseover", function() {
+        //     centrePropAngleIncrement = 0.8
+        //     sidePropAngleIncrement = 0.8
+        // })
+        // .on("mouseout", function() {
+        //     centrePropAngleIncrement = 0.1
+        //     sidePropAngleIncrement = 0.1
+        // })
 
 
-    let propAngle = 0
-    let propAngleIncrement = 0.1
+    let sidePropAngle = 0
+    let centrePropAngle = 0
+    let sidePropAngleIncrement = 0
+    let centrePropAngleIncrement = 0
     const propellorDuration = 10
 
     function rotatePropellor() {
-        propAngle += propAngleIncrement
-        propellorGroupCentre.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${0},${0}) rotate(${propAngle}) scale(${centrePropsScale})`)
+        sidePropAngle += sidePropAngleIncrement
+        centrePropAngle += centrePropAngleIncrement
+        propellorGroupCentre.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${0},${0}) rotate(${centrePropAngle}) scale(${centrePropsScale})`)
         .on("end", rotatePropellor2)
-        propellorGroupLeft.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${leftPropsX},${leftPropsY}) rotate(${-propAngle}) scale(${sidePropsScale})`)
+        propellorGroupLeft.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${leftPropsX},${leftPropsY}) rotate(${-sidePropAngle}) scale(${sidePropsScale})`)
         .on("end", rotatePropellor2)
-        propellorGroupRight.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${rightPropsX},${rightPropsY}) rotate(${propAngle}) scale(${sidePropsScale})`)
+        propellorGroupRight.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${rightPropsX},${rightPropsY}) rotate(${sidePropAngle}) scale(${sidePropsScale})`)
         .on("end", rotatePropellor2)
     }
 
     function rotatePropellor2() {
-        propAngle += propAngleIncrement
-        propellorGroupCentre.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${0},${0}) rotate(${propAngle}) scale(${centrePropsScale})`)
+        sidePropAngle += sidePropAngleIncrement
+        centrePropAngle += centrePropAngleIncrement
+        propellorGroupCentre.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${0},${0}) rotate(${centrePropAngle}) scale(${centrePropsScale})`)
         .on("end", rotatePropellor)
-        propellorGroupLeft.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${leftPropsX},${leftPropsY}) rotate(${-propAngle}) scale(${sidePropsScale})`)
+        propellorGroupLeft.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${leftPropsX},${leftPropsY}) rotate(${-sidePropAngle}) scale(${sidePropsScale})`)
         .on("end", rotatePropellor2)
-        propellorGroupRight.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${rightPropsX},${rightPropsY}) rotate(${propAngle}) scale(${sidePropsScale})`)
+        propellorGroupRight.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${rightPropsX},${rightPropsY}) rotate(${sidePropAngle}) scale(${sidePropsScale})`)
         .on("end", rotatePropellor2)
     }
 
@@ -505,52 +525,132 @@ function setTertiaryContainer() {
     // ENGINE ORDER TELEGRAPH
     ///////////////////////////////////
 
-    const telegraphX = 650
-    const telegraphY = 250
-    const telegraphScale = 2
+    const telegraphX = 800
+    const telegraphY = 220
+    const telegraphScale = 1.4
 
     const telegraphGroup = tertiaryContainer.append("g").attr("id", "telegraphGroup").attr("transform", `translate(${telegraphX},${telegraphY}) scale(${telegraphScale})`)
 
-    const telegraphBackground = telegraphGroup.append("rect").attr("id", "telegraphBackground").attr("x", -100).attr("y", -100).attr("width", 200).attr("height", 200).attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2)
+    telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 100).attr("fill", "red").attr("stroke", "black").attr("stroke-width", 2).style("opacity", 0.5)
+    telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 93).attr("fill", "black").attr("stroke", "gray").attr("stroke-width", 2)
 
-    const telegraphStates = [{name: "Full", direction: "Astern", speed: 1},
-                             {name: "Half", direction: "Astern", speed: 0.5},
-                             {name: "Slow", direction: "Astern", speed: 0.25},
-                             {name: "Dead slow", direction: "Astern", speed: 0.1},
-                             {name: "Standby", direction: "Stop", speed: 0},
-                             {name: "Stop", direction: "Stop", speed: 0},
-                             {name: "Standby", direction: "Stop", speed: 0},
-                             {name: "Dead slow", direction: "Ahead", speed: 0.1},
-                             {name: "Slow", direction: "Ahead", speed: 0.25},
-                             {name: "Half", direction: "Ahead", speed: 0.5},
-                             {name: "Full", direction: "Ahead", speed: 1}]
+    const telegraphStates = [{name: "FULL", fullName: "Full Astern", direction: "Astern", speed: 1, sidePropAngleIncrement: -4, centrePropAngleIncrement: 0},
+                             {name: "HALF", fullName: "Half Astern", direction: "Astern", speed: 0.5, sidePropAngleIncrement: -2, centrePropAngleIncrement: 0},
+                             {name: "SLOW", fullName: "Slow Astern", direction: "Astern", speed: 0.25, sidePropAngleIncrement: -1, centrePropAngleIncrement: 0},
+                             {name: "DEAD", fullName: "Dead Slow Astern", direction: "Astern", speed: 0.1, sidePropAngleIncrement: -0.5, centrePropAngleIncrement: 0},
+                             {name: "STAND", fullName: "Stand By Astern", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
+                             {name: "STOP", fullName: "Stop", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
+                             {name: "STAND", fullName: "Stand By Ahead", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
+                             {name: "DEAD", fullName: "Dead Slow Ahead", direction: "Ahead", speed: 0.1, sidePropAngleIncrement: 0.5, centrePropAngleIncrement: 0},
+                             {name: "SLOW", fullName: "Slow Ahead", direction: "Ahead", speed: 0.25, sidePropAngleIncrement: 1, centrePropAngleIncrement: 0},
+                             {name: "HALF", fullName: "Half Ahead", direction: "Ahead", speed: 0.5, sidePropAngleIncrement: 2, centrePropAngleIncrement: 2},
+                             {name: "FULL", fullName: "Full Ahead", direction: "Ahead", speed: 1, sidePropAngleIncrement: 4, centrePropAngleIncrement: 4}]
 
     const telegraphStateGroup = telegraphGroup.append("g").attr("id", "telegraphStateGroup").attr("transform", `translate(${0},${0})`)
     const telegraphStateItems = telegraphStateGroup.selectAll("g").data(telegraphStates).enter().append("g").attr("id", (d,i) => `telegraphStateItem${i}`).attr("transform", `translate(${0},${0})`)
-    const telgraphArc = d3.arc().innerRadius(40).outerRadius(90).startAngle((d,i) => -Math.PI*0.8 + i*Math.PI*0.145).endAngle((d,i) => -Math.PI*0.8 + (i+1)*Math.PI*0.145)
-    telegraphStateItems.append("path").attr("d", telgraphArc).attr("fill", "gray").attr("stroke", "black").style("opacity", 0.5)
+    const telgraphArc = d3.arc().innerRadius(50).outerRadius(90)
+            .startAngle((d,i) => -Math.PI*0.8 + i*Math.PI*0.145)
+            .endAngle((d,i) => -Math.PI*0.8 + (i+1)*Math.PI*0.145)
+    telegraphStateItems.append("path").attr("d", telgraphArc).attr("fill", "black").attr("stroke", "white").style("opacity", 0.5)
         .on("mouseover", function(e, d) {
-            console.log(e.currentTarget)
-            d3.select(e.currentTarget).style("opacity", 1)
-            if (d.direction=="Ahead") {aheadGroup.select("path").style("opacity", 1)}
-            else if (d.direction=="Astern") {asternGroup.select("path").style("opacity", 1)}
+            // d3.select(e.currentTarget).style("opacity", 1).attr("fill", "gray")
+            // if (d.direction=="Ahead") {aheadGroup.select("path").style("opacity", 1).attr("fill", "gray")}
+            // else if (d.direction=="Astern") {asternGroup.select("path").style("opacity", 1).attr("fill", "gray")}
+            sidePropAngleIncrement = d.sidePropAngleIncrement
+            centrePropAngleIncrement = d.centrePropAngleIncrement
+            let index = telegraphStates.findIndex((element) => element.fullName==d.fullName)
+            eotSelectorGroup.attr("transform", `rotate(${(-Math.PI*0.8 + (index+0.5)*Math.PI*0.145)*180/Math.PI})`)
         })
         .on("mouseout", function(e, d) {
-            d3.select(e.currentTarget).style("opacity", 0.5)
-            aheadGroup.select("path").style("opacity", 0.5)
-            asternGroup.select("path").style("opacity", 0.5)
+            // d3.select(e.currentTarget).style("opacity", 1).attr("fill", "black")
+            // aheadGroup.select("path").style("opacity", 1).attr("fill", "black")
+            // asternGroup.select("path").style("opacity", 1).attr("fill", "black")
+            sidePropAngleIncrement = 0
+            centrePropAngleIncrement = 0
+            eotSelectorGroup.attr("transform", `rotate(0)`)
         })
-    telegraphStateItems.append("text")
-        .attr("x", (d,i) => 80*Math.cos(-Math.PI*0.8 + (i+0.5)*Math.PI*0.145))
-        .attr("y", (d,i) => 80*Math.sin(-Math.PI*0.8 + (i+0.5)*Math.PI*0.145))
-        .attr("text-anchor", "middle").attr("dominant-baseline", "middle")
-        .text(d => d.name).style("font-size", "10px").style("font-family", "sans-serif").style("fill", "black")
+    const telegraphStateItemsTextGroups = telegraphStateItems.append("g").attr("id", (d,i) => `telegraphStateItemTextGroup${i}`)
+        .attr("transform", (d,i) => {
+            let xPos = 70*Math.cos(-Math.PI/2-Math.PI*0.8 + (i+0.5)*Math.PI*0.145)
+            let yPos = 70*Math.sin(-Math.PI/2-Math.PI*0.8 + (i+0.5)*Math.PI*0.145)
+            let rot = 0
+            if (i<4) rot = (Math.PI/2-Math.PI*0.8 + (i+0.5)*Math.PI*0.145) * 180/Math.PI;
+            else if (i>6) rot = (-Math.PI/2-Math.PI*0.8 + (i+0.5)*Math.PI*0.145) * 180/Math.PI;
+            else if (i==4 || i==6) rot = (-Math.PI*0.8 + (i+0.5)*Math.PI*0.145) * 180/Math.PI;
+
+            return `translate(${xPos},${yPos}) rotate(${rot})`
+        })
+    telegraphStateItemsTextGroups.append("text").attr("id", (d,i) => `telegraphStateItemText${i}`)
+        .attr("x", 0)
+        .attr("y", (d,i)=>{
+                if (i==3||i==7) return -5;
+                else if (i==4||i==6) return -5;
+                else return 1;
+            })
+        .attr("text-anchor", "middle").attr("alignment-baseline", "middle")
+        .text(d => d.name).style("font-size", "9px").attr("font-family", "Roboto").style("fill", "white").attr("pointer-events", "none")
+        .attr("font-weight", "normal")
+
+    d3.select("#telegraphStateItemTextGroup3").append("text").attr("id", "telegraphStateItemText3a")
+        .attr("x", 0).attr("y", 5).attr("text-anchor", "middle").attr("alignment-baseline", "middle")
+        .text("SLOW").style("font-size", "9px").attr("font-family", "Roboto").style("fill", "white").attr("pointer-events", "none")        
+    d3.select("#telegraphStateItemTextGroup7").append("text").attr("id", "telegraphStateItemText7a")
+        .attr("x", 0).attr("y", 5).attr("text-anchor", "middle").attr("alignment-baseline", "middle")
+        .text("SLOW").style("font-size", "9px").attr("font-family", "Roboto").style("fill", "white").attr("pointer-events", "none")        
+
+    d3.select("#telegraphStateItemTextGroup4").append("text").attr("id", "telegraphStateItemText4a")
+        .attr("x", 0).attr("y", 5).attr("text-anchor", "middle").attr("alignment-baseline", "middle")
+        .text("BY").style("font-size", "9px").attr("font-family", "Roboto").style("fill", "white").attr("pointer-events", "none")        
+
+    d3.select("#telegraphStateItemTextGroup6").append("text").attr("id", "telegraphStateItemText6a")
+        .attr("x", 0).attr("y", 5).attr("text-anchor", "middle").attr("alignment-baseline", "middle")
+        .text("BY").style("font-size", "9px").attr("font-family", "Roboto").style("fill", "white").attr("pointer-events", "none")        
+
     
     const asternGroup = telegraphGroup.append("g").attr("id", "asternGroup").attr("transform", `translate(${0},${0})`)
-    asternGroup.append("path").attr("d", d3.arc().innerRadius(20).outerRadius(40).startAngle(-Math.PI*0.8).endAngle(-Math.PI*0.8 + 4*Math.PI*0.145)).attr("fill", "gray").attr("stroke", "black").style("opacity", 0.5)
+    asternGroup.append("path").attr("d", d3.arc().innerRadius(30).outerRadius(50).startAngle(-Math.PI*0.8).endAngle(-Math.PI*0.8 + 4*Math.PI*0.145)).attr("fill", "black").attr("stroke", "white").style("opacity", 0.5)
+    asternGroup.append("path").attr("d", d3.arc().innerRadius(40).outerRadius(40).startAngle(-Math.PI*0.8).endAngle(-Math.PI*0.8 + 4*Math.PI*0.145))
+        .attr("fill", "none").attr("stroke", "none").style("opacity", 0.5)
+        .attr("id", "telegraphAsternTextArc").attr("class", "telegraphAsternTextArc")
+    asternGroup.append("text")
+        .attr("transform", "translate(2, 0) scale(1,1)")
+        .append("textPath")
+        .attr("startOffset", "25%")
+        .attr("xlink:href", "#telegraphAsternTextArc")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("font-size", "12px")
+        .attr("font-family", "Roboto")
+        .attr("fill", "white")
+        .text("ASTERN")
+        .style("pointer-events", "none")    
 
     const aheadGroup = telegraphGroup.append("g").attr("id", "aheadGroup").attr("transform", `translate(${0},${0})`)
-    aheadGroup.append("path").attr("d", d3.arc().innerRadius(20).outerRadius(40).startAngle(-Math.PI*0.8 + 7*Math.PI*0.145).endAngle(-Math.PI*0.8 + 11*Math.PI*0.145)).attr("fill", "gray").attr("stroke", "black").style("opacity", 0.5)
+    aheadGroup.append("path").attr("d", d3.arc().innerRadius(30).outerRadius(50).startAngle(-Math.PI*0.8 + 7*Math.PI*0.145).endAngle(-Math.PI*0.8 + 11*Math.PI*0.145)).attr("fill", "black").attr("stroke", "white").style("opacity", 0.5)
+    aheadGroup.append("path").attr("d", d3.arc().innerRadius(40).outerRadius(40).startAngle(-Math.PI*0.8 + 7*Math.PI*0.145).endAngle(-Math.PI*0.8 + 11*Math.PI*0.145))
+        .attr("fill", "none").attr("stroke", "none").style("opacity", 0.5)
+        .attr("id", "telegraphAheadTextArc").attr("class", "telegraphAheadTextArc")
+    aheadGroup.append("text")
+        .attr("transform", "translate(-2, 0) scale(1,1)")
+        .append("textPath")
+        .attr("startOffset", "25%")
+        .attr("xlink:href", "#telegraphAheadTextArc")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("font-size", "12px")
+        .attr("font-family", "Roboto")
+        .attr("fill", "white")
+        .text("AHEAD")
+        .style("pointer-events", "none")
+
+    const eotSelectorGroup = telegraphGroup.append("g").attr("id", "eotSelectorGroup").attr("transform", `translate(${0},${0})`)
+    eotSelectorGroup.append("path").attr("fill", "white").style("opacity", 0.2).attr("pointer-events", "none")
+            .attr("d", "M 0 10 L 10 0 L 5 -43 L -5 -43 L -10 0 Z")
+    eotSelectorGroup.append("path").attr("fill", "none").attr("stroke", "white").attr("stroke-width", 10).style("opacity", 0.4).attr("pointer-events", "none")
+            .attr("d", d3.arc().innerRadius(48).outerRadius(95).startAngle(-Math.PI*0.8 + 5*Math.PI*0.145).endAngle(-Math.PI*0.8 + 6*Math.PI*0.145))
+    eotSelectorGroup.append("rect").attr("fill", "gray").attr("stroke", "none").style("opacity", 0.7).attr("pointer-events", "none")
+            .attr("x", -5).attr("y", -140).attr("width", 10).attr("height", 40)
+
 
 
 }
