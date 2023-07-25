@@ -218,53 +218,53 @@ function shuffle(array) {
     return array;
   }
 
-const countriesCentroids = [{"name": "Argentina","lat": -40,"long": -128},
-  {"name": "Australia","lat": -50,"long": 125},
-  {"name": "Austria","lat": 25,"long": 10},
-  {"name": "Belarus","lat": 30,"long": 67},
-  {"name": "Belgium","lat": 45,"long": -14},
-  {"name": "Bosnia","lat": -10,"long": 33},
-  {"name": "Bulgaria","lat": -30,"long": 33},
-  {"name": "Canada","lat": 73,"long": -148},
-  {"name": "Channel Islands","lat": -40,"long": -65},
-  {"name": "China","lat": 35,"long": 105},
-  {"name": "Croatia","lat": 28,"long": 38},
-  {"name": "Cuba","lat": -15,"long": -115},
-  {"name": "Denmark","lat": 42,"long": -92},
-  {"name": "Egypt","lat": -40,"long": 67},
-  {"name": "England","lat": 48,"long": -65},
-  {"name": "Estonia","lat": 50,"long": 57},
-  {"name": "Finland","lat": 75,"long": 38},
-  {"name": "France","lat": 20, "long": -14},
-  {"name": "Germany","lat": 38,"long": 10},
-  {"name": "Greece","lat": -38,"long": 10},
-  {"name": "India","lat": 15,"long": 105},
-  {"name": "Ireland","lat": 28,"long": -92},
-  {"name": "Italy", "lat": -22, "long": 10},
-  {"name": "Japan", "lat": 70, "long": 105},
-  {"name": "Lebanon", "lat": -10, "long": 67},
-  {"name": "Lithuania", "lat": 40, "long": 57},
-  {"name": "Macedonia", "lat": -20, "long": 33},
-  {"name": "Mexico", "lat": -20, "long": -148},
-  {"name": "Norway", "lat": 75, "long": -65},
-  {"name": "Peru", "lat": -40, "long": -148},
-  {"name": "Poland", "lat": 55, "long": 10},
-  {"name": "Portugal", "lat": -38, "long": -14},
-  {"name": "Russia", "lat": 55, "long": 105},
-  {"name": "Scotland", "lat": 70, "long": -92},
-  {"name": "Thailand", "lat": -10, "long": 113},
-  {"name": "Slovenia", "lat": 12, "long": 10},
-  {"name": "South Africa", "lat": -50, "long": 75},
-  {"name": "Spain", "lat": -15, "long": -14},
-  {"name": "Sweden", "lat": 80, "long": -38},
-  {"name": "Switzerland", "lat": 0, "long": 10},
-  {"name": "Syria", "lat": 5, "long": 67},
-  {"name": "The Netherlands", "lat": 55, "long": -40},
-  {"name": "Turkey", "lat": 16, "long": 67},
-  {"name": "Unknown", "lat":-50, "long": -92},
-  {"name": "Uruguay", "lat": -28, "long": -128},
-  {"name": "USA", "lat": 55, "long": -148},
-  {"name": "Wales", "lat": 55, "long": -92}
+const countriesCentroids = [{name: "Argentina", lat: -40, long: -128},
+  {name: "Australia", lat: -50, long: 125},
+  {name: "Austria", lat: 25, long: 10},
+  {name: "Belarus", lat: 30, long: 67},
+  {name: "Belgium", lat: 45, long: -14},
+  {name: "Bosnia", lat: -10, long: 33},
+  {name: "Bulgaria", lat: -30, long: 33},
+  {name: "Canada", lat: 73, long: -148},
+  {name: "Channel Islands", lat: -40, long: -65},
+  {name: "China", lat: 35, long: 105},
+  {name: "Croatia", lat: 28, long: 38},
+  {name: "Cuba", lat: -15, long: -115},
+  {name: "Denmark", lat: 42, long: -92},
+  {name: "Egypt", lat: -40, long: 67},
+  {name: "England", lat: 48, long: -65},
+  {name: "Estonia", lat: 50, long: 57},
+  {name: "Finland", lat: 75, long: 38},
+  {name: "France", lat: 20, long: -14},
+  {name: "Germany", lat: 38, long: 10},
+  {name: "Greece", lat: -38, long: 10},
+  {name: "India", lat: 15, long: 105},
+  {name: "Ireland", lat: 28, long: -92},
+  {name: "Italy", lat: -22, long: 10},
+  {name: "Japan", lat: 70, long: 105},
+  {name: "Lebanon", lat: -10, long: 67},
+  {name: "Lithuania", lat: 40, long: 57},
+  {name: "Macedonia", lat: -20, long: 33},
+  {name: "Mexico", lat: -20, long: -148},
+  {name: "Norway", lat: 75, long: -65},
+  {name: "Peru", lat: -40, long: -148},
+  {name: "Poland", lat: 55, long: 10},
+  {name: "Portugal", lat: -38, long: -14},
+  {name: "Russia", lat: 55, long: 105},
+  {name: "Scotland", lat: 70, long: -92},
+  {name: "Thailand", lat: -10, long: 113},
+  {name: "Slovenia", lat: 12, long: 10},
+  {name: "South Africa", lat: -50, long: 75},
+  {name: "Spain", lat: -15, long: -14},
+  {name: "Sweden", lat: 80, long: -38},
+  {name: "Switzerland", lat: 0, long: 10},
+  {name: "Syria", lat: 5, long: 67},
+  {name: "The Netherlands", lat: 55, long: -40},
+  {name: "Turkey", lat: 16, long: 67},
+  {name: "Unknown", lat:-50, long: -92},
+  {name: "Uruguay", lat: -28, long: -128},
+  {name: "USA", lat: 55, long: -148},
+  {name: "Wales", lat: 55, long: -92}
 ]
 
 const tabularData = [
@@ -1798,7 +1798,6 @@ d3.csv('./data/titanic.csv').then(
 
     clickForMore.on("mouseover", ()=>{clickForMoreRect.transition().duration(300).style("opacity", 0.3)})
     clickForMore.on("mouseout", ()=>{clickForMoreRect.transition().duration(300).style("opacity", 0.1)})
-
     clickForMore.on("click", ()=>{
 
         oneOfN.text((globalState+1) + " / " + globalTotalStates)
@@ -1847,7 +1846,7 @@ d3.csv('./data/titanic.csv').then(
             const globalScaleLat = d3.scaleLinear().domain([-90,90]).range([primaryContainerHeight,0])
             radius = 4
             let unitSize = radius*2
-
+            
             passengers
                 .transition()
                 .duration(1500)
