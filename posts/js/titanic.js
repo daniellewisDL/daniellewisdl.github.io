@@ -1839,7 +1839,7 @@ d3.csv('./data/titanic.csv').then(
             globalState += 1
         }
         else if (globalState == 1) {
-            console.log("Y")
+            
             subHeadlineTransition(subHeadlines[globalState])
 
             const globalScaleLong = d3.scaleLinear().domain([-180,180]).range([30,primaryContainerWidth+30])
@@ -1852,9 +1852,9 @@ d3.csv('./data/titanic.csv').then(
                 .duration(1500)
                     .attr("transform", (d,i) => {
                         let i_prime = passengerData.filter(item => item.kHometownCountry == d.kHometownCountry).findIndex(e => {return e.openmlid == d.openmlid})
-                        console.log(i_prime)
+                        
                         let initialX = globalScaleLong(countriesCentroids.filter(item=>item.name==d.kHometownCountry)[0].long)
-                        console.log(initialX)
+                        
                         let initialY = globalScaleLat(countriesCentroids.filter(item=>item.name==d.kHometownCountry)[0].lat)
                         let numUnitsWide = (d.kHometownCountry=="Ireland")?7:
                                            (d.kHometownCountry=="Norway")?6:
