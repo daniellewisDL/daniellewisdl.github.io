@@ -6,11 +6,13 @@ const secondaryContainerWidth = 1400-80
 const secondaryContainerHeight = 360
 const passengerDetailContainerWidth = 310
 const passengerDetailContainerHeight = 380
+const temperatureContainerHeight = 260
 const depthContainerHeight = 640
 const tertiaryContainerWidth = primaryContainerWidth
-const tertiaryContainerHeight = 985-400-10
+const tertiaryContainerHeight = 500
 const lifeboatsContainerWidth = primaryContainerWidth
 const lifeboatsContainerHeight = 400
+const creditsContainerHeight = 80
 const scaleFactor = window.innerWidth/width
 const yTranslateMe = (scaleFactor*height - height)/2
 const xTranslateMe = (scaleFactor*width - width)/2
@@ -72,23 +74,113 @@ passengerDetailContainer.append("rect").attr("class", "passengerDetailContainerR
 // passengerDetailContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", 0).attr("y2", 0).attr("x2", 0).attr("y2", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
 // passengerDetailContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", passengerDetailContainerWidth).attr("y2", 0).attr("x2", passengerDetailContainerWidth).attr("y2", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const depthContainer = svgFrontPage.append("g").attr("id", "depthContainer").attr("transform", `translate(${width-350},${615+secondaryContainerHeight+10})`)
-// depthContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", passengerDetailContainerWidth).attr("y1", 0).attr("x2", passengerDetailContainerWidth).attr("y2", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
-depthContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+const temperatureContainer = svgFrontPage.append("g").attr("id", "temperatureContainer").attr("transform", `translate(${width-350},${615+secondaryContainerHeight+10})`)
+temperatureContainer.append("rect").attr("class", "temperatureContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
+// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", passengerDetailContainerWidth).attr("y1", 0).attr("x2", passengerDetailContainerWidth).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", 10).attr("y1", temperatureContainerHeight).attr("x2", passengerDetailContainerWidth-10).attr("y2", temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+const depthContainer = svgFrontPage.append("g").attr("id", "depthContainer").attr("transform", `translate(${width-350},${615+secondaryContainerHeight+10+temperatureContainerHeight+10})`)
+// depthContainer.append("line").attr("class", "depthContainerRect").attr("x1", passengerDetailContainerWidth).attr("y1", 0).attr("x2", passengerDetailContainerWidth).attr("y2", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+depthContainer.append("rect").attr("class", "depthContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
 
 const tertiaryContainer = svgFrontPage.append("g").attr("id", "tertiaryContainer").attr("transform", `translate(40,${615+secondaryContainerHeight+lifeboatsContainerHeight+10+10})`)
 tertiaryContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", tertiaryContainerWidth).attr("height", tertiaryContainerHeight).attr("stroke", "black").attr("fill", "none")
+// tertiaryContainer.append("line").attr("class", "tertiaryContainerRect").attr("x1", 10).attr("y1", 0).attr("x2", tertiaryContainerWidth).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
 
 const lifeboatsContainer = svgFrontPage.append("g").attr("id", "lifeboatsContainer").attr("transform", `translate(${40},${615+secondaryContainerHeight+10})`)
-lifeboatsContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", lifeboatsContainerHeight).attr("stroke", "black").attr("fill", "none")
-// lifeboatsContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
-// lifeboatsContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", lifeboatsContainerWidth).attr("y1", 0).attr("x2", lifeboatsContainerWidth).attr("y2", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+lifeboatsContainer.append("rect").attr("class", "lifeboatsContainerrRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", lifeboatsContainerHeight).attr("stroke", "black").attr("fill", "none")
+// lifeboatsContainer.append("line").attr("class", "lifeboatsContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", depthContainerHeight+10+temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
+// lifeboatsContainer.append("line").attr("class", "lifeboatsContainerRect").attr("x1", lifeboatsContainerWidth).attr("y1", 0).attr("x2", lifeboatsContainerWidth).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
+
+const creditsGap = 220
+const creditsStart0 = 160
+const creditsStart1 = creditsStart0+175
+const creditsStart2 = creditsStart1+200
+const creditsStart3 = creditsStart2+215
+const creditsStart4 = creditsStart3+205
+const creditsStartY = 20
+const creditsGapY = 15
+const creditsContainer = svgFrontPage.append("g").attr("id", "creditsContainer").attr("transform", `translate(${40},${615+secondaryContainerHeight+10+temperatureContainerHeight+10+depthContainerHeight+10})`)
+creditsContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", width-80).attr("height", creditsContainerHeight).attr("stroke", "black").attr("fill", "none")
+// creditsContainer.append("line").attr("x1", 0).attr("y1", 0).attr("x2", width-80).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
+// creditsContainer.append("line").attr("x1", 0).attr("y1", creditsContainerHeight).attr("x2", width-80).attr("y2", creditsContainerHeight).attr("stroke", "black").attr("fill", "none")
+creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY).text("Sources of data").attr("font-size", "8pt").attr("font-weight", "bold")
+creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY+creditsGapY*1).text("and inspiration:").attr("font-size", "8pt").attr("font-weight", "bold")
+
+creditsContainer.append("a").attr("href", "https://en.wikipedia.org/wiki/Titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("Wikipedia - Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "http://www.titanicology.com/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart1).attr("y", creditsStartY).text("Titanicology").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "http://www.paullee.com/titanic/index.php").attr("target", "_blank")
+    .append("text").attr("x", creditsStart2).attr("y", creditsStartY).text("Paul Lee's Titanic Pages").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://api.openml.org/d/40945").attr("target", "_blank")
+    .append("text").attr("x", creditsStart3).attr("y", creditsStartY).text("Titanic Open ML dataset").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.kaggle.com/competitions/titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart4).attr("y", creditsStartY).text("Kaggle - Titanic Machine Learning").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+
+creditsContainer.append("a").attr("href", "https://www.encyclopedia-titanica.org/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*1).text("Encyclopedia Titanica").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.titanicinquiry.org/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart1).attr("y", creditsStartY+creditsGapY*1).text("Titanic Inquiry Project").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.datavis.ca/papers/titanic/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart2).attr("y", creditsStartY+creditsGapY*1).text("100+ Years of Titanic Graphs").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.ggarchives.com/OceanTravel/Titanic/index.html").attr("target", "_blank")
+    .append("text").attr("x", creditsStart3).attr("y", creditsStartY+creditsGapY*1).text("GG Archives Titanic Pages").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://archive.org/details/wrecksinkingofti00ever/page/n9/mode/2up").attr("target", "_blank")
+    .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*1).text("Wrecking and Sinking of the Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+
+creditsContainer.append("a").attr("href", "https://archive.nytimes.com/www.nytimes.com/learning/general/onthisday/big/0415.html").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*2).text("New York Times, April 1912").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.youtube.com/watch?v=GYLPq6m7jhk").attr("target", "_blank")
+    .append("text").attr("x", creditsStart1).attr("y", creditsStartY+creditsGapY*2).text("A Night To Remember (audio)").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://visual.ly/tag/titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart2).attr("y", creditsStartY+creditsGapY*2).text("Titanic Infographics: Visual.ly").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.youtube.com/watch?v=f-SA_DcRORU").attr("target", "_blank")
+    .append("text").attr("x", creditsStart3).attr("y", creditsStartY+creditsGapY*2).text("A Night To Remember (video)").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://earthlymission.com/5-amazing-titanic-infographics/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*2).text("Earthly Mission: Infographics").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+
+creditsContainer.append("a").attr("href", "https://www.britannica.com/topic/Titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*3).text("Britannica - Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.history.com/topics/early-20th-century-us/titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart1).attr("y", creditsStartY+creditsGapY*3).text("The History Channel: Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.nationalgeographic.org/education/titanic/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart2).attr("y", creditsStartY+creditsGapY*3).text("National Geographic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.imdb.com/title/tt0120338/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart3).attr("y", creditsStartY+creditsGapY*3).text("Titanic (1997 movie)").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.titanicbelfast.com/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*3).text("Titanic Belfast Museum").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+
+
+const lostTitanicImageList = [
+    "Launching_of_Titanic.jpg",
+    "lost-titanic.jpg",
+    "Smith_Titanic_bridge.jpg",
+    "Grand_Staircase.jpg",
+    "Cafe_verandah_titanic.png",
+    "Titanic_iceberg.jpg",
+    "Titanic_lifeboat.jpg",
+    "Carpathia_Deck.jpg",
+  ]
+const lostTitanicTextList = [
+   "Launching of Titanic in Belfast in May 1911.",
+   "RMS Titanic departing Southampton on April 10, 1912.",
+   "Capt. Smith, on Titanic's bridge. He went down with his ship.",
+   "Entrance Hall and Grand Staircase of the RMS Titanic",
+   "Titanic Starboard side Cafe Verandah",
+   "The iceberg that the Titanic struck on April 14, 1912.",
+   "Titanic lifeboat with survivors from the Titanic.",
+   "Recovered lifeboats on the Carpathia the next morning.",
+  ]
 
 const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", `translate(${width-350},85) scale(1,1)`)
-lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/lost-titanic.jpg").style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
+const lostTitanicImage = lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[0]).style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
 lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
-lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text("RMS Titanic departing Southampton on April 10, 1912.").attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold").style("font-family", "'Castoro', serif")
+const lostTitanicText = lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text(lostTitanicTextList[0]).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold").style("font-family", "'Castoro', serif")
 lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
+
+
 
 const firstLeftHeadlines = lostTitanic.append("g").attr("transform", "translate(250,15) scale (1.5,1.8)")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)
@@ -303,7 +395,7 @@ function setLifeboatContainer() {
     const transitionDuration = 500
     
     const lifeboatsContainerTitleGroup = lifeboatsContainer.append("g").attr("id", "lifeboatsContainerTitleGroup").attr("transform", "translate(950,0)")
-    const lifeboatsContainerTitle = lifeboatsContainerTitleGroup.append("text").attr("id", "lifeboatsContainerTitle").attr("x", 0).attr("y", lifeboatsContainerHeight-50).text("Lifeboats of the Titanic").attr("font-size", "18pt").attr("text-anchor", "end").attr("font-weight", "bold").attr("font-style", "normal")
+    const lifeboatsContainerTitle = lifeboatsContainerTitleGroup.append("text").attr("id", "lifeboatsContainerTitle").attr("x", 0).attr("y", lifeboatsContainerHeight-50).text("LIFEBOATS OF THE TITANIC").attr("font-size", "18pt").attr("text-anchor", "end").attr("font-weight", "bold").attr("font-style", "normal")
     const lifeboatsContainerSubTitle = lifeboatsContainerTitleGroup.append("text").attr("id", "lifeboatsContainerTitle").attr("x", 0).attr("y", lifeboatsContainerHeight-25).text("Many were saved, but lifeboat capacity was insufficient, and not all capacity was used").attr("font-size", "14pt").attr("text-anchor", "end").style("font-weight", "bold").style("font-family", "Castoro, serif")
 
     // Add liner path
@@ -366,7 +458,7 @@ function setLifeboatContainer() {
 
     // Add a 'hoveroverrect' and on hover, reduce opacity of static items and run lifeboat sequence
 
-    const lifeboatsHoverRect = lifeboatsContainer.append("rect").attr("id", "lifeboatsHoverRect").attr("x", 0).attr("y", 0).attr("width", lifeboatsContainerWidth).attr("height", lifeboatsContainerHeight).attr("fill", "red").style("opacity", 0).attr("stroke", "none").style("pointer-events", "all")
+    const lifeboatsHoverRect = lifeboatsContainer.append("rect").attr("id", "lifeboatsHoverRect").attr("x", 10).attr("y", 10).attr("width", lifeboatsContainerWidth-20).attr("height", lifeboatsContainerHeight-20).attr("fill", "red").style("opacity", 0).attr("stroke", "none").style("pointer-events", "all")
         .on("mouseover", function() {
             lifeboatsHoverRect.style("opacity", 0.1)
             lifeboats.transition().delay((d,i)=>(d.order-1)*transitionDuration).duration(1000).attr("transform", d => {
@@ -423,9 +515,9 @@ setTertiaryContainer()
 function setTertiaryContainer() {
 
 
-    const tertiaryContainerTitleGroup = tertiaryContainer.append("g").attr("id", "tertiaryContainerTitleGroup").attr("transform", "translate(20,400)")
-    const tertiaryContainerTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerTitle").attr("x", 0).attr("y", 0).text("Powering the Titanic").attr("font-size", "18pt").attr("text-anchor", "start").attr("font-weight", "bold").attr("font-style", "normal")
-    const tertiaryContainerSubTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerSubTitle").attr("x", 0).attr("y", 25).text("Three vast propellors were commanded by the Officer in Charge using Engine Order Telegraphs").attr("font-size", "14pt").attr("text-anchor", "start").style("font-weight", "bold").style("font-family", "Castoro, serif")
+    const tertiaryContainerTitleGroup = tertiaryContainer.append("g").attr("id", "tertiaryContainerTitleGroup").attr("transform", "translate(20,450)")
+    const tertiaryContainerTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerTitle").attr("x", 0).attr("y", 0).text("POWERING THE TITANIC").attr("font-size", "18pt").attr("text-anchor", "start").attr("font-weight", "bold").attr("font-style", "normal")
+    const tertiaryContainerSubTitle = tertiaryContainerTitleGroup.append("text").attr("id", "tertiaryContainerSubTitle").attr("x", 0).attr("y", 25).text("Three vast propellors were commanded by the Officer in Charge using Engine-Order Telegraphs").attr("font-size", "14pt").attr("text-anchor", "start").style("font-weight", "bold").style("font-family", "Castoro, serif")
 
 
     /////////////////////////////////////////////////
@@ -435,9 +527,9 @@ function setTertiaryContainer() {
     // wing props 23 ft 6
     // centre prop 17 ft
 
-    let centrePropsX = 320
-    let centrePropsY = 180
-    let centrePropsScale = 0.2 * 1
+    let centrePropsX = 680
+    let centrePropsY = 280
+    let centrePropsScale = 0.2
     let sidePropsOffset = 90
     let leftPropsX = - sidePropsOffset
     let leftPropsY = 0
@@ -445,15 +537,16 @@ function setTertiaryContainer() {
     let rightPropsY = 0
     let sidePropsScale = 23.5/17 * centrePropsScale
 
-    const propScale = 1.5
+    const propScale = 1.4
 
     const propellorBladeGroup = tertiaryContainer.append("g").attr("id", "propellorBladeGroup").attr("transform", `translate(${centrePropsX},${centrePropsY}) scale(${propScale})`)
 
     let currentRotation = 0
-    const propellorBladePath = "M 0 0 M 0 -15 C -50 -30 -50 -180 0 -180 C 50 -180 50 -30 0 -15 Z"
+    // const propellorBladePath2 = "M 0 0 M 0 -15 C -50 -30 -50 -180 0 -180 C 50 -180 50 -30 0 -15 Z"
     const backgroundTitanicPath = "M 0 0 M 0 120 L -100 120 C -400 120 -400 120 -400 -200 L 400 -200 C 400 120 400 120 100 120 Z"
+    const propellorBladePath = "M 0 0 M 0 -15 C -62 -34 -54 -29 -92 -60 C -116 -84 -130 -121 -87 -148 C -37 -176 18 -154 24 -77 C 25 -61 22 -46 0 -15 Z"
     const backgroundTitanicFill = propellorBladeGroup.append("path").attr("id", "backgroundTitanicFill").attr("d", backgroundTitanicPath).attr("fill", "gray").attr("stroke", "none").style("opacity", 0.4).attr("pointer-events", "all")
-            .attr("transform", `translate(${0},${0}) scale(${0.5})`)
+            .attr("transform", `translate(${0},${20}) scale(${0.5}, ${0.4})`)
 
     const propellorGroupCentre = propellorBladeGroup.append("g").attr("id", "propellorGroupCentre").attr("transform", `translate(${0},${0}) scale(${centrePropsScale})`)
     propellorGroupCentre.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 40).attr("fill", "black").attr("stroke", "none")
@@ -463,9 +556,9 @@ function setTertiaryContainer() {
 
     const propellorGroupLeft = propellorBladeGroup.append("g").attr("id", "propellorGroupLeft").attr("transform", `translate(${leftPropsX},${leftPropsY}) scale(${sidePropsScale})`)
     propellorGroupLeft.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 40).attr("fill", "black").attr("stroke", "none")
-    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none")
-    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(120)")
-    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(240)")
+    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "scale(-1,1)")
+    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(120) scale(-1,1)")
+    propellorGroupLeft.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(240) scale(-1,1)")
 
     const propellorGroupRight = propellorBladeGroup.append("g").attr("id", "propellorGroupRight").attr("transform", `translate(${rightPropsX},${rightPropsY}) scale(${sidePropsScale})`)
     propellorGroupRight.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 40).attr("fill", "black").attr("stroke", "none")
@@ -473,14 +566,34 @@ function setTertiaryContainer() {
     propellorGroupRight.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(120)")
     propellorGroupRight.append("path").attr("d", propellorBladePath).attr("fill", "black").attr("stroke", "none").attr("transform", "rotate(240)")
 
-    const manGroupToScale = propellorBladeGroup.append("g").attr("id", "manGroupToScale").attr("transform", `translate(${170},${0}) scale(${centrePropsScale})`)
+    const manGroupToScale = propellorBladeGroup.append("g").attr("id", "manGroupToScale").attr("transform", `translate(${-180},${47}) scale(${20})`)
+    const manPath2 = "M -1.8 -37.8 c -2.9 0.5 -5.4 2.2 -7 4.6 c -1.3 2 -1.9 4.3 -1.7 6.8 c 0.3 3.9 3 7.4 6.6 8.9 c 1.4 0.6 2.1 0.7 3.9 0.7 c 1.7 0 2.1 -0.1 3.4 -0.5 c 2.6 -0.8 5.2 -3.1 6.3 -5.6 c 1.2 -2.7 1.3 -5.8 0.1 -8.6 c -0.7 -1.7 -2.3 -3.7 -3.8 -4.7 c -2.3 -1.5 -5.2 -2.2 -7.8 -1.7 Z M -12.9 -14.4 c -0.1 0 -0.5 0.1 -0.9 0.1 c -1.1 0.2 -2.7 0.7 -3.7 1.3 c -3.9 2 -6.5 5.7 -7.3 10.2 c -0.1 0.6 -0.1 4.5 -0.1 18.1 l 0 17.4 l 0.2 0.7 c 0.7 2.2 3.1 3.5 5.5 3 c 1.6 -0.4 2.7 -1.3 3.3 -2.8 l 0.2 -0.6 l 0 -15.5 l 0 -15.5 l 1.1 0 l 1.1 0 l 0 41.5 l 0 41.5 l 0.2 0.6 c 0.6 1.7 1.5 2.8 2.9 3.5 c 1.9 0.9 3.9 0.9 5.9 0 c 1.5 -0.7 2.7 -2.2 3.1 -3.9 c 0.1 -0.4 0.1 -5.4 0.2 -24.7 l 0 -24.2 l 1.1 0 l 1.1 0 l 0 24.1 c 0 20.8 0 24.2 0.1 24.8 c 0.6 2.9 3.4 4.9 6.6 4.7 c 2.6 -0.2 4.6 -1.7 5.4 -4 l 0.3 -0.8 l 0 -41.5 l 0 -41.5 l 1.1 0 l 1.1 0 l 0.1 15.5 c 0 11 0.1 15.6 0.2 15.8 c 0.8 2 2.3 3.1 4.5 3.1 c 2.3 0 4.1 -1.6 4.5 -4 c 0.1 -0.6 0.1 -5.4 0.1 -17.7 c 0 -15.9 -0.1 -17 -0.2 -17.9 c -1.1 -5.7 -5 -9.9 -10.5 -11.3 l -1.1 -0.3 l -12.9 0 c -7.1 0 -13 0 -13 0 Z"
+    const manPath = "M -0.029 0.002 L -0.041 0.057 L -0.026 0.107 L 0.023 0.121 L 0.04 0.041 L 0.043 0.127 L 0.023 0.238 L 0.016 0.4 L -0.029 0.659 L -0.013 0.676 L -0.019 0.727 L -0.055 0.762 L -0.057 0.788 L 0.023 0.785 L 0.057 0.762 L 0.052 0.698 L 0.087 0.684 L 0.118 0.436 L 0.217 0.111 L 0.238 0.33 L 0.25 0.454 L 0.227 0.68 L 0.25 0.693 L 0.231 0.762 L 0.375 0.776 L 0.431 0.765 L 0.429 0.751 L 0.367 0.726 L 0.336 0.685 L 0.373 0.11 L 0.384 0.032 L 0.411 0.018 L 0.419 -0.057 L 0.436 0.016 L 0.462 0.021 L 0.487 0.06 L 0.467 0.091 L 0.525 0.096 L 0.546 0.035 L 0.512 -0.004 L 0.521 -0.009 L 0.443 -0.506 L 0.341 -0.568 L 0.314 -0.618 L 0.336 -0.641 L 0.328 -0.673 L 0.33 -0.705 L 0.32 -0.749 L 0.339 -0.783 L 0.314 -0.808 L 0.224 -0.802 L 0.155 -0.744 L 0.13 -0.67 L 0.141 -0.638 L 0.177 -0.64 L 0.199 -0.613 L 0.193 -0.585 L 0.186 -0.59 L 0.054 -0.515 L 0.004 -0.381 L -0.029 -0.183 Z"
     const propToManScale = 6 * 180 / 17
-    manGroupToScale.append("rect").attr("x", 0).attr("y", 0).attr("width", 20).attr("height", propToManScale).attr("fill", "black").attr("stroke", "none")
+    manGroupToScale.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").style("opacity", 0.5)
+    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0).text("Dry dock worker").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 0.8)
+    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0.5).text("for scale").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 0.8)
 
+    const propDataLeftX =  20
+    const propDataRightX = -150
+    const propellorGroupDataGroup = propellorBladeGroup.append("g").attr("id", "propellorGroupDataGroup").attr("transform", `translate(${0},${80}) scale(${1})`)
+    
+    propellorGroupDataGroup.append("text").text("Speed:").attr("transform", `translate(${propDataLeftX},${0})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace")
+    const knotsIndicator = propellorGroupDataGroup.append("text").text("0 knots").attr("transform", `translate(${propDataLeftX+40},${0})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    
+    propellorGroupDataGroup.append("text").text("Turbine:").attr("transform", `translate(${propDataRightX},${0})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace")
+    const turbineIndicator = propellorGroupDataGroup.append("text").text("Disengaged").attr("transform", `translate(${propDataRightX+55},${0})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    
+    propellorGroupDataGroup.append("text").text("RPM:").attr("transform", `translate(${propDataLeftX},${15})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace")
+    const rpmIndicator = propellorGroupDataGroup.append("text").text("0").attr("transform", `translate(${propDataLeftX+40},${15})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    
+    propellorGroupDataGroup.append("text").text("Order:").attr("transform", `translate(${propDataRightX},${15})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace")
+    const orderIndicator = propellorGroupDataGroup.append("text").text("Stop").attr("transform", `translate(${propDataRightX+55},${15})`).attr("fill", "black").attr("stroke", "none").attr("font-size", 10).attr("text-anchor", "start").attr("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    
     
 
     const backgroundTitanic = propellorBladeGroup.append("path").attr("id", "backgroundTitanic").attr("d", backgroundTitanicPath).attr("fill", "none").attr("stroke", "none").style("opacity", 0.5).attr("pointer-events", "all")
-        .attr("transform", `translate(${0},${0}) scale(${0.5})`)
+        .attr("transform", `translate(${0},${0}) scale(${0.1})`)
         // .on("mouseover", function() {
         //     centrePropAngleIncrement = 0.8
         //     sidePropAngleIncrement = 0.8
@@ -514,9 +627,9 @@ function setTertiaryContainer() {
         propellorGroupCentre.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${0},${0}) rotate(${centrePropAngle}) scale(${centrePropsScale})`)
         .on("end", rotatePropellor)
         propellorGroupLeft.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${leftPropsX},${leftPropsY}) rotate(${-sidePropAngle}) scale(${sidePropsScale})`)
-        .on("end", rotatePropellor2)
+        .on("end", rotatePropellor)
         propellorGroupRight.transition().ease(d3.easeLinear).duration(propellorDuration).attr("transform", `translate(${rightPropsX},${rightPropsY}) rotate(${sidePropAngle}) scale(${sidePropsScale})`)
-        .on("end", rotatePropellor2)
+        .on("end", rotatePropellor)
     }
 
     rotatePropellor()
@@ -525,26 +638,29 @@ function setTertiaryContainer() {
     // ENGINE ORDER TELEGRAPH
     ///////////////////////////////////
 
-    const telegraphX = 800
-    const telegraphY = 220
+    const telegraphX = 160
+    const telegraphY = 210
     const telegraphScale = 1.4
 
     const telegraphGroup = tertiaryContainer.append("g").attr("id", "telegraphGroup").attr("transform", `translate(${telegraphX},${telegraphY}) scale(${telegraphScale})`)
 
     telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 100).attr("fill", "red").attr("stroke", "black").attr("stroke-width", 2).style("opacity", 0.5)
     telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 93).attr("fill", "black").attr("stroke", "gray").attr("stroke-width", 2)
+    telegraphGroup.append("text").text("Titanic had three Engine-Order Telegraphs:").attr("x", -80).attr("y", 115).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    telegraphGroup.append("text").text(" - two on the main bridge").attr("x", -70).attr("y", 125).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    telegraphGroup.append("text").text(" - one on the aft docking bridge").attr("x", -70).attr("y", 135).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
 
-    const telegraphStates = [{name: "FULL", fullName: "Full Astern", direction: "Astern", speed: 1, sidePropAngleIncrement: -4, centrePropAngleIncrement: 0},
-                             {name: "HALF", fullName: "Half Astern", direction: "Astern", speed: 0.5, sidePropAngleIncrement: -2, centrePropAngleIncrement: 0},
-                             {name: "SLOW", fullName: "Slow Astern", direction: "Astern", speed: 0.25, sidePropAngleIncrement: -1, centrePropAngleIncrement: 0},
-                             {name: "DEAD", fullName: "Dead Slow Astern", direction: "Astern", speed: 0.1, sidePropAngleIncrement: -0.5, centrePropAngleIncrement: 0},
-                             {name: "STAND", fullName: "Stand By Astern", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
-                             {name: "STOP", fullName: "Stop", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
-                             {name: "STAND", fullName: "Stand By Ahead", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0},
-                             {name: "DEAD", fullName: "Dead Slow Ahead", direction: "Ahead", speed: 0.1, sidePropAngleIncrement: 0.5, centrePropAngleIncrement: 0},
-                             {name: "SLOW", fullName: "Slow Ahead", direction: "Ahead", speed: 0.25, sidePropAngleIncrement: 1, centrePropAngleIncrement: 0},
-                             {name: "HALF", fullName: "Half Ahead", direction: "Ahead", speed: 0.5, sidePropAngleIncrement: 2, centrePropAngleIncrement: 2},
-                             {name: "FULL", fullName: "Full Ahead", direction: "Ahead", speed: 1, sidePropAngleIncrement: 4, centrePropAngleIncrement: 4}]
+    const telegraphStates = [{name: "FULL", fullName: "Full Astern", direction: "Astern", speed: 1, sidePropAngleIncrement: -4, centrePropAngleIncrement: 0, knots: 18, rpm: 75, turbine: "Disengaged"},
+                             {name: "HALF", fullName: "Half Astern", direction: "Astern", speed: 0.5, sidePropAngleIncrement: -2, centrePropAngleIncrement: 0, knots: 13.4, rpm: 50, turbine: "Disengaged"},
+                             {name: "SLOW", fullName: "Slow Astern", direction: "Astern", speed: 0.25, sidePropAngleIncrement: -1, centrePropAngleIncrement: 0, knots: 8.7, rpm: 30, turbine: "Disengaged"},
+                             {name: "DEAD", fullName: "Dead Slow Astern", direction: "Astern", speed: 0.1, sidePropAngleIncrement: -0.5, centrePropAngleIncrement: 0, knots: 6.2, rpm: 20, turbine: "Disengaged"},
+                             {name: "STAND", fullName: "Stand By Astern", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0, knots: 0, rpm: 0, turbine: "Disengaged"},
+                             {name: "STOP", fullName: "Stop", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0, knots: 0, rpm: 0, turbine: "Disengaged"},
+                             {name: "STAND", fullName: "Stand By Ahead", direction: "Stop", speed: 0, sidePropAngleIncrement: 0, centrePropAngleIncrement: 0, knots: 0, rpm: 0, turbine: "Disengaged"},
+                             {name: "DEAD", fullName: "Dead Slow Ahead", direction: "Ahead", speed: 0.1, sidePropAngleIncrement: 0.5, centrePropAngleIncrement: 0, knots: 6.2, rpm: 20, turbine: "Disengaged"},
+                             {name: "SLOW", fullName: "Slow Ahead", direction: "Ahead", speed: 0.25, sidePropAngleIncrement: 1, centrePropAngleIncrement: 0, knots: 8.7, rpm: 30, turbine: "Disengaged"},
+                             {name: "HALF", fullName: "Half Ahead", direction: "Ahead", speed: 0.5, sidePropAngleIncrement: 2, centrePropAngleIncrement: 4, knots: 15.5, rpm: 50, turbine: "Engaged"},
+                             {name: "FULL", fullName: "Full Ahead", direction: "Ahead", speed: 1, sidePropAngleIncrement: 4, centrePropAngleIncrement: 8, knots: 22.5, rpm: 75, turbine: "Engaged"}]
 
     const telegraphStateGroup = telegraphGroup.append("g").attr("id", "telegraphStateGroup").attr("transform", `translate(${0},${0})`)
     const telegraphStateItems = telegraphStateGroup.selectAll("g").data(telegraphStates).enter().append("g").attr("id", (d,i) => `telegraphStateItem${i}`).attr("transform", `translate(${0},${0})`)
@@ -559,7 +675,18 @@ function setTertiaryContainer() {
             sidePropAngleIncrement = d.sidePropAngleIncrement
             centrePropAngleIncrement = d.centrePropAngleIncrement
             let index = telegraphStates.findIndex((element) => element.fullName==d.fullName)
-            eotSelectorGroup.attr("transform", `rotate(${(-Math.PI*0.8 + (index+0.5)*Math.PI*0.145)*180/Math.PI})`)
+            eotSelectorGroup.attr("transform", ()=>{ if (d.fullName=="Stop") return `rotate(0)`;
+            return `rotate(${(-Math.PI*0.8 + (index+0.5)*Math.PI*0.145)*180/Math.PI})`})
+            orderIndicator.text(d.fullName)
+            knotsIndicator.text(d.knots + " knots")
+            rpmIndicator.text(d.rpm)
+            turbineIndicator.text(d.turbine)
+            if (index<4||index>6) {
+                boilersIconGroup.selectAll("circle").transition().duration(1000).attr("fill", "red")
+                boilersIconGroup.selectAll("path").transition().duration(1000).attr("fill", "red")
+            }
+            // camLine1.transition().duration(1000).attr("y2", 105)
+            // camLine2.transition().duration(1000).attr("y2", 105)
         })
         .on("mouseout", function(e, d) {
             // d3.select(e.currentTarget).style("opacity", 1).attr("fill", "black")
@@ -568,6 +695,14 @@ function setTertiaryContainer() {
             sidePropAngleIncrement = 0
             centrePropAngleIncrement = 0
             eotSelectorGroup.attr("transform", `rotate(0)`)
+            orderIndicator.text("Stop")
+            knotsIndicator.text("0 knots")
+            rpmIndicator.text("0")
+            turbineIndicator.text("Disengaged")
+            boilersIconGroup.selectAll("circle").transition().duration(1000).attr("fill", "black")
+            boilersIconGroup.selectAll("path").transition().duration(1000).attr("fill", "black")
+            // camLine1.transition().duration(1000).attr("y2", 125)
+            // camLine2.transition().duration(1000).attr("y2", 125)
         })
     const telegraphStateItemsTextGroups = telegraphStateItems.append("g").attr("id", (d,i) => `telegraphStateItemTextGroup${i}`)
         .attr("transform", (d,i) => {
@@ -644,27 +779,160 @@ function setTertiaryContainer() {
         .style("pointer-events", "none")
 
     const eotSelectorGroup = telegraphGroup.append("g").attr("id", "eotSelectorGroup").attr("transform", `translate(${0},${0})`)
-    eotSelectorGroup.append("path").attr("fill", "white").style("opacity", 0.2).attr("pointer-events", "none")
+    eotSelectorGroup.append("path").attr("fill", "white").attr("stroke", "none").style("opacity", 0.2).attr("pointer-events", "none")
             .attr("d", "M 0 10 L 10 0 L 5 -43 L -5 -43 L -10 0 Z")
     eotSelectorGroup.append("path").attr("fill", "none").attr("stroke", "white").attr("stroke-width", 10).style("opacity", 0.4).attr("pointer-events", "none")
             .attr("d", d3.arc().innerRadius(48).outerRadius(95).startAngle(-Math.PI*0.8 + 5*Math.PI*0.145).endAngle(-Math.PI*0.8 + 6*Math.PI*0.145))
-    eotSelectorGroup.append("rect").attr("fill", "gray").attr("stroke", "none").style("opacity", 0.7).attr("pointer-events", "none")
-            .attr("x", -5).attr("y", -140).attr("width", 10).attr("height", 40)
+    eotSelectorGroup.append("rect").attr("fill", "gray").attr("stroke", "black").style("opacity", 0.7).attr("pointer-events", "none")
+            .attr("x", -5).attr("y", -130).attr("width", 10).attr("height", 30)
+    eotSelectorGroup.append("rect").attr("fill", "gray").attr("stroke", "black").style("opacity", 0.7).attr("pointer-events", "none")
+            .attr("x", -10).attr("y", -140).attr("width", 20).attr("height", 10)
+
+    ///////////////////////////////////
+    // BOILERS, ENGINES and MEN
+    ///////////////////////////////////
+
+    const boilersX = 340
+    const boilersY = 30
+    const boilersScale = 1
+
+    const smallArrowPath = "M 0 0 M -20 0 L -20 -5 L 10 -5 L 10 -10 L 20 0 L 10 10 L 10 5 L -20 5 Z"
+
+    const boilersGroup = tertiaryContainer.append("g").attr("id", "boilersGroup").attr("transform", `translate(${boilersX},${boilersY}) scale(${boilersScale})`)
+    boilersGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(0,85) scale(0.7,1)")
+
+    // boilersGroup.append("rect").attr("width", 550).attr("height", 150).attr("fill", "red").style("opacity", 0.5)
+    
+    // Order received in Engine Room by Chief Engineer, Senior Engineers x2 and Junior Engineers x3
+    const engineersGroup = boilersGroup.append("g").attr("id", "engineersGroup").attr("transform", `translate(${35},${0})`)
+    engineersGroup.append("text").attr("x", 30).attr("y", 0).text("Engineers in").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    engineersGroup.append("text").attr("x", 30).attr("y", 13).text("Engine Room").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    engineersGroup.append("text").attr("x", 30).attr("y", 26).text("receive orders").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // engineersGroup.append("text").attr("x", 30).attr("y", 39).text("and give to men").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    engineersGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(90,85) scale(0.7,1)")
+    
+    // engineersGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.5)
+    const engineerSize = 8
+    const engineerRadius = engineerSize / 3
+    const startPicY = 60
+    for (let i=0; i<3; i++) {
+        for (let j=0; j<i+1; j++) {
+            engineersGroup.append("rect").attr("x", 0 + j * (engineerSize+1)).attr("y", startPicY+3 + i * (engineerSize+14)).attr("width", engineerSize).attr("height", engineerSize).attr("rx", engineerRadius).attr("ry", engineerRadius).attr("fill", "#4b371c").style("opacity", 1)
+        }
+        engineersGroup.append("text").attr("x", 0).attr("y", startPicY + i * (engineerSize+14)).text(()=>i==0?"Chief Engineer":i==1?"Senior Eng.":"Junior Eng.").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    }
+
+    // Who in turn relay orders to the 48 firemen, 20 trimmers, and 5 leading fireman on duty each 4hr shift
+    const firemenGroup = boilersGroup.append("g").attr("id", "firemenGroup").attr("transform", `translate(${155},${0})`)
+    firemenGroup.append("text").attr("x", 30).attr("y", 0).text("73 men on duty").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    firemenGroup.append("text").attr("x", 30).attr("y", 13).text("each 4hr watch").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    firemenGroup.append("text").attr("x", 30).attr("y", 26).text("to work boilers").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // firemenGroup.append("text").attr("x", 30).attr("y", 39).text("firemen on duty").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    firemenGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(90,85) scale(0.7,1)")
+    
+    // firemenGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.5)
+    const firemanSize = (60 / 12) - 1
+    const firemanRadius = firemanSize / 3
+    const startPicYF = startPicY - 7
+    
+    // draw firemen
+    firemenGroup.append("text").attr("x", 0).attr("y", startPicYF).text("Firemen").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    for (let i=0; i<4; i++) {
+        for (let j=0; j<12; j++) {
+            firemenGroup.append("rect").attr("x", 0 + j * (firemanSize+1)).attr("y", startPicYF+3 + i * (firemanSize+1)).attr("width", firemanSize).attr("height", firemanSize).attr("rx", firemanRadius).attr("ry", firemanRadius).attr("fill", "#4b371c").style("opacity", 1)
+        }
+    }
+    // draw trimmers
+    const trimmerYOffset = startPicYF + 3 + 6.5*(firemanSize+1)
+    firemenGroup.append("text").attr("x", 0).attr("y", trimmerYOffset).text("Trimmers").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    for (let i=0; i<2; i++) {
+        for (let j=0; j<12; j++) {
+            firemenGroup.append("rect").attr("x", 0 + j * (firemanSize+1)).attr("y", trimmerYOffset + 3 + i * (firemanSize+1)).attr("width", firemanSize).attr("height", firemanSize).attr("rx", firemanRadius).attr("ry", firemanRadius).attr("fill", "#4b371c").style("opacity", 1)
+            if (i==1&&j==7) break;
+        }
+    }
+    // draw leading firemen
+    const leadingFiremanYOffset = startPicYF + 3 + 12*(firemanSize+1)
+    firemenGroup.append("text").attr("x", 0).attr("y", leadingFiremanYOffset).text("Leading Firemen").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    for (let i=0; i<5; i++) {
+        firemenGroup.append("rect").attr("x", 0 + i * (firemanSize+1)).attr("y", 3+ leadingFiremanYOffset).attr("width", firemanSize).attr("height", firemanSize).attr("rx", firemanRadius).attr("ry", firemanRadius).attr("fill", "#4b371c").style("opacity", 1)
+    }
+    
+    
+    // They do this by shovelling c.620 tonnes of coal per day, removing 100 tonnes of ash per day
+    const coalIconGroup = boilersGroup.append("g").attr("id", "coalIconGroup").attr("transform", `translate(${275},${0})`)
+    coalIconGroup.append("text").attr("x", 30).attr("y", 0).text("Shovelling over").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    coalIconGroup.append("text").attr("x", 30).attr("y", 13).text("600 tonnes of").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    coalIconGroup.append("text").attr("x", 30).attr("y", 26).text("coal per day").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // coalIconGroup.append("text").attr("x", 30).attr("y", 39).text("per day").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    coalIconGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(90,85) scale(0.7,1)")
+    const coalPath = "M 0 0 M -20 0 L -19 -1 L -17 -4 L -15 -9 L -5 -20 L 5 -19 L 10 0 L 15 10 L 10 15 L 0 18 L -5 15 L -10 15 L -15 12 Z"
+    // coalIconGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.5)
+    coalIconGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", "translate(35,85) scale(2.2)").style("opacity", 0.5)
+    coalIconGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", "translate(35,85) scale(2.1)").style("opacity", 0.5)
+    coalIconGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", "translate(35,85) scale(2.0)").style("opacity", 1)
+    coalIconGroup.append("text").text("600").attr("fill", "darkgray").attr("font-size", "20px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", "translate(30,85) scale(1)").style("opacity", 0.9)
+    coalIconGroup.append("text").text("tonnes / day").attr("fill", "DarkGrey").attr("font-size", "10px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", "translate(30,100) scale(1)").style("opacity", 0.9)
+    coalIconGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(208,85) scale(0.7,1)")
+    
 
 
+    // These men power the 29 boilers (5 single-enders and 24 double-enders 5,5,5,5,4) just above the tank top
+    const boilersIconGroup = boilersGroup.append("g").attr("id", "boilersIconGroup").attr("transform", `translate(${395},${0})`)
+    boilersIconGroup.append("text").attr("x", 30).attr("y", 0).text("29 boilers made").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    boilersIconGroup.append("text").attr("x", 30).attr("y", 13).text("steam for engines").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    boilersIconGroup.append("text").attr("x", 30).attr("y", 26).text("and electricity").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // boilersIconGroup.append("text").attr("x", 30).attr("y", 39).text("produce steam").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    
+    // boilersIconGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.5)
+    const boilerSize = 10
+    for (let i=0; i<6; i++) {
+        for (let j=0; j<5; j++) {
+            let cxToUse = 0 + (i)*(boilerSize+1)
+            let cyToUse = (i<5) ? 55 + (j+0.5)*(boilerSize+1) : 55 + (j+1)*(boilerSize+1)
+            if (i==5&&j==4) break;
+            if (i!=0) boilersIconGroup.append("circle").attr("cx", cxToUse).attr("cy", cyToUse).attr("r", boilerSize/2).attr("fill", "black");
+            else boilersIconGroup.append("path").attr("d", d3.arc().innerRadius(0).outerRadius(boilerSize/2).startAngle(0).endAngle(Math.PI))
+                    .attr("transform", `translate(${cxToUse},${cyToUse})`).attr("fill", "black");
+        }
+    }
+
+    // These 29 boilers power two reciprocating and one turbine engine, which drive the mighty propellors
+    const enginesIconGroup = boilersGroup.append("g").attr("id", "enginesIconGroup").attr("transform", `translate(${515},${0})`)
+    enginesIconGroup.append("text").attr("x", 30).attr("y", 0).text("Powering the").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    enginesIconGroup.append("text").attr("x", 30).attr("y", 13).text("engines that move").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    enginesIconGroup.append("text").attr("x", 30).attr("y", 26).text("RMS Titanic").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // enginesIconGroup.append("text").attr("x", 30).attr("y", 39).text("engines that move").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // enginesIconGroup.append("text").attr("x", 30).attr("y", 52).text("RMS Titanic").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // enginesIconGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.1)
+    const enginePath = "M -10 20 L -5 20 L -3 0 L -1 0 L -1 18 L 1 18 L 1 0 L 3 0 L 5 20 L 10 20 L 8 -6 L 6 -6 L 6 -20 L -6 -20 L -6 -6 L -8 -6 Z"
+    const enginePath2 = "M -10 20 L -5 20 L -3 0 L 3 0 L 5 20 L 10 20 L 8 -6 L 6 -6 L 6 -20 L -6 -20 L -6 -6 L -8 -6 Z"
+    enginesIconGroup.append("path").attr("d", enginePath2).attr("fill", "black").attr("transform", "translate(5,85) scale(1,1.5)")
+    const camLine1 = enginesIconGroup.append("line").attr("x1", 5).attr("y1", 85).attr("x2", 5).attr("y2", 120).attr("stroke", "black").attr("stroke-width", 2)
+    enginesIconGroup.append("path").attr("d", enginePath2).attr("fill", "black").attr("transform", "translate(50,85) scale(1,1.5)")
+    const camLine2 = enginesIconGroup.append("line").attr("x1", 50).attr("y1", 85).attr("x2", 50).attr("y2", 120).attr("stroke", "black").attr("stroke-width", 2)
+    const turbineStartY = 95
+    for (let i=0; i<10;i++){
+        enginesIconGroup.append("circle").attr("cx", 27.5).attr("cy", turbineStartY+i*2).attr("r", 10).attr("fill", "gray").attr("stroke", "black").style("opacity",0.3)
+        enginesIconGroup.append("circle").attr("cx", 27.5).attr("cy", turbineStartY+i*2).attr("r", 10).attr("fill", "none").attr("stroke", "black").style("opacity", 1)
+    }
+    const camLine3 = enginesIconGroup.append("line").attr("x1", 27.5).attr("y1", turbineStartY+15).attr("x2", 27.5).attr("y2", turbineStartY+35).attr("stroke", "black").attr("stroke-width", 2)
+
+    enginesIconGroup.append("rect").attr("x", 70).attr("y", 80).attr("width", 25).attr("height", 10).attr("fill", "red").style("opacity", 0.5)
+    enginesIconGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(90,110) rotate(90)")
 
 }
 
-let clockScale = d3.scaleLinear().domain([0,1]).range([-180,540])
 
 setDefaultSC()
 
 function setDefaultSC() {
-
-
+    
+    
     // CLOCK INFOGRAPHIC
-
+    
     let clockTimeLine = defaultSC.append("g").attr("id", "clockTimeLine").attr("transform", "translate(90,295) scale(2)")
+    let clockScale = d3.scaleLinear().domain([0,1]).range([-180,540])
 
     let clockArcGenerator = d3.arc()
 
@@ -715,43 +983,56 @@ function setDefaultSC() {
         .on("mouseover", (e,d)=>{
 
             // reduce opacity of all event rods
-            clockEvents.selectAll("circle").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
-            clockEvents.selectAll("line").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
+            clockEvents.selectAll("path").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
+            // clockEvents.selectAll("circle").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
+            // clockEvents.selectAll("line").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
             clockEventsKeyLabels.selectAll("text").style("opacity", 0)
 
             // raise opacity of hovered event rod
-            d3.select("#"+d.name).selectAll("circle").attr("fill", "red").style("opacity", 1)
-            d3.select("#"+d.name).selectAll("line").attr("stroke", "red").style("opacity", 1)
+            d3.select("#"+d.name).selectAll("path").attr("fill", "red").style("opacity", 1)
+            // d3.select("#"+d.name).selectAll("circle").attr("fill", "red").style("opacity", 1)
+            // d3.select("#"+d.name).selectAll("line").attr("stroke", "red").style("opacity", 1)
             d3.select("#nonKeyEventTime").text(d.realtime).style("opacity", 1)
             d3.select("#nonKeyEventlabel").text(d.narrative).style("opacity", 1)
             d3.select("#nonKeyEventline").style("opacity", 1)
 
+            
+            // clockTimeLineHeader.transition().duration(500).style("opacity", 0)
             clockTimeLineHeader.style("opacity", 0)
             
         })
         .on("mouseleave", (e,d)=>{
 
             // reset opacity of alll event rods
-            clockEvents.selectAll("line").attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
-            clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            clockEvents.selectAll("path").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            // clockEvents.selectAll("line").attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+            // clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
             clockEventsKeyLabels.selectAll("text").style("opacity", 1)
             d3.select("#nonKeyEventTime").style("opacity", 0)
             d3.select("#nonKeyEventlabel").style("opacity", 0)
             d3.select("#nonKeyEventline").style("opacity", 0)
             clockTimeLineHeader.style("opacity", 1)
         })
-        
-    clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0)
-                .attr("y2", (d)=>(d.key=="key"?100:90))
-                .attr("stroke-width", (d)=>(d.key=="key"?4:3))
-                .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
-                .attr("stroke", "black")
 
-    clockEvents.selectAll("g").append("circle").attr("cx", 0)
-                .attr("cy", (d)=>(d.key=="key"?100:90))
-                .attr("r", (d)=>(d.key=="key"?4:3))
-                .style("opacity", (d)=>(d.key=="key"?0.8:0.3))
-                .attr("fill", "black")
+    clockEvents.selectAll("g").append("path")
+                    .attr("d", d=>{
+                        return d.key=="key" ?
+                             "M 0 0 L -1 0 L -1 100 C -5 102.5 -5 102.5 0 105 C 5 102.5 5 102.5 1 100 L 1 0 L 0 0 Z" : 
+                             "M 0 0 L -1 0 L -1 90 C -5 92.5 -5 92.5 0 95 C 5 92.5 5 92.5 1 90 L 1 0 L 0 0 Z"
+                        })
+                    .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("fill", "black").attr("stroke", "none")
+
+    // clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0)
+    //             .attr("y2", (d)=>(d.key=="key"?100:90))
+    //             .attr("stroke-width", (d)=>(d.key=="key"?4:3))
+    //             .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
+    //             .attr("stroke", "black")
+
+    // clockEvents.selectAll("g").append("circle").attr("cx", 0)
+    //             .attr("cy", (d)=>(d.key=="key"?100:90))
+    //             .attr("r", (d)=>(d.key=="key"?4:3))
+    //             .style("opacity", (d)=>(d.key=="key"?0.8:0.3))
+    //             .attr("fill", "black")
                 // .style("opacity", 1)
 
 
@@ -780,7 +1061,7 @@ function setDefaultSC() {
 
     clockEventsKeyLabels.append("text").attr("id", "nonKeyEventTime").text("1:23am").attr("x", -40).attr("y", -130).attr("font-size", "8pt").attr("font-weight", "bold").style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
     clockEventsKeyLabels.append("text").attr("id", "nonKeyEventlabel").text("1:23am, TEST").attr("x", -40).attr("y", -120).attr("font-size", "8pt").style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
-    clockEventsKeyLabels.append("line").attr("id", "nonKeyEventline").attr("x1", -40).attr("y1", -115).attr("x2", 80).attr("y2", -115).attr("stroke", "red").style("stroke-width", 3).style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("line").attr("id", "nonKeyEventline").attr("x1", -40).attr("y1", -115).attr("x2", 120).attr("y2", -115).attr("stroke", "red").style("stroke-width", 3).style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
     // clockEventsKeyLabels.append("line").attr("id", "nonKeyEventline2").attr("x1", -40).attr("y1", -115).attr("x2", 40).attr("y2", -115).attr("stroke", "red").style("stroke-width", 1).style("opacity", 0).style("font-family", "'Roboto Mono', monospace")
 
 
@@ -1128,7 +1409,7 @@ setDefaultDepthContainer()
 
 function setDefaultDepthContainer() {
     const depthContainerTitleGroup = depthContainer.append("g").attr("id", "depthContainerTitleGroup")
-    const depthContainerTitle = depthContainerTitleGroup.append("text").attr("id", "depthContainerTitle").text("Coup de grace").attr("x", passengerDetailContainerWidth/2).attr("y", 40).attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+    const depthContainerTitle = depthContainerTitleGroup.append("text").attr("id", "depthContainerTitle").text("COUP DE GRACE").attr("x", passengerDetailContainerWidth/2).attr("y", 40).attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
     const depthContainerSubTitle = depthContainerTitleGroup.append("text").attr("id", "depthContainerTitle").text("Her fall to the ocean floor").attr("x", passengerDetailContainerWidth/2).attr("y", 60).attr("font-size", "10pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
 
     const depthScale = d3.scaleLinear().domain([0, 13000]).range([0, 500])
@@ -1395,7 +1676,7 @@ function redraw(newRoot) {
                 clickToRedrawText.style("opacity", 1)
                 clickToRedrawValue.style("opacity", 1).text(
                     (sequenceArray[1].data[0]=="Men" || sequenceArray[1].data[0]=="Women" || sequenceArray[1].data[0]=="Children") ? "Sex" :
-                        (sequenceArray[1].data[0]=="Lost" || sequenceArray[1].data[0]=="Survived") ? "Survivorship" : "Cabin class"
+                        (sequenceArray[1].data[0]=="Lost" || sequenceArray[1].data[0]=="Saved") ? "Survivorship" : "Cabin class"
                     )
             } else if (sequenceArray.length == 3) {
                 clickToRedrawRect.style("opacity", 0.3)
@@ -1553,6 +1834,9 @@ d3.csv('./data/titanic.csv').then(
                     .attr("width", radius*2)
                     .attr("height", radius*2)
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+                    
             globalState += 1
         }
         else if (globalState == 1) {
@@ -1612,7 +1896,10 @@ d3.csv('./data/titanic.csv').then(
                 .attr("width", radius*2)
                 .attr("height", radius*2)
 
-            globalState +=  1 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+            
+            globalState +=  1
         }
         
         else if (globalState == 2) {
@@ -1694,6 +1981,9 @@ d3.csv('./data/titanic.csv').then(
                     .attr("height", radius*2)
                     // .style("opacity", 0.7)
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+            
             globalState += 1
         }
         else if (globalState == 3) {
@@ -1762,6 +2052,9 @@ d3.csv('./data/titanic.csv').then(
                                 initialY + ")"
                     })
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+        
             globalState += 1
         }
         else if (globalState == 4) {
@@ -1866,6 +2159,9 @@ d3.csv('./data/titanic.csv').then(
                                 initialY + ")"
                     })
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+
             globalState += 1
         }
         else if (globalState == 5) {
@@ -1944,6 +2240,9 @@ d3.csv('./data/titanic.csv').then(
                                 initialY + ")"
                     })
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+            
             globalState += 1
         }
         else if (globalState == 6) {
@@ -1957,7 +2256,7 @@ d3.csv('./data/titanic.csv').then(
             survivorKey = primaryContainer.append("g").attr("id", "survivorKey").attr("transform", "translate(-300, 100)")
 
             let survivorKeyRadiusMult = 10
-            survivorKey.append("text").text("Survived").attr("x", 0).attr("y", 0).attr("dy", -radius*survivorKeyRadiusMult/2).style("font-size", "14px").style("alignment-baseline", "middle").style("font-style", "normal")
+            survivorKey.append("text").text("Saved").attr("x", 0).attr("y", 0).attr("dy", -radius*survivorKeyRadiusMult/2).style("font-size", "14px").style("alignment-baseline", "middle").style("font-style", "normal")
                         .style("vertical-align", "middle")
             survivorKey.append("text").text("Lost").attr("x", 0).attr("y", 5).attr("dy", radius*survivorKeyRadiusMult/2).style("font-size", "14px").style("alignment-baseline", "middle").style("font-style", "normal")
                         .style("vertical-align", "middle")
@@ -1971,6 +2270,8 @@ d3.csv('./data/titanic.csv').then(
                 .transition().duration(t)
                 .style("opacity", (d)=>(d.openmlsurvived == 1 ? 1 : 0.2))
 
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
             globalState += 1
         }
         else if (globalState == 7) {
@@ -1993,7 +2294,9 @@ d3.csv('./data/titanic.csv').then(
             redraw("cabinClass")
 
 
-            // globalState +=1
+            lostTitanicImage.attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[globalState])
+            lostTitanicText.text(lostTitanicTextList[globalState])
+
             globalState = 0
         }
         })
@@ -2127,7 +2430,7 @@ d3.csv('./data/titanic.csv').then(
         // PASSENGER SURVIVED INDICATOR
         let passengerSurvivedGroup = passengerSecondColumn.append("g").attr("id", "passengerSurvivedGroup").attr("transform", `translate(72,38)`)
         passengerSurvivedGroup.append("rect").attr("x", -60).attr("y", -20).attr("width", 120).attr("height", 25).attr("fill", (passenger.openmlsurvived==1)?"gray":"gray").attr("rx", 10).attr("ry", 10)
-        passengerSurvivedGroup.append("text").text((passenger.openmlsurvived==1)?"SURVIVED":"LOST").attr("text-anchor", "middle").attr("x", 0).attr("y", 0).style("font-size", "20px").style("font-weight", "normal").attr("fill", (passenger.openmlsurvived==1)?"white":"white").style("font-family", "'Roboto', sans-serif")
+        passengerSurvivedGroup.append("text").text((passenger.openmlsurvived==1)?"SAVED":"LOST").attr("text-anchor", "middle").attr("x", 0).attr("y", 0).style("font-size", "20px").style("font-weight", "normal").attr("fill", (passenger.openmlsurvived==1)?"white":"white").style("font-family", "'Roboto', sans-serif")
         
         // PASSENGER PORTRAIT WIDGET
         let passengerPortraitGroup = passengerSecondColumn.append("g").attr("id", "passengerPortraitGroup").attr("transform", `translate(40,55) scale(0.8)`)
