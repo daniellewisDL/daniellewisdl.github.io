@@ -1854,6 +1854,7 @@ d3.csv('./data/titanic.csv').then(
                         let i_prime = passengerData.filter(item => item.kHometownCountry == d.kHometownCountry).findIndex(e => {return e.openmlid == d.openmlid})
                         
                         let initialX = globalScaleLong(countriesCentroids.filter(item=>item.name==d.kHometownCountry)[0].long)
+                        console.log(initialX)
                         let initialY = globalScaleLat(countriesCentroids.filter(item=>item.name==d.kHometownCountry)[0].lat)
                         let numUnitsWide = (d.kHometownCountry=="Ireland")?7:
                                            (d.kHometownCountry=="Norway")?6:
