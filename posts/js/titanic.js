@@ -1,5 +1,5 @@
 const width = 1400
-const height = 2000
+const height = 2050
 const primaryContainerWidth = 1000
 const primaryContainerHeight = 480
 const secondaryContainerWidth = 1400-80
@@ -12,7 +12,7 @@ const tertiaryContainerWidth = primaryContainerWidth
 const tertiaryContainerHeight = 500
 const lifeboatsContainerWidth = primaryContainerWidth
 const lifeboatsContainerHeight = 400
-const creditsContainerHeight = 80
+const creditsContainerHeight = 90
 const scaleFactor = window.innerWidth/width
 const yTranslateMe = (scaleFactor*height - height)/2
 const xTranslateMe = (scaleFactor*width - width)/2
@@ -108,8 +108,8 @@ creditsContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", width-80
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY).text("Sources of data").attr("font-size", "8pt").attr("font-weight", "bold")
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY+creditsGapY*1).text("and inspiration:").attr("font-size", "8pt").attr("font-weight", "bold")
 
-creditsContainer.append("a").attr("href", "https://en.wikipedia.org/wiki/Titanic").attr("target", "_blank")
-    .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("Wikipedia - Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://archive.nytimes.com/www.nytimes.com/learning/general/onthisday/big/0415.html").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("New York Times, April 1912").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "http://www.titanicology.com/").attr("target", "_blank")
     .append("text").attr("x", creditsStart1).attr("y", creditsStartY).text("Titanicology").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "http://www.paullee.com/titanic/index.php").attr("target", "_blank")
@@ -130,8 +130,8 @@ creditsContainer.append("a").attr("href", "https://www.ggarchives.com/OceanTrave
 creditsContainer.append("a").attr("href", "https://archive.org/details/wrecksinkingofti00ever/page/n9/mode/2up").attr("target", "_blank")
     .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*1).text("Wrecking and Sinking of the Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 
-creditsContainer.append("a").attr("href", "https://archive.nytimes.com/www.nytimes.com/learning/general/onthisday/big/0415.html").attr("target", "_blank")
-    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*2).text("New York Times, April 1912").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://en.wikipedia.org/wiki/Titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*2).text("Wikipedia - Titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "https://www.youtube.com/watch?v=GYLPq6m7jhk").attr("target", "_blank")
     .append("text").attr("x", creditsStart1).attr("y", creditsStartY+creditsGapY*2).text("A Night To Remember (audio)").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "https://visual.ly/tag/titanic").attr("target", "_blank")
@@ -151,6 +151,17 @@ creditsContainer.append("a").attr("href", "https://www.imdb.com/title/tt0120338/
     .append("text").attr("x", creditsStart3).attr("y", creditsStartY+creditsGapY*3).text("Titanic (1997 movie)").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "https://www.titanicbelfast.com/").attr("target", "_blank")
     .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*3).text("Titanic Belfast Museum").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+
+creditsContainer.append("a").attr("href", "https://www.linerdesigns.com/titanic").attr("target", "_blank")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY+creditsGapY*4).text("Oceanliner Designs").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.titanichg.com/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart1).attr("y", creditsStartY+creditsGapY*4).text("Titanic: Honor and Glory").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.reddit.com/r/titanic/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart2).attr("y", creditsStartY+creditsGapY*4).text("Reddit r/titanic").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.thehistorypress.co.uk/titanic/").attr("target", "_blank")
+    .append("text").attr("x", creditsStart3).attr("y", creditsStartY+creditsGapY*4).text("History Press").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+creditsContainer.append("a").attr("href", "https://www.youtube.com/watch?v=HLrBUwNSEo0").attr("target", "_blank")
+    .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*4).text("Jared Owen Animations").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 
 
 const lostTitanicImageList = [
@@ -174,7 +185,7 @@ const lostTitanicTextList = [
    "Recovered lifeboats on the Carpathia the next morning.",
   ]
 
-const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", `translate(${width-350},85) scale(1,1)`)
+const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", `translate(${width-350+15},90) scale(.95,.95)`)
 const lostTitanicImage = lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[0]).style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
 lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
 const lostTitanicText = lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text(lostTitanicTextList[0]).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold").style("font-family", "'Castoro', serif")
@@ -184,15 +195,15 @@ lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y
 
 const firstLeftHeadlines = lostTitanic.append("g").attr("transform", "translate(250,15) scale (1.5,1.8)")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)
-firstLeftHeadlines.append("text").text("Col. Astor and Bride,").attr("x", 0).attr("y",0).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
-firstLeftHeadlines.append("text").text("Isidor Straus and Wife,").attr("x", 0).attr("y",7).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
-firstLeftHeadlines.append("text").text("and Maj. Butt Aboard.").attr("x", 0).attr("y",14).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("Col. Astor and Bride,").attr("x", 0).attr("y",0).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("Isidor Straus and Wife,").attr("x", 0).attr("y",7).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("and Maj. Butt Aboard.").attr("x", 0).attr("y",14).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 19).attr("y2", 19).attr("stroke", "black").style("stroke-width", 0.5)
-firstLeftHeadlines.append("text").text('"RULE OF SEA" FOLLOWED').attr("x", 0).attr("y",29).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", "scale(0.8,1)")
+firstLeftHeadlines.append("text").text('"RULE OF SEA" FOLLOWED').attr("x", 0).attr("y",29).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", "scale(0.8,1)")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 34).attr("y2", 34).attr("stroke", "black").style("stroke-width", 0.5)
-firstLeftHeadlines.append("text").text("Women and Children Put Over").attr("x", 0).attr("y",43).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
-firstLeftHeadlines.append("text").text("in Lifeboats and Are Supposed").attr("x", 0).attr("y",49).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
-firstLeftHeadlines.append("text").text("to be Safe on Carpathia.").attr("x", 0).attr("y",55).attr("text-anchor", "middle").attr("font-size", "4pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("Women and Children Put Over").attr("x", 0).attr("y",43).attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("in Lifeboats and Are Supposed").attr("x", 0).attr("y",49).attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
+firstLeftHeadlines.append("text").text("to be Safe on Carpathia.").attr("x", 0).attr("y",55).attr("text-anchor", "middle").attr("font-size", "3pt").attr("font-weight", "normal").style("font-family", "'Roboto', sans-serif")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", 61).attr("y2", 61).attr("stroke", "black").style("stroke-width", 0.5)
 
 
@@ -304,8 +315,10 @@ let defaultPD = passengerDetailContainer.append("g").attr("id", "defaultPD")
 
 let linerPath = "M 0 0 L -2 0 C -4 0 -5 -7 -5 -20 C -5 -52 -6 -38 -6 -65 C -6 -90 0 -100 0 -100 C 0 -100 6 -90 6 -65 C 6 -38 5 -52 5 -20 C 5 -7 4 0 2 0 Z"
 let lifeboatPath = "M 16.8 0 C 16.8 0 16.8 0 16.8 0 C 9.8 -4.2 4.2 -4.2 0 -4.2 C -4.2 -4.2 -9.8 -4.2 -16.8 0 C -9.8 4.2 -4.2 4.2 0 4.2 C 4.2 4.2 9.8 4.2 16.8 0 Z"
+const titanicPath = "M -37.8 -3 L -50.6 -3 L -43.9 9.2 L -1.2 9.1 L 43.9 9.1 L 47 5.5 L 46.4 -0 L 48.8 -3.1 L 38.4 -3.1 L 37.2 -2.4 L 31.7 -2.4 L 27.4 -6.7 L 17.7 -6.7 L 18.9 -12.8 L 15.9 -12.8 L 14.6 -6.7 L 4.3 -6.7 L 5.5 -12.8 L 2.4 -12.8 L 1.2 -6.7 L -8.5 -6.7 L -7.3 -12.8 L -10.4 -12.8 L -11.6 -6.7 L -22 -6.7 L -20.7 -12.8 L -23.8 -12.8 L -25 -6.7 L -28.1 -6.7 L -31.7 -2.4 L -36.6 -2.4 Z"
+const manPath = "M -0.029 0.002 L -0.041 0.057 L -0.026 0.107 L 0.023 0.121 L 0.04 0.041 L 0.043 0.127 L 0.023 0.238 L 0.016 0.4 L -0.029 0.659 L -0.013 0.676 L -0.019 0.727 L -0.055 0.762 L -0.057 0.788 L 0.023 0.785 L 0.057 0.762 L 0.052 0.698 L 0.087 0.684 L 0.118 0.436 L 0.217 0.111 L 0.238 0.33 L 0.25 0.454 L 0.227 0.68 L 0.25 0.693 L 0.231 0.762 L 0.375 0.776 L 0.431 0.765 L 0.429 0.751 L 0.367 0.726 L 0.336 0.685 L 0.373 0.11 L 0.384 0.032 L 0.411 0.018 L 0.419 -0.057 L 0.436 0.016 L 0.462 0.021 L 0.487 0.06 L 0.467 0.091 L 0.525 0.096 L 0.546 0.035 L 0.512 -0.004 L 0.521 -0.009 L 0.443 -0.506 L 0.341 -0.568 L 0.314 -0.618 L 0.336 -0.641 L 0.328 -0.673 L 0.33 -0.705 L 0.32 -0.749 L 0.339 -0.783 L 0.314 -0.808 L 0.224 -0.802 L 0.155 -0.744 L 0.13 -0.67 L 0.141 -0.638 L 0.177 -0.64 L 0.199 -0.613 L 0.193 -0.585 L 0.186 -0.59 L 0.054 -0.515 L 0.004 -0.381 L -0.029 -0.183 Z"
 
-                // {className: 'celtic', line: 'whiteStar', name: 'Celtic', length: 681, beam: 75.0, depth: 44, tonnage: 20904, horsePower: 12600, avSpeed: 17, yearBuilt: 1901, screw: "Twin Screw"},
+// {className: 'celtic', line: 'whiteStar', name: 'Celtic', length: 681, beam: 75.0, depth: 44, tonnage: 20904, horsePower: 12600, avSpeed: 17, yearBuilt: 1901, screw: "Twin Screw"},
                 // {className: 'oceanic', line: 'whiteStar', name: 'Oceanic', length: 685, beam: 68.5, depth: 44.5, tonnage: 17274, horsePower: 28000, avSpeed: 21, yearBuilt: 1899, screw: "Twin Screw"},
                     
 let linersList = [
@@ -355,8 +368,8 @@ let titanicTimeline = [
 
 
 let lifeboatData = [
-    {boat: '1', kaggleSurvivors: 5, launched: "1:05", wikiSurvivors: 12, capacity: 40, type: "Emergency", startingPos: {x: 670, y: 40}, endingPos: {x: 655, y: 80}, order: 5},
-    {boat: '2', kaggleSurvivors: 14, launched: "1:45", wikiSurvivors: 18, capacity: 40, type: "Emergency", startingPos: {x: 670, y: -40}, endingPos: {x: 655, y: -130}, order: 14},
+    {boat: '1', kaggleSurvivors: 5, launched: "1:05", wikiSurvivors: 12, capacity: 40, type: "Emergency", startingPos: {x: 670, y: 50}, endingPos: {x: 655, y: 80}, order: 5},
+    {boat: '2', kaggleSurvivors: 14, launched: "1:45", wikiSurvivors: 18, capacity: 40, type: "Emergency", startingPos: {x: 670, y: -50}, endingPos: {x: 655, y: -130}, order: 14},
     {boat: '3', kaggleSurvivors: 26, launched: "1:00", wikiSurvivors: 38, capacity: 65, type: "Standard", startingPos: {x: 635, y: 40}, endingPos: {x: 570, y: 80}, order: 3},
     {boat: '4', kaggleSurvivors: 31, launched: "1:50", wikiSurvivors: 42, capacity: 65, type: "Standard", startingPos: {x: 635, y: -40}, endingPos: {x: 570, y: -130}, order: 15},
     {boat: '5', kaggleSurvivors: 29, launched: "12:43", wikiSurvivors: 36, capacity: 65, type: "Standard", startingPos: {x: 600, y: 40}, endingPos: {x: 485, y: 80}, order: 2},
@@ -371,10 +384,10 @@ let lifeboatData = [
     {boat: '14', kaggleSurvivors: 33, launched: "1:30", wikiSurvivors: 58, capacity: 65, type: "Standard", startingPos: {x: 275, y: -35}, endingPos: {x: 275-170, y: -125}, order: 8},
     {boat: '15', kaggleSurvivors: 38, launched: "1:41", wikiSurvivors: 65, capacity: 65, type: "Standard", startingPos: {x: 240, y: 35}, endingPos: {x: 240-220, y: 75}, order: 13},
     {boat: '16', kaggleSurvivors: 23, launched: "1:20", wikiSurvivors: 40, capacity: 65, type: "Standard", startingPos: {x: 240, y: -35}, endingPos: {x: 240-220, y: -125}, order: 7},
-    {boat: 'A', kaggleSurvivors: 8, launched: "2:12", wikiSurvivors: 13, capacity: 47, type: "Collapsible", startingPos: {x: 670, y: 30}, endingPos: {x: 670+100, y: 70}, order: 20},
-    {boat: 'B', kaggleSurvivors: 9, launched: "2:12", wikiSurvivors: 30, capacity: 47, type: "Collapsible", startingPos: {x: 670, y: -30}, endingPos: {x: 670+100, y: -120}, order: 19},
-    {boat: 'C', kaggleSurvivors: 41, launched: "2:00", wikiSurvivors: 44, capacity: 47, type: "Collapsible", startingPos: {x: 650, y: 10}, endingPos: {x: 650+200, y: 50}, order: 17},
-    {boat: 'D', kaggleSurvivors: 18, launched: "2:05", wikiSurvivors: 25, capacity: 47, type: "Collapsible", startingPos: {x: 650, y: -10}, endingPos: {x: 650+200, y: -100}, order: 18}
+    {boat: 'A', kaggleSurvivors: 8, launched: "2:12", wikiSurvivors: 13, capacity: 47, type: "Collapsible", startingPos: {x: 670, y: 40}, endingPos: {x: 670+100, y: 70}, order: 20},
+    {boat: 'B', kaggleSurvivors: 9, launched: "2:12", wikiSurvivors: 30, capacity: 47, type: "Collapsible", startingPos: {x: 670, y: -40}, endingPos: {x: 670+100, y: -120}, order: 19},
+    {boat: 'C', kaggleSurvivors: 41, launched: "2:00", wikiSurvivors: 44, capacity: 47, type: "Collapsible", startingPos: {x: 650, y: 15}, endingPos: {x: 650+200, y: 50}, order: 17},
+    {boat: 'D', kaggleSurvivors: 18, launched: "2:05", wikiSurvivors: 25, capacity: 47, type: "Collapsible", startingPos: {x: 650, y: -15}, endingPos: {x: 650+200, y: -100}, order: 18}
 
 ]
 
@@ -387,6 +400,367 @@ Stern                   Bow
 16 14 12 10      8 6  4  2
 
 */
+
+
+let temperatureContainerState = 1
+const totalTemperatureContainerStates = 7
+
+const clickForMoreTemp = temperatureContainer.append("g").attr("id", "clickForMoreTemp").attr("transform", `translate(${passengerDetailContainerWidth-30}, ${temperatureContainerHeight-30})`).style("opacity", 1)
+// const clickForMoreTempText = clickForMoreTemp.append("text").attr("id", "clickForMoreTempText").attr("x", 0).attr("y", 0).text("Click for more").attr("font-size", "14pt").attr("text-anchor", "middle").attr("font-weight", "normal").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").style("opacity", 1)
+const clickForMoreTempArrow = clickForMoreTemp.append("path").attr("id", "clickForMoreTempArrow").attr("d", "M 5 0 L -5 -5 L -5 5 Z").attr("fill", "black").attr("stroke", "none").attr("transform", "translate(2, 1) scale(2)").style("opacity", 1)
+const clickForMoreTempRect = clickForMoreTemp.append("rect").attr("id", "clickForMoreTempRect").attr("x", -20).attr("y", -20).attr("rx", 10).attr("ry", 10).attr("width", 40).attr("height", 40).attr("fill", "black").attr("stroke", "none").style("opacity", .2)
+let oneOfNTemp = temperatureContainer.append("text").text(" 1 / "+ totalTemperatureContainerStates).attr("x", 10).attr("y", temperatureContainerHeight-10).style("font-style", "normal").style("font-size", "12px").attr("pointer-events", "none")
+
+setTemperatureContainer()
+
+function setTemperatureContainer() {
+
+    const temperatureContainerTitleGroup = temperatureContainer.append("g").attr("id", "temperatureContainerTitleGroup").attr("transform", `translate(${passengerDetailContainerWidth/2},20)`)
+    const temperatureContainerTitle = temperatureContainerTitleGroup.append("text").attr("id", "temperatureContainerTitle").attr("x", 0).attr("y", 0).text(" - Key details - ").attr("font-size", "9pt").attr("font-weight", "normal").attr("font-style", "normal").attr("text-anchor", "middle")
+    const temperatureContainerContentGroup = temperatureContainer.append("g").attr("id", "temperatureContainerContentGroup").attr("transform", `translate(${passengerDetailContainerWidth/2},${temperatureContainerHeight/2})`)
+    
+    function setWaterTempGroup() {
+
+        const thermoGroup = temperatureContainerContentGroup.append("g").attr("id", "thermoGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const thermoGroupTitle = thermoGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Ice cold seas").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const thermoGroupTextGroup = thermoGroup.append("g").attr("id", "thermoGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const thermoTextList1 = ["The night's water temperature would have been", "below freezing and so if in the water, survival", "beyond 30 minutes was, alas, unlikely."]
+        thermoTextList1.forEach((d,i)=> {
+            thermoGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+
+        const thermoPath = "M 0 13 C 0 13 2 13 2 11 C 2 9 1 9 1 9 L 1 -8 C 1 -9 -1 -9 -1 -8 L -1 9 C -1 9 -2 9 -2 11 C -2 13 0 13 0 13 Z"
+        const thermoGroupThermo = thermoGroup.append("g").attr("id", "thermoGroupThermo").attr("transform", "translate(0, 0)")
+        thermoGroupThermo.append("path").attr("d", thermoPath).attr("fill", "none").attr("stroke", "black").attr("stroke-width", 0.5).attr("transform", "translate(0,-28) scale(3.7)")
+        thermoGroupThermo.append("path").attr("d", thermoPath).attr("fill", "red").attr("stroke", "none").attr("stroke-width", 0.5).attr("transform", "translate(0,-10) scale(2)")
+        thermoGroupThermo.append("rect").attr("x", -16).attr("y", -65).attr("width", 32).attr("height", 90).attr("fill", "none").attr("stroke", "black").attr("stroke-width", 0.5*3.7)
+        for (let i=0;i<11;i++) {
+            thermoGroupThermo.append("line").attr("x1", -8).attr("y1", -50+i*5).attr("x2", -3).attr("y2", -50+i*5).attr("stroke", "black").attr("stroke-width", 0.5*3.7/2)
+            thermoGroupThermo.append("line").attr("x1", 3).attr("y1", -50+i*5).attr("x2", 8).attr("y2", -50+i*5).attr("stroke", "black").attr("stroke-width", 0.5*3.7/2)
+        }
+        thermoGroupThermo.append("text").text("-2 °C").attr("x", -120).attr("y", -10).attr("font-size", "26pt").attr("font-family", "'Castoro', serif").attr("font-weight", "bold")
+        thermoGroupThermo.append("text").text("28 °F").attr("x", 35).attr("y", -10).attr("font-size", "26pt").attr("font-family", "'Castoro', serif").attr("font-weight", "bold")
+
+    }
+
+    function setContructionGroup() {
+        const constructionGroup = temperatureContainerContentGroup.append("g").attr("id", "constructionGroup").attr("transform", "translate(0,0)").style("opacity", 1)
+        const constructionGroupTitle = constructionGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Construction").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const constructionGroupTextGroup = constructionGroup.append("g").attr("id", "constructionGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const constructionTextList1 = ["Built in Belfast, Ireland, the Titanic took 3", "years to build, cost $7.5m, and was the", "largest ship ever built."]
+        constructionTextList1.forEach((d,i)=> {
+            constructionGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+        constructionGroup.append("text").text("3").attr("x", -110).attr("y", -25).attr("font-size", "40pt").attr("font-weight", "bold").attr("text-anchor", "middle").attr("font-family", "'Roboto', sans-serif")
+        constructionGroup.append("text").text("million").attr("x", -93).attr("y", -52).attr("font-size", "10pt").attr("font-weight", "bold").attr("text-anchor", "start").attr("font-family", "'Roboto', sans-serif")
+        constructionGroup.append("text").text("rivets").attr("x", -93).attr("y", -37).attr("font-size", "10pt").attr("font-weight", "bold").attr("text-anchor", "start").attr("font-family", "'Roboto', sans-serif")
+        const rivetPath = "M 4 -4 C 4 -4 4 -4 4 -4 C 6 -2 4 1 2 -1 L -2 3 C -3 4 -4 3 -3 2 L 1 -2 C -1 -4 2 -6 4 -4 C 4 -4 4 -4 4 -4 Z"
+        constructionGroup.append("path").attr("d", rivetPath).attr("fill", "red").attr("transform", "translate(-45,-45) scale(3)")
+        constructionGroup.append("text").text("24,000").attr("x", 120).attr("y",-40).attr("font-size", "22pt").attr("font-weight", "bold").attr("text-anchor", "end").attr("font-family", "'Roboto', sans-serif")
+        constructionGroup.append("text").text("tonnes of steel").attr("x", 120).attr("y", -26).attr("font-size", "8pt").attr("font-weight", "bold").attr("text-anchor", "end").attr("font-family", "'Roboto', sans-serif")
+        const tonneWeightPath = "M 0 0 L -2 0 L -1 -1 L 1 -1 L 2 0 Z"
+        constructionGroup.append("path").attr("d", tonneWeightPath).attr("fill", "red").attr("stroke", "none").attr("transform", "translate(10, -30) scale(10,20)")
+        constructionGroup.append("text").text("3,000").attr("x", -65).attr("y", 5).attr("font-size", "18pt").attr("font-weight", "bold").attr("text-anchor", "start").attr("font-family", "'Roboto', sans-serif")
+        constructionGroup.append("text").text("Harland & Wolff workers").attr("x", -65).attr("y", 20).attr("font-size", "10pt").attr("font-weight", "bold").attr("text-anchor", "start").attr("font-family", "'Roboto', sans-serif")
+        constructionGroup.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").attr("transform", "translate(-83, 0) scale(25)")
+    }
+
+    function setFunnelGroup() {
+        const funnelGroup = temperatureContainerContentGroup.append("g").attr("id", "funnelGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const funnelGroupTitle = funnelGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Funnels").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const funnelGroupTextGroup = funnelGroup.append("g").attr("id", "funnelGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const funnelTextList1 = ["The Titanic had four funnels, but only three", "were functional. The fourth was added for", "aesthetic and venitlation purposes."]
+        funnelTextList1.forEach((d,i)=> {
+            funnelGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+        const titanicFunnels = funnelGroup.append("path").attr("d", titanicPath).attr("fill", "black").attr("transform", "translate(0,-5) scale(2, 2.3)").style("opacity", 0.5)
+        const smokePath = "M -0.0422 0.3677 C -0.5661 -0.0696 0.5118 0.3459 -0.0389 -0.2443 C -0.1834 -0.4276 0.287 -0.527 0.7539 -0.3556 C 0.908 -0.2819 0.0586 -0.3261 0.1833 -0.1446 C 0.3326 0.0994 -0.1461 0.1779 -0.001 0.2408 C 0.135 0.2929 -0.0461 0.2971 -0.0422 0.3677 Z"
+        const titanicSmoke1 = funnelGroup.append("path").attr("d", smokePath).attr("fill", "black").attr("transform", "translate(-41,-48) scale(25)").style("opacity", 0.5)
+        const titanicSmoke2 = funnelGroup.append("path").attr("d", smokePath).attr("fill", "black").attr("transform", "translate(-15,-48) scale(25)").style("opacity", 0.5)
+        const titanicSmoke3 = funnelGroup.append("path").attr("d", smokePath).attr("fill", "black").attr("transform", "translate(12,-48) scale(25)").style("opacity", 0.5)
+    }
+
+    function setIcebergGroup() {
+        const icebergGroup = temperatureContainerContentGroup.append("g").attr("id", "icebergGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const icebergGroupTitle = icebergGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Iceberg").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const icebergGroupTextGroup = icebergGroup.append("g").attr("id", "icebergGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const icebergTextList1 = ["9/10ths of the iceberg would have been below", "the waves, but it also rose above A Deck, and", "men played football with ice on deck."]
+        icebergTextList1.forEach((d,i)=> {
+            icebergGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+        const oceanPath = "M 0 0 C 0.1833 0 0.24 0.17 0.48 0 C 0.7 0 0.78 0.17 1 0 C 1.17 0 1.25 0.17 1.51 0 C 1.6733 0 1.77 0.19 2 0 C 2.1667 0 2.24 0.23 2.5 0 C 2.6667 0 2.71 0.22 3 0 C 3.18 0 3.29 0.22 3.54 0 C 3.6933 0 3.73 0.23 4 0 L 4 3 L 0 3 Z"
+        const icebergPath = "M 0 0 L 0.05 -0.07 L 0.14 -0.13 L 0.16 -0.19 L 0.21 -0.23 L 0.27 -0.19 L 0.3 -0.19 L 0.39 -0.23 L 0.43 -0.23 L 0.52 -0.38 L 0.55 -0.42 L 0.58 -0.52 L 0.6 -0.53 L 0.65 -0.51 L 0.73 -0.4 L 0.78 -0.3 L 0.86 -0.25 L 0.88 -0.23 L 1.05 -0.17 L 1.15 -0.18 L 1.18 -0.21 L 1.2 -0.21 L 1.23 -0.25 L 1.28 -0.23 L 1.31 -0.13 L 1.31 0 L 1.41 0.21 L 1.46 0.42 L 1.65 0.59 L 1.56 0.88 L 1.64 0.98 L 1.65 1.04 L 1.62 1.11 L 1.66 1.24 L 1.7 1.38 L 1.67 1.44 L 1.67 1.52 L 1.63 1.63 L 1.66 1.79 L 1.57 1.86 L 1.61 2 L 1.57 2.12 L 1.61 2.27 L 1.57 2.37 L 1.46 2.47 L 1.48 2.56 L 1.53 2.64 L 1.49 2.7 L 1.5 2.85 L 1.44 2.92 L 1.46 3.03 L 1.38 3.12 L 1.41 3.17 L 1.39 3.33 L 1.35 3.41 L 1.35 3.52 L 1.3 3.67 L 1.3 3.76 L 1.27 3.88 L 1.31 3.98 L 1.4 4.04 L 1.37 4.17 L 1.32 4.31 L 1.36 4.49 L 1.34 4.63 L 1.27 4.84 L 1.26 5.03 L 1.21 5.29 L 1.27 5.46 L 1.16 5.57 L 1.02 5.53 L 0.98 5.46 L 0.93 5.51 L 0.87 5.46 L 0.72 5.51 L 0.61 5.55 L 0.51 5.41 L 0.36 5.34 L 0.27 5.19 L 0.34 5.04 L 0.36 4.94 L 0.42 4.82 L 0.38 4.75 L 0.27 4.66 L 0.31 4.52 L 0.2 4.44 L 0.1 4.35 L 0.02 4.22 L -0.12 4.11 L -0.07 4.05 L -0.1 3.99 L -0.15 3.95 L -0.12 3.86 L -0.19 3.82 L -0.26 3.71 L -0.19 3.58 L -0.26 3.47 L -0.31 3.39 L -0.24 3.27 L -0.26 3.04 L -0.41 2.95 L -0.4 2.82 L -0.37 2.78 L -0.28 2.66 L -0.33 2.52 L -0.36 2.35 L -0.38 2.27 L -0.54 2.07 L -0.49 1.86 L -0.37 1.78 L -0.32 1.64 L -0.35 1.52 L -0.37 1.36 L -0.42 1.14 L -0.36 0.98 L -0.35 0.97 L -0.24 0.72 L -0.28 0.68 L -0.28 0.54 L -0.28 0.38 L -0.22 0.25 L -0.17 0.08 L -0.1 0.06 Z"
+        const titanicHeadOnPath = "M 0 0 C 0 0.17 0 0.17 0.24 0.17 C 0.48 0.17 0.48 0.17 0.48 0 L 0.48 -0.26 L 0.49 -0.26 L 0.49 -0.31 L 0.54 -0.34 L 0.49 -0.34 L 0.52 -0.39 L 0.48 -0.37 L 0.44 -0.37 L 0.44 -0.39 L 0.37 -0.39 L 0.37 -0.41 L 0.33 -0.41 L 0.33 -0.43 L 0.3 -0.43 L 0.3 -0.67 L 0.2 -0.67 L 0.2 -0.43 L 0.17 -0.43 L 0.17 -0.41 L 0.13 -0.41 L 0.13 -0.39 L 0.06 -0.39 L 0.06 -0.37 L 0.02 -0.37 L -0.03 -0.39 L 0 -0.35 L -0.06 -0.35 L -0.01 -0.32 L -0.01 -0.27 L 0 -0.27 L 0 -0.25 Z"
+        icebergGroup.append("path").attr("d", oceanPath).attr("fill", "red").attr("stroke", "none").attr("transform", "translate(-100, -50) scale(50,25)").style("opacity", 0.5)
+        icebergGroup.append("path").attr("d", icebergPath).attr("fill", "black").attr("stroke", "none").attr("transform", "translate(-20, -50) scale(12)").style("opacity", 0.5)
+        icebergGroup.append("path").attr("d", titanicHeadOnPath).attr("fill", "black").attr("stroke", "none").attr("transform", "translate(0, -48) scale(15)").style("opacity", 0.8)
+    }
+
+    function setCQDGroup() {
+        const cqGroup = temperatureContainerContentGroup.append("g").attr("id", "cqGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const cqGroupTitle = cqGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Distress calls").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const cqGroupTextGroup = cqGroup.append("g").attr("id", "cqGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const cqTextList1 = ["Titanic alternated betweeen the Morse Code",
+                             "distress calls CQD and the newer SOS. 'CQ'",
+                             "comes from the French 'sécurité'."]
+        cqTextList1.forEach((d,i)=> {
+            cqGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+
+        const cqMorseGroup = cqGroup.append("g").attr("id", "cqMorseGroup").attr("transform", "translate(0, 0) scale(0.8)")
+        const textColor = "red"
+        const morseColor = "black"
+        cqMorseGroup.append("text").text("C Q D").attr("x", -80).attr("y", -25).attr("font-size", "28pt").attr("font-weight", "bold").attr("text-anchor", "middle").attr("fill", textColor)
+        cqMorseGroup.append("text").text("S O S").attr("x", 80).attr("y", -25).attr("font-size", "28pt").attr("font-weight", "bold").attr("text-anchor", "middle").attr("fill", textColor)
+        for(let i=0;i<3;i++) {
+            cqMorseGroup.append("circle").attr("cx", 30+i*10).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+            cqMorseGroup.append("rect").attr("x", 66+i*10).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+            cqMorseGroup.append("circle").attr("cx", 110+i*10).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+        }
+        // C:  -.-.
+        const cStart = -145
+        cqMorseGroup.append("rect").attr("x", cStart).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        cqMorseGroup.append("circle").attr("cx", cStart+10+4).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+        cqMorseGroup.append("rect").attr("x", cStart+10+10).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        cqMorseGroup.append("circle").attr("cx", cStart+10+10+10+4).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+        // Q: --.-
+        const qStart = -97
+        cqMorseGroup.append("rect").attr("x", qStart).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        cqMorseGroup.append("rect").attr("x", qStart+10).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        cqMorseGroup.append("circle").attr("cx", qStart+10+10+4).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+        cqMorseGroup.append("rect").attr("x", qStart+10+10+10).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        
+        // D: -..
+        const dStart = -50
+        cqMorseGroup.append("rect").attr("x", dStart).attr("y", 0).attr("width", 8).attr("height", 4).attr("fill", morseColor)
+        cqMorseGroup.append("circle").attr("cx", dStart+10+4).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+        cqMorseGroup.append("circle").attr("cx", dStart+10+10+4).attr("cy", 0).attr("r", 4).attr("fill", morseColor)
+
+
+    }
+    
+    function setCoalAndAshGroup() {
+        const coalAndAshGroup = temperatureContainerContentGroup.append("g").attr("id", "coalAndAshGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const coalAndAshGroupTitle = coalAndAshGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Coal and ash").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const coalAndAshGroupTextGroup = coalAndAshGroup.append("g").attr("id", "coalAndAshGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const coalAndAshTextList1 = ["Titanic burned 600 tonnes of coal each day,", "creating 100 tonnes of ash which the Engine", "Room men had to eject into the sea."]
+        coalAndAshTextList1.forEach((d,i)=> {
+            coalAndAshGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+        const coalPath = "M 0 0 M -20 0 L -19 -1 L -17 -4 L -15 -9 L -5 -20 L 5 -19 L 10 0 L 15 10 L 10 15 L 0 18 L -5 15 L -10 15 L -15 12 Z"
+        const smallArrowPath = "M 0 0 M -20 0 L -20 -5 L 10 -5 L 10 -10 L 20 0 L 10 10 L 10 5 L -20 5 Z"
+        const ashPath = "M 0 0 C 0.09 -0.14 0.16 -0.18 0.22 -0.2 C 0.31 -0.15 0.32 -0.07 0.43 0 Z"
+        const oceanPath = "M 0 0 C 0.1833 0 0.24 0.17 0.48 0 C 0.7 0 0.78 0.17 1 0 C 1.17 0 1.25 0.17 1.51 0 C 1.6733 0 1.77 0.19 2 0 C 2.1667 0 2.24 0.23 2.5 0 C 2.6667 0 2.71 0.22 3 0 C 3.18 0 3.29 0.22 3.54 0 C 3.6933 0 3.73 0.23 4 0 L 4 3 L 0 3 Z"
+        const coalStartX = -95
+        const coalStartY = -20
+        coalAndAshGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", `translate(${coalStartX},${coalStartY}) scale(2.2)`).style("opacity", 0.5)
+        coalAndAshGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", `translate(${coalStartX},${coalStartY}) scale(2.1)`).style("opacity", 0.5)
+        coalAndAshGroup.append("path").attr("d", coalPath).attr("fill", "black").attr("transform", `translate(${coalStartX},${coalStartY}) scale(2.0)`).style("opacity", 1)
+        coalAndAshGroup.append("text").text("600").attr("fill", "darkgray").attr("font-size", "20px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", `translate(${coalStartX-5},${coalStartY}) scale(1)`).style("opacity", 0.9)
+        coalAndAshGroup.append("text").text("tonnes / day").attr("fill", "DarkGrey").attr("font-size", "10px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", `translate(${coalStartX-5},${coalStartY+15}) scale(1)`).style("opacity", 0.9)
+        coalAndAshGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(-45,-20) scale(0.7,1)")
+        coalAndAshGroup.append("path").attr("d", ashPath).attr("fill", "gray").style("opacity", 0.8).attr("transform", "translate(-25,5) scale(150,280)")
+        coalAndAshGroup.append("path").attr("d", ashPath).attr("fill", "gray").style("opacity", 0.6).attr("transform", "translate(-32,5) scale(180,310)")
+        coalAndAshGroup.append("text").text("100t").attr("fill", "black").attr("font-size", "20px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif").attr("transform", `translate(${5},${coalStartY+15}) scale(1)`).style("opacity", 0.9)
+        coalAndAshGroup.append("path").attr("d", smallArrowPath).attr("fill", "red").style("opacity", 0.5).attr("transform", "translate(50,-20) scale(0.7,1)")
+        coalAndAshGroup.append("path").attr("d", oceanPath).attr("fill", "red").attr("stroke", "none").attr("transform", "translate(80, -40) scale(10,15)").style("opacity", 0.5)
+    }
+
+    function setTitanicAnchorGroup() {
+        const titanicAnchorGroup = temperatureContainerContentGroup.append("g").attr("id", "titanicAnchorGroup").attr("transform", "translate(0,0)").style("opacity", 0)
+        const titanicAnchorGroupTitle = titanicAnchorGroup.append("text").attr("id", "temperatureContainerSubTitle").attr("x", 0).attr("y", -85).text("Anchors & chains").attr("font-size", "18pt").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal")
+        const titanicAnchorGroupTextGroup = titanicAnchorGroup.append("g").attr("id", "titanicAnchorGroupTextGroup").attr("transform", "translate(-135, 45)")
+        const titanicAnchorTextList1 = ["The Titanic had five anchors: the main, centre", "anchor weighed 15 tonnes and was 18ft long.", "1,200ft of chain serviced the five anchors."]
+        titanicAnchorTextList1.forEach((d,i)=> {
+            titanicAnchorGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        })
+        const anchorPath = "M 0 0 L 0.1 -0.01 C 0.11 -0.11 0.19 -0.09 0.26 -0.11 L 0.26 -0.13 C 0.2267 -0.14 0.1933 -0.15 0.16 -0.16 C 0.16 -0.22 0.22 -0.27 0.22 -0.34 L 0.25 -0.34 C 0.25 -0.41 0.21 -0.46 0.18 -0.48 C 0.15 -0.46 0.11 -0.41 0.11 -0.34 L 0.14 -0.34 C 0.14 -0.27 0.09 -0.2 0.03 -0.2 L 0.03 -0.82 L 0.05 -0.82 L 0.05 -1 L -0.05 -1 L -0.05 -0.82 L -0.03 -0.82 L -0.03 -0.2 C -0.09 -0.2 -0.14 -0.27 -0.14 -0.34 L -0.11 -0.34 C -0.11 -0.41 -0.15 -0.46 -0.18 -0.48 C -0.21 -0.46 -0.25 -0.41 -0.25 -0.34 L -0.22 -0.34 C -0.22 -0.27 -0.16 -0.22 -0.16 -0.16 C -0.1933 -0.15 -0.2267 -0.14 -0.26 -0.13 L -0.26 -0.11 C -0.19 -0.09 -0.11 -0.11 -0.1 -0.01 Z"
+        titanicAnchorGroup.append("path").attr("d", anchorPath).attr("fill", "black").attr("stroke", "none").attr("transform", "translate(-80, 25) scale(100)").style("opacity", 0.5)
+        titanicAnchorGroup.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").attr("transform", "translate(-120, 10) scale(20)").style("opacity", 0.5)
+        // Add the 1200 feet of chains
+        const chainFlatPath = "M 0 0 C 0 -0.37 1 -0.37 1 0 C 1 0.37 0 0.37 0 0 M 0.43 0 L 0.43 -0.18 C 0.3 -0.18 0.12 -0.12 0.12 0 C 0.12 0.12 0.3 0.18 0.43 0.18 Z M 0.55 0 L 0.55 0.18 C 0.69 0.18 0.88 0.12 0.88 0 C 0.88 -0.12 0.69 -0.18 0.55 -0.18 Z"
+        const chainEdgePath = "M 0 0 C 0 -0.08 0 -0.08 0.5 -0.08 C 1 -0.08 1 -0.08 1 0 C 1 0.08 1 0.08 0.5 0.08 C 0 0.08 0 0.08 0 0 Z"
+        const chainStartX = -80
+        const chainStartY = -67
+        const chainXGap = 10
+        const chainYGap = 7
+        const chainOpacity = 0.5
+        const chainData = Array.apply(null, Array(654)).map(function (y, i) { return i; });
+        const chainGroup = titanicAnchorGroup.append("g").attr("id", "chainGroup").attr("transform", "translate(0,0)")
+        const chainLinks = chainGroup.selectAll("g").data(chainData).enter().append("g").attr("transform", `translate(${chainStartX},${chainStartY})`)
+        chainLinks.append("path").attr("d", (d,i)=>i%2==1?chainFlatPath:chainEdgePath).attr("fill", "black").style("opacity", chainOpacity).attr("transform", `scale(15)`)
+
+    }
+
+    setWaterTempGroup()
+    setContructionGroup()
+    setFunnelGroup()
+    setIcebergGroup()
+    setCQDGroup()
+    setCoalAndAshGroup()
+    setTitanicAnchorGroup()
+
+    clickForMoreTemp.on("mouseover", () => {clickForMoreTempRect.transition().duration(300).style("opacity", 0.6)})
+    clickForMoreTemp.on("mouseout", () => {clickForMoreTempRect.transition().duration(300).style("opacity", 0.2)})
+    clickForMoreTemp.on("click", () => {
+        
+        oneOfNTemp.text((temperatureContainerState+1) + " / " + totalTemperatureContainerStates)
+
+        if (temperatureContainerState == 0) {
+            d3.select("#thermoGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#constructionGroup").transition().duration(1000).style("opacity", 1)
+            // d3.select("#constructionGroup").style("opacity", 1)
+            temperatureContainerState = 1
+        }
+        else if (temperatureContainerState == 1) {
+            d3.select("#constructionGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#funnelGroup").transition().duration(1000).style("opacity", 1)
+            // d3.select("#funnelGroup").style("opacity", 1)
+            temperatureContainerState = 2
+        }
+        else if (temperatureContainerState == 2) {
+            d3.select("#funnelGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#coalAndAshGroup").transition().duration(1000).style("opacity", 1)
+            // d3.select("#coalAndAshGroup").style("opacity", 1)
+            temperatureContainerState = 3
+        }
+        else if (temperatureContainerState == 3) {
+            d3.select("#coalAndAshGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#chainGroup").selectAll("g").style("opacity", 1)
+            d3.select("#titanicAnchorGroup").transition().duration(1000).style("opacity", 1)
+            const chainStartX = -80
+            const chainStartY = -67
+            const chainXGap = 10
+            const chainYGap = 7
+            d3.select("#chainGroup").selectAll("g").transition().duration((d,i)=>i*5).ease(d3.easeBounce)
+                .attr("transform", (d,i)=>{
+                    if (i<20) {
+                        return `translate(${chainStartX+i*chainXGap},${chainStartY})`
+                    }
+                    else if (i==20) {
+                        return `translate(${chainStartX+20*chainXGap},${chainStartY}) rotate(45)`
+                    }
+                    else if (i==21) {
+                        return `translate(${chainStartX+20*chainXGap+1},${chainStartY+chainYGap*2+2}) rotate(-45)`
+                    }
+                    else if (i<38) {
+                        return `translate(${chainStartX+(41-i)*chainXGap},${chainStartY+chainYGap*2})`
+                    }
+                    else if (i==38) {
+                        return `translate(${chainStartX+3*chainXGap+4},${chainStartY+chainYGap*3+2}) rotate(-45)`
+                    }
+                    else if (i==39) {
+                        return `translate(${chainStartX+3*chainXGap+3},${chainStartY+chainYGap*3-1}) rotate(45)`
+                    }
+                    else if (i<56) {
+                        return `translate(${chainStartX+(4+i-40)*chainXGap},${chainStartY+chainYGap*4})`
+                    }
+                    else if (i==56) {
+                        return `translate(${chainStartX+20*chainXGap},${chainStartY+chainYGap*4}) rotate(45)`
+                    }
+                    else if (i==57) {
+                        return `translate(${chainStartX+20*chainXGap+1},${chainStartY+chainYGap*6+2}) rotate(-45)`
+                    }
+                    else if (i<74) {
+                        return `translate(${chainStartX+(77-i)*chainXGap},${chainStartY+chainYGap*6})`
+                    }
+                    else if (i==74) {
+                        return `translate(${chainStartX+3*chainXGap+4},${chainStartY+chainYGap*7+2}) rotate(-45)`
+                    }
+                    else if (i==75) {
+                        return `translate(${chainStartX+3*chainXGap+3},${chainStartY+chainYGap*7-1}) rotate(45)`
+                    }
+                    else if (i<92) {
+                        return `translate(${chainStartX+(4+i-76)*chainXGap},${chainStartY+chainYGap*8})`
+                    }
+                    else if (i==92) {
+                        return `translate(${chainStartX+20*chainXGap},${chainStartY+chainYGap*8}) rotate(45)`
+                    }
+                    else if (i==93) {
+                        return `translate(${chainStartX+20*chainXGap+1},${chainStartY+chainYGap*10+2}) rotate(-45)`
+                    }
+                    else if (i<110) {
+                        return `translate(${chainStartX+(113-i)*chainXGap},${chainStartY+chainYGap*10})`
+                    }
+                    else if (i==110) {
+                        return `translate(${chainStartX+3*chainXGap+4},${chainStartY+chainYGap*11+2}) rotate(-45)`
+                    }
+                    else if (i==111) {
+                        return `translate(${chainStartX+3*chainXGap+3},${chainStartY+chainYGap*11-1}) rotate(45)`
+                    }
+                    else if (i<132) {
+                        return `translate(${chainStartX+(4+i-112)*chainXGap},${chainStartY+chainYGap*12})`
+                    }
+                    else if (i==132) {
+                        return `translate(${chainStartX+24*chainXGap-1},${chainStartY+chainYGap*12}) rotate(-45)`
+                    }
+                    else if (i==133) {
+                        return `translate(${chainStartX+25*chainXGap-2},${chainStartY+chainYGap*9+1}) rotate(90)`
+                    }
+                    else if (i<242) {
+                        return `translate(${chainStartX+25*chainXGap-2},${chainStartY+chainYGap*9+1-(i-133)*chainXGap}) rotate(90)`
+                    }
+                    else if (i==242) {
+                        return `translate(${chainStartX+25*chainXGap-3},${chainStartY+chainYGap*9+1-(i-134)*chainXGap+4}) rotate(-45)`
+                    }
+                    else if (i==243) {
+                        return `translate(${chainStartX+26*chainXGap-7},${chainStartY+chainYGap*9+1-(i-134)*chainXGap+3}) rotate(45)`
+                    }
+                    else if (i<440) {
+                        return `translate(${chainStartX+27*chainXGap-9},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(i-242)}) rotate(90)`
+                    }
+                    else if (i==440) {
+                        return `translate(${chainStartX+26*chainXGap-9},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(199)+1}) rotate(-45)`
+                    }
+                    else if (i==441) {
+                        return `translate(${chainStartX+26*chainXGap-16},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(199)+8}) rotate(-45)`
+                    }
+                    else if (i==442) {
+                        return `translate(${chainStartX+26*chainXGap-23},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(199)+15}) rotate(-45)`
+                    }
+                    else if (i<573) {
+                        return `translate(${(chainStartX+23*chainXGap-4)-(i-443)*chainXGap},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(199)+14})`
+                    }
+                    else if (i==573) {
+                        return `translate(${(chainStartX+23*chainXGap-4)-((573-443)*chainXGap-4)},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(201)+2}) rotate(-45)`
+                    }
+                    else if (i==574) {
+                        return `translate(${(chainStartX+23*chainXGap-4)-((573-443)*chainXGap-6)},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(201)-1}) rotate(45)`
+                    }
+                    else if (i<653) {
+                        return `translate(${(chainStartX+23*chainXGap-4)-((572-443)*chainXGap-2)+((i-575)*chainXGap)},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(202)-1})`
+                    }
+                    else if (i==653) {
+                        return `translate(${(chainStartX+23*chainXGap-4)-((572-443)*chainXGap-2)+((i-575)*chainXGap)},${(chainStartY+chainYGap*9+1)-(110*chainXGap)+chainXGap*(202)-4}) rotate(45)`
+                    }
+
+                })
+            temperatureContainerState = 4
+        }
+        else if (temperatureContainerState == 4) {
+
+            d3.interrupt(d3.select("#chainGroup").node())
+            d3.select("#chainGroup").selectAll("g").attr("transform", "translate(-80,-67)").style("opacity", 0)
+            d3.select("#titanicAnchorGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+
+            d3.select("#icebergGroup").transition().duration(1000).style("opacity", 1)
+            temperatureContainerState = 5
+        }
+        else if (temperatureContainerState == 5) {
+            d3.select("#icebergGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#cqGroup").transition().duration(1000).style("opacity", 1)
+            temperatureContainerState = 6
+        }
+        else if (temperatureContainerState == 6) {
+            d3.select("#cqGroup").transition().duration(1000).style("opacity", 0).attr("transform", "scale(0.01)").transition().duration(1).attr("transform", "scale(1)")
+            d3.select("#thermoGroup").transition().duration(1000).style("opacity", 1)
+            temperatureContainerState = 0
+        }
+
+    })
+
+}
+
 
 setLifeboatContainer()
 
@@ -415,7 +789,7 @@ function setLifeboatContainer() {
     const lifeboatsGroup = lifeboatsContainer.append("g").attr("id", "lifeboatsGroup").attr("transform", `translate(50,150)`)
     const lifeboats = lifeboatsGroup.selectAll("g").data(lifeboatData).enter().append("g").attr("id", d => `lifeboat${d.boat}`).attr("transform", d => `translate(${d.startingPos.x},${d.startingPos.y})`)
     lifeboats.append("path").attr("d", lifeboatPath)
-            .attr("fill", d=>d.type=="Standard"?"black":d.type=="Collapsible"?"white":"gray")
+            .attr("fill", d=>d.type=="Standard"?"black":d.type=="Collapsible"?"LightGray":"gray")
             .attr("stroke", "black")
     const lifeboatsTextGroups = lifeboats.append("g").attr("id", "lifeboatsTextGroups").attr("transform", "translate(0,0)").style("opacity", 0)
     lifeboatsTextGroups.append("text").attr("id", "lifeboatsText").attr("x", 0).attr("y", 11).text(d => "Lifeboat " + d.boat).attr("font-size", "6px").attr("text-anchor", "middle").attr("font-weight", "bold").attr("font-style", "normal").style("font-family", "'Roboto', sans-serif")
@@ -450,7 +824,7 @@ function setLifeboatContainer() {
     cutterGroup.append("text").attr("x", 80).attr("y", 45).text("Passenger capacity: 40").attr("font-size", "10px").attr("font-family", "'Castoro', sans-serif").attr("font-weight", "bold")
     cutterGroup.append("text").attr("x", 24).attr("y", 50).text("x 2").attr("font-size", "20px").attr("font-family", "'Castoro', sans-serif").attr("font-weight", "bold")
     const collapsibleGroup = lifeboatOverviewGroup.append("g").attr("id", "collapsibleGroup").attr("transform", `translate (440,0)`)
-    collapsibleGroup.append("path").attr("d", lifeboatPath).attr("fill", "black").attr("fill", "white").attr("stroke", "black").attr("stroke-width", "1").attr("transform", `translate(40,20) scale(2)`)
+    collapsibleGroup.append("path").attr("d", lifeboatPath).attr("fill", "black").attr("fill", "LightGray").attr("stroke", "black").attr("stroke-width", "1").attr("transform", `translate(40,20) scale(2)`)
     collapsibleGroup.append("text").attr("x", 80).attr("y", 25).text("Collapsible Engelhardts").attr("font-size", "14px").attr("font-family", "'Castoro', sans-serif").attr("font-weight", "bold")
     collapsibleGroup.append("text").attr("x", 80).attr("y", 45).text("Passenger capacity: 47").attr("font-size", "10px").attr("font-family", "'Castoro', sans-serif").attr("font-weight", "bold")
     collapsibleGroup.append("text").attr("x", 24).attr("y", 50).text("x 4").attr("font-size", "20px").attr("font-family", "'Castoro', sans-serif").attr("font-weight", "bold")
@@ -568,7 +942,6 @@ function setTertiaryContainer() {
 
     const manGroupToScale = propellorBladeGroup.append("g").attr("id", "manGroupToScale").attr("transform", `translate(${-180},${47}) scale(${20})`)
     const manPath2 = "M -1.8 -37.8 c -2.9 0.5 -5.4 2.2 -7 4.6 c -1.3 2 -1.9 4.3 -1.7 6.8 c 0.3 3.9 3 7.4 6.6 8.9 c 1.4 0.6 2.1 0.7 3.9 0.7 c 1.7 0 2.1 -0.1 3.4 -0.5 c 2.6 -0.8 5.2 -3.1 6.3 -5.6 c 1.2 -2.7 1.3 -5.8 0.1 -8.6 c -0.7 -1.7 -2.3 -3.7 -3.8 -4.7 c -2.3 -1.5 -5.2 -2.2 -7.8 -1.7 Z M -12.9 -14.4 c -0.1 0 -0.5 0.1 -0.9 0.1 c -1.1 0.2 -2.7 0.7 -3.7 1.3 c -3.9 2 -6.5 5.7 -7.3 10.2 c -0.1 0.6 -0.1 4.5 -0.1 18.1 l 0 17.4 l 0.2 0.7 c 0.7 2.2 3.1 3.5 5.5 3 c 1.6 -0.4 2.7 -1.3 3.3 -2.8 l 0.2 -0.6 l 0 -15.5 l 0 -15.5 l 1.1 0 l 1.1 0 l 0 41.5 l 0 41.5 l 0.2 0.6 c 0.6 1.7 1.5 2.8 2.9 3.5 c 1.9 0.9 3.9 0.9 5.9 0 c 1.5 -0.7 2.7 -2.2 3.1 -3.9 c 0.1 -0.4 0.1 -5.4 0.2 -24.7 l 0 -24.2 l 1.1 0 l 1.1 0 l 0 24.1 c 0 20.8 0 24.2 0.1 24.8 c 0.6 2.9 3.4 4.9 6.6 4.7 c 2.6 -0.2 4.6 -1.7 5.4 -4 l 0.3 -0.8 l 0 -41.5 l 0 -41.5 l 1.1 0 l 1.1 0 l 0.1 15.5 c 0 11 0.1 15.6 0.2 15.8 c 0.8 2 2.3 3.1 4.5 3.1 c 2.3 0 4.1 -1.6 4.5 -4 c 0.1 -0.6 0.1 -5.4 0.1 -17.7 c 0 -15.9 -0.1 -17 -0.2 -17.9 c -1.1 -5.7 -5 -9.9 -10.5 -11.3 l -1.1 -0.3 l -12.9 0 c -7.1 0 -13 0 -13 0 Z"
-    const manPath = "M -0.029 0.002 L -0.041 0.057 L -0.026 0.107 L 0.023 0.121 L 0.04 0.041 L 0.043 0.127 L 0.023 0.238 L 0.016 0.4 L -0.029 0.659 L -0.013 0.676 L -0.019 0.727 L -0.055 0.762 L -0.057 0.788 L 0.023 0.785 L 0.057 0.762 L 0.052 0.698 L 0.087 0.684 L 0.118 0.436 L 0.217 0.111 L 0.238 0.33 L 0.25 0.454 L 0.227 0.68 L 0.25 0.693 L 0.231 0.762 L 0.375 0.776 L 0.431 0.765 L 0.429 0.751 L 0.367 0.726 L 0.336 0.685 L 0.373 0.11 L 0.384 0.032 L 0.411 0.018 L 0.419 -0.057 L 0.436 0.016 L 0.462 0.021 L 0.487 0.06 L 0.467 0.091 L 0.525 0.096 L 0.546 0.035 L 0.512 -0.004 L 0.521 -0.009 L 0.443 -0.506 L 0.341 -0.568 L 0.314 -0.618 L 0.336 -0.641 L 0.328 -0.673 L 0.33 -0.705 L 0.32 -0.749 L 0.339 -0.783 L 0.314 -0.808 L 0.224 -0.802 L 0.155 -0.744 L 0.13 -0.67 L 0.141 -0.638 L 0.177 -0.64 L 0.199 -0.613 L 0.193 -0.585 L 0.186 -0.59 L 0.054 -0.515 L 0.004 -0.381 L -0.029 -0.183 Z"
     const propToManScale = 6 * 180 / 17
     manGroupToScale.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").style("opacity", 0.5)
     manGroupToScale.append("text").attr("x", -0.5).attr("y", 0).text("Dry dock worker").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 0.8)
@@ -646,9 +1019,9 @@ function setTertiaryContainer() {
 
     telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 100).attr("fill", "red").attr("stroke", "black").attr("stroke-width", 2).style("opacity", 0.5)
     telegraphGroup.append("circle").attr("id", "telegraphBackground").attr("cx", 0).attr("cy", 0).attr("r", 93).attr("fill", "black").attr("stroke", "gray").attr("stroke-width", 2)
-    telegraphGroup.append("text").text("Titanic had three Engine-Order Telegraphs:").attr("x", -80).attr("y", 115).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
-    telegraphGroup.append("text").text(" - two on the main bridge").attr("x", -70).attr("y", 125).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
-    telegraphGroup.append("text").text(" - one on the aft docking bridge").attr("x", -70).attr("y", 135).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    telegraphGroup.append("text").text("Titanic had Engine-Order Telegraphs on the").attr("x", -80).attr("y", 115).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    telegraphGroup.append("text").text("main bridge and the aft docking bridge.").attr("x", -80).attr("y", 125).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    // telegraphGroup.append("text").text(" - one on the aft docking bridge").attr("x", -70).attr("y", 135).attr("fill", "black").attr("stroke", "none").attr("font-size", 8).attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
 
     const telegraphStates = [{name: "FULL", fullName: "Full Astern", direction: "Astern", speed: 1, sidePropAngleIncrement: -4, centrePropAngleIncrement: 0, knots: 18, rpm: 75, turbine: "Disengaged"},
                              {name: "HALF", fullName: "Half Astern", direction: "Astern", speed: 0.5, sidePropAngleIncrement: -2, centrePropAngleIncrement: 0, knots: 13.4, rpm: 50, turbine: "Disengaged"},
@@ -853,7 +1226,7 @@ function setTertiaryContainer() {
     }
     // draw leading firemen
     const leadingFiremanYOffset = startPicYF + 3 + 12*(firemanSize+1)
-    firemenGroup.append("text").attr("x", 0).attr("y", leadingFiremanYOffset).text("Leading Firemen").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    firemenGroup.append("text").attr("x", 0).attr("y", leadingFiremanYOffset).text("Lead Firemen").attr("font-size", "10px").attr("text-anchor", "start").style("font-weight", "normal").style("font-family", "Castoro, serif")
     for (let i=0; i<5; i++) {
         firemenGroup.append("rect").attr("x", 0 + i * (firemanSize+1)).attr("y", 3+ leadingFiremanYOffset).attr("width", firemanSize).attr("height", firemanSize).attr("rx", firemanRadius).attr("ry", firemanRadius).attr("fill", "#4b371c").style("opacity", 1)
     }
@@ -900,7 +1273,7 @@ function setTertiaryContainer() {
     // These 29 boilers power two reciprocating and one turbine engine, which drive the mighty propellors
     const enginesIconGroup = boilersGroup.append("g").attr("id", "enginesIconGroup").attr("transform", `translate(${515},${0})`)
     enginesIconGroup.append("text").attr("x", 30).attr("y", 0).text("Powering the").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
-    enginesIconGroup.append("text").attr("x", 30).attr("y", 13).text("engines that move").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
+    enginesIconGroup.append("text").attr("x", 30).attr("y", 13).text("engines that moved").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
     enginesIconGroup.append("text").attr("x", 30).attr("y", 26).text("RMS Titanic").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
     // enginesIconGroup.append("text").attr("x", 30).attr("y", 39).text("engines that move").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
     // enginesIconGroup.append("text").attr("x", 30).attr("y", 52).text("RMS Titanic").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
@@ -945,8 +1318,8 @@ function setDefaultSC() {
 
     clockTimeLine.append("clipPath").attr("id", "clockClip").append("rect").attr("x", -40).attr("y", -150).attr("width", 180).attr("height", 178)
     let clockTimeLineHeader = clockTimeLine.append("g").attr("id", "clockTimeLineHeader")
-    clockTimeLineHeader.append("text").text("KEY").attr("x", 110).attr("y", -125).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
-    clockTimeLineHeader.append("text").text("EVENTS").attr("x", 110).attr("y", -110).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
+    clockTimeLineHeader.append("text").text("KEY").attr("x", 110).attr("y", -130).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
+    clockTimeLineHeader.append("text").text("EVENTS").attr("x", 110).attr("y", -115).attr("text-anchor", "middle").attr("font-size", "10pt").attr("font-weight", "bold").attr("font-style", "normal")
 
     let clockFace = clockTimeLine.append("g").attr("id", "clockFace")
 
@@ -984,20 +1357,14 @@ function setDefaultSC() {
 
             // reduce opacity of all event rods
             clockEvents.selectAll("path").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
-            // clockEvents.selectAll("circle").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
-            // clockEvents.selectAll("line").style("opacity", (d)=>(d.key=="key"?0.3:0.1))
             clockEventsKeyLabels.selectAll("text").style("opacity", 0)
 
             // raise opacity of hovered event rod
             d3.select("#"+d.name).selectAll("path").attr("fill", "red").style("opacity", 1)
-            // d3.select("#"+d.name).selectAll("circle").attr("fill", "red").style("opacity", 1)
-            // d3.select("#"+d.name).selectAll("line").attr("stroke", "red").style("opacity", 1)
             d3.select("#nonKeyEventTime").text(d.realtime).style("opacity", 1)
             d3.select("#nonKeyEventlabel").text(d.narrative).style("opacity", 1)
             d3.select("#nonKeyEventline").style("opacity", 1)
 
-            
-            // clockTimeLineHeader.transition().duration(500).style("opacity", 0)
             clockTimeLineHeader.style("opacity", 0)
             
         })
@@ -1005,8 +1372,6 @@ function setDefaultSC() {
 
             // reset opacity of alll event rods
             clockEvents.selectAll("path").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
-            // clockEvents.selectAll("line").attr("stroke", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
-            // clockEvents.selectAll("circle").attr("fill", "black").style("opacity", (d)=>(d.key=="key"?0.8:0.3))
             clockEventsKeyLabels.selectAll("text").style("opacity", 1)
             d3.select("#nonKeyEventTime").style("opacity", 0)
             d3.select("#nonKeyEventlabel").style("opacity", 0)
@@ -1017,41 +1382,27 @@ function setDefaultSC() {
     clockEvents.selectAll("g").append("path")
                     .attr("d", d=>{
                         return d.key=="key" ?
-                             "M 0 0 L -1 0 L -1 100 C -5 102.5 -5 102.5 0 105 C 5 102.5 5 102.5 1 100 L 1 0 L 0 0 Z" : 
-                             "M 0 0 L -1 0 L -1 90 C -5 92.5 -5 92.5 0 95 C 5 92.5 5 92.5 1 90 L 1 0 L 0 0 Z"
+                             "M 0 0 L -2 0 L -2 100 C -5 102.5 -5 102.5 0 105 C 5 102.5 5 102.5 2 100 L 2 0 L 0 0 Z" : 
+                             "M 0 0 L -2 0 L -2 90 C -5 92.5 -5 92.5 0 95 C 5 92.5 5 92.5 2 90 L 2 0 L 0 0 Z"
                         })
                     .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("fill", "black").attr("stroke", "none")
 
-    // clockEvents.selectAll("g").append("line").attr("x1", 0).attr("y1", 6).attr("x2", 0)
-    //             .attr("y2", (d)=>(d.key=="key"?100:90))
-    //             .attr("stroke-width", (d)=>(d.key=="key"?4:3))
-    //             .style("opacity", (d)=>(d.key=="key"?0.8:0.3)).attr("stroke", "black")
-    //             .attr("stroke", "black")
-
-    // clockEvents.selectAll("g").append("circle").attr("cx", 0)
-    //             .attr("cy", (d)=>(d.key=="key"?100:90))
-    //             .attr("r", (d)=>(d.key=="key"?4:3))
-    //             .style("opacity", (d)=>(d.key=="key"?0.8:0.3))
-    //             .attr("fill", "black")
-                // .style("opacity", 1)
-
-
     let clockEventsKeyLabels = clockTimeLine.append("g").attr("id", "clockEventsKeyLabels")
-    let clockEventsKeyLabelsFontSize = "6pt"
+    let clockEventsKeyLabelsFontSize = "5pt"
 
     clockEventsKeyLabels.append("text").attr("id", "event2label").text("11:40pm").attr("x", -42).attr("y", -122).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
     clockEventsKeyLabels.append("text").attr("id", "event2label").text("Hits").attr("x", -42).attr("y", -114).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
     clockEventsKeyLabels.append("text").attr("id", "event2label").text("iceberg").attr("x", -42).attr("y", -106).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
 
-    clockEventsKeyLabels.append("text").attr("id", "event3label").text("12:05am").attr("x", 4).attr("y", -126).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
-    clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress").attr("x", 4).attr("y", -118).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
-    clockEventsKeyLabels.append("text").attr("id", "event3label").text("call sent").attr("x", 4).attr("y", -110).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("12:05am").attr("x", 0).attr("y", -122).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("1st distress").attr("x", 0).attr("y", -114).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event3label").text("call sent").attr("x", 0).attr("y", -106).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
 
-    clockEventsKeyLabels.append("text").attr("id", "event7label").text("12:40am").attr("x", 45).attr("y", -96).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
-    clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 45).attr("y", -89).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event7label").text("12:40am").attr("x", 41).attr("y", -98).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event7label").text("1st lifeboat rowed away").attr("x", 41).attr("y", -91).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
     
-    clockEventsKeyLabels.append("text").attr("id", "event14label").text("1:45am").attr("x", 80).attr("y", -74).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
-    clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio signal").attr("x", 80).attr("y", -67).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
+    clockEventsKeyLabels.append("text").attr("id", "event14label").text("1:45am").attr("x", 88).attr("y", -65).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
+    clockEventsKeyLabels.append("text").attr("id", "event14label").text("Last radio signal").attr("x", 88).attr("y", -58).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
     
     clockEventsKeyLabels.append("text").attr("id", "event20label").text("2:20am").attr("x", 103).attr("y", -35).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace").attr("font-weight", "bold")
     clockEventsKeyLabels.append("text").attr("id", "event20label").text("Fully submerged").attr("x", 103).attr("y", -27).attr("font-size", clockEventsKeyLabelsFontSize).style("font-family", "'Roboto Mono', monospace")
@@ -1254,8 +1605,8 @@ function setDefaultSC() {
             const keyLocations = titanicChart.append("g").attr("id", "keyLocations")
 
             const keyLocationsData = [{name: "Belfast", lat: 54.5973, long: -5.9301},
-                                      {name: "Soton", lat: 50.9105, long: -1.4049},
-                                      {name: "Ch'bg", lat: 49.6339, long: -1.6222},
+                                      {name: "Southampton", lat: 50.9105, long: -1.4049},
+                                      {name: "Cherbourg", lat: 49.6339, long: -1.6222},
                                       {name: "Queenstown", lat: 51.8503, long: -8.2943},
                                       {name: "New York", lat: 40.7128, long: -74.0060} ]
 
@@ -1277,14 +1628,14 @@ function setDefaultSC() {
                 .append("text")
                 .attr("x", 0)
                 .attr("y", 0)
-                .attr("dx", d=>d.name=="Ch'bg"?7:0)
-                .attr("dy", d=>d.name=="Ch'bg"?8:-3)
-                .attr("font-size", 7)
+                .attr("dx", d=>d.name=="Cherbourg"?6:d.name=="Southampton"?-11:0)
+                .attr("dy", d=>d.name=="Cherbourg"?9:-3)
+                .attr("font-size", d=>d.name=="Cherbourg"?5:6)
                 .attr("fill", "black")
                 .attr("font-weight", "bold")
                 .attr("font-family", "'Roboto', sans-serif")
                 .text(d=>d.name)
-                .attr("text-anchor", d=>((d.name=="Queenstown"||d.name=="Belfast")?"end":(d.name=="New York"||d.name=="Soton")?"start":"middle"))
+                .attr("text-anchor", d=>((d.name=="Queenstown"||d.name=="Belfast")?"end":(d.name=="New York"||d.name=="Southampton")?"start":"middle"))
 
             const otherVessels = titanicChart.append("g").attr("id", "otherVessels").style("opacity", 0.5)
 
@@ -1426,32 +1777,59 @@ function setDefaultDepthContainer() {
     const depthAxis = depthContainerWaterGroupAxisY.call(depthContainerWaterGroupAxisYAxis).attr("font-family", "Roboto")
     depthAxis.select(".domain").remove()
 
+    let depthTransitionLength = 4*60*1000/60
 
-    const depthContainerWaterGroupTextGroup = depthContainerWaterGroup.append("g").attr("id", "depthContainerWaterGroupTextGroup").attr("transform", `translate(${110}, 50)`)
-    const depthTextSeries1 = ["RMS Titanic", "is estimated to", "have taken four", "minutes to sink", "from the surface", "to the ocean", "floor."]
+    const depthContainerWaterGroupTextGroup = depthContainerWaterGroup.append("g").attr("id", "depthContainerWaterGroupTextGroup").attr("transform", `translate(${110}, 10)`)
+    const depthTextSeries1 = ["RMS Titanic is", "estimated to have", "taken four minutes", "to sink from the", "surface to the", "ocean floor."]
     depthTextSeries1.forEach((d,i)=> {
         depthContainerWaterGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
     })
-    const depthTextSeries2 = ["RMS Titanic", "was 850ft long,", "and the ocean", "floor was 12,500ft", "(2.4 miles) below", "the surface. She", "therefore fell", "around 15 times", "her own length."]
+
+    const radioGroup = depthContainerWaterGroup.append("foreignObject").attr("x", 110).attr("y", 100).attr("width", 20).attr("height", 100)
+    const radioGroupActualOptionRealTime = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "realTime").attr("name", "fallSpeed").attr("value", "realTime").on("click", ()=>depthTransitionLength=4*60*1000)
+    const radioGroupActualOptio5x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "twentyX").attr("name", "fallSpeed").attr("value", "twentyX").on("click", ()=>depthTransitionLength=4*60*1000/20)
+    const radioGroupActualOptio10x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "sixtyX").attr("name", "fallSpeed").attr("value", "sixtyX").on("click", ()=>depthTransitionLength=4*60*1000/60)
+    d3.select('#sixtyX').property('checked', true)
+
+    const radioGroupTextLabels = depthContainerWaterGroup.append("g").attr("id", "radioGroupTextLabels").attr("transform", `translate(${130}, 112)`)
+
+    radioGroupTextLabels.append("text").text("Real Time").attr("x", 0).attr("y", 0).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+    radioGroupTextLabels.append("text").text("20x").attr("x", 0).attr("y", 21).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+    radioGroupTextLabels.append("text").text("60x").attr("x", 0).attr("y", 42).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+    radioGroupTextLabels.append("text").text("Choose speed then click water").attr("x", -20).attr("y", 60).attr("font-size", "6pt").attr("font-style", "italic").attr("font-family", "'Castoro', serif")
+    
+    const depthTextSeries2 = ["RMS Titanic was", "850ft long, and", "the ocean floor", "was 12,500ft (2.4", "miles) below the", "surface. She fell", "around 15 times", "her own length."]
     depthTextSeries2.forEach((d,i)=> {
-        depthContainerWaterGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 8*15+15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+        depthContainerWaterGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 190+15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
     })
 
+    const depthTextSeries3 = ["Witnesses report", "the hull split at", "the surface."]
+    depthTextSeries3.forEach((d,i)=> {
+        depthContainerWaterGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 320+15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+    })
+
+    const depthTextSeries4 = ["The pressure at", "the ocean floor", "is 6,000 pounds", "per square inch,", "or 400 times", "greater than at", "the surface."]
+    depthTextSeries4.forEach((d,i)=> {
+        depthContainerWaterGroupTextGroup.append("text").text(d).attr("x", 0).attr("y", 375+15*i).attr("font-size", "10pt").attr("font-family", "'Castoro', serif")
+    })
+
+
     const titanicGroup = depthContainerWaterGroup.append("g").attr("id", "titanicGroup").attr("transform", `translate(${waterwidth/2}, ${0})`)
-    const titanicPath = "M -37.8 -3 L -50.6 -3 L -43.9 9.2 L -1.2 9.1 L 43.9 9.1 L 47 5.5 L 46.4 -0 L 48.8 -3.1 L 38.4 -3.1 L 37.2 -2.4 L 31.7 -2.4 L 27.4 -6.7 L 17.7 -6.7 L 18.9 -12.8 L 15.9 -12.8 L 14.6 -6.7 L 4.3 -6.7 L 5.5 -12.8 L 2.4 -12.8 L 1.2 -6.7 L -8.5 -6.7 L -7.3 -12.8 L -10.4 -12.8 L -11.6 -6.7 L -22 -6.7 L -20.7 -12.8 L -23.8 -12.8 L -25 -6.7 L -28.1 -6.7 L -31.7 -2.4 L -36.6 -2.4 Z"
+    
     // const eiffelPath = "M 0 0 L 0 0 L 17 0 C 22 -19 46 -19 51 0 L 67 0 C 39 -32 40 -53 36 -99 L 37 -100 L 37 -103 L 34 -106 L 32 -106 L 29 -103 L 29 -100 L 30 -99 C 27 -54 29 -32 0 0 Z"
     titanicGroup.append("path").attr("d", titanicPath).attr("fill", "black").attr("transform", `translate(${0}, ${0}) scale(${depthScale(850)/100}, ${depthScale(850)/100})`)
 
-    depthContainerWaterGroup
-    .append("rect").attr("id", "depthContainerWaterGroupRect").attr("x", 0).attr("y", 0).attr("width", waterwidth).attr("height", depthScale(13000)).attr("fill", "transparent")
-        .on("mouseover", (e, d)=> {
-        // Highhlight explanatory label explaining how long it took to sink
+    const sinkingTextGroup = depthContainerWaterGroup.append("g").attr("id", "sinkingTextGroup").attr("transform", `translate(${100}, ${20})`)
+    const sinkingText = sinkingTextGroup.append("text").attr("id", "sinkingText").text("0 ft").attr("font-size", "16pt").attr("font-family", "'Roboto', sans-serif").attr("transform", `translate(${0}, ${0})`).attr("text-anchor", "end")
+                .attr("fill", "red").attr("font-weight", "bold").attr("opacity", 0.5)
 
-        // Make the Titanic sink
-        titanicGroup.attr("transform", `translate(${waterwidth/2}, ${0})`).transition().ease(d3.easeLinear).duration(4*60*10)//.attr("transform", `translate(${waterwidth/2},${depthScale(12500)}) rotate(-90)`)
-            .attrTween("transform", ()=>{
-                // const i = d3.interpolate(depthScale(0), depthScale(12500))
-                // const j = d3.interpolate(0,-90)
+    const sinkingLine = depthContainerWaterGroup.append("line").attr("id", "sinkingLine").attr("x1", 0).attr("y1", 0).attr("x2", 20).attr("y2", 0).attr("stroke", "red").attr("stroke-width", 1).attr("stroke-dasharray", "1, 1")
+
+    depthContainerWaterGroup
+        .append("rect").attr("id", "depthContainerWaterGroupRect").attr("x", 0).attr("y", 0).attr("width", waterwidth).attr("height", depthScale(13000)).attr("fill", "transparent")
+        .on("mouseover", (e, d)=> {
+            titanicGroup.attr("transform", `translate(${waterwidth/2}, ${0})`).transition().ease(d3.easeLinear).duration(depthTransitionLength)
+                .attrTween("transform", ()=>{
                 return function(t) {
                     let attrToReturn = "translate(" + waterwidth/2 + ", " + t*depthScale(12500) + ") rotate("
                     if (t<0.5) {
@@ -1463,14 +1841,43 @@ function setDefaultDepthContainer() {
                     }
 
                 })
-        })
-    .on("mouseout", (e, d)=> {
-        // Hide explanatory text
+            sinkingTextGroup.transition().ease(d3.easeLinear).duration(depthTransitionLength)
+                .attrTween("transform", ()=>{
+                // const i = d3.interpolate(depthScale(0), depthScale(12500))
+                return function(t) {
+                    let attrToReturn = "translate(" + 100 + ", " + (Math.max(20,t*depthScale(12500)-20)) + ")"
+                    return attrToReturn
+                    }
+                })
 
-        // Reset Titanic's position on ocean
-        d3.interrupt(d3.select("#titanicGroup").node())
-        titanicGroup.attr("transform", `translate(${waterwidth/2}, ${0})`)
-    })
+            sinkingText.transition().ease(d3.easeLinear).duration(depthTransitionLength)
+                .textTween(()=>{
+                    const i = d3.interpolate(0, 12500)
+                    return function(t) {
+                        return d3.format(",")(Math.round(i(t))) + " ft"
+                    }
+                })
+
+            sinkingLine.transition().ease(d3.easeLinear).duration(depthTransitionLength)
+                .attrTween("transform", ()=>{
+                    // const i = d3.interpolate(depthScale(0), depthScale(12500))
+                    return function(t) {
+                        let attrToReturn = "translate(" + 0 + ", " + (t*depthScale(12500)) + ")"
+                        return attrToReturn
+                        }
+                    })
+          })
+        .on("mouseout", (e, d)=> {
+            d3.interrupt(d3.select("#titanicGroup").node())
+            titanicGroup.attr("transform", `translate(${waterwidth/2}, ${0})`)
+            d3.interrupt(d3.select("#sinkingText").node())
+            sinkingText.text("0 ft")
+            d3.interrupt(d3.select("#sinkingTextGroup").node())
+            sinkingTextGroup.attr("transform", `translate(${100}, ${20})`)
+            d3.interrupt(d3.select("#sinkingLine").node())
+            sinkingLine.attr("transform", `translate(${0}, ${0})`)
+            
+        })
 
 }
 
@@ -1501,7 +1908,7 @@ let subHeadlines = ["There were over 1,300 passengers on RMS Titanic",
                     "One quarter of passengers were in 1st class",     // 1st CLASS, 326 - 2nd CLASS, 272 - 3rd CLASS, 706"
                     "Survivors were mostly female and 1st class",
                     "Including Crew, there were 2,224 people on board",
-                    "SCALE OF TRAGEDY SHOWN BY 'SANKEY' CHART"
+                    // "SCALE OF TRAGEDY SHOWN BY 'SANKEY' CHART"
                     ]
             
             
@@ -1945,7 +2352,7 @@ d3.csv('./data/titanic.csv').then(
             gs1LegendQueenstown.append("text").text("Departed 1:30pm, 11 April 1912").attr("x", -85).attr("y", -63).attr("font-size", "8pt")
             gs1LegendQueenstown.append("text").text(queenstownJoined + " passengers boarded").attr("x", -85).attr("y", -53).attr("font-size", "6pt")
             gs1LegendQueenstown.append("path").attr("d", arrowPath).attr("transform", "translate(-30,65) scale(-3,3)").style("opacity", 0.6)
-            gs1LegendQueenstown.append("text").text("... to New York City").attr("x", -165).attr("y", 135).attr("font-size", "10pt").style("font-weight", "bold").style("font-style", "normal")
+            gs1LegendQueenstown.append("text").text("... to New York, United States").attr("x", -165).attr("y", 135).attr("font-size", "10pt").style("font-weight", "bold").style("font-style", "normal")
             gs1LegendUnknown = gs1Legend.append("g").attr("id", "gs1LegendUnknown").attr("transform", `translate(${unknownCentroid[0]},${unknownCentroid[1]})`)
             gs1LegendUnknown.append("text").text("Unknown").attr("x", 18).attr("y", -10).attr("font-size", "8pt").style("font-weight", "bold")
             gs1LegendUnknown.append("text").text(unknownJoined + " passengers").attr("x", 18).attr("y", 2).attr("font-size", "6pt")
