@@ -57,7 +57,7 @@ dateLine.append("text").attr("x", width-105).attr("y", 7).text("Elsewhere").attr
 dateLine.append("text").attr("x", width-105).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
 
 const mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", `translate( ${width/2-160} ,110)`)
-mainHeadline.append("text").attr("x", 0).attr("y", 0).attr("id", "mainHeadlineText").text("TITANIC SINKS AFTER HITTING ICEBERG; 1,514 SOULS LOST").attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-family", "Castoro Titling").style("font-weight", "bold")
+mainHeadline.append("text").attr("x", 0).attr("y", 0).attr("id", "mainHeadlineText").text("TITANIC SINKS AFTER HITTING ICEBERG; 1,500 SOULS LOST").attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-family", "Castoro Titling").style("font-weight", "bold")
 
 const primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,125) scale(1,1)")
 primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
@@ -230,7 +230,7 @@ function shuffle(array) {
   }
 
 const countriesCentroids = [{name: "Argentina", lat: -40, long: -128},
-  {name: "Australia", lat: -50, long: 125},
+  {name: "Australia", lat: -50, long: 115},
   {name: "Austria", lat: 25, long: 10},
   {name: "Belarus", lat: 30, long: 67},
   {name: "Belgium", lat: 45, long: -14},
@@ -241,7 +241,7 @@ const countriesCentroids = [{name: "Argentina", lat: -40, long: -128},
   {name: "China", lat: 35, long: 105},
   {name: "Croatia", lat: 28, long: 38},
   {name: "Cuba", lat: -15, long: -115},
-  {name: "Denmark", lat: 42, long: -92},
+  {name: "Denmark", lat: 55, long: 5},
   {name: "Egypt", lat: -40, long: 67},
   {name: "England", lat: 48, long: -65},
   {name: "Estonia", lat: 50, long: 57},
@@ -250,7 +250,7 @@ const countriesCentroids = [{name: "Argentina", lat: -40, long: -128},
   {name: "Germany", lat: 38, long: 10},
   {name: "Greece", lat: -38, long: 10},
   {name: "India", lat: 15, long: 105},
-  {name: "Ireland", lat: 28, long: -92},
+  {name: "Ireland", lat: 42, long: -92},
   {name: "Italy", lat: -22, long: 10},
   {name: "Japan", lat: 70, long: 105},
   {name: "Lebanon", lat: -10, long: 67},
@@ -259,13 +259,13 @@ const countriesCentroids = [{name: "Argentina", lat: -40, long: -128},
   {name: "Mexico", lat: -20, long: -148},
   {name: "Norway", lat: 75, long: -65},
   {name: "Peru", lat: -40, long: -148},
-  {name: "Poland", lat: 55, long: 10},
+  {name: "Poland", lat: 50, long: 33},
   {name: "Portugal", lat: -38, long: -14},
   {name: "Russia", lat: 55, long: 105},
   {name: "Scotland", lat: 70, long: -92},
   {name: "Thailand", lat: -10, long: 113},
   {name: "Slovenia", lat: 12, long: 10},
-  {name: "South Africa", lat: -50, long: 75},
+  {name: "South Africa", lat: -50, long: 65},
   {name: "Spain", lat: -15, long: -14},
   {name: "Sweden", lat: 80, long: -38},
   {name: "Switzerland", lat: 0, long: 10},
@@ -943,9 +943,9 @@ function setTertiaryContainer() {
     const manGroupToScale = propellorBladeGroup.append("g").attr("id", "manGroupToScale").attr("transform", `translate(${-180},${47}) scale(${20})`)
     const manPath2 = "M -1.8 -37.8 c -2.9 0.5 -5.4 2.2 -7 4.6 c -1.3 2 -1.9 4.3 -1.7 6.8 c 0.3 3.9 3 7.4 6.6 8.9 c 1.4 0.6 2.1 0.7 3.9 0.7 c 1.7 0 2.1 -0.1 3.4 -0.5 c 2.6 -0.8 5.2 -3.1 6.3 -5.6 c 1.2 -2.7 1.3 -5.8 0.1 -8.6 c -0.7 -1.7 -2.3 -3.7 -3.8 -4.7 c -2.3 -1.5 -5.2 -2.2 -7.8 -1.7 Z M -12.9 -14.4 c -0.1 0 -0.5 0.1 -0.9 0.1 c -1.1 0.2 -2.7 0.7 -3.7 1.3 c -3.9 2 -6.5 5.7 -7.3 10.2 c -0.1 0.6 -0.1 4.5 -0.1 18.1 l 0 17.4 l 0.2 0.7 c 0.7 2.2 3.1 3.5 5.5 3 c 1.6 -0.4 2.7 -1.3 3.3 -2.8 l 0.2 -0.6 l 0 -15.5 l 0 -15.5 l 1.1 0 l 1.1 0 l 0 41.5 l 0 41.5 l 0.2 0.6 c 0.6 1.7 1.5 2.8 2.9 3.5 c 1.9 0.9 3.9 0.9 5.9 0 c 1.5 -0.7 2.7 -2.2 3.1 -3.9 c 0.1 -0.4 0.1 -5.4 0.2 -24.7 l 0 -24.2 l 1.1 0 l 1.1 0 l 0 24.1 c 0 20.8 0 24.2 0.1 24.8 c 0.6 2.9 3.4 4.9 6.6 4.7 c 2.6 -0.2 4.6 -1.7 5.4 -4 l 0.3 -0.8 l 0 -41.5 l 0 -41.5 l 1.1 0 l 1.1 0 l 0.1 15.5 c 0 11 0.1 15.6 0.2 15.8 c 0.8 2 2.3 3.1 4.5 3.1 c 2.3 0 4.1 -1.6 4.5 -4 c 0.1 -0.6 0.1 -5.4 0.1 -17.7 c 0 -15.9 -0.1 -17 -0.2 -17.9 c -1.1 -5.7 -5 -9.9 -10.5 -11.3 l -1.1 -0.3 l -12.9 0 c -7.1 0 -13 0 -13 0 Z"
     const propToManScale = 6 * 180 / 17
-    manGroupToScale.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").style("opacity", 0.5)
-    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0).text("Dry dock worker").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 0.8)
-    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0.5).text("for scale").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 0.8)
+    manGroupToScale.append("path").attr("d", manPath).attr("fill", "red").attr("stroke", "none").style("opacity", 1)
+    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0).text("Dry dock worker").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 1)
+    manGroupToScale.append("text").attr("x", -0.5).attr("y", 0.5).text("for scale").attr("fill", "red").attr("stroke", "none").attr("font-size", 0.3).attr("text-anchor", "end").attr("font-family", "'Roboto Mono', monospace").style("opacity", 1)
 
     const propDataLeftX =  20
     const propDataRightX = -150
@@ -1055,6 +1055,7 @@ function setTertiaryContainer() {
             rpmIndicator.text(d.rpm)
             turbineIndicator.text(d.turbine)
             if (index<4||index>6) {
+                boilersIconGroup.selectAll("rect").transition().duration(1000).attr("fill", "red")
                 boilersIconGroup.selectAll("circle").transition().duration(1000).attr("fill", "red")
                 boilersIconGroup.selectAll("path").transition().duration(1000).attr("fill", "red")
             }
@@ -1072,6 +1073,7 @@ function setTertiaryContainer() {
             knotsIndicator.text("0 knots")
             rpmIndicator.text("0")
             turbineIndicator.text("Disengaged")
+            boilersIconGroup.selectAll("rect").transition().duration(1000).attr("fill", "black")
             boilersIconGroup.selectAll("circle").transition().duration(1000).attr("fill", "black")
             boilersIconGroup.selectAll("path").transition().duration(1000).attr("fill", "black")
             // camLine1.transition().duration(1000).attr("y2", 125)
@@ -1251,22 +1253,21 @@ function setTertiaryContainer() {
 
 
     // These men power the 29 boilers (5 single-enders and 24 double-enders 5,5,5,5,4) just above the tank top
+
+    
+    
     const boilersIconGroup = boilersGroup.append("g").attr("id", "boilersIconGroup").attr("transform", `translate(${395},${0})`)
+    boilersIconGroup.append("clipPath").attr("id", "boilerClip").append("rect").attr("x", -2).attr("y", 0).attr("width", 65).attr("height", 110)
     boilersIconGroup.append("text").attr("x", 30).attr("y", 0).text("29 boilers made").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
     boilersIconGroup.append("text").attr("x", 30).attr("y", 13).text("steam for engines").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
     boilersIconGroup.append("text").attr("x", 30).attr("y", 26).text("and electricity").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
-    // boilersIconGroup.append("text").attr("x", 30).attr("y", 39).text("produce steam").attr("font-size", "10pt").attr("text-anchor", "middle").style("font-weight", "normal").style("font-family", "Castoro, serif")
-    
-    // boilersIconGroup.append("rect").attr("x", 0).attr("y", 55).attr("width", 60).attr("height", 60).attr("fill", "red").style("opacity", 0.5)
     const boilerSize = 10
     for (let i=0; i<6; i++) {
         for (let j=0; j<5; j++) {
             let cxToUse = 0 + (i)*(boilerSize+1)
             let cyToUse = (i<5) ? 55 + (j+0.5)*(boilerSize+1) : 55 + (j+1)*(boilerSize+1)
             if (i==5&&j==4) break;
-            if (i!=0) boilersIconGroup.append("circle").attr("cx", cxToUse).attr("cy", cyToUse).attr("r", boilerSize/2).attr("fill", "black");
-            else boilersIconGroup.append("path").attr("d", d3.arc().innerRadius(0).outerRadius(boilerSize/2).startAngle(0).endAngle(Math.PI))
-                    .attr("transform", `translate(${cxToUse},${cyToUse})`).attr("fill", "black");
+            boilersIconGroup.append("rect").attr("x", cxToUse-boilerSize/2).attr("y", cyToUse-boilerSize/2).attr("width", boilerSize).attr("height", boilerSize).attr("rx", boilerSize/2).attr("ry", boilerSize/5).attr("fill", "black").attr("clip-path", "url(#boilerClip)")
         }
     }
 
@@ -1725,7 +1726,7 @@ function setDefaultSC() {
             d3.select("."+d.className).attr("fill", "red")
             linerDeets0.style("opacity", 0.8).attr("d", (d.line=="cunard"?cunardFlagPath:whiteStarFlagPath))
                 .attr("transform", (d.line=="cunard"?`translate(${linerDeetsStartX-25},${linerDeetsStartY-35}) scale(0.5,0.5)`:`translate(${linerDeetsStartX-41},${linerDeetsStartY-26}) scale(3,3)`))
-            linerDeets00.style("opacity", 0.8).attr("d", (d.line=="cunard"?cunardLionPath:starPath)).attr("fill", (d.line=="cunard"?"yellow":"white"))
+            linerDeets00.style("opacity", 0.8).attr("d", (d.line=="cunard"?cunardLionPath:starPath)).attr("fill", (d.line=="cunard"?"white":"white"))
                 .attr("transform", (d.line=="cunard"?`translate(${linerDeetsStartX-26},${linerDeetsStartY-40}) scale(.25,.25) rotate(-5)`:`translate(${linerDeetsStartX-37},${linerDeetsStartY-45}) scale(.25,.25) rotate(-5)`))
             linerDeets000.text((d.line=="cunard"?"Cunard":"White Star"))
             linerDeets1.text("Length: "+d.length+" ft")
@@ -1786,9 +1787,9 @@ function setDefaultDepthContainer() {
     })
 
     const radioGroup = depthContainerWaterGroup.append("foreignObject").attr("x", 110).attr("y", 100).attr("width", 20).attr("height", 100)
-    const radioGroupActualOptionRealTime = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "realTime").attr("name", "fallSpeed").attr("value", "realTime").on("click", ()=>depthTransitionLength=4*60*1000)
-    const radioGroupActualOptio5x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "twentyX").attr("name", "fallSpeed").attr("value", "twentyX").on("click", ()=>depthTransitionLength=4*60*1000/20)
-    const radioGroupActualOptio10x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "sixtyX").attr("name", "fallSpeed").attr("value", "sixtyX").on("click", ()=>depthTransitionLength=4*60*1000/60)
+    const radioGroupActualOptionRealTime = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "realTime").attr("name", "fallSpeed").attr("value", "realTime").style("accent-color", "red").on("click", ()=>depthTransitionLength=4*60*1000)
+    const radioGroupActualOptio5x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "twentyX").attr("name", "fallSpeed").attr("value", "twentyX").style("accent-color", "red").on("click", ()=>depthTransitionLength=4*60*1000/20)
+    const radioGroupActualOptio10x = radioGroup.append("xhtml:input").attr("type", "radio").attr("id", "sixtyX").attr("name", "fallSpeed").attr("value", "sixtyX").style("accent-color", "red").on("click", ()=>depthTransitionLength=4*60*1000/60)
     d3.select('#sixtyX').property('checked', true)
 
     const radioGroupTextLabels = depthContainerWaterGroup.append("g").attr("id", "radioGroupTextLabels").attr("transform", `translate(${130}, 112)`)
@@ -1821,9 +1822,13 @@ function setDefaultDepthContainer() {
 
     const sinkingTextGroup = depthContainerWaterGroup.append("g").attr("id", "sinkingTextGroup").attr("transform", `translate(${100}, ${20})`)
     const sinkingText = sinkingTextGroup.append("text").attr("id", "sinkingText").text("0 ft").attr("font-size", "16pt").attr("font-family", "'Roboto', sans-serif").attr("transform", `translate(${0}, ${0})`).attr("text-anchor", "end")
-                .attr("fill", "red").attr("font-weight", "bold").attr("opacity", 0.5)
+                .attr("fill", "DarkRed").attr("font-weight", "bold").attr("opacity", 0.8)
 
     const sinkingLine = depthContainerWaterGroup.append("line").attr("id", "sinkingLine").attr("x1", 0).attr("y1", 0).attr("x2", 20).attr("y2", 0).attr("stroke", "red").attr("stroke-width", 1).attr("stroke-dasharray", "1, 1")
+
+    const sinkingTimeGroup = sinkingTextGroup.append("g").attr("id", "sinkingTimeGroup").attr("transform", `translate(${0}, ${15})`)
+    const sinkingTime = sinkingTimeGroup.append("text").attr("id", "sinkingTime").text("2:20:00 am").attr("font-size", "8pt").attr("font-family", "'Roboto mono', monospace").attr("transform", `translate(${0}, ${0})`).attr("text-anchor", "end").attr("fill", "#333333").attr("opacity", 0.8)
+    
 
     depthContainerWaterGroup
         .append("rect").attr("id", "depthContainerWaterGroupRect").attr("x", 0).attr("y", 0).attr("width", waterwidth).attr("height", depthScale(13000)).attr("fill", "transparent")
@@ -1845,7 +1850,7 @@ function setDefaultDepthContainer() {
                 .attrTween("transform", ()=>{
                 // const i = d3.interpolate(depthScale(0), depthScale(12500))
                 return function(t) {
-                    let attrToReturn = "translate(" + 100 + ", " + (Math.max(20,t*depthScale(12500)-20)) + ")"
+                    let attrToReturn = "translate(" + 100 + ", " + (Math.max(20,Math.floor(t*depthScale(12500)-40))) + ")"
                     return attrToReturn
                     }
                 })
@@ -1857,10 +1862,22 @@ function setDefaultDepthContainer() {
                         return d3.format(",")(Math.round(i(t))) + " ft"
                     }
                 })
+            
+            sinkingTime.transition().ease(d3.easeLinear).duration(depthTransitionLength)
+                .textTween(()=>{
+                    const i = d3.interpolate(0, 60*4) // 4 minutes sinking time
+                    return function(t) {
+                        let minutes = Math.floor(i(t)/60)
+                        let seconds = Math.floor(i(t)%60)
+                        if (seconds<10) {
+                            seconds = "0" + seconds
+                        }
+                        return "2:2" + minutes + ":" + seconds + " am"
+                    }
+                })
 
             sinkingLine.transition().ease(d3.easeLinear).duration(depthTransitionLength)
                 .attrTween("transform", ()=>{
-                    // const i = d3.interpolate(depthScale(0), depthScale(12500))
                     return function(t) {
                         let attrToReturn = "translate(" + 0 + ", " + (t*depthScale(12500)) + ")"
                         return attrToReturn
@@ -1873,6 +1890,8 @@ function setDefaultDepthContainer() {
             d3.interrupt(d3.select("#sinkingText").node())
             sinkingText.text("0 ft")
             d3.interrupt(d3.select("#sinkingTextGroup").node())
+            d3.interrupt(d3.select("#sinkingTime").node())
+            sinkingTime.text("2:20:00 am")
             sinkingTextGroup.attr("transform", `translate(${100}, ${20})`)
             d3.interrupt(d3.select("#sinkingLine").node())
             sinkingLine.attr("transform", `translate(${0}, ${0})`)
@@ -1973,7 +1992,7 @@ clickForMore.append("text")
             .attr("text-anchor", "middle")
             .style("font-family", "Castoro, serif")
 
-const searchBoxGroup = primaryContainer.append("g").attr("id", "searchBoxGroup").attr("transform", "translate(650,454)").style("pointer-events", "none").style("opacity", 0)
+const searchBoxGroup = primaryContainer.append("g").attr("id", "searchBoxGroup").attr("transform", "translate(630,435)").style("pointer-events", "none").style("opacity", 0)
 
 let sunburstGroup = primaryContainer
             .append('g')
@@ -2184,9 +2203,14 @@ d3.csv('./data/titanic.csv').then(
     
     searchBoxGroup.style("pointer-events", "auto").style("opacity", 1)
     const searchBoxTitleGroup = searchBoxGroup.append("g").attr("id", "searchBoxTitleGroup")
-    searchBoxTitleGroup.append("text").text("Search:").attr("x", 0).attr("y", -8).style("font-size", "14px").style("font-family", "Castoro Titling")
+    searchBoxTitleGroup.append("text").text("Search:").attr("x", 0).attr("y", -4).style("font-size", "14px").style("font-family", "Castoro Titling")
     const searchBoxSearchGroup = searchBoxGroup.append("g").attr("id", "searchBoxSearchGroup").attr("transform", "translate(0,0)")
     const searchBox = searchBoxSearchGroup.append("foreignObject").attr("x", 0).attr("y", 0).attr("width", 190).attr("height", 20)
+    const clearSearchButton = searchBoxSearchGroup.append("foreignObject").attr("x", 0).attr("y", 15).attr("width", 190).attr("height", 20)
+    const clearSearchButtonActual = clearSearchButton.append("xhtml:button").attr("id", "clearSearchButtonActual").text("Clear search").style("font-size", "8px").on("click", ()=>{
+        d3.select("#searchBoxActual").node().value = ""
+        passengers.selectAll("rect").style("opacity", 1)
+    })
     const searchBoxActual = searchBox.append("xhtml:input").attr("x", 40).attr("id", "searchBoxActual").attr("type", "text").attr("placeholder", "Ohio, Straus, Hong Kong ...")
                 .on("keyup", ()=>{
                         let textSearchTerm = d3.select("#searchBoxActual").node().value.toLowerCase()
