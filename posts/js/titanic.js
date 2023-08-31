@@ -23,7 +23,6 @@ svgFrontPage.attr("viewBox", `0 0 ${width} ${height}`).attr("preserveAspectRatio
 
 const masthead = svgFrontPage.append("g").attr("id", "masthead")
 
-// const newspaperName = "The New York Times."
 const newspaperName = "The New York Gazette."
 const mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",44)")
 mainHero.append("text").attr("x", 0).attr("y", 0).text(newspaperName).attr("text-anchor", "middle").attr("font-family", "chomsky").attr("font-size", "42pt")
@@ -108,7 +107,7 @@ creditsContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", width-80
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY).text("Sources of data").attr("font-size", "8pt").attr("font-weight", "bold")
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY+creditsGapY*1).text("and inspiration:").attr("font-size", "8pt").attr("font-weight", "bold")
 
-creditsContainer.append("a").attr("href", "https://archive.nytimes.com/www.nytimes.com/learning/general/onthisday/big/0415.html").attr("target", "_blank")
+creditsContainer.append("a").attr("href", "https://commons.wikimedia.org/wiki/File:Titanic-NYT.jpg").attr("target", "_blank")
     .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("New York Times, April 1912").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "http://www.titanicology.com/").attr("target", "_blank")
     .append("text").attr("x", creditsStart1).attr("y", creditsStartY).text("Titanicology").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
