@@ -108,7 +108,7 @@ creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY).text("Sou
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY+creditsGapY*1).text("and inspiration:").attr("font-size", "8pt").attr("font-weight", "bold")
 
 creditsContainer.append("a").attr("href", "https://www.lva.virginia.gov/exhibits/titanic/index.php").attr("target", "_blank")
-    .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("Titanic in Black and White, LVA").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
+    .append("text").attr("x", creditsStart0).attr("y", creditsStartY).text("Titanic: Black and White").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "http://www.titanicology.com/").attr("target", "_blank")
     .append("text").attr("x", creditsStart1).attr("y", creditsStartY).text("Titanicology").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 creditsContainer.append("a").attr("href", "http://www.paullee.com/titanic/index.php").attr("target", "_blank")
