@@ -9,7 +9,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-PNQX1JJWVB');
 	</script>
-    <title>ankara</title>
+    <title>barbells</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -75,9 +75,9 @@
       let barBellStroke = 3
       let barBellStrokeColor = "white"
       let ballSize = 20
-      let barBellMaxHeight = squareWidth / 2
-      let barBellMag = 100
-      let magSin = 5
+      let barBellMaxHeight = squareWidth 
+      let barBellMag = 1000
+      let magSin = 8
       let magCos = 8
       let barBells = []
       for (let i = 0; i < numBarBells; i++) {
@@ -107,9 +107,9 @@
         barBellSep = squareWidth / (numBarBells+1)
         barBellStroke = Math.floor(Math.random()*3 + 1)
         barBellStrokeColor = random(["black","white"])
-        barBellMag = Math.floor(Math.random()*10 + 5)
-        magSin = Math.floor(Math.random()*10 + 5)
-        magCos = Math.floor(Math.random()*10 + 5)
+        // barBellMag = Math.floor(Math.random()*10 + 5)
+        // magSin = Math.floor(Math.random()*10 + 5)
+        // magCos = Math.floor(Math.random()*10 + 5)
         barBells = []
         for (let i = 0; i < numBarBells; i++) {
           barBells.push({
@@ -155,7 +155,7 @@
         rect(width/2,height/2,squareWidth,squareWidth)
 
         
-        // frameRate(.25)
+        frameRate(60)
         // noLoop()
         if (frameCount % 500 == 0) {
           location.reload()
@@ -179,12 +179,11 @@
       }
 
       updateBarBells = () => {
-        t+=1
-        
-        for (let i = 0; i < barBells.length; i++) {
+        t+=1.2
+      for (let i = 0; i < barBells.length; i++) {
           let barBell = barBells[i]
-          let newHeightUp = barBellMaxHeight/2 * Math.sin((t+i*2)/magSin)
-          let newHeightDown = barBellMaxHeight/2 * Math.cos((t+i)/magCos)
+          let newHeightUp = barBellMaxHeight/2 * (Math.sin((t+i*2)/magSin) + Math.sin((t/2+i*2)/magSin)+ Math.sin((t/3+i*2)/magSin)+ Math.sin((t/4+i*2)/magSin)+ Math.sin((5/2+i*2)/magSin))/5
+          let newHeightDown = barBellMaxHeight/2 * (Math.cos((t+i)/magCos) + Math.cos((t/3+i)/magCos)+ Math.cos((t/6+i)/magCos)+ Math.cos((t/4+i)/magCos)+ Math.cos((t/2+i)/magCos))/5
           barBell.y1 = height/2 - newHeightUp
           barBell.y2 = height/2 + newHeightDown
         }
