@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>orbit2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+      		
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let layers = [0,1,2,3,4,5,6,7,8,9,10]
+      let circlesize = 25*squareWidth/600
+      let angleOffset = 0
+      let angleOffsetIncrement = 0.05
+
+      
+			
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        rectMode(CENTER)
+        
+			}
+
+			draw = () => {
+
+        angleOffsetIncrement = map(mouseX,0,width,-0.1,0.1)
+        circlesize = map(mouseY,0,height,10,50)
+        noStroke()
+        fill(255,255,200)
+        rect(width/2,height/2,width,height)
+
+        noFill()
+        
+        layers.forEach(layer=>{
+          if (layer==0) return;
+
+          let numObjects = layer+1
+          let radius = squareWidth/2*layer/layers.length + 10
+          stroke(0,0,0)
+          // strokeWeight(0.5)
+          // circle(width/2,height/2,radius*2)
+          strokeWeight(1)
+
+          for (let k=0; k<numObjects*4; k++) {
+            let x = width/2 + radius * cos(100*angleOffset/radius + k*2*Math.PI/numObjects/4)
+            let y = height/2 + radius * sin(100*angleOffset/radius + k*2*Math.PI/numObjects/4)
+            fill(map(x-width/2,-radius,radius,0,255),map(y-height/2,-radius,radius,0,255),255,100)
+            rect(x,y,circlesize,circlesize)
+            // circle(x,y,circlesize)
+          }
+        })
+
+        angleOffset+=angleOffsetIncrement
+        // frameRate(2)
+      }
+
+
+    </script>
+  </body>
+</html>
