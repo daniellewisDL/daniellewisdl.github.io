@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
 	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
 		gtag('config', 'G-PNQX1JJWVB');
-	</script>
-    <title>fff</title>
+	</script> -->
+    <title>tubular</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -68,40 +68,10 @@
 			let initialMargin = 0.9
 			let squareWidth = Math.min(width,height)*initialMargin
       let colorSet1 = MetPalettes[Math.floor(Math.random()*MetPalettes.length)].colors
-      let numCellsX = 100
+      let numCellsX = 1
       let numCellsY = numCellsX
       let cellWidth = squareWidth/numCellsX
-      let grid = []
-      for (let i=0; i<numCellsX; i++) {
-        grid[i] = []
-        for (let j=0; j<numCellsY; j++) {
-          grid[i][j] = []
-          grid[i][j][0] = Math.random()*2*Math.PI
-          grid[i][j][1] = 4
-          grid[i][j][2] = 0
-        }
-      }
-      let rez = 0.03
-      let t = 0
-      let tIncrement = 0.01
-      let polySides = 4
-      let counter = 0
-      
-      // output each element to console
-      // for (let i=0; i<numCellsX; i++) {
-      //   for (let j=0; j<numCellsY; j++) {
-      //     console.log(grid[i][j])
-      //   }
-      // }
-      
-      function updateGrid() {
-        for (let i=0; i<numCellsX; i++) {
-          for (let j=0; j<numCellsY; j++) {
-            grid[i][j][2] = map(noise(i*rez,j*rez,t),0,1,0,2*PI)
-          }
-        }
-     }
-      
+
       preload = () => {
       }
 
@@ -109,55 +79,81 @@
         createCanvas(width, height)
         pixelDensity(1)
         background(0)
-        updateGrid()
-        t+=tIncrement
-			}
-
-			draw = () => {
-
-        let x = Math.random()*squareWidth
-        let y = Math.random()*squareWidth
-        let xIndex = Math.floor(map(x,0,squareWidth,0,numCellsX))
-        let yIndex = Math.floor(map(y,0,squareWidth,0,numCellsY))
-        
-        let numSteps = 500
-        let stepSize = 2
-        
-        // stroke(random([0,100,200]),random([0,100,200]),random([0,100,200]),50)
-        stroke("#9e444832")
-        strokeWeight(1)
-        noFill()
-        beginShape()
-
-        for (let i=0; i<numSteps; i++) {
-          
-          vertex(width/2-squareWidth/2+x,height/2-squareWidth/2+y)
-
-          let angle = grid[xIndex][yIndex][2]
-          let xStep = stepSize*cos(angle)
-          let yStep = stepSize*sin(angle)
-          x += xStep
-          y += yStep
-          xIndex = Math.floor(map(x,0,squareWidth,0,numCellsX))
-          yIndex = Math.floor(map(y,0,squareWidth,0,numCellsY))
-          
-          if (xIndex<0 || xIndex>=numCellsX || yIndex<0 || yIndex>=numCellsY) {
-            break
-          }
-          
-        }
-        endShape()
-          
-
-        if (counter<50000) {
-          counter++
-        }
-        else {noLoop()}
 
       }
 
+			draw = () => {
+
+        noStroke()
+        fill(0,0,0)
+        rect(0,0,width,height)
+
+        numCellsX += 1
+        numCellsY = numCellsX
+        cellWidth = squareWidth/numCellsX
+
+        if (numCellsX>50) {
+          numCellsX = 1
+          numCellsY = numCellsX
+          cellWidth = squareWidth/numCellsX
+        }
+
+        // draw grid
+        for (let i=0; i<numCellsX; i++) {
+          for (let j=0; j<numCellsY; j++) {
+            let x = width/2 - squareWidth/2 + i*cellWidth
+            let y = height/2 - squareWidth/2 +j*cellWidth
+            stroke(255)
+            strokeWeight(0)
+            noFill()
+            rect(x,y,cellWidth,cellWidth)
+            drawCell(x,y,cellWidth,0)
+          }
+        }
+
+        // noLoop()
+        // frameRate(1)
+      }
+
+      function drawCell(x,y,cellWidth,type) {
+
+        if (type==0) {
+
+          let pinkyColor = "#eebb98"
+          let purplyColor = "#d28c90"
+
+          let yellowyColor = "#f9d86f"
+          let greenyColor = "#bbd191"
+
+          let stripwidth = cellWidth/10
+
+          noStroke()
+
+          
+          push()
+          translate(x,y)
+          
+          
+          fill(yellowyColor)
+          rect(1*stripwidth,1*stripwidth,1*stripwidth,3*stripwidth)
+          rect(8*stripwidth,6*stripwidth,1*stripwidth,3*stripwidth)
+          fill(greenyColor)
+          rect(3*stripwidth,1*stripwidth,1*stripwidth,3*stripwidth)
+          rect(6*stripwidth,6*stripwidth,1*stripwidth,3*stripwidth)
+
+          fill(pinkyColor)
+          rect(1*stripwidth,6*stripwidth,3*stripwidth,1*stripwidth)
+          rect(6*stripwidth,1*stripwidth,3*stripwidth,1*stripwidth)
+
+          fill(purplyColor)
+          rect(1*stripwidth,8*stripwidth,3*stripwidth,1*stripwidth)
+          rect(6*stripwidth,3*stripwidth,3*stripwidth,1*stripwidth)
 
 
+          pop()
+
+        }
+      }
 
     </script>
   </body>
