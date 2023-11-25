@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
 	<!-- Google tag (gtag.js) -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
 		gtag('config', 'G-PNQX1JJWVB');
-	</script> -->
+	</script>
     <title>tubular</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -68,9 +68,10 @@
 			let initialMargin = 0.9
 			let squareWidth = Math.min(width,height)*initialMargin
       let colorSet1 = MetPalettes[Math.floor(Math.random()*MetPalettes.length)].colors
-      let numCellsX = 1
+      let numCellsX = 15
       let numCellsY = numCellsX
       let cellWidth = squareWidth/numCellsX
+      let cellType = 0
 
       preload = () => {
       }
@@ -88,17 +89,8 @@
         fill(0,0,0)
         rect(0,0,width,height)
 
-        numCellsX += 1
-        numCellsY = numCellsX
-        cellWidth = squareWidth/numCellsX
+        cellType++
 
-        if (numCellsX>50) {
-          numCellsX = 1
-          numCellsY = numCellsX
-          cellWidth = squareWidth/numCellsX
-        }
-
-        // draw grid
         for (let i=0; i<numCellsX; i++) {
           for (let j=0; j<numCellsY; j++) {
             let x = width/2 - squareWidth/2 + i*cellWidth
@@ -107,12 +99,12 @@
             strokeWeight(0)
             noFill()
             rect(x,y,cellWidth,cellWidth)
-            drawCell(x,y,cellWidth,0)
+            drawCell(x,y,cellWidth,cellType%3) // cellType
           }
         }
-
+        
         // noLoop()
-        // frameRate(1)
+        frameRate(0.3)
       }
 
       function drawCell(x,y,cellWidth,type) {
@@ -133,7 +125,6 @@
           push()
           translate(x,y)
           
-          
           fill(yellowyColor)
           rect(1*stripwidth,1*stripwidth,1*stripwidth,3*stripwidth)
           rect(8*stripwidth,6*stripwidth,1*stripwidth,3*stripwidth)
@@ -153,7 +144,150 @@
           pop()
 
         }
+        else if (type==1) {
+
+          let lightBrown = "#8a6222"
+          let midBrown = "#411710"
+          let darkBrown = "#251716"
+          let orangeU = "#bf3a23"
+
+          let stripWidth = cellWidth/4
+          let stripHeight = cellWidth/9
+
+          noStroke()
+          
+          push()
+          translate(x,y)
+          
+          // paint full width strips
+          fill(darkBrown)
+          rect(0,0,cellWidth,stripHeight)
+          rect(0,stripHeight*2,cellWidth,stripHeight)
+          
+          fill(orangeU)
+          rect(0,stripHeight*1,cellWidth,stripHeight)
+          rect(0,stripHeight*3,cellWidth,stripHeight)
+          rect(0,stripHeight*6,cellWidth,stripHeight)
+          
+          fill(midBrown)
+          rect(0,stripHeight*5,cellWidth,stripHeight)
+          rect(0,stripHeight*7,cellWidth,stripHeight)
+
+          fill(lightBrown)
+          rect(0,stripHeight*4,cellWidth,stripHeight)
+          rect(0,stripHeight*8,cellWidth,stripHeight)
+          
+          // paint middle strips
+          fill(darkBrown)
+          rect(stripWidth,stripHeight*3,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*3,stripWidth,stripHeight)
+          rect(stripWidth,stripHeight*6,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*6,stripWidth,stripHeight)
+
+          
+          fill(orangeU)
+          rect(stripWidth,stripHeight*0,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*0,stripWidth,stripHeight)
+          rect(stripWidth,stripHeight*5,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*5,stripWidth,stripHeight)
+          
+          fill(midBrown)
+          rect(stripWidth,stripHeight*1,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*1,stripWidth,stripHeight)
+          rect(stripWidth,stripHeight*4,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*4,stripWidth,stripHeight)
+          rect(stripWidth,stripHeight*8,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*8,stripWidth,stripHeight)
+
+          fill(lightBrown)
+          rect(stripWidth,stripHeight*2,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*2,stripWidth,stripHeight)
+          rect(stripWidth,stripHeight*7,stripWidth,stripHeight)
+          rect(stripWidth*3,stripHeight*7,stripWidth,stripHeight)
+
+          pop()
+
       }
+      else if (type==2) {
+
+          let cornYellow = "#fbe553"
+          let lightPurp = "#b24998"
+          let darkPurp = "#681342"
+          let whitePink = "#f1dbf0"
+          let skyBlue = "#29b2e1"
+          let blackground = "#0f0f0f"
+
+          let stripHeight = cellWidth/3
+          let stripWidth = cellWidth/4
+
+          let xS = [0,cellWidth*0.2,cellWidth*0.5,cellWidth*0.75,cellWidth]
+
+          let yS = [0,cellWidth*0.3,cellWidth*0.4,cellWidth*0.66,cellWidth*0.8,cellWidth]
+
+          noStroke()
+
+          push()
+          translate(x,y)
+
+          fill(blackground)
+          rect(xS[0],yS[0],xS[4],yS[5])
+
+          fill(whitePink)
+          rect(xS[0],yS[1],xS[3]-xS[0],yS[5]-yS[1])
+
+          fill(blackground)
+          rect(xS[1],yS[2],xS[2]-xS[1],yS[4]-yS[2])
+
+          fill(skyBlue)
+          beginShape()
+          vertex(xS[0],yS[5])
+          vertex(xS[2],yS[5])
+          vertex(xS[1],yS[3])
+          vertex(xS[0],yS[4])
+          endShape(CLOSE)
+
+          beginShape()
+          vertex(xS[0],yS[2])
+          vertex(xS[0],yS[1])
+          vertex(xS[1],yS[1])
+          endShape(CLOSE)
+
+
+          let blueCircsAcross = 5
+          let blueCircsDown = 10
+          let radius = 0.8*xS[1]/blueCircsAcross
+          for (let i=0; i<blueCircsAcross; i++) {
+            for (let j=0; j<blueCircsDown; j++) {
+              circle(xS[1]/blueCircsAcross*(i+0.5), yS[1]/blueCircsDown*(j+0.5), radius)
+            }
+          }
+
+          fill(lightPurp)
+          let purpCircsAcross = 15
+          let purpCircsDown = 10
+          for (let i=0; i<purpCircsAcross; i++) {
+            for (let j=0; j<purpCircsDown; j++) {
+              circle(xS[2]+xS[2]/purpCircsAcross*(i+0.5), yS[1]/blueCircsDown*(j+0.5), radius)
+            }
+          }
+
+          fill(darkPurp)
+          rect(xS[2],yS[2],xS[4]-xS[2],yS[3]-yS[2])
+
+          fill(cornYellow)
+          rect(xS[2],yS[1],xS[4]-xS[2],yS[2]-yS[1])
+
+          beginShape()
+          vertex(xS[0],yS[2])
+          vertex(xS[0],yS[3])
+          vertex(xS[1],yS[3])
+          endShape(CLOSE)
+
+
+          pop()
+
+          }
+    }
 
     </script>
   </body>
