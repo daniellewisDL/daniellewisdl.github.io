@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>picsum</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script> -->
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+  
+  <script>
+    let myImage;
+
+    fetch('https://picsum.photos/400/400')
+      .then(response => response.blob())
+      .then(imageBlob => {
+        myImage = URL.createObjectURL(imageBlob);
+        
+        // Get the canvas div
+        let canvas = document.getElementById('canvas');
+
+        // Create a new div
+        let centeredDiv = document.createElement('div');
+
+        // Style the new div
+        centeredDiv.style.position = 'absolute';
+        centeredDiv.style.top = '50%';
+        centeredDiv.style.left = '50%';
+        centeredDiv.style.transform = 'translate(-50%, -50%)';
+        centeredDiv.style.backgroundColor = '#333'; // Change this to the desired background color
+        centeredDiv.style.width = '400px'; // Change this to the desired width
+        centeredDiv.style.height = '400px'; // Change this to the desired height
+
+        // Add the new div to the canvas div
+        canvas.appendChild(centeredDiv)
+
+        let img = document.createElement('img')
+        img.src = myImage
+        centeredDiv.appendChild(img)
+
+
+      })
+
+
+  </script>
+    
+  </body>
+</html>
