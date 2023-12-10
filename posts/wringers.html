@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>wringers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let widthMargin = 0.9
+      let heightMargin = 0.6
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCircsX = 3
+      let cellWidth = squareWidth/numCircsX
+      let numCircsY = numCircsX
+      let cellHeight = squareWidth/numCircsY
+      let radiusCircs = 60
+      let topLeftX = width/2 - squareWidth/2
+      let topLeftY = height/2 - squareWidth/2
+      let circlesCentrePoint
+      let probaCirc = 0.5
+      let circleType = "circleBlack"
+      let circs = []
+      for (let j=0; j<numCircsY; j++) {
+        for (let i=0; i<numCircsX; i++) {
+          if (i==0||j==0||i==numCircsX-1||j==numCircsY-1) circleType = "circleBlack";
+          else circleType = "circleWhite";
+          if (Math.random()>probaCirc) {
+          circs.push(
+            {
+              gridOrder: i+j*numCircsX,
+              circleOrder: 0,
+              circleRadius: radiusCircs,
+              circleType: circleType,
+              circleX: topLeftX + (i+1)*cellWidth-cellWidth/2,
+              circleY: topLeftY + (j+1)*cellHeight-cellHeight/2,
+              circleTheta: 0.0,
+              circleThetaDegrees: 0.0,
+              circleR: 0,
+              outerContactPointX: 0,
+              outerContactPointY: 0
+            })
+          }
+        }
+      }
+
+      let outerCircles = circs.filter(circ=>circ.circleType=="circleBlack")
+      let outerCirclesXs = outerCircles.map(xs=>xs.circleX)
+      let outerCirclesXsSum = outerCirclesXs.reduce((acc,x)=>acc+x,0)
+      let outerCirclesXsAverage = outerCirclesXsSum/outerCirclesXs.length
+
+      let outerCirclesYs = outerCircles.map(xs=>xs.circleY)
+      let outerCirclesYsSum = outerCirclesYs.reduce((acc,y)=>acc+y,0)
+      let outerCirclesYsAverage = outerCirclesYsSum/outerCirclesYs.length
+
+      circs.forEach(circ=>{
+
+        let quadrant
+        let xDelta
+        let yDelta
+        let theta
+
+        if (circ.circleX >= outerCirclesXsAverage && circ.circleY < outerCirclesYsAverage) {
+          quadrant = 0
+          xDelta = circ.circleX - outerCirclesXsAverage
+          yDelta = outerCirclesYsAverage - circ.circleY
+          theta = Math.atan(xDelta/yDelta)
+        }
+        else if (circ.circleX > outerCirclesXsAverage && circ.circleY >= outerCirclesYsAverage) {
+          quadrant = 1
+          xDelta = circ.circleX - outerCirclesXsAverage
+          yDelta = circ.circleY - outerCirclesYsAverage
+          theta = Math.atan(yDelta/xDelta) + Math.PI/2
+        }
+        else if (circ.circleX <= outerCirclesXsAverage && circ.circleY > outerCirclesYsAverage) {
+          quadrant = 2
+          xDelta = outerCirclesXsAverage - circ.circleX
+          yDelta = circ.circleY - outerCirclesYsAverage
+          theta = Math.atan(xDelta/yDelta) + Math.PI
+        }
+        else if (circ.circleX < outerCirclesXsAverage && circ.circleY <= outerCirclesYsAverage) {
+          quadrant = 3
+          xDelta = outerCirclesXsAverage - circ.circleX
+          yDelta = outerCirclesYsAverage - circ.circleY
+          theta = Math.atan(yDelta/xDelta) + 3*Math.PI/2
+        }
+        else {
+          quadrant = -1
+          xDelta = 0
+          yDelta = 0
+          theta = 0
+        }
+        circ.circleTheta = theta
+        circ.circleThetaDegrees = theta * 360 / (2*Math.PI)
+
+        // CONTACT POINTS
+        let outerContactPointX
+        let outerContactPointY
+        let multiplierBlack = circ.circleType=="circleBlack"?-1:1
+        if (quadrant==0) {
+          outerContactPointX = circ.circleX - circ.circleRadius*Math.sin(theta)/2 * multiplierBlack
+          outerContactPointY = circ.circleY + circ.circleRadius*Math.cos(theta)/2 * multiplierBlack
+        }
+        else if (quadrant==1) {
+          outerContactPointX = circ.circleX - circ.circleRadius*Math.cos(theta-Math.PI/2)/2 * multiplierBlack
+          outerContactPointY = circ.circleY - circ.circleRadius*Math.sin(theta-Math.PI/2)/2 * multiplierBlack
+        }
+        else if (quadrant==2) {
+          outerContactPointX = circ.circleX + circ.circleRadius*Math.sin(theta-Math.PI)/2 * multiplierBlack
+          outerContactPointY = circ.circleY - circ.circleRadius*Math.cos(theta-Math.PI)/2 * multiplierBlack
+        }
+        else if (quadrant==3) {
+          outerContactPointX = circ.circleX + circ.circleRadius*Math.cos(theta-3*Math.PI/2)/2 * multiplierBlack
+          outerContactPointY = circ.circleY + circ.circleRadius*Math.sin(theta-3*Math.PI/2)/2 * multiplierBlack
+        }
+        else {
+          outerContactPointX = circ.circleX
+          outerContactPointY = circ.circleY
+        }
+        circ.outerContactPointX = outerContactPointX
+        circ.outerContactPointY = outerContactPointY
+
+      })
+
+      circs.sort((a,b)=>a.circleTheta-b.circleTheta)
+
+      for (let i=0; i<circs.length; i++) {
+        circs[i].circleOrder = i
+      }
+
+      // console.log(circs)
+
+      
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(230,230,180)
+        
+			}
+
+			draw = () => {
+
+        fill(230,230,180)
+        stroke(0)
+        strokeWeight(0.1)
+        rect(width/2 - squareWidth/2, height/2 - squareWidth/2, squareWidth, squareWidth)
+
+        circs.forEach(circ=>{
+          if (circ.circleType != "circleNull") {
+              // fill(circ.circleType=="circleBlack"?0:255)
+              // stroke(0)
+              // strokeWeight(1)
+              fill(0)
+              circle(circ.circleX, circ.circleY, circ.circleRadius)
+              noFill()
+              strokeWeight(0.5)
+              // line(circ.circleX,circ.circleY,outerCirclesXsAverage,outerCirclesYsAverage)
+
+              // noStroke()
+              // fill(circ.circleType=="circleBlack"?255:0)
+              // text(""+circ.circleOrder, circ.circleX, circ.circleY)
+              // text(""+Math.floor(10*circ.circleThetaDegrees)/10, circ.circleX, circ.circleY+20)
+            }
+          })
+        
+        fill(0,200)
+        beginShape()
+        for (let i=0; i<circs.length; i++) {
+          vertex(circs[i].circleX,circs[i].circleY)
+        }
+        endShape(CLOSE)
+
+        for (let i=0; i<circs.length; i++) {
+            let circ1 = circs[i]
+            let circ2 = circs[(i+1)%circs.length]
+            let outerLines = returnCircleOuterLines(circ1,circ2)
+            // stroke("blue")
+            // strokeWeight(1)
+            // line(outerLines[0],outerLines[1],outerLines[2],outerLines[3])
+            // stroke("red")
+            // line(outerLines[4],outerLines[5],outerLines[6],outerLines[7])
+
+            fill(0,100)
+            noStroke()
+            beginShape()
+            vertex(outerLines[0],outerLines[1])
+            vertex(outerLines[2],outerLines[3])
+            vertex(outerLines[4],outerLines[5])
+            vertex(outerLines[6],outerLines[7])
+            endShape(CLOSE)
+        }
+
+        // for (let i=0; i<circs.length; i++) {
+        //     let circ1 = circs[i]
+        //     let circ2 = circs[(i+1)%circs.length]
+        //     let innerTangentsLines = returnCircleInnerTangentsLines(circ1,circ2)
+        //     stroke("red")
+        //     strokeWeight(2)
+        //     line(innerTangentsLines[0],innerTangentsLines[1],innerTangentsLines[2],innerTangentsLines[3])
+        //     stroke("green")
+        //     line(innerTangentsLines[4],innerTangentsLines[5],innerTangentsLines[6],innerTangentsLines[7])
+        // }
+
+        // noFill()
+        // stroke(0)
+        // strokeWeight(5)
+        // circle(outerCirclesXsAverage,outerCirclesYsAverage,10)
+
+        // noLoop()
+        frameRate(1)
+
+        resetCircs()
+
+      }
+
+      function resetCircs() {
+        numCircsX = random([3,4,5,6,7,8])
+        cellWidth = squareWidth/numCircsX
+        numCircsY = numCircsX
+        cellHeight = squareWidth/numCircsY
+        radiusCircs = 60
+        topLeftX = width/2 - squareWidth/2
+        topLeftY = height/2 - squareWidth/2
+        circlesCentrePoint
+        probaCirc = 0.5
+        circleType = "circleBlack"
+        circs = []
+        for (let j=0; j<numCircsY; j++) {
+          for (let i=0; i<numCircsX; i++) {
+            if (i==0||j==0||i==numCircsX-1||j==numCircsY-1) circleType = "circleBlack";
+            else circleType = "circleWhite";
+            if (Math.random()>probaCirc) {
+            circs.push(
+              {
+                gridOrder: i+j*numCircsX,
+                circleOrder: 0,
+                circleRadius: radiusCircs,
+                circleType: circleType,
+                circleX: topLeftX + (i+1)*cellWidth-cellWidth/2,
+                circleY: topLeftY + (j+1)*cellHeight-cellHeight/2,
+                circleTheta: 0.0,
+                circleThetaDegrees: 0.0,
+                circleR: 0,
+                outerContactPointX: 0,
+                outerContactPointY: 0
+              })
+            }
+          }
+        }
+
+        outerCircles = circs.filter(circ=>circ.circleType=="circleBlack")
+        outerCirclesXs = outerCircles.map(xs=>xs.circleX)
+        outerCirclesXsSum = outerCirclesXs.reduce((acc,x)=>acc+x,0)
+        outerCirclesXsAverage = outerCirclesXsSum/outerCirclesXs.length
+
+        outerCirclesYs = outerCircles.map(xs=>xs.circleY)
+        outerCirclesYsSum = outerCirclesYs.reduce((acc,y)=>acc+y,0)
+        outerCirclesYsAverage = outerCirclesYsSum/outerCirclesYs.length
+
+        circs.forEach(circ=>{
+
+          let quadrant
+          let xDelta
+          let yDelta
+          let theta
+
+          if (circ.circleX >= outerCirclesXsAverage && circ.circleY < outerCirclesYsAverage) {
+            quadrant = 0
+            xDelta = circ.circleX - outerCirclesXsAverage
+            yDelta = outerCirclesYsAverage - circ.circleY
+            theta = Math.atan(xDelta/yDelta)
+          }
+          else if (circ.circleX > outerCirclesXsAverage && circ.circleY >= outerCirclesYsAverage) {
+            quadrant = 1
+            xDelta = circ.circleX - outerCirclesXsAverage
+            yDelta = circ.circleY - outerCirclesYsAverage
+            theta = Math.atan(yDelta/xDelta) + Math.PI/2
+          }
+          else if (circ.circleX <= outerCirclesXsAverage && circ.circleY > outerCirclesYsAverage) {
+            quadrant = 2
+            xDelta = outerCirclesXsAverage - circ.circleX
+            yDelta = circ.circleY - outerCirclesYsAverage
+            theta = Math.atan(xDelta/yDelta) + Math.PI
+          }
+          else if (circ.circleX < outerCirclesXsAverage && circ.circleY <= outerCirclesYsAverage) {
+            quadrant = 3
+            xDelta = outerCirclesXsAverage - circ.circleX
+            yDelta = outerCirclesYsAverage - circ.circleY
+            theta = Math.atan(yDelta/xDelta) + 3*Math.PI/2
+          }
+          else {
+            quadrant = -1
+            xDelta = 0
+            yDelta = 0
+            theta = 0
+          }
+          circ.circleTheta = theta
+          circ.circleThetaDegrees = theta * 360 / (2*Math.PI)
+
+          // CONTACT POINTS
+          let outerContactPointX
+          let outerContactPointY
+          let multiplierBlack = circ.circleType=="circleBlack"?-1:1
+          if (quadrant==0) {
+            outerContactPointX = circ.circleX - circ.circleRadius*Math.sin(theta)/2 * multiplierBlack
+            outerContactPointY = circ.circleY + circ.circleRadius*Math.cos(theta)/2 * multiplierBlack
+          }
+          else if (quadrant==1) {
+            outerContactPointX = circ.circleX - circ.circleRadius*Math.cos(theta-Math.PI/2)/2 * multiplierBlack
+            outerContactPointY = circ.circleY - circ.circleRadius*Math.sin(theta-Math.PI/2)/2 * multiplierBlack
+          }
+          else if (quadrant==2) {
+            outerContactPointX = circ.circleX + circ.circleRadius*Math.sin(theta-Math.PI)/2 * multiplierBlack
+            outerContactPointY = circ.circleY - circ.circleRadius*Math.cos(theta-Math.PI)/2 * multiplierBlack
+          }
+          else if (quadrant==3) {
+            outerContactPointX = circ.circleX + circ.circleRadius*Math.cos(theta-3*Math.PI/2)/2 * multiplierBlack
+            outerContactPointY = circ.circleY + circ.circleRadius*Math.sin(theta-3*Math.PI/2)/2 * multiplierBlack
+          }
+          else {
+            outerContactPointX = circ.circleX
+            outerContactPointY = circ.circleY
+          }
+          circ.outerContactPointX = outerContactPointX
+          circ.outerContactPointY = outerContactPointY
+
+        })
+
+        circs.sort((a,b)=>a.circleTheta-b.circleTheta)
+
+        for (let i=0; i<circs.length; i++) {
+          circs[i].circleOrder = i
+        }
+
+      }
+
+      function returnCircleInnerTangentsLines(circ1, circ2) {
+        let distBetween = Math.sqrt((circ2.circleX-circ1.circleX)**2 + (circ2.circleY-circ1.circleY)**2)
+        let adjacent = circ2.circleRadius
+        let angleBetween = Math.acos(adjacent/distBetween)
+        let angleFromXAxis = Math.atan((circ2.circleY-circ1.circleY)/(circ2.circleX-circ1.circleX))
+        let angle1 = angleFromXAxis - angleBetween
+        let dX = circ1.circleRadius*Math.cos(angle1)/2
+        let dY = circ1.circleRadius*Math.sin(angle1)/2
+        let line1X1 = circ1.circleX + dX
+        let line1Y1 = circ1.circleY - dY
+        let line1X2 = circ2.circleX - dX
+        let line1Y2 = circ2.circleY + dY
+        let line2X1 = circ1.circleX - dX
+        let line2Y1 = circ1.circleY + dY
+        let line2X2 = circ2.circleX + dX
+        let line2Y2 = circ2.circleY - dY
+        return [line1X1, line1Y1, line1X2, line1Y2, line2X1, line2Y1, line2X2, line2Y2]
+      }
+
+      function returnCircleOuterLines(circ1, circ2) {
+        
+        let gradient = (circ2.circleY-circ1.circleY)/(circ2.circleX-circ1.circleX)
+        let normal = -1/gradient
+        let normalAngle = Math.atan(normal)
+        let outerLineX1 = circ1.circleX + circ1.circleRadius*Math.cos(normalAngle)/2
+        let outerLineY1 = circ1.circleY + circ1.circleRadius*Math.sin(normalAngle)/2
+        let outerLineX2 = circ2.circleX + circ2.circleRadius*Math.cos(normalAngle)/2
+        let outerLineY2 = circ2.circleY + circ2.circleRadius*Math.sin(normalAngle)/2
+        let innerLineX1 = circ2.circleX - circ2.circleRadius*Math.cos(normalAngle)/2
+        let innerLineY1 = circ2.circleY - circ2.circleRadius*Math.sin(normalAngle)/2
+        let innerLineX2 = circ1.circleX - circ1.circleRadius*Math.cos(normalAngle)/2
+        let innerLineY2 = circ1.circleY - circ1.circleRadius*Math.sin(normalAngle)/2
+        return [outerLineX1, outerLineY1, outerLineX2, outerLineY2, innerLineX1, innerLineY1, innerLineX2, innerLineY2]
+
+      }
+
+    </script>
+  </body>
+</html>
