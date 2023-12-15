@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>kline2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let widthMargin = 0.9
+      let heightMargin = 0.6
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsX = 10
+      let numCellsY = numCellsX
+      let cellWidth = squareWidth/numCellsX
+      let cellHeight = squareWidth/numCellsY
+      let miniCellWidth = cellWidth/2
+      let miniCellHeight = cellHeight/2
+      let joyDivision = 25
+      let blackThetaX = 0
+      let blackThetaY = 0
+      let stage = 0
+      let counter = 0
+  
+      
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        
+			}
+
+			draw = () => {
+
+        background(0,5)
+
+        fill("#9e444832")
+        for (let j=0; j<numCellsY; j++) {
+          for (let i=0; i<numCellsX; i++) {
+            let x = i*cellWidth
+            let y = j*cellHeight
+            push()
+            translate(width/2 - squareWidth/2 + x, height/2 - squareWidth/2 + y)
+            rect(blackThetaX, blackThetaY, map(counter,0,1,1,miniCellWidth), map(counter,0,1,1,miniCellHeight))
+
+            pop()
+
+          }
+        }
+
+        if (stage==0) {
+          blackThetaX += miniCellWidth/joyDivision
+          if (blackThetaX > miniCellWidth) {
+            blackThetaX = miniCellWidth
+            stage = 1
+          }
+        }
+        else if (stage==1) {
+          blackThetaY += miniCellHeight/joyDivision
+          if (blackThetaY > miniCellHeight) {
+            blackThetaY = miniCellHeight
+            stage = 2
+          }
+        }
+        else if (stage==2) {
+          blackThetaX -= miniCellWidth/joyDivision
+          if (blackThetaX < 0) {
+            blackThetaX = 0
+            stage = 3
+          }
+        }
+        else if (stage==3) {
+          blackThetaY -= miniCellHeight/joyDivision
+          if (blackThetaY < 0) {
+            blackThetaY = 0
+            stage = 0
+          }
+        }
+
+        counter += 0.001
+        if (counter > 1) {
+          counter = 0
+          numCellsX = random([5,6,7,8,9,10,12,15,20])
+          numCellsY = numCellsX
+          cellWidth = squareWidth/numCellsX
+          cellHeight = squareWidth/numCellsY
+          miniCellWidth = cellWidth/2
+          miniCellHeight = cellHeight/2
+          joyDivision = 25
+          blackThetaX = 0
+          blackThetaY = 0
+          stage = 0
+          counter = 0
+        }
+
+    
+        // cliprects
+        fill(0)
+        noStroke()
+        rect(0,0,width/2 - squareWidth/2, height)
+        rect(width/2 + squareWidth/2, 0, width/2 - squareWidth/2, height)
+        rect(0,0,width, height/2 - squareWidth/2) 
+        rect(0, height/2 + squareWidth/2, width, height/2 - squareWidth/2)
+
+
+        // noLoop()
+        // frameRate(3)
+
+  
+      }
+
+    </script>
+  </body>
+</html>
