@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>epalette</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let colorSet1 = generatePalette()
+
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(205)
+        
+      }
+
+			draw = () => {
+
+        // noStroke()
+        fill(255,15)
+        rect(0,0,width,height)
+
+        let numRects1 = colorSet1.length
+        let rectWidth1 = width/numRects1
+        for (let i= 0; i<colorSet1.length; i++) {
+          
+          fill(colorSet1[i]+(10+Math.floor(Math.random()*50)))
+          noStroke()
+          let looper = Math.floor(500/colorSet1.length)
+          for(let j=0; j<looper; j++) {
+            let w1 = Math.random()*height/4
+            // blendMode(random([BLEND, DODGE, BURN, HARD_LIGHT]))
+            rect(width/2-width/2+i*rectWidth1+Math.random()*rectWidth1,
+                 50+w1,
+                 5,
+                 height-50-w1-50-w1)
+          }
+        }
+
+        if (frameCount%100==0) {
+          colorSet1 = generatePalette()
+          // console.log(colorSet1)
+        }
+      }
+
+      function generatePalette() {
+        
+        let palette = []
+        let numColors = Math.floor(Math.random()*5)+4
+        for (let i=0; i<numColors; i++) {
+          myColor = Math.floor(Math.random()*16777215).toString(16)
+          myColor = (myColor.length==6) ? myColor :
+            (myColor.length==5) ? "0"+myColor :
+            (myColor.length==4) ? "00"+myColor :
+            (myColor.length==3) ? "000"+myColor :
+            (myColor.length==2) ? "0000"+myColor :
+            (myColor.length==1) ? "00000"+myColor : "000000"
+          
+          palette.push("#"+myColor)
+        }
+        return palette
+      }
+
+
+    </script>
+  </body>
+</html>

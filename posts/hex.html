@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>hex</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let angle1 = 0
+      let angleIncrement = Math.PI/1000
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        
+			}
+
+			draw = () => {
+
+        background(0,5)
+
+        // stroke(255)
+        // strokeWeight(1)
+        // fill(250,250,0,10)
+        // for(let i=0; i<100; i++) {
+        //   drawHexagon(random(width/2-squareWidth/2,width/2+squareWidth/2),random(height/2-squareWidth/2,height/2+squareWidth/2),random(1,20))
+        // }
+
+        fill(0)
+        noStroke()
+        drawHexagon(width/2,height/2,squareWidth/2)
+
+        stroke(255)
+        strokeWeight(2)
+        fill(250,250,0,10)
+
+        push()
+        translate(width/2,height/2)
+        for(let i=0; i<40; i++) {
+          push()
+          rotate(angle1*(i%2==0?1:-1) + i*angle1/20)
+          drawHexagon(0,0,squareWidth/2*.9 * 0.863**i)
+          pop()
+        }
+        pop()
+        angle1 += angleIncrement
+
+        // angleIncrement += Math.PI/10000
+
+        if (frameCount%500==0) {
+          angleIncrement = Math.PI/1000
+        }
+
+        // noLoop()
+        // frameRate(3)
+
+
+  
+      }
+
+      function drawHexagon(x,y,h) {
+        push()
+        translate(x,y)
+        beginShape()
+        for(let i=0; i<6; i++) {
+          vertex(h*Math.cos(i*Math.PI/3),h*Math.sin(i*Math.PI/3))
+        }
+        endShape(CLOSE)
+        pop()
+
+      }
+
+    </script>
+  </body>
+</html>
