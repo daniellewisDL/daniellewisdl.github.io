@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>albers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let cellsX = 20
+      let cellsY = cellsX
+      let cellWidth = squareWidth/cellsX
+      let rotator = 0
+
+      let cells = []
+
+      for (let i=0; i<cellsX; i++) {
+        cells[i] = []
+        for (let j=0; j<cellsY; j++) {
+          cells[i][j] = {x: width/2-squareWidth/2 + i*cellWidth, y: height/2-squareWidth/2 + j*cellWidth, type: Math.floor(Math.random()*4), rotating: true}
+        }
+      }
+
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+
+        
+			}
+
+			draw = () => {
+
+        background(0)
+        fill("#79b6de")
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+        for (let i=0; i<cellsX; i++) {
+          for (let j=0; j<cellsY; j++) {
+            drawTile(cells[i][j].x,cells[i][j].y,cellWidth,cells[i][j].type,cells[i][j].rotating)
+          }
+        }
+
+        
+        if (rotator>=2*Math.PI) {
+          rotator = 0
+        }
+        else {
+          rotator += Math.PI/800
+        }
+        // console.log(rotator)
+
+
+        // noLoop()
+        // frameRate(1)
+
+  
+      }
+
+      function drawTile(x, y, size, type, rotating) {
+        let color1 = "#79b6de"
+        let color2 = "#ef692b"
+        size = size+1
+
+        noStroke()
+        push()
+        translate(x+size/2,y+size/2)
+        if (rotating) {
+          rotate(rotator)
+        }
+        fill(color1)
+        rect(-size/2,-size/2,size,size)
+        fill(color2)
+        beginShape()
+        if (type==0) {
+          vertex(-size/2,-size/2)
+          vertex(size/2,-size/2)
+          vertex(-size/2,size/2)
+        }
+        else if (type==1) {
+          vertex(size/2,-size/2)
+          vertex(size/2,size/2)
+          vertex(-size/2,size/2)
+        }
+        else if (type==2) {
+          vertex(-size/2,-size/2)
+          vertex(size/2,-size/2)
+          vertex(size/2,size/2)
+        }
+        else if (type==3) {
+          vertex(-size/2,-size/2)
+          vertex(size/2,size/2)
+          vertex(-size/2,size/2)
+        }
+        endShape(CLOSE)
+        pop()
+
+      }
+
+
+    </script>
+  </body>
+</html>

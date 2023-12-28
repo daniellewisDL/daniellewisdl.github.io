@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>lava</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      const malevichColors = ["#9c3623","#070709","#29285e","#c2892d", "#31753c", "#d6a7b3", "#e29724"]
+      let width = (window.innerWidth%2==0) ? window.innerWidth : window.innerWidth+1
+      let height = (window.innerHeight%2==0) ? window.innerHeight : window.innerHeight+1
+			let initialMargin = 0.1
+      let squareWidth = (Math.floor(Math.min(width,height)*initialMargin)%2==0) ? Math.floor(Math.min(width,height)*initialMargin) : Math.floor(Math.min(width,height)*initialMargin)+1
+      let squareHeight = squareWidth*2
+      let color1 = malevichColors[Math.floor(Math.random()*malevichColors.length)]
+      let color2 = malevichColors[Math.floor(Math.random()*malevichColors.length)]
+      while (color2==color1) {color2 = malevichColors[Math.floor(Math.random()*malevichColors.length)]}
+
+      let blobs = []
+      for (let b = 0; b<5; b++) {
+          blobs.push({x:Math.random()*squareWidth,
+                      y:Math.random()*squareHeight,
+                      xSpeed:Math.random()*4*squareHeight/236,
+                      ySpeed:Math.random()*4*squareHeight/236,
+                      r: Math.random()*10+5})
+      }
+      let pixelOffset = Math.floor(Math.random()*3)
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        colorMode(HSB,360,100,100,100)
+        background(0)
+        
+			}
+
+			draw = () => {
+
+        background(255)
+
+        strokeWeight(1)
+        stroke(0)
+        fill(color1)
+        rect(width/2-squareWidth/2,height/2-squareHeight/2,squareWidth,squareHeight)
+        fill("silver")
+        beginShape()
+        vertex(width/2-squareWidth/2,height/2-squareHeight/2)
+        vertex(width/2+squareWidth/2,height/2-squareHeight/2)
+        vertex(width/2,height/2-squareHeight)
+        endShape(CLOSE)
+        beginShape()
+        vertex(width/2-squareWidth/2,height/2+1.2*squareHeight)
+        vertex(width/2-squareWidth/3,height/2+0.7*squareHeight)
+        vertex(width/2-squareWidth/2,height/2+squareHeight/2)
+        vertex(width/2+squareWidth/2,height/2+squareHeight/2)
+        vertex(width/2+squareWidth/3,height/2+0.7*squareHeight)
+        vertex(width/2+squareWidth/2,height/2+1.2*squareHeight)
+        endShape(CLOSE)
+
+        for (let b = 0; b<blobs.length; b++) {
+          blobs[b].x+=blobs[b].xSpeed
+          blobs[b].y+=blobs[b].ySpeed
+          if (blobs[b].x<0 || blobs[b].x>squareWidth) {blobs[b].xSpeed*=-1}
+          if (blobs[b].y<0 || blobs[b].y>squareHeight) {blobs[b].ySpeed*=-1}
+
+        }
+
+        loadPixels()
+        for (let j=0; j<squareHeight; j++) {
+          for (let i=0; i<squareWidth; i++) {
+            let pixelIndex = 4*((j+height/2-squareHeight/2)*width + (i + width/2-squareWidth/2))
+            let sum = 0
+            for (let b = 0; b<blobs.length; b++) {
+              let distance = dist(blobs[b].x+width/2-squareWidth/2,blobs[b].y+height/2-squareHeight/2,i+width/2-squareWidth/2,j+height/2-squareHeight/2)
+              sum += 300 * squareHeight/236 * blobs[b].r/distance
+            }
+            pixels[pixelIndex+pixelOffset] = sum
+          }
+        }
+        updatePixels()
+        console.log(squareHeight)
+
+        // noLoop()
+        // frameRate(3)
+
+
+  
+      }
+
+    </script>
+  </body>
+</html>
