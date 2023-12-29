@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>typo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let sator = ["SATOR","AREPO","TENET","OPERA","ROTAS"]
+      let satorCounter = 0
+      let red = 255
+      let green = 255
+      let blue = 255
+      let alpha = 255
+  
+      preload = () => {
+        font = loadFont("./assets/RubikMonoOne-Regular.ttf")
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        textFont(font)
+			}
+
+			draw = () => {
+
+        background(0,7)
+
+        stroke(red,green,blue,alpha)
+        strokeWeight(1)
+        noFill()
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+        textSize(200*squareWidth/1100)
+        textAlign(CENTER, CENTER)
+        fill(255)
+        noStroke()
+        push()
+        clip(()=>{text(sator[satorCounter],width/2,height/2-squareWidth/2+satorCounter*200*squareWidth/1100+120*squareWidth/1100)})
+        for(let i = 0; i < 1000*squareWidth/1000; i++) {
+          noStroke()
+          fill(red,green,blue,alpha)
+          // circle(random(width/2-squareWidth/2,width/2+squareWidth/2),
+          //        random(height/2-squareWidth/2,height/2+squareWidth/2),
+          //        random(10,20))
+          rect(random(width/2-squareWidth/2,width/2+squareWidth/2),
+                 random(height/2-squareWidth/2,height/2+squareWidth/2),
+                 random(10,20))
+        }
+        pop()
+
+        satorCounter++
+        if(satorCounter == sator.length) {
+          satorCounter = 0
+        }
+        // noLoop()
+        // frameRate(24)
+
+        if (frameCount % 100 == 0) {
+          red = random(50,255)
+          green = random(50,255)
+          blue = random(50,255)
+          alpha = random(100,255)
+        }
+  
+      }
+
+    </script>
+  </body>
+</html>
+

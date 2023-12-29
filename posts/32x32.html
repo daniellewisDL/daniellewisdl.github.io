@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>32x32</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let cells = 32
+      let cellWidth = squareWidth/cells
+      let t=0
+      let a=5
+      let b=1
+      let c=1
+      let d=1.1
+      let e=2.1
+      let f=1.5
+      let g=2.3
+      let alpha=100
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        
+			}
+
+			draw = () => {
+
+        background(0)
+
+        noStroke()
+        fill(255)
+
+        for (let i=0; i<cells; i++) {
+          for (let j=0; j<cells; j++) {
+            fill(Math.sin(a*t+b*i+c*j)*120+135,0,100,alpha)
+            circle(width/2-squareWidth/2+cellWidth/2+i*cellWidth,height/2-squareWidth/2+cellWidth/2+j*cellWidth,
+            Math.sin(d*t+e*i+f*j)*cellWidth*g
+            )
+          }
+        }
+
+        t+=0.01
+
+
+        if (frameCount%100==0) {
+          a=random(10)
+          b=random(10)
+          c=random(10)
+          d=random(10)
+          e=random(10)
+          f=random(10)
+          g=random(3)
+          alpha=random(255)
+          
+        }
+
+        // noLoop()
+        // frameRate(3)
+
+      }
+
+    </script>
+  </body>
+</html>
+
