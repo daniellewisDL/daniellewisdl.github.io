@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>sifr</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: monospace;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+      }
+    </style>
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      // HAT TIP: https://design.tutsplus.com/tutorials/how-to-create-an-islamic-art-pattern-brush-in-illustrator--cms-34642
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let orangeBackgroundColor = "#eb9d67"
+      let whiteForegroundColor = "#ffffff"
+      let boldRedColor = "#aa1d13"
+      let islamicGreen = "#07311b"
+
+      let cellCounter = 0
+      let cellsList = [2,4,6,8,10,12,14,16]
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        noStroke()
+			}
+
+			draw = () => {
+
+        background(0)
+
+        let cells = cellsList[cellCounter%cellsList.length]
+        cellCounter++
+        let unit = squareWidth/cells
+        let origin = {x:width/2,y:height/2}
+
+        push()
+        translate(origin.x,origin.y)
+
+        for (let sides=0; sides<4; sides++) {
+          for (let layers=cells; layers>0; layers=layers-2) {
+            drawCornerSifr(-squareWidth/2 + unit*((cells-layers)/2),-squareWidth/2+unit*(cells-layers)/2,unit)
+            for (let i=0; i<layers-2; i++) {
+              drawSideSifr(-squareWidth/2 + unit*(i+1+(cells-layers)/2),-squareWidth/2+unit*(cells-layers)/2,unit)
+            }
+          }
+          rotate(PI/2)
+        }
+        pop()
+
+        // noLoop()
+        frameRate(1/5)
+
+      }
+
+      function drawSideSifr(x,y,size) {
+        let unit = size/30
+
+        fill(orangeBackgroundColor)
+        noStroke()
+        rect(x,y,size,size)
+
+        fill(boldRedColor)
+        rect(x,y+unit*2,size,unit*2)
+        rect(x,y+size-unit*2,size,unit*2)
+
+        fill(whiteForegroundColor)
+        for (let i=0;i<15;i++) {
+          beginShape()
+          vertex(x+unit*1+unit*2*i,y+unit*2)
+          vertex(x+unit*2+unit*2*i,y+unit*3)
+          vertex(x+unit*1+unit*2*i,y+unit*4)
+          vertex(x+unit*0+unit*2*i,y+unit*3)
+          endShape(CLOSE)
+          beginShape()
+          vertex(x+unit*1+unit*2*i,y+unit*28)
+          vertex(x+unit*2+unit*2*i,y+unit*29)
+          vertex(x+unit*1+unit*2*i,y+unit*30)
+          vertex(x+unit*0+unit*2*i,y+unit*29)
+          endShape(CLOSE)
+        }
+
+        fill(islamicGreen)
+        rect(x,y+unit*5,size,size-unit*7)
+
+        // CENTER - BOTTOM 2
+        push()
+        translate(x+unit*15,y+unit*16)
+        rotate(-PI/2)
+        drawCircleSifr(0,0,unit)
+        rotate(-PI/2)
+        drawCircleSifr(0,0,unit)
+        rotate(-PI/2)
+        pop()
+
+        push()
+        translate(x+unit*2,y+unit*16)
+        rotate(-3*PI/2)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        push()
+        translate(x+unit*2,y+unit*16)
+        rotate(-PI)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        push()
+        translate(x+unit*28,y+unit*16)
+        rotate(-PI/2)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        push()
+        translate(x+unit*28,y+unit*16)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        // CENTER - TOP 2
+        push()
+        translate(x+unit*15,y+unit*16)
+        drawCircleSifr(0,0,unit)
+        rotate(-3*PI/2)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        fill(orangeBackgroundColor)
+        rect(x,y+unit*7,unit*2,unit*18)
+        rect(x+unit*28,y+unit*7,unit*2,unit*18)
+        fill(whiteForegroundColor)
+        rect(x,y+unit*8,unit*2,unit*16)
+        rect(x+unit*28,y+unit*8,unit*2,unit*16)
+        fill(orangeBackgroundColor)
+        rect(x,y+unit*11,unit*2,unit*10)
+        rect(x+unit*28,y+unit*11,unit*2,unit*10)
+        fill(islamicGreen)
+        rect(x,y+unit*12,unit*2,unit*8)
+        rect(x+unit*28,y+unit*12,unit*2,unit*8)
+        fill(boldRedColor)
+        rect(x,y+unit*13,unit*2,unit*6)
+        rect(x+unit*28,y+unit*13,unit*2,unit*6)
+
+      }
+
+      function drawCornerSifr(x,y,size) {
+
+        let unit = size/30
+
+        fill(orangeBackgroundColor)
+        noStroke()
+        rect(x,y,size,size)
+        fill(boldRedColor)
+        rect(x+unit*2,y+unit*2,unit*2,size-unit*2)
+        rect(x+unit*2,y+unit*2,size-unit*2,unit*2)
+        fill(whiteForegroundColor)
+        for (let i=0;i<14;i++) {
+          beginShape()
+          vertex(x+unit*3,y+unit*2+unit*2*i)
+          vertex(x+unit*4,y+unit*3+unit*2*i)
+          vertex(x+unit*3,y+unit*4+unit*2*i)
+          vertex(x+unit*2,y+unit*3+unit*2*i)
+          endShape(CLOSE)
+          beginShape()
+          vertex(x+unit*3+unit*2*i,y+unit*2)
+          vertex(x+unit*4+unit*2*i,y+unit*3)
+          vertex(x+unit*3+unit*2*i,y+unit*4)
+          vertex(x+unit*2+unit*2*i,y+unit*3)
+          endShape(CLOSE)
+        }
+        fill(islamicGreen)
+        rect(x+unit*5,y+unit*5,size-unit*5,size-unit*5)
+        fill(boldRedColor)
+        rect(x+unit*28,y+unit*28,unit*2,unit*2)
+        fill(whiteForegroundColor)
+        beginShape()
+        vertex(x+unit*29,y+unit*28)
+        vertex(x+unit*30,y+unit*29)
+        vertex(x+unit*29,y+unit*30)
+        vertex(x+unit*28,y+unit*29)
+        endShape(CLOSE)
+        
+        push()
+        translate(x+unit*30,y+unit*16)
+        drawCircleSifr(0,0,unit)
+        rotate(-PI/2)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        push()
+        translate(x+unit*16,y+unit*30)
+        drawCircleSifr(0,0,unit)
+        rotate(PI/2)
+        drawCircleSifr(0,0,unit)
+        pop()
+
+        push()
+        translate(x+unit*12,y+unit*12)
+        rotate(-PI/4)
+        drawFleursSifr(0,0,unit*1.2)
+        pop()
+
+      }
+
+      function drawFleursSifr(x,y,unitSize) {
+        noStroke()
+        push()
+        translate(x,y)
+
+        fill(orangeBackgroundColor)
+        beginShape()
+        curveVertex(0,unitSize*8)
+        curveVertex(0,unitSize*8)
+        curveVertex(unitSize*0.5,unitSize*6.0)
+        curveVertex(unitSize*2.0,unitSize*7.0)
+        curveVertex(unitSize*2.0,unitSize*5.5)
+        curveVertex(unitSize*0.5,unitSize*5.5)
+        curveVertex(unitSize*2.0,unitSize*4.0)
+        curveVertex(unitSize*4.5,unitSize*4.5)
+        curveVertex(unitSize*5.0,unitSize*2.0)
+        curveVertex(unitSize*3.0,unitSize*0.5)
+        curveVertex(unitSize*3.3,unitSize*-1.0)
+        
+        curveVertex(unitSize*0.0,unitSize*-5.0)
+        
+        curveVertex(unitSize*-3.3,unitSize*-1.0)
+        curveVertex(unitSize*-3.0,unitSize*0.5)
+        curveVertex(unitSize*-5.0,unitSize*2.0)
+        curveVertex(unitSize*-4.5,unitSize*4.5)
+        curveVertex(unitSize*-2.0,unitSize*4.0)
+        curveVertex(unitSize*-0.5,unitSize*5.5)
+        curveVertex(unitSize*-2.0,unitSize*5.5)
+        curveVertex(unitSize*-2.0,unitSize*7.0)
+        curveVertex(unitSize*-0.5,unitSize*6.0)
+        curveVertex(0,unitSize*8)
+        curveVertex(0,unitSize*8)
+
+        endShape(CLOSE)
+
+        fill(boldRedColor)
+        rect(unitSize*-0.25,unitSize,unitSize*.5,unitSize*2.5)
+
+        fill(islamicGreen)
+        beginShape()
+        
+        curveVertex(0,unitSize*4.3)
+        curveVertex(0,unitSize*4.3)
+        curveVertex(unitSize*3.0,unitSize*2)
+        curveVertex(unitSize*3.0,unitSize*1)
+        curveVertex(unitSize*1.5,unitSize*1.6)
+
+        curveVertex(0,unitSize*3.0)
+
+        curveVertex(unitSize*-1.5,unitSize*1.6)
+        curveVertex(unitSize*-3.0,unitSize*1)
+        curveVertex(unitSize*-3.0,unitSize*2)
+        curveVertex(0,unitSize*4.3)
+        curveVertex(0,unitSize*4.3)
+
+        endShape(CLOSE)
+
+        fill(whiteForegroundColor)
+
+        beginShape()
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(unitSize*0.5,unitSize*-1)
+        curveVertex(unitSize*0.0,unitSize*-3.5)
+        curveVertex(unitSize*-0.5,unitSize*-1)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        endShape(CLOSE)
+
+        beginShape()
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(unitSize*1.3,unitSize*-1)
+        curveVertex(unitSize*1.1,unitSize*-3)
+        curveVertex(unitSize*0.8,unitSize*-1)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        endShape(CLOSE)
+
+        beginShape()
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(unitSize*-1.3,unitSize*-1)
+        curveVertex(unitSize*-1.1,unitSize*-3)
+        curveVertex(unitSize*-0.8,unitSize*-1)
+        curveVertex(0,unitSize*1.0)
+        curveVertex(0,unitSize*1.0)
+        endShape(CLOSE)
+
+        fill(boldRedColor)
+        circle(0,unitSize,unitSize)
+
+
+        pop()
+      }
+
+      function drawCircleSifr(x,y,unitSize) {
+        noStroke()
+        // unitSize*=1.05
+        let startAngle = PI
+        let endAngle = 3*PI/2
+        fill(islamicGreen)
+        arc(x,y,unitSize*20,unitSize*20,startAngle,endAngle,PIE)
+        fill(orangeBackgroundColor)
+        arc(x,y,unitSize*18,unitSize*18,startAngle,endAngle,PIE)
+        fill(whiteForegroundColor)
+        arc(x,y,unitSize*16,unitSize*16,startAngle,endAngle,PIE)
+        fill(orangeBackgroundColor)
+        arc(x,y,unitSize*10,unitSize*10,startAngle,endAngle,PIE)
+        fill(islamicGreen)
+        arc(x,y,unitSize*8,unitSize*8,startAngle,endAngle,PIE)
+        fill(boldRedColor)
+        arc(x,y,unitSize*6,unitSize*6,startAngle,endAngle,PIE)
+        
+      }
+
+
+    </script>
+  </body>
+</html>
+
