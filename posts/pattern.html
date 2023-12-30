@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>pattern</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsX = 25
+      let numCellsY = 50
+      let cellWidth = squareWidth/numCellsX
+      let cellHeight = squareWidth/numCellsY
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(255)
+        
+			}
+
+			draw = () => {
+
+        background(255)
+
+
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+
+        for (let j = 0; j < numCellsY; j++) {
+          for (let i = 0; i < numCellsX; i++) {
+            push()
+            translate(i*cellWidth,j*cellHeight)
+            if (i%2==1) {
+              translate(cellWidth,0)
+              scale(-1,1)
+            }
+            if (j%2==1) {
+              translate(0,cellHeight)
+              scale(1,-1)
+            }
+            drawTile(0,0,cellWidth,cellHeight)
+            pop()
+          }
+        }
+        pop()
+
+        // drawTile(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth/2)
+
+        noLoop()
+
+        // numCellsX = Math.floor(map(mouseX,0,width,2,20))
+        // numCellsY = Math.floor(map(mouseY,0,height,2,40))
+        // cellWidth = squareWidth/numCellsX
+        // cellHeight = squareWidth/numCellsY
+
+        // frameRate(3)
+  
+      }
+
+      function drawTile(x,y,w,h) {
+
+        // stroke("brown")
+        // strokeWeight(1)
+        // noFill()
+        // rect(x,y,w,h)
+
+        noStroke()
+        fill("brown")
+
+        push()
+        translate(x,y)
+        arc(0,0,w/3,w/3,0,PI/2)
+        arc(w,h,w/3,w/3,PI,PI*3/2)
+
+        rect(0,0,3*w/4,w/24)
+        rect(w-3*w/4,h-w/24,3*w/4,w/24)
+
+        rect(0,0,w/24,h)
+        rect(w-w/24,0,w/24,h)
+
+        // stroke("black")
+
+        beginShape()
+        vertex(0,0)
+        vertex(w/24,0)
+        vertex(w,h-w/24)
+        vertex(w,h)
+        vertex(w-w/24,h)
+        vertex(0,w/24)
+        endShape(CLOSE)
+
+        beginShape()
+        vertex(0,0)
+        vertex(w/24,0)
+        vertex(w-3*w/4+w/12,h)
+        vertex(w-3*w/4,h)
+        vertex(0,w/24)
+        endShape(CLOSE)
+
+        beginShape()
+        vertex(w,h)
+        vertex(w-w/24,h)
+        vertex(w-w/4-w/12,0)
+        vertex(w-w/4,0)
+        vertex(w,h-w/24)
+        endShape(CLOSE)
+        
+        pop()
+
+
+
+      }
+
+    </script>
+  </body>
+</html>
+
