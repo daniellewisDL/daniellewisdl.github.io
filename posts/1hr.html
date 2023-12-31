@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>1hr</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      // 10:38
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let colorList = ["white","red","blue","green","yellow","orange","purple","pink","cyan","magenta","lime","teal","lavender","brown","beige","maroon","mint","olive","coral","navy","grey","white"]
+      let myColor = colorList[Math.floor(Math.random()*colorList.length)]
+      let numLayers = 5
+      let radii = []
+      for (let i = 0; i < numLayers; i++) {
+        radii.push(squareWidth*(1-i/numLayers))
+      }
+      let radiiSeparation = squareWidth/numLayers
+
+      let a = 0
+      
+      let b = 0
+      let bOff = 0
+      let bOffIncrements = 0.01
+      
+      let c = 0
+      let cOff = 100
+      let cOffIncrements = 0.001
+
+      let d = 0
+      let dOff = 200
+      let dOffIncrements = 0.03
+
+      let e = 0
+      let eOff = 300
+      let eOffIncrements = 0.04
+
+      let f = 0
+      let fOff = 400
+      let fOffIncrements = 0.05
+
+      let g = 0
+      let gOff = 500
+      let gOffIncrements = 0.06
+
+      let h = 0
+      let hOff = 600
+      let hOffIncrements = 0.06
+
+      let i = 0
+      let iOff = 700
+      let iOffIncrements = 0.07
+
+      let j = 0
+      let jOff = 800
+      let jOffIncrements = 0.03
+
+      let maxAngle = 0
+            
+      function resetConstants() {
+        b = radiiSeparation*.9
+        c = noise(cOff)*360-180
+        d = noise(dOff)*10-5
+        e = noise(eOff)*360-180
+        f = noise(fOff)*10-5
+        g = noise(gOff)*10-5
+        h = noise(hOff)*360-180
+        i = noise(iOff)*10-5
+        j = noise(jOff)*360-180
+        
+      }
+  
+      preload = () => {
+        
+      }
+      
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        angleMode(DEGREES)
+        resetConstants()
+        
+			}
+
+			draw = () => {
+
+        background(0,15)
+        noFill()
+        strokeWeight(0.5)
+        stroke(myColor)
+        for (let i = 0; i < radii.length; i++) {
+          // stroke("white")
+          circle(width/2,height/2,radii[i])
+          a = map(b*( sin(0+c+d*sin(0+e)+f*cos(g*0+h)+i*sin(0-j) )**2),-b,b,-radiiSeparation*0.9,radiiSeparation*0.9)
+          let px = width/2 + (radii[i]+a)*cos(0)/2
+          let py = height/2 + (radii[i]+a)*sin(0)/2
+          for (let angle = 0; angle < maxAngle; angle+=1) {
+            a = map(b*( sin(angle+c+d*sin(angle+e)+f*cos(g*angle+h)+i*sin(angle-j) )**2),-b,b,-radiiSeparation*0.9,radiiSeparation*0.9)
+            let x = width/2 + (radii[i]+a)*cos(angle)/2
+            let y = height/2 + (radii[i]+a)*sin(angle)/2
+            // point(x,y)
+            line(px,py,x,y)
+            px = x
+            py = y
+            cOff += cOffIncrements
+            dOff += dOffIncrements
+            eOff += eOffIncrements
+            fOff += fOffIncrements
+            gOff += gOffIncrements
+            hOff += hOffIncrements
+            iOff += iOffIncrements
+            jOff += jOffIncrements
+            resetConstants()    
+          }
+          maxAngle+=0.5
+        }
+        
+        // cOff += cOffIncrements
+        // dOff += dOffIncrements
+        // eOff += eOffIncrements
+        // fOff += fOffIncrements
+        // gOff += gOffIncrements
+        // hOff += hOffIncrements
+        // iOff += iOffIncrements
+        // jOff += jOffIncrements
+        // resetConstants()
+
+        
+
+        if (frameCount%360==0) {
+          background(0)
+          myColor = colorList[Math.floor(Math.random()*colorList.length)]
+          numLayers = Math.floor(random([2,5,8,10]))
+          radii = []
+          for (let i = 0; i < numLayers; i++) {
+            radii.push(squareWidth*(1-i/numLayers))
+          }
+          radiiSeparation = squareWidth/numLayers
+          maxAngle = 0
+
+        }
+        // noLoop()
+  
+      }
+
+    </script>
+  </body>
+</html>
+

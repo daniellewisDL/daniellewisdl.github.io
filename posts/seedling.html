@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>seedling</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(250,230,205); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let seeds = []
+      let numSeeds = 1
+      let maxRootDepth = 5
+      let maxShootDepth = 6
+      let growthRate = 1
+      let greenColours = ["Chartreuse","DarkGreen","DarkOliveGreen","ForestGreen","Green","GreenYellow","LawnGreen","LightGreen","Lime","LimeGreen",
+                          "MediumSeaGreen","MediumSpringGreen","Olive","OliveDrab","PaleGreen","SeaGreen","SpringGreen","YellowGreen"]
+      let brownColours = ["Brown","BurlyWood","Chocolate","DarkGoldenRod","Maroon","SaddleBrown","Sienna","Tan"]
+      let redColours = ["Crimson","DarkRed","FireBrick","IndianRed","LightCoral","Red"]
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(250,230,205)
+        for (let i = 0; i < numSeeds; i++) {
+          seeds.push(new Seed(width/2+ (Math.random()-0.5)*(squareWidth/4),
+                              height/2+ squareWidth/10 + Math.random() * squareWidth/16))
+        }
+        
+			}
+
+			draw = () => {
+
+        background(250,230,205)
+
+        stroke("SaddleBrown")
+        strokeWeight(1)
+        noFill()
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+        drawGround()
+
+        for (let i = 0; i < seeds.length; i++) {
+          seeds[i].grow()
+          seeds[i].show()
+        }
+        
+
+      }
+
+      drawGround = () => {
+        stroke("Peru")
+        noFill()
+        strokeWeight(1)
+        
+        let groundLevel = height/2
+        let depthMargin = 0.9
+        let depthLevel = height/2+depthMargin*squareWidth/2
+        let widthMargin = 0.9
+        let leftX = width/2-widthMargin*squareWidth/2
+        let rightX = width/2+widthMargin*squareWidth/2
+        let numStrips = 100
+        
+
+        line(leftX,groundLevel,rightX,groundLevel)
+        
+        for (let i = 0; i < numStrips; i++) {
+          let x1 = Math.floor(leftX + i*0.1*(rightX-leftX)/numStrips)
+          let y = Math.floor(groundLevel + i*(depthLevel-groundLevel)/numStrips)
+          let x2 = Math.floor(rightX - i*0.1*(rightX-leftX)/numStrips)
+          
+          for (let j = x1; j < x2; j++) {
+            if (Math.random() < 0.1) {continue}
+            let y1 = Math.floor(y + random(-1,1)*0.1*(depthLevel-groundLevel)/numStrips)
+            let y2 = Math.floor(y + random(-1,1)*0.1*(depthLevel-groundLevel)/numStrips)
+            line(j,y1,j,y2)
+          }
+
+          
+        }
+
+      }
+
+      class Seed {
+        constructor(x,y) {
+          this.x = x
+          this.y = y
+          this.growth = 0
+          this.growthRate = growthRate
+          this.growthLimit = 30 * squareWidth/1000
+          this.growingRoots = false
+          this.growingShoots = false
+          this.shoots = []
+          this.roots = []
+
+        }
+
+        grow() {
+          if (!this.growingShoots) {
+            this.growth += this.growthRate
+            if (this.growth >= this.growthLimit) {
+              this.growth = this.growthLimit
+              this.growingShoots = true
+            }
+          }
+          if (this.growth > this.growthLimit/2) {
+            this.growingRoots = true
+          }
+          if (this.growingRoots) {
+            this.growRoots()
+          }
+          if (this.growingShoots) {
+            this.growShoots()
+          }
+        }
+
+        growRoots() {
+          if (this.roots.length == 0) {
+            this.roots.push(new Root(this.x,this.y,0))
+            this.roots.push(new Root(this.x,this.y,0))
+            this.roots.push(new Root(this.x,this.y,0))
+          }
+          for (let i = 0; i < this.roots.length; i++) {
+            this.roots[i].grow()
+            this.roots[i].show()
+          }
+        }
+
+        growShoots() {
+          if (this.shoots.length == 0) {
+            this.shoots.push(new Shoot(this.x,this.y,0))
+            this.shoots.push(new Shoot(this.x,this.y,0))
+            this.shoots.push(new Shoot(this.x,this.y,0))
+          }
+          for (let i = 0; i < this.shoots.length; i++) {
+            this.shoots[i].grow()
+            this.shoots[i].show()
+          }
+        }
+
+        show() {
+          stroke("Brown")
+          strokeWeight(0.5)
+          fill(red("DarkOliveGreen"),green("DarkOliveGreen"),blue("DarkOliveGreen"),150)
+          circle(this.x,this.y,this.growth)
+        }
+
+      }
+
+      class Shoot {
+        constructor(x,y,level) {
+          this.x = x
+          this.y = y
+          this.level = level+1
+          this.angle = random(Math.PI, 2*Math.PI)
+          this.growth = 0
+          this.growthRate = 3* growthRate
+          this.growthLimit = 100 * squareWidth/1000
+          this.growingShoots = false
+          this.shoots = []
+          this.finalX = this.x + this.growthLimit * Math.cos(this.angle)
+          this.finalY = this.y + this.growthLimit * Math.sin(this.angle)
+          this.colour = random(greenColours)
+          this.redColor = random(redColours) // List of all HTML red colours
+
+          // List of all HTML green colours
+          
+
+        }
+
+        grow() {
+          if (!this.growingShoots) {
+            this.growth += this.growthRate
+            if (this.growth >= this.growthLimit) {
+              this.growth = this.growthLimit
+              this.growingShoots = true
+            }
+          }
+
+          if (this.growingShoots && this.level < maxShootDepth) {
+            this.growShoots()
+          }
+
+        }
+
+        growShoots() {
+          if (this.shoots.length == 0) {
+            this.shoots.push(new Shoot(this.finalX,this.finalY,this.level))
+            this.shoots.push(new Shoot(this.finalX,this.finalY,this.level))
+            this.shoots.push(new Shoot(this.finalX,this.finalY,this.level))
+          }
+          for (let i = 0; i < this.shoots.length; i++) {
+            this.shoots[i].grow()
+            this.shoots[i].show()
+          }
+
+        }
+
+        show() {
+          if (this.level == maxShootDepth) {
+            noStroke()
+            fill(red(this.redColor),green(this.redColor),blue(this.redColor),50)
+            circle(this.x,this.y,this.growth/2)
+          }
+          else {
+            stroke(red(this.colour),green(this.colour),blue(this.colour),150)
+            strokeWeight(maxShootDepth+1-this.level)
+            line(this.x,this.y,this.x + this.growth* Math.cos(this.angle), this.y + this.growth * Math.sin(this.angle))
+          }
+          
+        }
+      }
+
+      class Root {
+        constructor(x,y,level) {
+          this.x = x
+          this.y = y
+          this.level = level+1
+          this.angle = random(0,Math.PI)
+          this.growth = 0
+          this.growthRate = 2 * growthRate
+          this.growthLimit = 40 * squareWidth/1000
+          this.growingRoots = false
+          this.roots = []
+          this.finalX = this.x + this.growthLimit * Math.cos(this.angle)
+          this.finalY = this.y + this.growthLimit * Math.sin(this.angle)
+          this.colour = random(brownColours)
+
+        }
+
+        grow() {
+          if (!this.growingRoots) {
+            this.growth += this.growthRate
+            if (this.growth >= this.growthLimit) {
+              this.growth = this.growthLimit
+              this.growingRoots = true
+            }
+          }
+
+          if (this.growingRoots && this.level < maxRootDepth) {
+            this.growRoots()
+          }
+
+        }
+
+        growRoots() {
+          if (this.roots.length == 0) {
+            this.roots.push(new Root(this.finalX,this.finalY,this.level))
+            this.roots.push(new Root(this.finalX,this.finalY,this.level))
+            this.roots.push(new Root(this.finalX,this.finalY,this.level))
+          }
+          for (let i = 0; i < this.roots.length; i++) {
+            this.roots[i].grow()
+            this.roots[i].show()
+          }
+
+        }
+
+        show() {
+          stroke(red(this.colour),green(this.colour),blue(this.colour),150)
+          strokeWeight(maxRootDepth+1-this.level)
+          line(this.x,this.y,this.x + this.growth* Math.cos(this.angle), this.y + this.growth * Math.sin(this.angle))
+          // console.log(this.roots, this.growingRoots, this.level)
+        }
+
+      }
+
+    </script>
+  </body>
+</html>
+
