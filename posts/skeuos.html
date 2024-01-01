@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>skeuos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsX = 30
+      let numCellsY = numCellsX/2
+      let cellWidth = squareWidth/numCellsX
+      let cellHeight = squareWidth/numCellsY
+      let mySevenSeg = []
+      let t=0
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        for (let i=0; i<numCellsX; i++) {
+          for (let j=0; j<numCellsY; j++) {
+            mySevenSeg.push(new SevenSeg(width/2-squareWidth/2+i*cellWidth,height/2-squareWidth/2+ j*cellHeight,cellWidth,cellHeight,(j*numCellsX+i)%10))
+          }
+        }
+        
+			}
+
+			draw = () => {
+
+        background(0,5)
+
+        for (let i=0; i<mySevenSeg.length; i++) {
+          mySevenSeg[i].set(Math.floor(20*map(Math.cos(t+mySevenSeg[i].distanceToCenterOfScreen),-1,1,0,10))%10)
+          mySevenSeg[i].show()
+        }
+        
+        t+=0.001
+
+        // frameRate(5)
+  
+      }
+
+      class SevenSeg {
+        constructor(x,y,w,h,num) {
+          this.x = x
+          this.y = y
+          this.width = w
+          this.unitX = w/100
+          this.height = h
+          this.unitY = h/100
+          this.marginX = this.unitX*5
+          this.marginY = this.unitY*5
+          this.strokeWeight = 0.5
+          this.strokeColor = color(100)
+          this.bgColor = color(0)
+          this.segWidth = this.width/10
+          this.segHeight = this.height/10
+          this.num = num
+          this.segColor = color("red")
+          this.segments = this.set(num)
+          this.distanceToCenterOfScreen = Math.sqrt(Math.pow(this.x+w/2-width/2,2)+Math.pow(this.y+h/2-height/2,2))
+
+        }
+
+        set(n) {
+          this.num = n
+          switch(n) {
+            case 0:
+              this.segments = [true,true,true,true,true,true,false]
+              this.segColor = color(255*0.1,0,0)
+              break
+            case 1:
+              this.segments = [false,true,true,false,false,false,false]
+              this.segColor = color(255*0.2,0,0)
+              break
+            case 2:
+              this.segments = [true,true,false,true,true,false,true]
+              this.segColor = color(255*0.3,0,0)
+              break
+            case 3:
+              this.segments = [true,true,true,true,false,false,true]
+              this.segColor = color(255*0.4,0,0)
+              break
+            case 4:
+              this.segments = [false,true,true,false,false,true,true]
+              this.segColor = color(255*0.5,0,0)
+              break
+            case 5:
+              this.segments = [true,false,true,true,false,true,true]
+              this.segColor = color(255*0.6,0,0)
+              break
+            case 6:
+              this.segments = [true,false,true,true,true,true,true]
+              this.segColor = color(255*0.7,0,0)
+              break
+            case 7:
+              this.segments = [true,true,true,false,false,false,false]
+              this.segColor = color(255*0.8,0,0)
+              break
+            case 8:
+              this.segments = [true,true,true,true,true,true,true]
+              this.segColor = color(255*0.9,0,0)
+              break
+            case 9:
+              this.segments = [true,true,true,true,false,true,true]
+              this.segColor = color(255*1.0,0,0)
+              break
+            default:
+              this.segments = [false,false,false,false,false,false,false]
+              this.segColor = color(255*0.2,0,0)
+          }
+        }
+
+        show() {
+          push()
+          translate(this.x,this.y)
+          stroke(this.strokeColor)
+          strokeWeight(this.strokeWeight)
+          fill(this.bgColor)
+          rect(0,0,this.width,this.height)
+
+          noStroke()
+          fill(this.segColor)
+          // top
+          if (this.segments[0]) {
+            push()
+            translate(this.unitX*10,this.unitY*10)
+            beginShape()
+            vertex(this.unitX*10,this.unitY*6)
+            vertex(this.unitX*15,this.unitY*9)
+            vertex(this.unitX*65,this.unitY*9)
+            vertex(this.unitX*70,this.unitY*6)
+            vertex(this.unitX*65,this.unitY*3)
+            vertex(this.unitX*15,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // top right
+          if (this.segments[1]) {
+            push()
+            translate(this.unitX*81,this.unitY*17)
+            beginShape()
+            vertex(this.unitX*0,this.unitY*0)
+            vertex(this.unitX*-5,this.unitY*3)
+            vertex(this.unitX*-5,this.unitY*30)
+            vertex(this.unitX*0,this.unitY*33)
+            vertex(this.unitX*5,this.unitY*30)
+            vertex(this.unitX*5,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // bottom right
+          if (this.segments[2]) {
+            push()
+            translate(this.unitX*81,this.unitY*52)
+            beginShape()
+            vertex(this.unitX*0,this.unitY*0)
+            vertex(this.unitX*-5,this.unitY*3)
+            vertex(this.unitX*-5,this.unitY*30)
+            vertex(this.unitX*0,this.unitY*33)
+            vertex(this.unitX*5,this.unitY*30)
+            vertex(this.unitX*5,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // bottom
+          if (this.segments[3]) {
+            push()
+            translate(this.unitX*10,this.unitY*80)
+            beginShape()
+            vertex(this.unitX*10,this.unitY*6)
+            vertex(this.unitX*15,this.unitY*9)
+            vertex(this.unitX*65,this.unitY*9)
+            vertex(this.unitX*70,this.unitY*6)
+            vertex(this.unitX*65,this.unitY*3)
+            vertex(this.unitX*15,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // bottom left
+          if (this.segments[4]) {
+            push()
+            translate(this.unitX*19,this.unitY*52)
+            beginShape()
+            vertex(this.unitX*0,this.unitY*0)
+            vertex(this.unitX*-5,this.unitY*3)
+            vertex(this.unitX*-5,this.unitY*30)
+            vertex(this.unitX*0,this.unitY*33)
+            vertex(this.unitX*5,this.unitY*30)
+            vertex(this.unitX*5,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // top left
+          if (this.segments[5]) {
+            push()
+            translate(this.unitX*19,this.unitY*17)
+            beginShape()
+            vertex(this.unitX*0,this.unitY*0)
+            vertex(this.unitX*-5,this.unitY*3)
+            vertex(this.unitX*-5,this.unitY*30)
+            vertex(this.unitX*0,this.unitY*33)
+            vertex(this.unitX*5,this.unitY*30)
+            vertex(this.unitX*5,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          // middle
+          if (this.segments[6]) {
+            push()
+            translate(this.unitX*10,this.unitY*45)
+            beginShape()
+            vertex(this.unitX*10,this.unitY*6)
+            vertex(this.unitX*15,this.unitY*9)
+            vertex(this.unitX*65,this.unitY*9)
+            vertex(this.unitX*70,this.unitY*6)
+            vertex(this.unitX*65,this.unitY*3)
+            vertex(this.unitX*15,this.unitY*3)
+            endShape(CLOSE)
+            pop()
+          }
+          pop()
+        }
+      }
+
+    </script>
+  </body>
+</html>
+

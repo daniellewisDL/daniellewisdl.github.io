@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>SDFs2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let boxWidth = 300
+      let boxHeight = 300
+      let px
+      let py
+      let wanderingX = 0
+      let wanderingY = 0
+      let t = 0
+      let offset = 0.1
+      let offsetIncrements = 0.0005
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        
+			}
+
+			draw = () => {
+
+        // background(0,5)
+        
+        push()
+        
+        translate(width/2,height/2)
+
+        for (let i=0; i<1000; i++) {
+          let x = Math.random()*squareWidth-squareWidth/2
+          let y = Math.random()*squareWidth-squareWidth/2
+
+          let d = sdfBox(0,0,boxWidth,boxHeight,x,y)
+          // let d = sdfGrid(0,0,x,y,map(mouseX,0,width,0,400))
+          // let d = sdfBalls(0,0,x,y,map(mouseX,0,width,0,400),Math.floor(map(mouseY,0,height,0,40)))
+          // let d = sdfBalls(0,0,x,y,map(wanderingX,0,width,0,400),Math.floor(map(wanderingY,0,height,0,40)))
+          if (d <= 0) {
+            stroke(map(Math.abs(d),0,250,0,255),100,100)
+          } else {
+            stroke(250,map(d,0,100,255,0),100)
+          }
+          strokeWeight(5)
+          point(x,y)
+          px = x
+          py = y
+        }
+        pop()
+        
+        // wanderingX += 5
+        // wanderingY += 5
+        // if (wanderingX > width) {
+        //   wanderingX = 0
+        // }
+        // if (wanderingY > height) {
+        //   wanderingY = 0
+        // }
+
+        boxHeight = map(y1(t),-squareWidth/2,squareWidth/2,0,500)
+        boxWidth = map(x1(t),-squareWidth/2,squareWidth/2,0,500)
+
+        offset += offsetIncrements
+        t+=map(noise(offset+1500),0,1,0.2,1)
+  
+
+        // noLoop()
+        // frameRate(3)
+
+      }
+
+      function x1(t) {
+				let angleOffsetInner = map(noise(offset),0,1,0,Math.PI/2)
+				let angleOffsetOuter = map(noise(offset+100),0,1,0,Math.PI/2)
+				let freqDivisor = map(noise(offset+200),0,1,5,20)
+				let sizeMultiplier = map(noise(offset+300),0,1,0.5,0.9)
+
+				return Math.sin((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+      function y1(t) {
+				let angleOffsetInner = map(noise(offset+400),0,1,0,Math.PI/2)
+				let angleOffsetOuter = map(noise(offset+500),0,1,0,Math.PI/2)
+				let freqDivisor = map(noise(offset+600),0,1,5,20)
+				let sizeMultiplier = map(noise(offset+700),0,1,0.5,0.9)
+
+				return Math.cos((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+      function sdfBox(x,y,w,h,px,py) {
+        let outerDist = Math.sqrt(Math.max(abs(px)-w/2,0)**2 + Math.max(abs(py)-h/2,0)**2)
+        let innerDist = Math.sqrt(Math.max(-abs(px)+w/2,0)**2 + Math.max(-abs(py)+h/2,0)**2)
+        if (outerDist == 0) {
+          return -innerDist
+        } else {
+          return outerDist
+        }
+      }
+
+      function sdfGrid(x,y,px,py, factor) {
+        // let factor = map(mouseX,0,width,0,400)
+
+        let d = Math.sqrt(px**2+py**2)
+        let d1 = Math.sqrt((px-factor)**2+py**2)
+        let d2 = Math.sqrt((px+factor)**2+py**2)
+        let d3 = Math.sqrt(px**2+(py-factor)**2)
+        let d4 = Math.sqrt(px**2+(py+factor)**2)
+        return Math.min(d,d1,d2,d3,d4)
+      }
+
+      function sdfBalls(x,y,px,py,factor,factor2) {
+        // let factor = map(mouseX,0,width,0,400)
+        // let factor2 = Math.floor(map(mouseY,0,height,0,20))
+
+        let ds = []
+        for (let i=0; i<factor2; i++) {
+          ds.push(Math.sqrt((px-factor*Math.cos(i*2*Math.PI/factor2))**2+(py-factor*Math.sin(i*2*Math.PI/factor2))**2))
+        }
+
+        return Math.min(...ds)
+        
+      }
+
+    </script>
+  </body>
+</html>
+
