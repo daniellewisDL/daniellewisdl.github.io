@@ -12,15 +12,6 @@
     <title>screensaver</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-      body {
-        font-family: monospace;
-        border-width: 0;
-        margin:0;
-        padding:0;
-        overflow: hidden;
-      }
-    </style>
     <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
     <!-- <script src="../p5/p5.min.js"></script> -->
@@ -36,8 +27,21 @@
       let widthMargin = 0.9
       let heightMargin = 0.6
 			let squareWidth = Math.min(width,height)*initialMargin
-  
-      
+      let particles = []
+      let numParticles = 200
+      let t = 0
+      let dt = 0.01
+      let particleType = "line"
+      let particleColour = "red"
+      let bgChoice = 0
+      let bgAlphaList = [0,5,10,15,50,200,255]
+      let bgAlpha = bgAlphaList[2]
+      let inner = 0.2
+      let outer = 0.5
+      let banding = 0.1
+      let maxSize = 5
+
+
       preload = () => {
         
       }
@@ -46,21 +50,126 @@
         createCanvas(width, height)
         pixelDensity(1)
         background(0)
-        
+        for (let i = 0; i < numParticles; i++) {
+          particles.push(new Particle())
+        }        
 			}
 
 			draw = () => {
 
-        background(0,15)
+        background(bgChoice,bgAlpha)
 
-        stroke(random(255),random(255),random(255))
-        strokeWeight(random([1,3,5,10,20]))
-        point(random(width/2-squareWidth/2,width/2+squareWidth/2),random(height/2-squareWidth/2,height/2+squareWidth/2))
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].move()
+          particles[i].show()
+        }
 
-        // noLoop()
-        // frameRate(3)
+        t += dt
 
+        if (frameCount % 500 == 0) {
+          background(0)
+          // bgChoice = random([0,255])
+          bgAlpha = random(bgAlphaList)
+          particles = []
+          numParticles = random(100,1000)
+          t = 0
+          dt = random(0.005,0.05)
+          inner = random(0.1,0.3)
+          outer = random(0.1,0.6)
+          banding = random(0.1,0.5)
+          particleType = random(["line","circle","square","point"])
+          if (particleType=="line") {
+            maxSize = 2
+          } else if (particleType=="circle") {
+            maxSize = 10
+          } else if (particleType=="square") {
+            maxSize = 10
+          } else if (particleType=="point") {
+            maxSize = 2
+          }
+          particleColour = random(["red","green","blue","white","random"])
+          for (let i = 0; i < numParticles; i++) {
+            particles.push(new Particle())
+          }     
+        }
   
+      }
+
+
+      class Particle {
+
+        constructor() {
+          this.angle = random(0,Math.PI*2)
+          this.oscillateAmplitude = random(0,squareWidth*banding)
+          this.oscillateTimer = random(0,Math.PI*2)
+          this.oscillateTimerSpeed = random(0.01,0.1)
+          this.r = random(squareWidth*inner,squareWidth*outer)
+          this.rOffset = 0
+          this.x = width/2 + (this.r+this.rOffset) * Math.cos(this.angle)
+          this.y = height/2 + (this.r+this.rOffset) * Math.sin(this.angle)
+          this.px = this.x
+          this.py = this.y
+          this.tanSpeed = random(0,2)
+          this.size = random(1,maxSize)
+          this.red = random(100,255)
+          this.green = random(100,255)
+          this.blue = random(100,255)
+          this.color = color(this.red,this.green,this.blue)
+        }
+
+        move() {
+          this.angle += this.tanSpeed*dt
+          this.oscillateTimer += this.oscillateTimerSpeed
+          this.rOffset = this.oscillateAmplitude*Math.sin(this.oscillateTimer)
+          this.px = this.x
+          this.py = this.y
+          this.x = width/2 + (this.r+this.rOffset) * Math.cos(this.angle)
+          this.y = height/2 + (this.r+this.rOffset) * Math.sin(this.angle)
+        }
+
+        show() {
+
+
+          if (particleColour=="red") {
+            this.color = color(this.red,0,0)
+          } else if (particleColour=="green") {
+            this.color = color(0,this.green,0)
+          } else if (particleColour=="blue") {
+            this.color = color(0,0,this.blue)
+          } else if (particleColour=="white") {
+            this.color = color(this.red,this.green,this.blue)
+          } else if (particleColour=="random") {
+            this.color = color(this.red,this.green,this.blue)
+          }
+          
+
+          if (particleType == "line") {
+            stroke(this.color)
+            strokeWeight(this.size)
+            line(this.x,this.y,this.px,this.py)
+          } else if (particleType == "circle") {
+            noStroke()
+            fill(this.color)
+            circle(this.x,this.y,this.size)
+          } else if (particleType == "square") {
+            noStroke()
+            fill(this.color)
+            square(this.x,this.y,this.size)
+          } else if (particleType == "point") {
+            stroke(this.color)
+            strokeWeight(this.size)
+            point(this.x,this.y)
+          }
+
+          // noStroke()
+          // fill(this.color)
+          // circle(this.x,this.y,this.size)
+
+          // stroke(this.color)
+          // strokeWeight(this.size)
+          // noFill()
+          // line(this.x,this.y,this.px,this.py)
+        }
       }
 
     </script>
