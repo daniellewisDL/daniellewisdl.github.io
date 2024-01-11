@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>kwikdraw</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let metaStroke
+      let centreX = width/2
+      let centreY = height/2
+      let t = 0
+      let offset = 0.1
+      let offsetIncrements = 0.0005
+      let metaStrokeA = 1
+      let metaStrokeB = 0
+      let metaStrokeC = 1
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        rectMode(CENTER)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0,5)
+        stroke(255)
+        strokeWeight(1)
+        noFill()
+        rect(width/2,height/2,squareWidth,squareWidth)
+
+        metaStroke = color(metaStrokeA*random(100,255),metaStrokeB*random(100,255),metaStrokeC*random(100,255))
+        // metaStroke = color(255)
+        metaStroke.setAlpha(50)
+        push()
+        translate(centreX+x1(t),centreY+y1(t))
+        drawItMeta(squareWidth)
+        pop()
+        // noLoop()
+        // frameRate(3)
+        offset += offsetIncrements
+        t+=map(noise(offset+1500),0,1,0.2,1)
+
+        if (frameCount%300==0) {
+          metaStrokeA = random([0,1])
+          metaStrokeB = random([0,1])
+          metaStrokeC = random([0,1])
+        }
+
+      }
+
+      function x1(t) {
+				let angleOffsetInner = map(noise(offset),0,1,0,Math.PI/2)
+				let angleOffsetOuter = map(noise(offset+100),0,1,0,Math.PI/2)
+				let freqDivisor = map(noise(offset+200),0,1,5,20)
+				let sizeMultiplier = map(noise(offset+300),0,1,0.5,0.9)
+
+				return Math.sin((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+      function y1(t) {
+				let angleOffsetInner = map(noise(offset+400),0,1,0,Math.PI/2)
+				let angleOffsetOuter = map(noise(offset+500),0,1,0,Math.PI/2)
+				let freqDivisor = map(noise(offset+600),0,1,5,20)
+				let sizeMultiplier = map(noise(offset+700),0,1,0.5,0.9)
+
+				return Math.cos((t+angleOffsetInner)/freqDivisor + angleOffsetOuter) * sizeMultiplier*squareWidth/2
+			}
+
+      function drawItMeta(x) {
+        if (x<100) {
+          return
+        }
+        else {
+          drawIT(x)
+          drawItMeta(1 * x / 4)
+          drawItMeta(2 * x / 4)
+          drawItMeta(3 * x / 4)
+        }
+      }
+
+      function drawIT(x) {
+        noFill()
+        stroke(metaStroke)
+        strokeWeight(1)
+        push()
+        translate(random(-x/3,x/3),random(-x/3,x/3))
+        if(random(1)<0.3) rotate(random(-PI/4,PI/4));
+        rect(0,0,2*x/3,2*x/5)
+        // line(-x/3,x/5,x/3,-x/5)
+        pop()
+      
+      }
+
+      // function f(x) { 
+      //       DRAW(x); 
+      //       f(1 * x / 4); 
+      //       f(2 * x / 4); 
+      //       f(3 * x / 4); 
+      //   }
+
+    </script>
+  </body>
+</html>
+

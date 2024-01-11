@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>monochrone</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let dotsize = 25
+      let maptype = "linearLR"
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        // background(0,5)
+
+        for (let i = 0; i < 500; i++) {
+          let x = random(width/2-squareWidth/2,width/2+squareWidth/2)
+          let y = random(height/2-squareWidth/2,height/2+squareWidth/2)
+  
+          stroke(strokeFunction(maptype,x,y))
+          strokeWeight(dotsize)
+          point(x,y)
+        }
+
+        if (frameCount%100==0) {
+          maptype = random(["linearLR","linearTB","linearDiag","linearDiag2","linearDiag3","linearDiag4","linearDiag5","linearDiag6","linearDiag7","linearDiag8","circular","circular2","circular3","circular4","circular5","circular6","circular7","circular8","circular9","circular10","circular11","circular12","circular13"])
+        }
+
+        // noLoop()
+        // frameRate(3)
+
+      }
+
+      function strokeFunction(maptype,x,y) {
+
+        if (maptype=="linearLR") {
+          return map(x,width/2-squareWidth/2,width/2+squareWidth/2,0,255)
+        } else if (maptype=="linearTB") {
+          return map(y,height/2-squareWidth/2,height/2+squareWidth/2,0,255)
+        } else if (maptype=="linearDiag") {
+          return map(x+y,width/2-squareWidth/2+height/2-squareWidth/2,width/2+squareWidth/2+height/2-squareWidth/2,0,255)
+        } else if (maptype=="linearDiag2") {
+          return map(x-y,width/2-squareWidth/2-height/2+squareWidth/2,width/2+squareWidth/2-height/2+squareWidth/2,0,255)
+        } else if (maptype=="linearDiag3") {
+          return map(x-y,width/2-squareWidth/2-height/2+squareWidth/2,width/2+squareWidth/2-height/2+squareWidth/2,0,255)
+        } else if (maptype=="linearDiag4") {
+          return map(x+y,width/2-squareWidth/2+height/2-squareWidth/2,width/2+squareWidth/2+height/2-squareWidth/2,0,255)
+        } else if (maptype=="linearDiag5") {
+          return map(x-y,width/2-squareWidth/2-height/2+squareWidth/2,width/2+squareWidth/2-height/2+squareWidth/2,0,255)
+        } else if (maptype=="linearDiag6") {
+          return map(x+y,width/2-squareWidth/2+height/2-squareWidth/2,width/2+squareWidth/2+height/2-squareWidth/2,0,255)
+        } else if (maptype=="linearDiag7") {
+          return map(x-y,width/2-squareWidth/2-height/2+squareWidth/2,width/2+squareWidth/2-height/2+squareWidth/2,0,255)
+        } else if (maptype=="linearDiag8") {
+          return map(x+y,width/2-squareWidth/2+height/2-squareWidth/2,width/2+squareWidth/2+height/2-squareWidth/2,0,255)
+        } else if (maptype=="circular") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular2") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular3") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular4") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular5") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular6") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular7") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular8") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular9") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular10") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular11") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,255,0)
+        } else if (maptype=="circular12") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        } else if (maptype=="circular13") {
+          return map(dist(x,y,width/2,height/2),0,squareWidth/2,0,255)
+        }
+
+      }
+
+    </script>
+  </body>
+</html>
+
