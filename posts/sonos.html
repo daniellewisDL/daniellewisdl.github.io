@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>sonos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let broadWidth = squareWidth*0.7
+      let adsrHeight = squareWidth*0.5
+      let anchor1x = width/2-broadWidth/2
+      let anchor1y = height/2+adsrHeight/2
+      let anchor2x = width/2+broadWidth/2
+      let anchor2y = height/2+adsrHeight/2
+      let anchorRadius = 20
+      let midAnchorRadius = 30
+      let girth = 5
+      let adAnchor = {
+        x: anchor1x+broadWidth/4,
+        y: height/2-adsrHeight/3,
+        radius: midAnchorRadius,
+        color1: "#f7645d",
+        color2: "#f1bd3d",
+      }
+      let dsAnchor = {
+        x: anchor1x+2*broadWidth/4,
+        y: height/2,
+        radius: midAnchorRadius,
+        color1: "#f1bd3d",
+        color2: "#6beaa6",
+      }
+      let srAnchor = {
+        x: anchor1x+3*broadWidth/4,
+        y: height/2,
+        radius: midAnchorRadius,
+        color1: "#6beaa6",
+        color2: "#833db6",
+      }
+      let playButton = {
+        x: width/2,
+        y: height/2 + squareWidth/2 - 25 - 5,
+        width: broadWidth/2,
+        height: 50,
+        color1: "#f7645d",
+        color2: "#f1bd3d",
+      }
+      let timeColor = "white"
+      let ampColor = "gray"
+      let myAttackAmplitude
+      let myDecayAmplitude
+      let mySustainAmplitude
+      let myReleaseAmplitude
+      let myAttackTime
+      let myDecayTime
+      let mySustainTime
+      let myReleaseTime
+      let env
+      let wave
+      let scale = [60, 62, 64, 65, 67, 69, 71, 72]
+      let happybirthday =       [67, 67, 72, 74, 72]
+      let auld = [72, 75, 75, 69, 68, 67, 68, 69, 72, 72, 75, 75, 74, 72, 72, 74]
+      let scaleArray = auld
+      let note = 0
+      
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        textAlign(CENTER, CENTER)
+        env = new p5.Env()
+        env.setADSR(myAttackTime,myDecayTime,mySustainAmplitude,myReleaseTime)
+        env.setRange(myAttackAmplitude,mySustainAmplitude)
+
+        wave = new p5.Oscillator()
+        wave.setType('sine')
+        wave.start()
+        wave.freq(440)
+        wave.amp(env)
+
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+        drawGuides()
+        drawAnchors()
+        myAttackAmplitude = map(adAnchor.y,anchor1y,anchor1y-adsrHeight,0,1)
+        myDecayAmplitude = map(dsAnchor.y,anchor1y,anchor1y-adsrHeight,0,1)
+        mySustainAmplitude = map(srAnchor.y,anchor1y,anchor1y-adsrHeight,0,1)
+        myReleaseAmplitude = map(srAnchor.y,anchor1y,anchor1y-adsrHeight,0,1)
+        myAttackTime = map(adAnchor.x,anchor1x,anchor2x,0,1)
+        myDecayTime = map(dsAnchor.x,anchor1x,anchor2x,0,1) - myAttackTime
+        mySustainTime = map(srAnchor.x,anchor1x,anchor2x,0,1) - myAttackTime - myDecayTime
+        myReleaseTime = 1 - myAttackTime - myDecayTime - mySustainTime
+        drawParams()
+        drawButton()
+
+
+        // noLoop()
+        // frameRate(3)
+
+      }
+
+      function mousePressed() {
+        // console.log(mouseX,mouseY)
+        if (mouseX > playButton.x-playButton.width/2 && mouseX < playButton.x+playButton.width/2 && mouseY > playButton.y-playButton.height/2 && mouseY < playButton.y+playButton.height/2) {
+          playSound()
+        }
+      }
+
+      function playSound() {
+        let midiValue = scaleArray[note]
+        let freqValue = midiToFreq(midiValue)
+        wave.freq(freqValue);
+
+        env.setADSR(myAttackTime,myDecayTime,mySustainAmplitude,myReleaseTime)
+        env.setRange(myAttackAmplitude,0)
+        env.play(wave,0,0.1)
+
+        note = (note + 1) % scaleArray.length
+        
+      }
+
+      function drawButton() {
+        noStroke()
+
+        if (mouseX > playButton.x-playButton.width/2 && mouseX < playButton.x+playButton.width/2 && mouseY > playButton.y-playButton.height/2 && mouseY < playButton.y+playButton.height/2) {
+          fill(playButton.color2)
+          if (mouseIsPressed) {
+            fill(playButton.color1)
+          }
+        } else {
+          fill(playButton.color1)
+        }
+        rect(playButton.x-playButton.width/2,playButton.y-playButton.height/2,playButton.width,playButton.height)
+        
+        fill("white")
+        textSize(20)
+        text("Play",playButton.x,playButton.y)
+      }
+
+      function drawParams() {
+        noStroke()
+        textSize(20)
+
+        push()
+        translate(anchor1x-broadWidth/8,anchor1y-adsrHeight-10)
+        fill(adAnchor.color1)
+        text("Attack",broadWidth/4,0)
+        fill(dsAnchor.color1)
+        text("Decay",2*broadWidth/4,0)
+        fill(srAnchor.color1)
+        text("Sustain",3*broadWidth/4,0)
+        fill(srAnchor.color2)
+        text("Release",4*broadWidth/4,0)
+        pop()
+
+        fill(ampColor)
+        push()
+        translate(anchor1x-20,anchor1y-adsrHeight/2)
+        rotate(-PI/2)
+        text("Amplitude",0,0)
+        pop()
+        push()
+        translate(anchor1x-broadWidth/8,anchor1y+20)
+        text(myAttackAmplitude.toFixed(2),broadWidth/4,0)
+        text(myDecayAmplitude.toFixed(2),2*broadWidth/4,0)
+        text(mySustainAmplitude.toFixed(2),3*broadWidth/4,0)
+        text(myReleaseAmplitude.toFixed(2),4*broadWidth/4,0)
+        pop()
+
+        fill(timeColor)
+        push()
+        translate(anchor1x+broadWidth/2,anchor1y-adsrHeight-40)
+        text("Time",0,0)
+        pop()
+        push()
+        translate(anchor1x-broadWidth/8,anchor1y+40)
+        text(myAttackTime.toFixed(2),broadWidth/4,0)
+        text(myDecayTime.toFixed(2),2*broadWidth/4,0)
+        text(mySustainTime.toFixed(2),3*broadWidth/4,0)
+        text(myReleaseTime.toFixed(2),4*broadWidth/4,0)
+        pop()
+      }
+
+      function drawGuides() {
+        noFill()
+        stroke(255)
+        strokeWeight(1)
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+        strokeWeight(0.5)
+        rect(anchor1x,anchor1y-adsrHeight,anchor2x-anchor1x,adsrHeight)
+
+      }
+
+      function drawAnchors() {
+
+        // draw outer anchors
+        noStroke()
+        fill("#f7645d")
+        circle(anchor1x,anchor1y,anchorRadius)
+
+        noFill()
+        strokeWeight(girth)
+        stroke(adAnchor.color1)
+        line(anchor1x,anchor1y,adAnchor.x,adAnchor.y)
+        stroke(dsAnchor.color1)
+        line(adAnchor.x,adAnchor.y,dsAnchor.x,dsAnchor.y)
+        stroke(srAnchor.color1)
+        line(dsAnchor.x,dsAnchor.y,srAnchor.x,srAnchor.y)
+        stroke(srAnchor.color2)
+        line(srAnchor.x,srAnchor.y,anchor2x,anchor2y)
+
+        noStroke()
+        fill(adAnchor.color1)
+        circle(adAnchor.x,adAnchor.y,adAnchor.radius)
+        fill(adAnchor.color2)
+        arc(adAnchor.x,adAnchor.y,adAnchor.radius,adAnchor.radius,-PI/2,PI/2)
+
+        fill(dsAnchor.color1)
+        circle(dsAnchor.x,dsAnchor.y,dsAnchor.radius)
+        fill(dsAnchor.color2)
+        arc(dsAnchor.x,dsAnchor.y,dsAnchor.radius,dsAnchor.radius,-PI/2,PI/2)
+
+        fill(srAnchor.color1)
+        circle(srAnchor.x,srAnchor.y,srAnchor.radius)
+        fill(srAnchor.color2)
+        arc(srAnchor.x,srAnchor.y,srAnchor.radius,srAnchor.radius,-PI/2,PI/2)
+
+        fill("#833db6")
+        circle(anchor2x,anchor2y,anchorRadius)
+
+
+
+      }
+
+      function mouseDragged() {
+        if (
+              dist(mouseX,mouseY,adAnchor.x,adAnchor.y) < adAnchor.radius &&
+              mouseX > anchor1x && mouseX < dsAnchor.x &&
+              mouseY > anchor1y - adsrHeight && mouseY < anchor1y
+        ) {
+            adAnchor.x = mouseX
+            adAnchor.y = mouseY
+          }
+        if (
+              dist(mouseX,mouseY,dsAnchor.x,dsAnchor.y) < dsAnchor.radius &&
+              mouseX > adAnchor.x && mouseX < srAnchor.x &&
+              mouseY > anchor1y - adsrHeight && mouseY < anchor1y
+        ) {
+            dsAnchor.x = mouseX
+            dsAnchor.y = mouseY
+        }
+        if (
+              dist(mouseX,mouseY,srAnchor.x,srAnchor.y) < srAnchor.radius &&
+              mouseX > dsAnchor.x && mouseX < anchor2x &&
+              mouseY > anchor1y - adsrHeight && mouseY < anchor1y
+        ) {
+            srAnchor.x = mouseX
+            srAnchor.y = mouseY
+        }
+      }
+
+    </script>
+  </body>
+</html>
+
