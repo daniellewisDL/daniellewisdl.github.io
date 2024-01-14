@@ -32,6 +32,14 @@
       let cells = []
       let cellCount = 0
       let cellCountMax = cellsX*cellsY
+      let blendmodeList
+      let myBlendMode
+      let count=0
+      let alpha=120
+      let framers = 8
+      let bgAlpha = 3
+      let cellUnit = 10
+
 
       const MetPalettes = [{name: "Austria", colors: ["#a40000", "#16317d", "#007e2f", "#ffcd12", "#b86092", "#721b3e", "#00b7a7"], order: [1, 2, 3, 4, 6, 5, 7] }, 
         {name: "Cassatt", colors: ["#b1615c", "#d88782", "#e3aba7", "#edd7d9", "#c9c9dd", "#9d9dc7", "#8282aa", "#5a5a83"], order: [3, 6, 1, 8, 4, 5, 2, 7] }, 
@@ -88,45 +96,54 @@
         createCanvas(width, height)
         pixelDensity(1)
         background(0)
+        blendmodeList = [BLEND, DIFFERENCE,
+                         HARD_LIGHT,
+                         BLEND]
+        myBlendMode = blendmodeList[0]
+        blendMode(myBlendMode)
         // saveGif('./myGif.gif', 420, {units: "frames"})
 			}
       
 			draw = () => {
-        if (frameCount % 20 == 0) {
+        if (frameCount % 300 == 0) {
+          blendMode(BLEND)
           background(0)
           colorSet = MetPalettes[Math.floor(Math.random()*MetPalettes.length)]
+          count++
+          myBlendMode = blendmodeList[count%blendmodeList.length]
+          blendMode(myBlendMode)
+          alpha = random(100,240)
+          framers = Math.floor(random(4,12))
+          cellUnit = Math.floor(random(3,12))
+          bgAlpha = random(1,5)
         }
 
-        background(0,10)
-        drawCells()
-        frameRate(3)
+        blendMode(BLEND)
+        background(0,bgAlpha)
+        if (frameCount % framers == 0) {
+          blendMode(myBlendMode)
+          drawCells()
+        }
+        
   
       }
 
       function drawCells() {
-        let unit = cellWidth/10
+        
+        let unit = cellWidth/cellUnit
+        
         for (let i = 0; i < cells.length; i++) {
           let cell = cells[i]
 
-
-          // stroke("grey")
+          // stroke(0)
           // strokeWeight(1)
           // noFill()
           // rect(cell.x,cell.y,cell.w,cell.h)
+          
 
-
-          // stroke("green")
-          // strokeWeight(1)
-
-          // push()
-          // translate(cell.x+cell.w/2,cell.y+cell.h/2)
-          // if (cell.cellType == 0) {rotate(Math.PI/2)}
-          // line(0,-cell.h/2,cell.w/2,0)
-          // line(-cell.w/2,0,0,cell.h/2)
-          // pop()
-   
-
-          fill(colorSet.colors[Math.floor(Math.random()*colorSet.colors.length)])
+          let myColor = color(colorSet.colors[Math.floor(Math.random()*colorSet.colors.length)])
+          myColor.setAlpha(alpha)
+          fill(myColor)
           noStroke()
           
           push()

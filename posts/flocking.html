@@ -51,6 +51,7 @@
         for (let i = 0; i < 200; i++) {
           flock.push(new Boid());
         }
+        // saveGif('./myGif.gif', 300, {units: "frames"})
 			}
 
 			draw = () => {
@@ -75,7 +76,7 @@
         rect(0,0,width,height/2-squareWidth/2)
         rect(0,height/2+squareWidth/2,width,height/2-squareWidth/2)
   
-        if (frameCount % 700 == 0) {
+        if (frameCount % 1200 == 0) {
           rgb = [Math.floor(Math.random()*2),Math.floor(Math.random()*2),Math.floor(Math.random()*2)]
           while (rgb[0] + rgb[1] + rgb[2] < 1) {
             rgb = [Math.floor(Math.random()*2),Math.floor(Math.random()*2),Math.floor(Math.random()*2)]

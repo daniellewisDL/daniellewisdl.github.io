@@ -25,10 +25,12 @@
       let height = window.innerHeight
 			let initialMargin = 0.9
       let squareWidth = Math.min(width,height)*initialMargin
-      let numCellsX = 25
-      let numCellsY = 50
+      let numCellsX = 10
+      let numCellsY = numCellsX*2
       let cellWidth = squareWidth/numCellsX
       let cellHeight = squareWidth/numCellsY
+      let t=0
+      let tIncrement = 0.0
   
       preload = () => {
         
@@ -53,29 +55,27 @@
           for (let i = 0; i < numCellsX; i++) {
             push()
             translate(i*cellWidth,j*cellHeight)
+            rotate(-t*Math.PI/100)
             if (i%2==1) {
               translate(cellWidth,0)
               scale(-1,1)
+              rotate(t*Math.PI/100)
             }
             if (j%2==1) {
               translate(0,cellHeight)
               scale(1,-1)
+              rotate(-t*Math.PI/100)
+            }
+            else {
             }
             drawTile(0,0,cellWidth,cellHeight)
             pop()
           }
         }
         pop()
+        t+=tIncrement
 
-        // drawTile(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth/2)
-
-        noLoop()
-
-        // numCellsX = Math.floor(map(mouseX,0,width,2,20))
-        // numCellsY = Math.floor(map(mouseY,0,height,2,40))
-        // cellWidth = squareWidth/numCellsX
-        // cellHeight = squareWidth/numCellsY
-
+        // noLoop()
         // frameRate(3)
   
       }
