@@ -12,15 +12,6 @@
     <title>polipl</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-      body {
-        font-family: monospace;
-        border-width: 0;
-        margin:0;
-        padding:0;
-        overflow: hidden;
-      }
-    </style>
     <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
     <!-- <script src="../p5/p5.min.js"></script> -->
@@ -34,6 +25,11 @@
       let height = window.innerHeight
 			let initialMargin = 0.9
       let squareWidth = Math.min(width,height)*initialMargin
+      let cellsX = 10
+      let cellsY = cellsX
+      let cellWidth = squareWidth/cellsX
+      let cellHeight = squareWidth/cellsY
+
   
       preload = () => {
         
@@ -43,28 +39,52 @@
         createCanvas(width, height)
         pixelDensity(1)
         background(255)
-        
+        // saveGif('./myGif.gif', 300, {units: "frames"})
 			}
 
 			draw = () => {
+        
+        if (frameCount%100==1) {
+          background(255)
+          for (let i=0; i<cellsX; i++) {
+            for (let j=0; j<cellsY; j++) {
+              let x = width/2-squareWidth/2+i*cellWidth
+              let y = height/2-squareWidth/2+j*cellHeight
+              kandinsky(x,y,cellWidth*.9)
+            }
+          }
+        }
 
-        background(255)
+
+        // noLoop()
+        // frameRate(1)
+      }
+
+      function kandinsky(x,y,size) {
+        
+        
+        push()
+        translate(x,y)
+        clip(() => {
+          rect(0,0,size)
+        })
+
         stroke(0)
-        strokeWeight(10)
+        strokeWeight(1)
         fill("antiquewhite")
-        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+        rect(0,0,size)
 
 
         fill(0)
         noStroke()
         for (let i=0; i<random([0,1,2,3,4,5]); i++) {
           beginShape()
-          let x1 = width/2+random(squareWidth)-squareWidth/2
-          let y1 = height/2+random(squareWidth)-squareWidth/2
-          let x2 = width/2+random(squareWidth)-squareWidth/2
-          let y2 = height/2+random(squareWidth)-squareWidth/2
+          let x1 = random(size)
+          let y1 = random(size)
+          let x2 = random(size)
+          let y2 = random(size)
           vertex(x1,y1)
-          vertex(x1+random(50)+2,y1)
+          vertex(x1+random(size/10)+2,y1)
           vertex(x2,y2)
           endShape(CLOSE)
         }
@@ -73,17 +93,17 @@
           noFill()
           stroke(0)
           strokeWeight(1)
-          circle(width/2+random(squareWidth)-squareWidth/2,height/2+random(squareWidth)-squareWidth/2,random(squareWidth/5)+squareWidth/15)
+          circle(random(size),random(size),random(size/5)+size/15)
         }
 
         for (let i=0; i<random([2,3,4]); i++) {
           noFill()
           stroke(0)
           strokeWeight(1)
-          let x1 = width/2+random(squareWidth)-squareWidth/2
-          let y1 = height/2+random(squareWidth)-squareWidth/2
-          let x2 = width/2+random(squareWidth)-squareWidth/2
-          let y2 = height/2+random(squareWidth)-squareWidth/2
+          let x1 = random(size)
+          let y1 = random(size)
+          let x2 = random(size)
+          let y2 = random(size)
           line(x1,y1,x2,y2)
           let displacement = random([3,4,5,6,7,8,9,10])
           for (let j=0; j<5; j++) {
@@ -96,12 +116,12 @@
           noFill()
           stroke(0)
           strokeWeight(1)
-          let x1 = width/2+random(squareWidth)-squareWidth/2
-          let y1 = height/2+random(squareWidth)-squareWidth/2
-          let x2 = width/2+random(squareWidth)-squareWidth/2
-          let y2 = height/2+random(squareWidth)-squareWidth/2
-          let x3 = width/2+random(squareWidth)-squareWidth/2
-          let y3 = height/2+random(squareWidth)-squareWidth/2
+          let x1 = random(size)
+          let y1 = random(size)
+          let x2 = random(size)
+          let y2 = random(size)
+          let x3 = random(size)
+          let y3 = random(size)
           triangle(x1,y1,x2,y2,x3,y3)
         }
 
@@ -109,31 +129,21 @@
         for (let i=0; i<random([0,1,2,3,4,5]); i++) {
           noFill()
           stroke(0)
-          strokeWeight(random([1,2,3,4,5,6,7,8,9,10]))
-          let x1 = width/2+random(squareWidth)-squareWidth/2
-          let y1 = height/2+random(squareWidth)-squareWidth/2
-          let x2 = width/2+random(squareWidth)-squareWidth/2
-          let y2 = height/2+random(squareWidth)-squareWidth/2
-          let x3 = width/2+random(squareWidth)-squareWidth/2
-          let y3 = height/2+random(squareWidth)-squareWidth/2
-          let x4 = width/2+random(squareWidth)-squareWidth/2
-          let y4 = height/2+random(squareWidth)-squareWidth/2
+          strokeWeight(random([1,2,3,4,5,6,7,8,9,10])*size/500)
+          let x1 = random(size)
+          let y1 = random(size)
+          let x2 = random(size)
+          let y2 = random(size)
+          let x3 = random(size)
+          let y3 = random(size)
+          let x4 = random(size)
+          let y4 = random(size)
           bezier(x1,y1,x2,y2,x3,y3,x4,y4)
         }
 
-        // Clip rectangles
-        noStroke()
-        fill(255)
-        rect(0,0,width/2-squareWidth/2,height)
-        rect(width/2+squareWidth/2,0,width/2-squareWidth/2,height)
-        rect(0,0,width,height/2-squareWidth/2)
-        rect(0,height/2+squareWidth/2,width,height/2-squareWidth/2)
-        
-
-        // noLoop()
-        frameRate(1)
-  
+        pop()
       }
+
 
     </script>
   </body>
