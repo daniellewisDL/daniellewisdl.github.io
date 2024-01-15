@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>atomic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let atoms = []
+      let numAtoms = 1
+      let increment = Math.PI/30+0.01
+      let rFactor = 0
+      for (let i = 0; i < numAtoms; i++) {
+        atoms.push({
+          x: width/2,
+          y: height/2,
+          numProtons: 20,
+          numNeutrons: 30,
+          numElectrons: 5,
+          baryonSize: squareWidth/20,
+          leptonSize: squareWidth/100,
+          protonColor: "blue",
+          neutronColor: "lightBlue",
+          electronColor: "aqua",
+          electronAngle: 0,
+          atomSize: squareWidth,
+      })}
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        // background(0,5)
+
+        drawAtom(atoms[0])
+
+        // noLoop()
+        // frameRate(3)
+      }
+
+      function drawAtom(atom) {
+
+        push()
+        translate(atom.x,atom.y)
+        noStroke()
+        let protonColor = color(atom.protonColor)
+        protonColor.setAlpha(50)
+        let neutronColor = color(atom.neutronColor)
+        neutronColor.setAlpha(50)
+        let electronColor = color(atom.electronColor)
+        electronColor.setAlpha(100)
+
+        for (let i = 0; i < atom.numProtons; i++) {
+          fill(protonColor)
+          circle((random(-1,1)*atom.baryonSize+atom.baryonSize)*cos(i*2*PI/atom.numProtons)/3+random(-1,1)*rFactor,
+                 (random(-1,1)*atom.baryonSize+atom.baryonSize)*sin(i*2*PI/atom.numProtons)/3+random(-1,1)*rFactor,
+                 atom.baryonSize)
+          fill(neutronColor)
+          circle((random(-1,1)*atom.baryonSize+atom.baryonSize)*cos(i*2*PI/atom.numNeutrons+PI/atom.numNeutrons)/3+random(-1,1)*rFactor,
+                 (random(-1,1)*atom.baryonSize+atom.baryonSize)*sin(i*2*PI/atom.numNeutrons+PI/atom.numNeutrons)/3+random(-1,1)*rFactor,
+                 atom.baryonSize)
+        }
+        push()
+        for (let i = 0; i < atom.numElectrons; i++) {
+          fill(electronColor)
+          rotate(PI/(atom.numElectrons))
+          
+          circle(atom.atomSize*cos(i*2*PI/atom.numElectrons+atom.electronAngle)/3+random(-1,1)*rFactor,
+                 atom.atomSize/3*sin(i*2*PI/atom.numElectrons+atom.electronAngle)/3+random(-1,1)*rFactor,
+                 atom.leptonSize)
+          
+        }
+        pop()
+        atom.electronAngle += increment
+        pop()
+
+
+      }
+
+    </script>
+  </body>
+</html>
+
