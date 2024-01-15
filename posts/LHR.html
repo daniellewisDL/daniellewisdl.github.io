@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>LHR</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      squareWidth = Math.max(width,height)
+
+      let cells = 100
+      let cellUnit = squareWidth/cells
+      let fgCells = 50
+      let fgCellUnit = squareWidth/fgCells
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0,5)
+
+        drawBackground()
+
+        for (let i=0; i<fgCells; i+=1) {
+          for (let j=0; j<fgCells; j+=1) {
+            if (random()<1) {
+              drawForeground(width/2-squareWidth/2+i*fgCellUnit+fgCellUnit/2,
+                             height/2-squareWidth/2+j*fgCellUnit+fgCellUnit/2+(i%2)*fgCellUnit/2,
+                             fgCellUnit)
+            }
+          }
+        }
+        
+        noLoop()
+        // frameRate(3)
+
+      }
+
+
+      function drawBackground() {
+        fill("#319c8c")
+        noStroke()
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+        let strokeColor = color("#b3ac70")
+        strokeColor.setAlpha(50)
+        for (let j=1; j<cells; j++) {
+          for (let i=1; i<cells; i++) {
+            if (random()<0.9) {fill("#b3ac70")}
+            else {fill("#82707b")}
+            noStroke()
+            push()
+            translate(width/2-squareWidth/2+i*cellUnit,height/2-squareWidth/2+j*cellUnit)
+            rect(0,0,2,2,2)
+            stroke(strokeColor)
+            strokeWeight(1)
+            for (let k=0; k<14; k++) {
+              line(random(-cellUnit, cellUnit), random(-cellUnit, cellUnit), random(-cellUnit, cellUnit), random(-cellUnit, cellUnit))
+            }
+            pop()
+          }
+        }
+      }
+        
+        function drawForeground(x,y,size) {
+          let myDarkBlue = color("#0e3a75")
+          let myLightBlue = color("#0b45c9")
+          let mySteelBlue = color("#b0a5d5")
+          let myRed = color("#fe344a")
+
+          let unit = size/20
+
+          push()
+          translate(x,y)
+          rectMode(CENTER)
+          noStroke()
+          rotate(PI/4)
+
+
+          // centre
+
+          fill(myDarkBlue)
+          rect(0,0,unit,unit)
+
+          for (let i=1; i<10; i++) {
+            
+            fill(myDarkBlue)
+            if (i>=1 && i<4) {
+              rect(0,unit*(i+0.1),unit,unit)  //  bottom left ones * 3
+              rect(-unit*(i+0.2),unit*(i+0.2),unit,unit)  //  top left ones * 3
+              rect(-unit*(i+4.2),-unit*(i+4.2),unit,unit) // top middle ones
+              fill(myRed)
+              rect(-unit*(i*1.2+6)+unit*0.5,unit*1.4,unit,unit) // bottom middle ones
+            }
+            if (i>=1 && i<8) {
+              fill(myDarkBlue)
+              rect(0,-unit*(i+0.1),unit,unit) //  top left ones * 10
+              fill(mySteelBlue)
+              rect(unit*(i*1.1+0.2),-unit*1.2,unit,unit) //  top right ones * 7
+             } 
+             if (i==8) {
+              fill(myDarkBlue)
+              rect(0,-unit*(i+0.2),unit,unit); //  top left ones * 10
+              fill(myRed)
+              rect(unit*1.2,0,unit,unit); //  top left ones * 10
+            }
+            fill(myDarkBlue)
+            if (i>=1 && i<10) rect(-unit*(i+0.1),0,unit,unit);  //  bottom right ones * 3
+            fill(myLightBlue)
+            if (i>=4 && i<8) rect(0,unit*(i*1.1+0.1),unit,unit);  //  bottom right ones * 3
+
+
+          }
+
+
+
+          pop()
+          
+        }
+
+    </script>
+  </body>
+</html>
+
