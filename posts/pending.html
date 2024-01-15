@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>pending</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let pendulums = []
+      let numPendulums = 40
+      let gravity = 0.5
+      let damping = 0.999
+      let origin = {x: width/2, y: height/2}
+      for (let i = 0; i < numPendulums; i++) {
+        pendulums.push({
+          x: 0,
+          y: 0,
+          angle: 0,
+          angleVel: 0.02,
+          angleAcc: 0,
+          length: squareWidth/20+i*squareWidth/40,
+          mass: squareWidth/40,
+          color1: "blue",
+          color2: "red",
+          color3: "green",
+          color4: "yellow",
+      })}
+  
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+        background(0,5)
+
+        stroke(255,100)
+        strokeWeight(2)
+        noFill()
+        rectMode(CENTER)
+        rect(origin.x,origin.y,squareWidth,squareWidth)
+        fill(255)
+        noStroke()
+        push()
+        clip(() => {rect(origin.x,origin.y,squareWidth,squareWidth)});
+        for (let i = 0; i < numPendulums; i++) {
+          pendulums[i].angleAcc = -gravity*sin(pendulums[i].angle)/pendulums[i].length
+          pendulums[i].angleVel += pendulums[i].angleAcc
+          pendulums[i].angleVel*=damping
+          pendulums[i].angle += pendulums[i].angleVel
+
+          pendulums[i].x = origin.x + pendulums[i].length*sin(pendulums[i].angle)
+          pendulums[i].y = origin.y + pendulums[i].length*cos(pendulums[i].angle)
+
+          noStroke()
+          fill(pendulums[i].color1)
+          circle(pendulums[i].x,pendulums[i].y,pendulums[i].mass)
+
+          fill(pendulums[i].color2)
+          circle(pendulums[i].x,height-pendulums[i].y,pendulums[i].mass)
+
+          push()
+          translate(origin.x,origin.y)
+          fill(pendulums[i].color3)
+          circle(pendulums[i].y-origin.y,pendulums[i].x-origin.x,pendulums[i].mass)
+          fill(pendulums[i].color4)
+          circle(height-pendulums[i].y-origin.y,pendulums[i].x-origin.x,pendulums[i].mass)
+          pop()
+
+        }
+        pop()
+
+        // console.log(frameCount)
+        if (frameCount%1000==0) {
+          for (let i = 0; i < numPendulums; i++) {
+            pendulums[i].angle = 0
+            pendulums[i].angleVel = 0.02
+          }
+        }
+
+      }
+
+    </script>
+  </body>
+</html>
+
