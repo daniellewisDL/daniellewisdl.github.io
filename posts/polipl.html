@@ -54,7 +54,11 @@
             for (let j=0; j<cellsY; j++) {
               let x = width/2-squareWidth/2+i*cellWidth
               let y = height/2-squareWidth/2+j*cellHeight
-              kandinsky(x,y,cellWidth*.9)
+              push()
+              translate(x,y)
+              scale(cellWidth*0.9/squareWidth)
+              kandinsky(0,0,squareWidth)
+              pop()
             }
           }
         }
