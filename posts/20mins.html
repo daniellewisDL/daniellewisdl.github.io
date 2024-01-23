@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>20mins</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let factor = 0
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0,10)
+
+        let myColor = color(0,random(100,255),random(100,255),5)
+        stroke(myColor)
+        strokeWeight(1)
+        noFill()
+        drawSphere(width/2,height/2,squareWidth/2,random(10,20))
+
+        if (frameCount % 10 == 0) {
+          factor+=0.1
+        }
+        // noLoop()
+  
+      }
+
+      function drawSphere(x,y,radius,numberOfPoints) {
+        for (let r = radius; r > 0; r-=radius/(squareWidth*0.05)) {
+         let px = width/2
+         let py = height/2
+         for (let i = 0; i < numberOfPoints; i++) {
+            let angle = random(0,2*PI)
+            let x1 = x + r * cos(angle+((factor%10)/10-0.5)*PI)*sin(angle)
+            let y1 = y + r * sin(angle)
+            // point(x1,y1)
+            line(px,py,x1,y1)
+            circle(x1,y1,radius/10)
+            px = x1
+            py = y1
+          }
+        }
+      }
+
+    </script>
+  </body>
+</html>
+
