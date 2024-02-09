@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>snake</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let numCells = 20
+      let cellWidth = squareWidth/numCells
+      let cells = []
+      for (let i=0; i<numCells; i++) {
+        cells[i] = []
+        for (let j=0; j<numCells; j++){
+          cells[i][j] = 0
+        }
+      }
+      let snakeHead = {x:Math.floor(numCells/2), y:Math.floor(numCells/2)}
+      cells[snakeHead.x][snakeHead.y] = 1
+      let snakeDir = {x:1, y:0}
+      let snakeColor = 100
+      let margin = 0.05
+      let updateTimes = 10
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0,10)
+
+      
+        for (let i=0; i<numCells; i++) {
+          for (let j=0; j<numCells; j++){
+            push()
+            translate(width/2-squareWidth/2+i*cellWidth, height/2-squareWidth/2+j*cellWidth)
+            
+            // stroke(255)
+            // noFill()
+            // rect(0,0,cellWidth)
+
+            if(cells[i][j] == 1){
+              fill(snakeColor,255,255,100)
+              noStroke()
+              rect(0+cellWidth*margin,0+cellWidth*margin,cellWidth*(1-2*margin),cellWidth*(1-2*margin))
+            }
+
+            pop()
+          }
+
+          
+        }
+        for (let i=0; i<updateTimes; i++) {updateSnake()}
+      }
+
+      updateSnake = () => {
+        snakeColor++
+        if (snakeColor>255) snakeColor = 100
+        let listOfPossibles = []
+
+        if (snakeHead.x>0) {
+          if (cells[snakeHead.x-1][snakeHead.y]==0) listOfPossibles.push({x:-1, y:0})
+        }
+        if (snakeHead.y>0) {
+          if (cells[snakeHead.x][snakeHead.y-1]==0) listOfPossibles.push({x:0, y:-1})
+        }
+        if (snakeHead.x<numCells-1) {
+          if (cells[snakeHead.x+1][snakeHead.y]==0) listOfPossibles.push({x:1, y:0})
+        }
+        if (snakeHead.y<numCells-1) {
+          if (cells[snakeHead.x][snakeHead.y+1]==0) listOfPossibles.push({x:0, y:1})
+        }
+
+
+        if(listOfPossibles.length>0){
+          let newDir = listOfPossibles[Math.floor(Math.random()*listOfPossibles.length)]
+          snakeDir = newDir
+        } else {
+          fullReset()
+        }
+
+        let newHead = {x:snakeHead.x+snakeDir.x, y:snakeHead.y+snakeDir.y}
+        cells[newHead.x][newHead.y] = 1
+        snakeHead = newHead
+        
+      }
+
+      fullReset = () => {
+        numCells = random([10,20,30,40,100])
+        cellWidth = squareWidth/numCells
+        cells = []
+        for (let i=0; i<numCells; i++) {
+          cells[i] = []
+          for (let j=0; j<numCells; j++){
+            cells[i][j] = 0
+          }
+        }
+        snakeHead = {x:Math.floor(numCells/2), y:Math.floor(numCells/2)}
+        cells[snakeHead.x][snakeHead.y] = 1
+        snakeColor = 1
+        margin = random([0.05,0.1,0.2,0.3,0.4,0.5])
+        updateTimes = random([1,2,3,4,5,6,7,8,9,10])
+      }
+
+    </script>
+  </body>
+</html>
+

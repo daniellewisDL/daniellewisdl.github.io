@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>sandy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script> -->
+    <script src="../p5/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsW = 100
+      let numCellsH = 100
+      let cellWidth = squareWidth/numCellsW 
+      let cellHeight = squareWidth/numCellsH
+      let cells = []
+      let nextCells = []
+      let cleanNextCells = []
+      let shape = Math.floor(Math.random()+0.5)
+      for (let i=0; i<numCellsW; i++) {
+        cells.push([])
+        nextCells.push([])
+        cleanNextCells.push([])
+        for (let j=0; j<numCellsH; j++) {
+          cells[i].push([0])
+          nextCells[i].push([0])
+          cleanNextCells[i].push([0])
+        }
+      }
+      let sandColor = 1
+      let proportion = 0  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        colorMode(HSB, 360,255,255)
+        // frameRate(1)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+
+        noStroke()
+        
+        for (let i=0; i<numCellsW; i++) {
+          for (let j=0; j<numCellsH; j++) {
+            if (cells[i][j]==0) {continue;}
+            
+            push()
+            fill(cells[i][j],255,255)
+            translate(width/2-squareWidth/2 + i*cellWidth,
+                      height/2-squareWidth/2 + j*cellHeight)
+            if (shape) rect(cellWidth*proportion,cellHeight*proportion,cellWidth*(1-proportion),cellHeight*(1-proportion));
+            else circle(cellWidth*proportion+cellWidth/2,cellHeight*proportion+cellHeight/2,cellWidth*(1-proportion));
+            pop()
+          }
+        }
+
+        for (let i=0; i<numCellsW; i++) {
+          for (let j=0; j<numCellsH; j++) {
+            
+            
+            if (cells[i][j]!=0) {         // IF CELL IS NOT BLANK
+              if (j+1 < numCellsH) {      // IF CELL IS NOT ON BOTTOM
+              
+                if (cells[i][j+1]==0) {   // IF CELL BELOW IS BLANK
+                  nextCells[i][j+1]=cells[i][j]     // MAKE CELL BELOW FULL
+                }
+
+                else if (i==0) {          // IF CELL IS ON LEFT SIDE, ONLY CHECK RIGHT SIDE
+                  if (cells[i+1][j+1] == 0) {
+                    nextCells[i+1][j+1] = cells[i][j]
+                  }
+                  else {
+                    nextCells[i][j]=cells[i][j]
+                  }
+                }
+
+                else if (i==(numCellsW-1)) {          // IF CELL IS ON RIGHT COLUMN EDGE, ONLY CHECK LEFT SIDE
+                  if (cells[i-1][j+1] == 0) {
+                    nextCells[i-1][j+1] = cells[i][j]
+                  }
+                  else {
+                    nextCells[i][j] = cells[i][j]
+                  }
+                }
+
+
+                else {                              // CELL IS SOMEWHERE IN THE MIDDLE
+                  
+                  let dir = random([-1,1])
+                  // console.log(dir)
+
+                  if (cells[i+dir][j+1]==0) {
+                    nextCells[i+dir][j+1] = cells[i][j]
+                  }
+                  else if (cells[i-dir][j+1]==0) {
+                    nextCells[i-dir][j+1] = cells[i][j]
+                  }
+                  else {
+                    nextCells[i][j]=cells[i][j]
+                  }
+                
+                }
+                  
+                  
+                }
+
+              
+              
+              else {                    // CELL IS ON BOTTOM RANK, SO KEEP IT AS 1 in NEXT GEN
+                nextCells[i][j]=cells[i][j]
+              }
+            }
+          }
+        }
+
+
+        for (let i=0; i<numCellsW; i++) {
+          for (let j=0; j<numCellsH; j++) {
+            cells[i][j] = nextCells[i][j]
+            nextCells[i][j] = cleanNextCells[i][j]
+          }
+        }
+        for (let z=0;z<0;z++){
+          cells[Math.floor(random(numCellsW))][0]=sandColor
+        }
+        noFill()
+        stroke(255)
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth)
+
+        // frameRate(1)
+      }
+
+
+      function mouseDragged() {
+        if (mouseX>width/2-squareWidth/2 && mouseX<width/2+squareWidth/2 &&
+            mouseY>height/2-squareWidth/2 && mouseY<height/2+squareWidth/2) {
+          let colX = Math.floor(map(mouseX, width/2-squareWidth/2, width/2+squareWidth/2, 0, numCellsW))
+          let rowY = Math.floor(map(mouseY, height/2-squareWidth/2, height/2+squareWidth/2, 0, numCellsH))
+
+          cells[colX][rowY]=sandColor
+          let arSize = 5
+          for (let i=-1*Math.floor(arSize/2); i<=Math.floor(arSize/2); i++) {
+            for (let j=-1*Math.floor(arSize/2); j<=Math.floor(arSize/2); j++) {
+              if (colX+j<0 || colX+j>numCellsW-1 || rowY+i<0 || rowY+i>numCellsH) continue;
+              if (Math.random()<0.5) cells[colX+j][rowY+i]=sandColor;
+            }
+          }
+
+          sandColor += 0.2
+          if (sandColor > 360) sandColor = 1;
+
+        }
+      }
+
+    </script>
+  </body>
+</html>
+
