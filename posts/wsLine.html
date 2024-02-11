@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>wsLine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let circleRadius = squareWidth/3
+      
+      let angle = 0
+      let angleIncrements = -Math.PI/300
+      
+      let angleA = -1.3*Math.PI/2
+      let angleB = 8*Math.PI/10
+      let angleC = Math.PI/10
+      
+      let pointA = {name: "A", x: circleRadius*Math.cos(angleA), y: circleRadius*Math.sin(angleA), color: "#4058f8"}
+      let pointB = {name: "B", x: circleRadius*Math.cos(angleB), y: circleRadius*Math.sin(angleB), color: "#4058f8"}
+      let pointC = {name: "C", x: circleRadius*Math.cos(angleC), y: circleRadius*Math.sin(angleC), color: "#4058f8"}
+ 
+      let midpointACoX = {x: (pointA.x+pointC.x)/2, y: (pointA.y+pointC.y)/2, color: "black"}
+      let midpointABoY = {x: (pointA.x+pointB.x)/2, y: (pointA.y+pointB.y)/2, color: "black"}
+      let midpointBCoZ = {x: (pointB.x+pointC.x)/2, y: (pointB.y+pointC.y)/2, color: "black"}
+      
+      function slope(p1,p2){return (p2.y-p1.y)/(p2.x-p1.x)}
+      function yIntercept(p1,p2){return p1.y-slope(p1,p2)*p1.x}
+      function yInterceptPoint(slope,point){return point.y-slope*point.x}
+      
+      let lineAC = {x1: -width/2, y1: slope(pointA,pointC)*-width/2+yIntercept(pointA,pointC),
+                    x2: width/2,  y2: slope(pointA,pointC)*width/2+yIntercept(pointA,pointC), color: "#4058f8"}
+      let lineAB = {x1: -width/2, y1: slope(pointA,pointB)*-width/2+yIntercept(pointA,pointB),
+                    x2: width/2,  y2: slope(pointA,pointB)*width/2+yIntercept(pointA,pointB), color: "#4058f8"}
+      let lineBC = {x1: -width/2, y1: slope(pointB,pointC)*-width/2+yIntercept(pointB,pointC),
+                    x2: width/2,  y2: slope(pointB,pointC)*width/2+yIntercept(pointB,pointC), color: "#4058f8"}
+
+      let c2 = yIntercept(pointA,pointC)
+      let m1 = -1/slope(pointA,pointC)
+      let c1 = yInterceptPoint(m1,pointB)
+      let m2 = slope(pointA,pointC)
+
+      let orthoLineB = {x1: pointB.x, y1: pointB.y,
+                         x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black"}
+                         
+      c2 = yIntercept(pointA,pointB)
+      m1 = -1/slope(pointA,pointB)
+      c1 = yInterceptPoint(m1,pointC)
+      m2 = slope(pointA,pointB)
+
+      let orthoLineC = {x1: pointC.x, y1: pointC.y,
+                         x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black"}
+
+      c2 = yIntercept(pointB,pointC)
+      let m11 = -1/slope(pointB,pointC)
+      let c11 = yInterceptPoint(m11,pointA)
+      m2 = slope(pointB,pointC)
+
+      let orthoLineA = {x1: pointA.x, y1: pointA.y,
+                         x2: (c2-c11)/(m11-m2),
+                         y2: m11*(c2-c11)/(m11-m2)+c11, color: "black"}
+
+      let pointO = {name: "O", x: 0, y: 0, color: "black"}
+
+      let pointH = {name: "H", x: (c11-c1)/(m1-m11), y: m1*((c11-c1)/(m1-m11))+c1, color: "black"}
+
+      let pointP = {name: "P", x: circleRadius, y: 0, color: "#ff2895"}
+      let pointPprime = {name: "P'", x: -circleRadius, y: 0, color: "#b53b07"}
+
+      let midPointPH = {x: (pointP.x+pointH.x)/2, y: (pointP.y+pointH.y)/2, color: "black"}
+      
+      let POINTSIZE = squareWidth*0.025
+        
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(255)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+      
+			draw = () => {
+        background(255)
+        push()
+        translate(width/2,height/2)
+        updatePoints()
+        drawLines()
+        drawPoints()
+        pop()
+      }
+
+      updatePoints = () => {
+
+        pointP.x = circleRadius*Math.cos(angle)
+        pointP.y = circleRadius*Math.sin(angle)
+
+        pointPprime.x = circleRadius*Math.cos(angle+Math.PI)
+        pointPprime.y = circleRadius*Math.sin(angle+Math.PI)
+
+        midPointPH = {x: (pointP.x+pointH.x)/2, y: (pointP.y+pointH.y)/2, color: "black"}
+
+        angle += angleIncrements
+      }
+
+      drawLines = () => {
+        stroke("black")
+        noFill()
+        strokeWeight(0.5)
+        circle(0,0,circleRadius*2)
+        // rect(-squareWidth/2,-squareWidth/2,squareWidth,squareWidth)
+
+        // stroke(lineAC.color)
+        line(lineAC.x1,lineAC.y1,lineAC.x2,lineAC.y2)
+        line(lineAB.x1,lineAB.y1,lineAB.x2,lineAB.y2)
+        line(lineBC.x1,lineBC.y1,lineBC.x2,lineBC.y2)
+
+        line(pointP.x,pointP.y,pointH.x,pointH.y)
+        line(orthoLineB.x1,orthoLineB.y1,orthoLineB.x2,orthoLineB.y2)
+        line(orthoLineC.x1,orthoLineC.y1,orthoLineC.x2,orthoLineC.y2)
+        line(orthoLineA.x1,orthoLineA.y1,orthoLineA.x2,orthoLineA.y2)
+        
+
+      }
+
+
+      drawPoints = () => {
+        stroke("black")
+        textAlign(CENTER,CENTER)
+        textSize(POINTSIZE)
+
+        fill("black")
+        circle(midpointACoX.x,midpointACoX.y,POINTSIZE/2)
+        circle(midpointABoY.x,midpointABoY.y,POINTSIZE/2)
+        circle(midpointBCoZ.x,midpointBCoZ.y,POINTSIZE/2)
+        noFill()
+        circle(midPointPH.x,midPointPH.y,3*POINTSIZE/4)
+
+        
+        
+        fill(pointO.color)
+        circle(pointO.x,pointO.y,POINTSIZE)
+        text(pointO.name,pointO.x+POINTSIZE*.7,pointO.y-POINTSIZE)
+
+        fill(pointH.color)
+        circle(pointH.x,pointH.y,POINTSIZE)
+        text(pointH.name,pointH.x+POINTSIZE*.7,pointH.y-POINTSIZE)
+
+        fill(pointA.color)
+        circle(pointA.x,pointA.y,POINTSIZE)
+        text(pointA.name,pointA.x+POINTSIZE*.7,pointA.y-POINTSIZE)
+
+        fill(pointB.color)
+        circle(pointB.x,pointB.y,POINTSIZE)
+        text(pointB.name,pointB.x+POINTSIZE*.7,pointB.y-POINTSIZE)
+
+        fill(pointC.color)
+        circle(pointC.x,pointC.y,POINTSIZE)
+        text(pointC.name,pointC.x+POINTSIZE*.7,pointC.y-POINTSIZE)
+
+        fill(pointP.color)
+        circle(pointP.x,pointP.y,POINTSIZE)
+        text(pointP.name,pointP.x+POINTSIZE*.7,pointP.y-POINTSIZE)
+        
+        fill(pointPprime.color)
+        circle(pointPprime.x,pointPprime.y,POINTSIZE)
+        text(pointPprime.name,pointPprime.x+POINTSIZE*.7,pointPprime.y-POINTSIZE)
+
+      }
+
+
+
+    </script>
+  </body>
+</html>
+
