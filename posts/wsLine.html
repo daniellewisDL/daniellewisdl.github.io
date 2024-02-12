@@ -48,47 +48,54 @@
       function yInterceptPoint(slope,point){return point.y-slope*point.x}
       
       let lineAC = {x1: -width/2, y1: slope(pointA,pointC)*-width/2+yIntercept(pointA,pointC),
-                    x2: width/2,  y2: slope(pointA,pointC)*width/2+yIntercept(pointA,pointC), color: "#4058f8"}
+                    x2: width/2,  y2: slope(pointA,pointC)*width/2+yIntercept(pointA,pointC), color: "#4058f8", m: slope(pointA,pointC), c: yIntercept(pointA,pointC)}
       let lineAB = {x1: -width/2, y1: slope(pointA,pointB)*-width/2+yIntercept(pointA,pointB),
-                    x2: width/2,  y2: slope(pointA,pointB)*width/2+yIntercept(pointA,pointB), color: "#4058f8"}
+                    x2: width/2,  y2: slope(pointA,pointB)*width/2+yIntercept(pointA,pointB), color: "#4058f8", m: slope(pointA,pointB), c: yIntercept(pointA,pointB)}
       let lineBC = {x1: -width/2, y1: slope(pointB,pointC)*-width/2+yIntercept(pointB,pointC),
-                    x2: width/2,  y2: slope(pointB,pointC)*width/2+yIntercept(pointB,pointC), color: "#4058f8"}
+                    x2: width/2,  y2: slope(pointB,pointC)*width/2+yIntercept(pointB,pointC), color: "#4058f8", m: slope(pointB,pointC), c: yIntercept(pointB,pointC)}
 
       let c2 = yIntercept(pointA,pointC)
       let m1 = -1/slope(pointA,pointC)
       let c1 = yInterceptPoint(m1,pointB)
       let m2 = slope(pointA,pointC)
 
-      let orthoLineB = {x1: pointB.x, y1: pointB.y,
-                         x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black"}
+      let orthoLineB = {x1: pointB.x, y1: pointB.y, x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black", m: m1, c: c1}
                          
       c2 = yIntercept(pointA,pointB)
       m1 = -1/slope(pointA,pointB)
       c1 = yInterceptPoint(m1,pointC)
       m2 = slope(pointA,pointB)
 
-      let orthoLineC = {x1: pointC.x, y1: pointC.y,
-                         x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black"}
+      let orthoLineC = {x1: pointC.x, y1: pointC.y, x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black", m: m1, c: c1}
 
       c2 = yIntercept(pointB,pointC)
       let m11 = -1/slope(pointB,pointC)
       let c11 = yInterceptPoint(m11,pointA)
       m2 = slope(pointB,pointC)
 
-      let orthoLineA = {x1: pointA.x, y1: pointA.y,
-                         x2: (c2-c11)/(m11-m2),
-                         y2: m11*(c2-c11)/(m11-m2)+c11, color: "black"}
+      let orthoLineA = {x1: pointA.x, y1: pointA.y, x2: (c2-c11)/(m11-m2), y2: m11*(c2-c11)/(m11-m2)+c11, color: "black", m: m11, c: c11}
 
       let pointO = {name: "O", x: 0, y: 0, color: "black"}
 
-      let pointH = {name: "H", x: (c11-c1)/(m1-m11), y: m1*((c11-c1)/(m1-m11))+c1, color: "black"}
+      let pointH = {name: "H", x: (orthoLineA.c-orthoLineC.c)/(orthoLineC.m-orthoLineA.m), y: orthoLineC.m*((orthoLineA.c-orthoLineC.c)/(orthoLineC.m-orthoLineA.m))+orthoLineC.c, color: "black"}
 
       let pointP = {name: "P", x: circleRadius, y: 0, color: "#ff2895"}
       let pointPprime = {name: "P'", x: -circleRadius, y: 0, color: "#b53b07"}
 
+      let pointQ = {name: "Q", x: circleRadius*10-pointH.x, y: 0-pointH.y, color: "#ff2895"}
+      let pointQprime = {name: "Q'", x: -circleRadius*10-pointH.x, y: 0-pointH.y, color: "#b53b07"}
+
       let midPointPH = {x: (pointP.x+pointH.x)/2, y: (pointP.y+pointH.y)/2, color: "black"}
-      
+
+      let directrix = {m: slope(pointQ, pointQprime), b: yIntercept(pointQ, pointQprime)}
+      let focus = {h: pointH.x, k: pointH.y}
+
       let POINTSIZE = squareWidth*0.025
+
+      let offsetAngle = Math.PI/2
+
+      let t = 0
+      let dt = 1/60
         
       preload = () => {
         
@@ -108,10 +115,66 @@
         updatePoints()
         drawLines()
         drawPoints()
+        drawParabola()
         pop()
+        t += dt
       }
 
       updatePoints = () => {
+
+        angleA = -1.1*Math.PI/2 + sin(t)/2
+        angleB = 8*Math.PI/10 + sin(t)/40
+        angleC = Math.PI/10 + sin(t)/3
+        
+        pointA = {name: "A", x: circleRadius*Math.cos(angleA), y: circleRadius*Math.sin(angleA), color: "#4058f8"}
+        pointB = {name: "B", x: circleRadius*Math.cos(angleB), y: circleRadius*Math.sin(angleB), color: "#4058f8"}
+        pointC = {name: "C", x: circleRadius*Math.cos(angleC), y: circleRadius*Math.sin(angleC), color: "#4058f8"}
+  
+        midpointACoX = {x: (pointA.x+pointC.x)/2, y: (pointA.y+pointC.y)/2, color: "black"}
+        midpointABoY = {x: (pointA.x+pointB.x)/2, y: (pointA.y+pointB.y)/2, color: "black"}
+        midpointBCoZ = {x: (pointB.x+pointC.x)/2, y: (pointB.y+pointC.y)/2, color: "black"}
+        
+        function slope(p1,p2){return (p2.y-p1.y)/(p2.x-p1.x)}
+        function yIntercept(p1,p2){return p1.y-slope(p1,p2)*p1.x}
+        function yInterceptPoint(slope,point){return point.y-slope*point.x}
+        
+        lineAC = {x1: -width/2, y1: slope(pointA,pointC)*-width/2+yIntercept(pointA,pointC),
+                      x2: width/2,  y2: slope(pointA,pointC)*width/2+yIntercept(pointA,pointC), color: "#4058f8", m: slope(pointA,pointC), c: yIntercept(pointA,pointC)}
+        lineAB = {x1: -width/2, y1: slope(pointA,pointB)*-width/2+yIntercept(pointA,pointB),
+                      x2: width/2,  y2: slope(pointA,pointB)*width/2+yIntercept(pointA,pointB), color: "#4058f8", m: slope(pointA,pointB), c: yIntercept(pointA,pointB)}
+        lineBC = {x1: -width/2, y1: slope(pointB,pointC)*-width/2+yIntercept(pointB,pointC),
+                      x2: width/2,  y2: slope(pointB,pointC)*width/2+yIntercept(pointB,pointC), color: "#4058f8", m: slope(pointB,pointC), c: yIntercept(pointB,pointC)}
+
+        c2 = yIntercept(pointA,pointC)
+        m1 = -1/slope(pointA,pointC)
+        c1 = yInterceptPoint(m1,pointB)
+        m2 = slope(pointA,pointC)
+
+        orthoLineB = {x1: pointB.x, y1: pointB.y, x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black", m: m1, c: c1}
+                          
+        c2 = yIntercept(pointA,pointB)
+        m1 = -1/slope(pointA,pointB)
+        c1 = yInterceptPoint(m1,pointC)
+        m2 = slope(pointA,pointB)
+
+        orthoLineC = {x1: pointC.x, y1: pointC.y, x2: (c2-c1)/(m1-m2), y2: m1*(c2-c1)/(m1-m2)+c1, color: "black", m: m1, c: c1}
+
+        c2 = yIntercept(pointB,pointC)
+        m11 = -1/slope(pointB,pointC)
+        c11 = yInterceptPoint(m11,pointA)
+        m2 = slope(pointB,pointC)
+
+        orthoLineA = {x1: pointA.x, y1: pointA.y, x2: (c2-c11)/(m11-m2), y2: m11*(c2-c11)/(m11-m2)+c11, color: "black", m: m11, c: c11}
+
+        pointO = {name: "O", x: 0, y: 0, color: "black"}
+        
+        pointH = {name: "H", x: (orthoLineA.c-orthoLineC.c)/(orthoLineC.m-orthoLineA.m), y: orthoLineC.m*((orthoLineA.c-orthoLineC.c)/(orthoLineC.m-orthoLineA.m))+orthoLineC.c, color: "black"}
+
+        pointP = {name: "P", x: circleRadius, y: 0, color: "#ff2895"}
+        pointPprime = {name: "P'", x: -circleRadius, y: 0, color: "#b53b07"}
+
+        midPointPH = {x: (pointP.x+pointH.x)/2, y: (pointP.y+pointH.y)/2, color: "black"}
+
 
         pointP.x = circleRadius*Math.cos(angle)
         pointP.y = circleRadius*Math.sin(angle)
@@ -119,7 +182,16 @@
         pointPprime.x = circleRadius*Math.cos(angle+Math.PI)
         pointPprime.y = circleRadius*Math.sin(angle+Math.PI)
 
+        pointQ.x = circleRadius*10*Math.cos(-angle+offsetAngle)+pointH.x
+        pointQ.y = circleRadius*10*Math.sin(-angle+offsetAngle)+pointH.y
+
+        pointQprime.x = circleRadius*10*Math.cos(-angle+Math.PI+offsetAngle)+pointH.x
+        pointQprime.y = circleRadius*10*Math.sin(-angle+Math.PI+offsetAngle)+pointH.y
+
         midPointPH = {x: (pointP.x+pointH.x)/2, y: (pointP.y+pointH.y)/2, color: "black"}
+
+        directrix = {m: slope(pointQ, pointQprime), b: yIntercept(pointQ, pointQprime)}
+        focus = {h: pointH.x, k: pointH.y}
 
         angle += angleIncrements
       }
@@ -127,11 +199,16 @@
       drawLines = () => {
         stroke("black")
         noFill()
-        strokeWeight(0.5)
+        strokeWeight(2)
         circle(0,0,circleRadius*2)
         // rect(-squareWidth/2,-squareWidth/2,squareWidth,squareWidth)
 
-        // stroke(lineAC.color)
+        stroke(pointP.color)
+        line(pointP.x,pointP.y,pointPprime.x,pointPprime.y)
+
+        stroke("gray")
+        line(pointQ.x,pointQ.y,pointQprime.x,pointQprime.y)
+        stroke("black")
         line(lineAC.x1,lineAC.y1,lineAC.x2,lineAC.y2)
         line(lineAB.x1,lineAB.y1,lineAB.x2,lineAB.y2)
         line(lineBC.x1,lineBC.y1,lineBC.x2,lineBC.y2)
@@ -160,36 +237,61 @@
         
         
         fill(pointO.color)
+        stroke("black")
         circle(pointO.x,pointO.y,POINTSIZE)
+        noStroke()
         text(pointO.name,pointO.x+POINTSIZE*.7,pointO.y-POINTSIZE)
 
         fill(pointH.color)
+        stroke("black")
         circle(pointH.x,pointH.y,POINTSIZE)
+        noStroke()
         text(pointH.name,pointH.x+POINTSIZE*.7,pointH.y-POINTSIZE)
 
+        stroke("black")
         fill(pointA.color)
         circle(pointA.x,pointA.y,POINTSIZE)
+        noStroke()
         text(pointA.name,pointA.x+POINTSIZE*.7,pointA.y-POINTSIZE)
 
+        stroke("black")
         fill(pointB.color)
         circle(pointB.x,pointB.y,POINTSIZE)
+        noStroke()
         text(pointB.name,pointB.x+POINTSIZE*.7,pointB.y-POINTSIZE)
 
+        stroke("black")
         fill(pointC.color)
         circle(pointC.x,pointC.y,POINTSIZE)
+        noStroke()
         text(pointC.name,pointC.x+POINTSIZE*.7,pointC.y-POINTSIZE)
 
+        stroke("black")
         fill(pointP.color)
         circle(pointP.x,pointP.y,POINTSIZE)
+        noStroke()
         text(pointP.name,pointP.x+POINTSIZE*.7,pointP.y-POINTSIZE)
         
+        stroke("black")
         fill(pointPprime.color)
         circle(pointPprime.x,pointPprime.y,POINTSIZE)
+        noStroke()
         text(pointPprime.name,pointPprime.x+POINTSIZE*.7,pointPprime.y-POINTSIZE)
 
       }
 
+      drawParabola = () => {
+      
+        // Focus (h,k) and directrix y = mx + b
+        //  (y - mx - b)^2 / (m^2 +1) = (x - h)^2 + (y - k)^2
 
+        // directrix = {m: slope(pointQ, pointQprime), b: yIntercept(pointQ, pointQprime)}
+        // focus = {h: pointH.x, k: pointH.y}
+
+
+
+
+      }
 
     </script>
   </body>
