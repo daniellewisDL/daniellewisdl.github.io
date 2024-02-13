@@ -848,15 +848,16 @@
           }
           
         function draw() {
+          // background(255,5)
           wienerCircles()
         }
 
         wienerCircles = () => {
-          stroke(0,40)
+          stroke(0,0,100,100)
           noFill()
           let r = random(50,100)
-          x1 = mouseX
-          y1 = mouseY
+          // x1 = mouseX
+          // y1 = mouseY
           for (i=0;i<10;i++) {
               // if ( choice_of_color == 0) {fill(random(255),lightDark,lightDark,80)}
               // else if ( choice_of_color == 1) {fill(lightDark,random(255),lightDark,80)}
@@ -880,24 +881,6 @@
               if ( x1 > width + r/2 || y1 > height + r/2 || x1 < -r/2 || y1 < -r/2) {
                   x1 = random(width)
                   y1 = random(height)
-              } else {
-                  x1 = x1+random(r)-r/2;
-                  y1 = y1+random(r)-r/2;
-              }
-          }
-        }
-
-        wienerSquares = () => {
-          stroke(0,40)
-          let r = 50;
-          for (i=0;i<10;i++) {
-              if ( choice_of_color == 0) {fill(random(255),lightDark,lightDark,80)}
-              else if ( choice_of_color == 1) {fill(lightDark,random(255),lightDark,80)}
-              else if ( choice_of_color == 2) {fill(lightDark,lightDark,random(255),80)}
-              rect(x1, y1, r);
-              if ( x1 > width + 50 || y1 > height + 50 || x1 < -50 || y1 < -50) {
-                  x1 = width/2;
-                  y1 = height/2;
               } else {
                   x1 = x1+random(r)-r/2;
                   y1 = y1+random(r)-r/2;
