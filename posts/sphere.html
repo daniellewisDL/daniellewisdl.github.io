@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>sphere</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let pointsOnSphere = []
+      let numPoints = 1000
+      let radius = squareWidth/2
+      let theta = 0
+      let thetaIncrements = 0.01
+      let phi = 0
+      let phiIncrements = 0.01
+      let x = 0
+      let y = 0
+      let z = 0
+
+      let xOffset = 0
+      let yOffset = 0
+
+      let rotationAngle = 0.04
+
+      for (let i = 0; i < numPoints; i++) {
+        theta = Math.random()*2*Math.PI
+        phi = Math.random()*Math.PI
+        x = Math.sin(phi+yOffset)*Math.cos(theta+xOffset-1)
+        y = Math.sin(phi+yOffset/2)*Math.sin(theta+xOffset/2)
+        z = Math.cos(phi+yOffset/3)
+        pointsOnSphere.push([x,y,z,theta,phi])
+      }
+      // console.log(pointsOnSphere)
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+        // Draw points on sphere
+        push()
+        translate(width/2,height/2)
+        pointsOnSphere.sort((a, b) => a[2] - b[2])
+        for (let i = 0; i < numPoints; i++) {
+          stroke(map(pointsOnSphere[i][2],-1,1,100,255),0,100,200)
+          strokeWeight(map(pointsOnSphere[i][2],-1,1,15*squareWidth/800,25*squareWidth/800))
+          // console.log(pointsOnSphere[i][2])
+          point(radius*pointsOnSphere[i][0],radius*pointsOnSphere[i][1])
+        }
+        pop()
+
+        updatePoints1()
+
+        // noLoop()
+        // frameRate(3)
+      }
+
+
+      updatePoints = () => {
+        for (let i = 0; i < numPoints; i++) {
+          pointsOnSphere[i][3] = pointsOnSphere[i][3] + rotationAngle
+          if (pointsOnSphere[i][3] >= 2*Math.PI) pointsOnSphere[i][3] = 0;
+          // pointsOnSphere[i][4] = pointsOnSphere[i][4] + rotationAngleIncrements
+          pointsOnSphere[i][0] = Math.sin(pointsOnSphere[i][4]+yOffset)*Math.cos(pointsOnSphere[i][3]+xOffset)
+          pointsOnSphere[i][1] = Math.sin(pointsOnSphere[i][4]+yOffset/2)*Math.sin(pointsOnSphere[i][3]+xOffset/2)
+          pointsOnSphere[i][2] = Math.cos(pointsOnSphere[i][4]+yOffset/3)
+
+        }
+      }
+
+      updatePoints1 = () => {
+        
+        
+        for (let i = 0; i < numPoints; i++) {
+          let xPrime = pointsOnSphere[i][0]
+          let yPrime = pointsOnSphere[i][1]*Math.cos(rotationAngle) - pointsOnSphere[i][2]*Math.sin(rotationAngle)
+          let zPrime = pointsOnSphere[i][1]*Math.sin(rotationAngle) + pointsOnSphere[i][2]*Math.cos(rotationAngle)
+
+          let magnitude = Math.sqrt(xPrime**2 + yPrime**2 + zPrime**2)
+
+
+          pointsOnSphere[i][0] = xPrime
+          pointsOnSphere[i][1] = yPrime
+          pointsOnSphere[i][2] = zPrime
+        }
+      }
+
+    </script>
+  </body>
+</html>
+
