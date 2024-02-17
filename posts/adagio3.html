@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>adagio3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.8
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCells = 40
+      let cellSize = squareWidth/numCells
+
+      const cellMargin = 0.95
+      let t=0
+      let tOffset
+      let myColor = "#df6e6d"
+
+      let rectWidth = 1
+      let rectHeight = 1
+
+      let colorMappingBottom = 140
+      let colorMappingTop = 250
+
+      let rotateBottom = 0
+      let rotateTop = 0
+
+      let offsetMult = 4
+      let offsetMultIncrements = 0
+
+      let periodicSizeBottom = 2
+      let periodicSizeTop = -2
+
+      let angle = 0
+      let angleIncrement = 0.01
+
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        rectMode(CENTER)
+        tOffset = 0.01
+        // noFill()
+        // stroke(0,0,100)
+        // strokeWeight(1)
+        fill(0,250,0)
+        noStroke()
+        // saveGif('./myGif.gif', 500, {units: "frames"})
+      }
+
+			draw = () => {
+				background(0)
+
+        fill(red(myColor),green(myColor),blue(myColor),200)
+        push()
+
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        // rotate(angle)
+        for (let i=0; i<numCells; i++) {
+          for (let j=0; j<numCells; j++) {
+            let x = i*cellSize
+            let y = j*cellSize
+            let a = t + offset(x,y)
+            let s = periodicSize(a)
+            let sPrime = smoothstep(s,-0.4,0.4)
+            push()
+            translate(x+cellSize/2,y+cellSize/2)
+            circle(s*cellSize/2,s*cellSize/2,1*cellSize)
+            pop()
+          }
+        }
+
+        pop()
+
+        t=t+tOffset
+        angle = angle + angleIncrement
+
+
+      }
+
+      function offset(x,y) {
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/(Math.PI/6)
+      }
+
+      function periodicSize(a) {
+        return map(sin(a*Math.PI*2),-1,1,periodicSizeBottom,periodicSizeTop)
+      }
+
+      function smoothstep(x, edge0, edge1) {
+        // Ensure edge0 is less than edge1
+        if (edge0 > edge1) {
+          [edge0, edge1] = [edge1, edge0];
+        }
+
+        // Clamp x to the range [edge0, edge1]
+        x = Math.max(edge0, Math.min(x, edge1));
+
+        // Perform the smooth Hermite interpolation
+        const t = (x - edge0) / (edge1 - edge0);
+        return t * t * (3 - 2 * t);
+      }
+
+    </script>
+  </body>
+</html>
