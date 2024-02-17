@@ -9,7 +9,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-PNQX1JJWVB');
 	</script>
-    <title>dave</title>
+    <title>dave2</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>body { background-color: rgb(250, 230, 200); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
@@ -26,7 +26,7 @@
 			let squareWidth = Math.min(width,height)*initialMargin
       let numCellsList = [15,16,17,18,19,20,25,30,40]
       let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
-      numCells = 30
+      numCells = 42
       let cellSize = squareWidth/numCells
 
       const cellMargin = 0.95
@@ -60,16 +60,16 @@
         pixelDensity(1)
         rectMode(CENTER)
         tOffset = 0.01
-        // noFill()
-        // stroke(0,0,100)
-        // strokeWeight(1)
-        fill(0,0,100)
-        noStroke()
+        noFill()
+        stroke(0,0,0)
+        strokeWeight(1*squareWidth/1000)
+        // fill(0,0,100)
+        // noStroke()
         // saveGif('./myGif.gif', 500, {units: "frames"})
       }
 
 			draw = () => {
-				background(250,230,200,250)
+				background(250,230,200)
 
         push()
 
@@ -84,7 +84,9 @@
             let sPrime = smoothstep(s,-0.5,0.5)
             push()
             translate(x+cellSize/2,y+cellSize/2)
-            circle(sPrime*cellSize/2,sPrime*cellSize/2,0.4*cellSize)
+            // circle(sPrime*cellSize/2,sPrime*cellSize/2,0.4*cellSize)
+            // rect(sPrime*cellSize/2,s*cellSize/2,.5*cellSize)
+            rect(0,sPrime*cellSize/4,0.66*cellSize,sPrime*0.66*cellSize)
             pop()
           }
         }
@@ -97,7 +99,7 @@
       }
 
       function offset(x,y) {
-        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/Math.PI
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) + atan2(x-squareWidth/2,y)/(Math.PI/6)
       }
 
       function periodicSize(a) {

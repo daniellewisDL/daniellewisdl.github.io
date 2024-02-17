@@ -9,7 +9,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-PNQX1JJWVB');
 	</script>
-    <title>dave</title>
+    <title>dave3</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>body { background-color: rgb(250, 230, 200); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
@@ -43,7 +43,7 @@
       let rotateBottom = 0
       let rotateTop = 0
 
-      let offsetMult = 4
+      let offsetMult = 0.009
       let offsetMultIncrements = 0
 
       let periodicSizeBottom = 1
@@ -97,7 +97,7 @@
       }
 
       function offset(x,y) {
-        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/Math.PI
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/(Math.PI/1)
       }
 
       function periodicSize(a) {
