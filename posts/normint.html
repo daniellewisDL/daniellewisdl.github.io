@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>normint</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let results = []
+      for (let i=0; i<100; i++) {
+        results.push(0)
+      }
+      let counter = 0
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        colorMode(HSB, 100)
+			}
+
+			draw = () => {
+
+        background(0)
+
+        
+        noStroke()
+        for (let z = 0; z < 10; z++ ) {
+          // update results
+
+          let newResult = Math.floor(gaussianRandom(50,15))
+          if (newResult < 0) {
+            newResult = 0
+          }
+          if (newResult > 99) {
+            newResult = 99
+          }
+
+          results[newResult] += 1
+
+          // draw results
+          let x0 = width/2-squareWidth/2
+          let y0 = height/2+squareWidth/4
+          let boxWidth = squareWidth/results.length
+          let maxBoxHeight = Math.max(...results)
+          let boxHeightUnit = squareWidth/2 / maxBoxHeight
+          for (let i=0; i<results.length; i++) {
+            let boxHeight = results[i]*boxHeightUnit
+            fill(i*100/results.length,100,100)
+            rect(x0+i*boxWidth,y0,boxWidth/2,-boxHeight)
+          }
+          counter++
+        }
+        
+        textSize(10)
+        textAlign(CENTER)
+        fill("white")
+        noStroke()
+        text("counter: "+counter, width/2, height/2+squareWidth/3 + 15)
+
+        // Draw labels 0, 10, 20 etc
+
+        for (let i=0; i<=results.length; i+=10) {
+          let x0 = width/2-squareWidth/2
+          let y0 = height/2+squareWidth/4
+          let boxWidth = squareWidth/results.length
+          let maxBoxHeight = Math.max(...results)
+          let boxHeightUnit = squareWidth/2 / maxBoxHeight
+          let boxHeight = results[i]*boxHeightUnit
+          fill("white")
+          noStroke()
+          text(i*1, x0+i*boxWidth, y0+20)
+          rect(x0+i*boxWidth,y0+5,boxWidth/4,5)
+        }
+
+
+        // noLoop()
+        // frameRate(3)
+  
+      }
+
+      // Standard Normal variate using Box-Muller transform.
+      // https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve
+      function gaussianRandom(mean=0, stdev=1) {
+          const u = 1 - Math.random(); // Converting [0,1) to (0,1]
+          const v = Math.random();
+          const z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+          // Transform to the desired mean and standard deviation:
+          return z * stdev + mean;
+      }
+
+      function myRandomGenerator() {
+        let numToReturn = 0
+        
+        let seed = 20223809
+        let a = 3.12358 * millis() 
+        let c = 5.84736 * millis()
+        let m = 100
+
+        numToReturn = Math.floor((a*seed+c))%m
+        
+        
+        return numToReturn
+        // return int(random(100))
+
+      }
+
+    </script>
+  </body>
+</html>
+
