@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>ed</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsList = [15,16,17,18,19,20,25,30,40]
+      let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
+      numCells = 50
+      let cellSize = squareWidth/numCells
+
+      const cellMargin = 0.95
+      let t=0
+      let tOffset
+      let myColor = "#632a21"
+
+      let rectWidth = 1.1
+      let rectHeight = 1
+
+      let colorMappingBottom = 0
+      let colorMappingTop = 360
+
+      let rotateBottom = 0
+      let rotateTop = 0
+
+      let offsetMult = 0.001
+      let offsetMultIncrements = 0.0005
+
+      let periodicSizeBottom = 0.8
+      let periodicSizeTop = 0.2
+			
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        rectMode(CENTER)
+        tOffset = 0.01
+        colorMode(HSB, 360, 100, 100, 100)
+        
+			}
+
+			draw = () => {
+
+        noStroke()
+				background(0,0,0)
+        
+        
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        // stroke(0,0,100)
+        // strokeWeight(1)
+        
+        for (let i=0; i<numCells; i++) {
+          for (let j=0; j<numCells; j++) {
+            let x = i*cellSize
+            let y = j*cellSize
+            let a = t + offset(x,y)
+            let s = periodicSize(a)
+            
+            noFill()
+            // fill(red(myColor),green(myColor),blue(myColor))//,map(s,1,0.2,colorMappingBottom,colorMappingTop))
+            fill(map(s,1,0.2,colorMappingBottom,colorMappingTop),100,100)
+            push()
+            translate(x+cellSize/2,y+cellSize/2)
+            // rotate(a)
+            circle(0,0,s*cellSize*rectWidth)
+            // rect(0,0,s*cellSize*rectWidth,s*cellSize*rectHeight)
+            pop()
+          }
+        }
+
+        pop()
+
+        t=t+tOffset
+        offsetMult = offsetMult + offsetMultIncrements
+        if (offsetMult > 0.1) {
+          offsetMult = 0.1
+          offsetMultIncrements = -offsetMultIncrements
+        }
+        if (offsetMult < 0.0001) {
+          offsetMult = 0.0001
+          offsetMultIncrements = -offsetMultIncrements
+        }
+
+      }
+
+      function offset(x,y) {
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2) + atan2(y-squareWidth/2,x-squareWidth/2)/Math.PI
+      }
+
+      // function periodicRotate(a) {
+      //   return map(sin(a*Math.PI*2),-1,1,rotateBottom,rotateTop)
+      // }
+
+      function periodicSize(a) {
+        return map(sin(a*Math.PI*2),-1,1,periodicSizeBottom,periodicSizeTop)
+      }
+
+    </script>
+  </body>
+</html>
