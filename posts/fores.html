@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>fores</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+			let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.8
+			let squareWidth = Math.min(width,height)*initialMargin
+      let numCellsList = [15,16,17,18,19,20,25,30,40]
+      let numCells = numCellsList[Math.floor(Math.random()*numCellsList.length)]
+      numCells = 40
+      let cellSize = squareWidth/numCells
+
+      const cellMargin = 0.95
+      let t=0
+      let tOffset
+      let myColor = "#632a21"
+
+      let rectWidth = 1
+      let rectHeight = 1
+
+      let colorMappingBottom = 140
+      let colorMappingTop = 250
+
+      let rotateBottom = 0
+      let rotateTop = 0
+
+      let offsetMult = 4
+      let offsetMultIncrements = 0
+
+      let periodicSizeBottom = 1
+      let periodicSizeTop = -1
+
+      let angle = 0
+      let angleIncrement = 0.01
+			
+      preload = () => {
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        rectMode(CENTER)
+        tOffset = 0.002
+        // noFill()
+        // stroke(0,0,100)
+        // strokeWeight(1)
+          fill(250,100,100)
+          noStroke()
+        // saveGif('./myGif.gif', 500, {units: "frames"})
+      }
+
+			draw = () => {
+				background(0)
+
+        push()
+
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        // rotate(angle)
+        for (let i=0; i<numCells; i++) {
+          for (let j=0; j<numCells; j++) {
+            let x = i*cellSize
+            let y = j*cellSize
+            let a = t + offset(x+cellSize/2,y+cellSize/2)
+            let s = periodicSize(a)
+            let sPrime = smoothstep(s,-0.5,0.5)
+            push()
+            translate(x+cellSize/2,y+cellSize/2)
+            rotate(s*PI*2)
+            circle(cellSize*sPrime/3,0, Math.abs(sPrime)*cellSize/2)
+            pop()
+          }
+        }
+
+        pop()
+
+        t=t+tOffset
+        angle = angle + angleIncrement
+
+      }
+
+      function offset(x,y) {
+        return offsetMult*dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2) //+ atan2(y-squareWidth/2,x-squareWidth/2)/(Math.PI)
+      }
+
+      function periodicSize(a) {
+        return map(sin(a*Math.PI*2),-1,1,periodicSizeBottom,periodicSizeTop)
+      }
+
+      function smoothstep(x, edge0, edge1) {
+        x = Math.max(edge0, Math.min(x, edge1));
+        const t = (x - edge0) / (edge1 - edge0);
+        return t * t * (3 - 2 * t);
+      }
+
+    </script>
+  </body>
+</html>
