@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>align</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let squares = []
+      let numSquares = 103
+      let numSquaresWide = 10
+      let squareSize = 10*squareWidth/400
+      let squareSpacing = 5
+
+      for (let i=0; i<numSquares; i++) {
+        squares.push({x: width/2-squareWidth/2 + (i%numSquaresWide)*(squareSize+squareSpacing),
+                      y: height/2-squareWidth/2 + Math.floor(i/numSquaresWide)*(squareSize+squareSpacing),
+                      x0: width/2-squareWidth/2 + (i%numSquaresWide)*(squareSize+squareSpacing),
+                      y0: height/2-squareWidth/2 + Math.floor(i/numSquaresWide)*(squareSize+squareSpacing),
+                      w: squareSize,
+                      h: squareSize,
+                      r: 255,
+                      g: 0,
+                      b: 0})
+      }
+
+      let secondaryX = squareWidth - (numSquaresWide-1)*(squareSize+squareSpacing)
+      let secondaryY = squareWidth - Math.floor(numSquares/numSquaresWide)*(squareSize+squareSpacing)
+
+      let t = 0
+      let tIncrements = 0.05
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(255)
+        noStroke()
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+
+        drawSquares()
+        updateSquares()
+
+        t = t+tIncrements
+  
+      }
+
+      drawSquares = () => {
+        for (let i=0; i<squares.length; i++) {
+          fill(squares[i].r, squares[i].g, squares[i].b)
+          rect(squares[i].x, squares[i].y, squares[i].w, squares[i].h)
+        }
+      }
+
+      updateSquares = () => {
+        for (let i=0; i<squares.length; i++) {
+          squares[i].r = 255*smoothStep(0,1,Math.sin(t+i*PI/numSquares))
+          squares[i].g = 255*smoothStep(0,1,Math.sin(t+i*PI/numSquares+PI/3))
+          squares[i].b = 255*smoothStep(0,1,Math.sin(t+i*PI/numSquares+2*PI/3))
+
+          squares[i].x = squares[i].x0 + secondaryX*smoothStep(0.05,.95,map(Math.sin(t+i/numSquares),-1,1,0,1))
+          squares[i].y = squares[i].y0 + secondaryY*smoothStep(0.05,.95,map(Math.sin(t+i/numSquares),-1,1,0,1))
+
+        }
+      }
+
+      function smoothStep(start, end, point) {
+        if (point <= start) return 0
+        if (point >= end) return 1
+        let x = (point - start) / (end - start)
+        return x*x*(3 - 2*x)
+      }
+
+
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>gemini</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let offset = 0
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        colorMode(HSB, 360, 100, 100, 100)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0,5)
+
+        fill(50)
+        noStroke()
+        let numPoints = 500
+        let radius = squareWidth
+        let angleStep = 2*PI/numPoints
+        
+        for (let i = 0; i < numPoints; i++) {
+          fill((360/numPoints*i+offset)%360,100,100,100)
+          arc(width/2, height/2, radius, radius, i*angleStep, (i+1)*angleStep)
+
+        }
+
+        fill(0)
+        circle(width/2, height/2, squareWidth*0.6)
+
+        for (let i = 0; i < numPoints; i++) {
+          fill((360/numPoints*i+offset+180)%360,100,100,100)
+          arc(width/2, height/2, radius/2, radius/2, i*angleStep, (i+2)*angleStep)
+
+        }
+
+
+        fill(0)
+        circle(width/2, height/2, squareWidth*0.3)
+
+        offset += 1
+        if (offset > 360) {
+          offset = 0
+        }
+      }
+
+    </script>
+  </body>
+</html>
+

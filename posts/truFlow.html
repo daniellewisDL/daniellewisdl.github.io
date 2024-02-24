@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>truFlow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let numCells = 10
+      let cellWidth = squareWidth/numCells
+      let cellHeight = squareWidth/numCells
+
+      let cells = []
+
+      let t = 0
+      let tIncrements = 0.01
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        for (let i = 0; i < numCells; i++) {
+          for (let j = 0; j < numCells; j++) {
+          cells.push({x: i*cellWidth,
+                      y: j*cellHeight,
+                      w: cellWidth,
+                      h: cellHeight,
+                      angle: map(noise(i/10,j/10),0,1,0,2*PI)
+                    })
+          }
+        }
+        strokeWeight(4)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+
+        noFill()
+        
+        for (let i = 0; i < numCells; i++) {
+          for (let j = 0; j < numCells; j++) {
+            cells[i*numCells+j].angle = map(noise(i/1+t,j/1+t),0,1,0,2*PI)
+          }
+        }
+
+        for (let i = 0; i < cells.length; i++) {
+          stroke(map(i,0,cells.length,0,255),0,255)
+          push()
+          translate(width/2-squareWidth/2+ cells[i].x, height/2-squareWidth/2+ cells[i].y)
+          // rect(0, 0, cells[i].w, cells[i].h)
+          translate(cells[i].w/2, cells[i].h/2)
+          rotate(cells[i].angle)
+          // ellipse(0,0,cells[i].w/2,cells[i].w/8)
+          // line(-cells[i].w/10, 0, cells[i].w/2, 0)
+          // line(-cells[i].w/10, 4, cells[i].w/2, 4)
+          // line(-cells[i].w/10, -4, cells[i].w/2, -4)
+          arc(-cells[i].w/2, -cells[i].h/2, cells[i].w, cells[i].w, 0, PI/2)
+          arc(cells[i].w/2, cells[i].h/2, cells[i].w, cells[i].w, PI, 3*PI/2)
+          pop()
+        }
+
+        t += tIncrements
+        // noLoop()
+ 
+      }
+
+    </script>
+  </body>
+</html>
+
