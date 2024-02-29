@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>bright</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script> -->
+    <script src="../p5/p5.min.js"></script>
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let numCells = 10
+      let cellWidth = squareWidth/numCells
+
+      let cells = []
+      for (let i=0; i<numCells; i++) {
+        for (let j=0; j<numCells; j++) {
+          cells.push(Math.random()*2*Math.PI)
+        }
+      }
+  
+      let angle = 0
+      let angleIncrements = 0.04
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+        background(0)
+
+        for (let i=0; i<numCells; i++) {
+          for (let j=0; j<numCells; j++) {
+            push()
+            translate(width/2 - squareWidth/2 + i*cellWidth, height/2 - squareWidth/2 + j*cellWidth)
+            drawDevice(cellWidth/2,cellWidth/2,cellWidth*4, 1, cells[j+numCells*i])
+            pop()
+          }
+        }
+        angle+=angleIncrements
+  
+      }
+
+      drawDevice = (x,y,size,scaleSize, offAngle) => {
+        fill(0,255,255,80)
+        noStroke()
+        push()
+        translate(x,y)
+        rotate(offAngle+angle)
+        scale(scaleSize)
+        rect(0,0,size*0.5)
+        rect(-size*0.3,-size*0.3,size*0.3)
+        beginShape()
+        vertex(0,0)
+        vertex(0,-size*0.3)
+        vertex(size*0.5,0)
+        endShape(CLOSE)
+        beginShape()
+        vertex(0,0)
+        vertex(0,size*0.5)
+        vertex(-size*0.3,0)
+        endShape(CLOSE)
+        fill(0,10)
+        circle(-size*0.3,-size*0.3,size*0.4)
+        circle(size*0.5,size*0.5,size*0.4)
+        pop()
+      }
+
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>scratch</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let canvas
+      let angle = 0
+      let angleInc = 0.01
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        canvas = createCanvas(width, height, P2D)
+        pixelDensity(1)
+        background(0)
+        // for (let i=0; i<10000; i++) {
+        //   let x = random(width)
+        //   let y = random(height)
+        //   if (x < width/2 && y < height/2) {
+        //     stroke(255,0,0)
+        //   } else if (x < width/2 && y > height/2) {
+        //     stroke(0,255,0)
+        //   } else if (x >= width/2 && y > height/2) {
+        //     stroke(0,255,255)
+        //   } else if (x >= width/2 && y <= height/2) {
+        //     stroke(255,255,0)
+        //   }
+        //   strokeWeight(10)
+        //   point(x,y)
+        // }
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        // background(0)
+        noFill()
+        push()
+        translate(width/2, height/2)
+        // rotate(random(PI*2))
+        rotate(angle)
+        // translate(-width/2, -height/2)
+        strokeWeight(5)
+        stroke(255,0,0,10)
+        line(-4,-height,-4,height)
+        line(4,-height,4,height)
+        circle(0,0,30)
+
+        copy(canvas,
+             0,0,width/2,height, // copies absolutely
+             -width/2-1,-height/2,width/2,height) // pastes relatively
+
+        copy(canvas,
+             width/2,0,width/2,height,
+             1,-height/2,width/2,height/2,
+             )
+
+        // copy(canvas,
+        //      width/2,0,width/2,height,
+        //      width/2+1,0,width/2,height)
+
+        pop()
+        angle += angleInc
+ 
+        if (angle > PI*2) {
+          background(0)
+          angle = 0
+        }
+        // console.log(angle)
+      }
+
+    </script>
+  </body>
+</html>
+
