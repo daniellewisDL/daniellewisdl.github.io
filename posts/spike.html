@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>spike</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let cells = 10
+      let cellWidth = squareWidth/cells
+      let spikeLength = 100/110 * cellWidth
+      let cellHeight = 1.27*spikeLength / 2
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+
+        let col = map(Math.sin(frameCount/30), -1, 1, 0, 255)
+        let swt = spikeLength * .02
+
+        for (let i = -cellWidth; i < width+cellWidth; i+=cellWidth) {
+          for (let j = -cellHeight; j < height+cellHeight; j+=cellHeight) {
+            push()
+            translate(i,j)
+            drawSpike(0,0,0,cellWidth/2,swt,col)
+            translate(cellWidth/2,cellHeight/2)
+            drawSpike(0,0,0,cellWidth/2,swt,col)
+            pop()
+
+            
+          }
+        }
+
+
+        // noLoop()
+        // frameRate(3)
+  
+      }
+
+
+      drawSpike = (x,y,angle,length,sw,col) => {
+
+        let a = sw/2
+
+        noStroke()
+        fill(col,100,0,100)
+
+        push()
+        translate(x,y)
+        rotate(angle)
+        for (let i = 0; i < 3; i++) {
+          beginShape()
+          vertex(0,0)
+          vertex(-a,-a/Math.sqrt(3))
+          vertex(-a,-length+a*Math.sqrt(3))
+          vertex(-Math.sqrt(0.75)*length/2,-length+length/4)
+          vertex(0,-length-a*1.27)
+          vertex(Math.sqrt(0.75)*length/2,-length+length/4)
+          vertex(a,-length+a*Math.sqrt(3))
+          vertex(a,-a/Math.sqrt(3))
+          endShape(CLOSE)
+          rotate(PI*2/3)
+        }
+        pop()
+
+
+
+      }
+
+    </script>
+  </body>
+</html>
+
