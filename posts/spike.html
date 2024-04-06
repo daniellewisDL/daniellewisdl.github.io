@@ -25,10 +25,12 @@
       let height = window.innerHeight
 			let initialMargin = 0.9
       let squareWidth = Math.min(width,height)*initialMargin
-      let cells = 10
+      let cells = 2
       let cellWidth = squareWidth/cells
-      let spikeLength = 100/110 * cellWidth
-      let cellHeight = 1.27*spikeLength / 2
+      let spikeLength = 90/100 * cellWidth
+      let cellHeight = 0.635 *spikeLength
+      let angleRot = 0
+      let angleRotSpeed = 0.005
 
   
       preload = () => {
@@ -46,24 +48,29 @@
 
         background(0)
 
-        let col = map(Math.sin(frameCount/30), -1, 1, 0, 255)
-        let swt = spikeLength * .02
+        let col = map(Math.sin(frameCount/30), -1, 1, 100, 255)
+        let swt = spikeLength * .07
 
         for (let i = -cellWidth; i < width+cellWidth; i+=cellWidth) {
           for (let j = -cellHeight; j < height+cellHeight; j+=cellHeight) {
             push()
             translate(i,j)
-            drawSpike(0,0,0,cellWidth/2,swt,col)
+            drawSpike(0,0,angleRot,cellWidth/2,swt,col)
             translate(cellWidth/2,cellHeight/2)
-            drawSpike(0,0,0,cellWidth/2,swt,col)
+            drawSpike(0,0,angleRot,cellWidth/2,swt,col)
             pop()
-
-            
           }
         }
 
+        angleRot += angleRotSpeed
 
+        // push()
+        // translate(width/2,height/2)
+        // drawSpike(0,0,0,cellWidth,swt,col)
+        // pop()
         // noLoop()
+
+
         // frameRate(3)
   
       }
@@ -73,22 +80,43 @@
 
         let a = sw/2
 
-        noStroke()
-        fill(col,100,0,100)
-
+        
         push()
         translate(x,y)
         rotate(angle)
+
+        // noFill()
+        // stroke(255)
+        // strokeWeight(0.5)
+        // push()
+        // for (let j = 0; j<6; j++) {
+        //   line(0,-length,length*Math.cos(PI/6),-length*Math.sin(PI/6))
+        //   rotate(PI/3)
+        // }
+        // pop()
+        
+        noStroke()
+        fill(col,200,200,100)
         for (let i = 0; i < 3; i++) {
           beginShape()
           vertex(0,0)
+
           vertex(-a,-a/Math.sqrt(3))
-          vertex(-a,-length+a*Math.sqrt(3))
-          vertex(-Math.sqrt(0.75)*length/2,-length+length/4)
-          vertex(0,-length-a*1.27)
-          vertex(Math.sqrt(0.75)*length/2,-length+length/4)
-          vertex(a,-length+a*Math.sqrt(3))
+          vertex(-a,-length+a*2.5)
+
+          vertex(-Math.sqrt(0.75)*length/2,-length+length/4+a*2)
+
+          vertex(-Math.sqrt(0.75)*0.70*length,-length+0.5*0.70*length)
+
+          vertex(0,-length)
+
+          vertex(Math.sqrt(0.75)*0.70*length,-length+0.5*0.70*length)
+
+          vertex(Math.sqrt(0.75)*length/2,-length+length/4+a*2)
+
+          vertex(a,-length+a*2.5)
           vertex(a,-a/Math.sqrt(3))
+          
           endShape(CLOSE)
           rotate(PI*2/3)
         }
