@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script>
+    <title>rolo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let bigCircleRadius = squareWidth/2
+      let numBalls = 30
+      let offset = 180
+      let dOffset = 0
+      let balls = []
+
+      let t=0
+      let dt=2
+      
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(255)
+        angleMode(DEGREES)
+        for (let i = 0; i < numBalls; i++) {
+          let x0 = bigCircleRadius*cos(i*180/numBalls)
+          let y0 = bigCircleRadius*sin(i*180/numBalls)
+          let x1 = bigCircleRadius*cos(i*180/numBalls+180)
+          let y1 = bigCircleRadius*sin(i*180/numBalls+180)
+          balls.push({x: x0,
+                      y: y0,
+                      x0: x0,
+                      y0: y0,
+                      x1: x1,
+                      y1: y1,
+                      r: bigCircleRadius*0.1,
+                      i: i,
+                      offset: i*offset/numBalls
+                      })
+      }
+      console.log(balls)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+        background(255)
+        
+        // stroke(0)
+        // strokeWeight(1)
+        // noFill()
+        // circle(width/2,height/2,squareWidth*1.03)
+        // line(width/2,0,width/2,height)
+        // line(0,height/2,width,height/2)
+        stroke(0,100)
+        strokeWeight(1)
+        // for (let a=0; a<width; a+=width/100) {
+        //   line(a,0,a,height)
+        // }
+        // for (let a=0; a<height; a+=width/100) {
+        //   line(0,a,width,a)
+        // }
+        for (let i = 0; i < numBalls; i++) {
+          let x0 = bigCircleRadius*4*cos(i*180/numBalls)
+          let y0 = bigCircleRadius*4*sin(i*180/numBalls)
+          let x1 = bigCircleRadius*4*cos(i*180/numBalls+180)
+          let y1 = bigCircleRadius*4*sin(i*180/numBalls+180)
+          line(width/2+x0,height/2+y0,width/2+x1,height/2+y1)
+        }
+        
+        // Update balls
+
+        for (let i = 0; i < balls.length; i++) {
+          balls[i].x = balls[i].x0 + map(sin(t+balls[i].offset),-1,1,-0.5,1.5)*(balls[i].x1 - balls[i].x0)
+          balls[i].y = balls[i].y0 + map(sin(t+balls[i].offset),-1,1,-0.5,1.5)*(balls[i].y1 - balls[i].y0)
+          balls[i].offset = balls[i].i*offset/numBalls
+        }
+        offset += dOffset
+
+        // Draw balls
+
+        for (let i = 0; i < balls.length; i++) {
+          // noFill()
+          // stroke(0)
+          // strokeWeight(1)
+          fill(0,100,255,100)
+          noStroke()
+          circle(width/2+balls[i].x,height/2+balls[i].y,balls[i].r)
+          // stroke(0,100)
+          // strokeWeight(0.1)
+          // line(0,height/2+balls[i].y,width,height/2+balls[i].y)
+          // line(width/2+balls[i].x,0,width/2+balls[i].x,height)
+        }
+  
+        t+=dt
+      }
+
+    </script>
+  </body>
+</html>
+
