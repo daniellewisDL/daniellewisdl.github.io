@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-PNQX1JJWVB');
+      gtag('config', 'G-PNQX1JJWVB'); -->
     </script>
     
     <title>daniellewisDL</title>
@@ -26,65 +26,53 @@
 
   <body style="background-color: rgb(255, 255, 255);">
 
-      <header class="min-vh-100">
+      <header style="min-height: 250px;">
 
-          <nav class="navbar navbar-expand d-none d-sm-block" style="z-index: 20;">
-            <div class="container-fluid">
-
-                <a class="navbar-brand nav-link" href="#"><strong>DL</strong></a>
-
-                <ul class="navbar-nav me-auto"> <!-- me-auto pushes social links to right -->
-                    <li class="nav-item"><a class="nav-link" href="#latestPosts">posts</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="#about">about</a></li>
-                </ul>
-    
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item me-3"><a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-                    <li class="nav-item me-3"><a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                    <li class="nav-item me-3"><a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank"><i class="fa fa-github"></i></a></li>
-                </ul>
-                </div>
-            </div>
-          </nav>
-
-          <div id="bannerP5js" class="bg-image vh-100">
-              <div class="container h-100">
-                  <div class="d-flex h-100 text-center align-items-center">
-                  <div class="w-100">
-                      <h1 class="display-3" id="blogTitle"></h1>
-                      <p class="lead mb-0">A visual blog</p>
-                    </div>
-                  </div>
-              </div>
+        <nav class="navbar navbar-expand" style="z-index: 20;">
+          <div class="container-fluid">
+            <a class="navbar-brand nav-link" href="#"><strong>DL</strong></a>
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item"><a class="nav-link" href="#sections">sections</a></li>
+              <li class="nav-item active"><a class="nav-link" href="#about">about</a></li>
+            </ul>
+            <ul class="navbar-nav d-flex flex-row">
+              <li class="nav-item me-3"><a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+              <li class="nav-item me-3"><a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank"><i class="fa fa-twitter"></i></a></li>
+              <li class="nav-item me-3"><a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank"><i class="fa fa-github"></i></a></li>
+            </ul>
           </div>
-      </header>
+        </nav>
 
-       <main class="my-5">
-
-        <div class="container d-flex justify-content-center" id="latestPosts" style="max-width: 800px;">
-
-          <section>
-            <h4 class="display-6 mt-5 mb-5">Posts</h4>
-            <div class="row" id="blogPosts"></div>
-          </section>
-
+        <div id="banner" class="align-items-center justify-content-center" style="height: 100%; z-index: 19;">
+          <div class="container d-flex text-center align-items-center" style="height: 100%;">
+            <div class="w-100 mt-2 mb-5" style="height: 100%;">
+              <h1 class="display-1">&lt;dl&gt;</h1>
+              <p class="lead mb-0">A homepage</p>
+            </div>
+          </div>
         </div>
 
+      </header>
 
+      <main class="my-5">
 
-
-        <div class="container d-flex justify-content-center" id="about" style="margin-top: 60px; max-width: 800px;">
+        <div class="container d-flex justify-content-center" id="latestPosts" style="max-width: 1600px;">
           <section>
-            <h4 class="display-12 mb-5">About</h4>
+            <!-- <h4 class="display-6 mt-2 mb-2">Sections</h4> -->
+            <div class="row w-100" id="sections"></div>
+          </section>
+        </div>
+
+        <div class="container d-flex justify-content-center" id="about" style="margin-top: 60px; max-width: 1600px;">
+          <section>
+            <h4 class="display-6 mb-2">About</h4>
             <div class="row">
               <div class="col-12 d-flex justify-content-center">
                 <div class="card">
                   <div class="card-body">
-                    <p class="card-text">I'm Dan. This is my visual blog. C'ést tout.</p>
+                    <p class="card-text">I'm Dan. This is my homepage, where I post a bunch of stuff I find of interest.</p>
                     <hr>
-                    <p class="card-text">Tools used are JavaScript (<a href="https://p5js.org/">p5.js</a> and <a href="https://d3js.org/">d3.js</a>) and some <a href="https://www.python.org/">python</a>.</p>
-                    <hr>
-                    <p class="card-text">If you want to contact me, see the social links below or at the top of the page.</p>
+                    <p class="card-text">If you would like to contact me please use the social links below or at the top of the page.</p>
                   </div>
                 </div>
               </div>
@@ -94,8 +82,6 @@
         </div>
   
       </main>
-      
-
 
       <footer class="bg-light text-lg-start">
 
@@ -116,336 +102,85 @@
 
         <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
           Built with VSCode by 
-          <a class="text-dark" href="#">Daniel Lewis</a>, 2020-2024
+          <a class="text-dark" href="#">Daniel Lewis</a>, 2019-2024
         </div>
 
       </footer>
 
-     <script>
+      <script>
 
-        let titles = ["Ethereal Bits","Pixelated Emotions","Digital Dreams","Code and Culture","Binary Beauty","Technological Tranquility","Algorithmic Artistry","Pixelated Poetry",
-                      "Digital Soul","Creative Code","Code and Creativity","Algorithm and Artistry","Data and Dreams","Syntax and Soul","Technology and Tranquility","Binary and Brushstrokes",
-                      "Circuits and Canvas","Zeroes and Zen","Bits and Brushwork","Computers and Creativity","Chaos and Harmony","Form and Function","Organic and Geometric","Pixelated and Poetic",
-                      "Abstraction and Reality","Digital and Analog","Beauty and Noise","Symmetry and Asymmetry","Surreal and Sublime","Fractals and Flow","Syntactic Sugar",
-                    "Poetic Programming", "Analog Bytes"]
-        let index = Math.floor((Math.random() * titles.length))
-        document.getElementById('blogTitle').innerHTML = titles[index]
+        const sectionData = [
+            {link: "./visualBlog/index.html", thumbnail: "./src/visualBlog.png", title: "Generative Art", description: "A visual blog of generative art."},
+            {link: "./stampsBlog/index.html", thumbnail: "./src/stamps.png", title: "Stamps", description: "A tour through some philatelic delights."},
+            {link: "./dataBlog/index.html", thumbnail: "./src/data.png", title: "Data Insights", description: "A collection of data visualisations."},
+            {link: "./verbalBlog/index.html", thumbnail: "./src/verbal.png", title: "Verbal Blog", description: "A verbal blog on various topics."},
+            
+            ]
 
-        const postData = [{link: "./posts/sierpent.html", thumbnail: "./src/sierpent.png", title: "sierpent", date: "2024-10-16", sNumber: "#206"},
-                        {link: "./posts/reddots.html", thumbnail: "./src/redDots.png", title: "redDots", date: "2024-10-13", sNumber: "#205"},  
-                        {link: "./posts/ag.html", thumbnail: "./src/ag.png", title: "ag", date: "2024-10-13", sNumber: "#204"}, 
-                        {link: "./posts/rejuve.html", thumbnail: "./src/rejuve.png", title: "rejuve", date: "2024-09-29", sNumber: "#203"},  
-                        {link: "./posts/adagio5.html", thumbnail: "./src/adagio5.png", title: "adagio5", date: "2024-07-14", sNumber: "#202"},  
-                        {link: "./posts/adagio4.html", thumbnail: "./src/adagio4.png", title: "adagio4", date: "2024-07-13", sNumber: "#201"}, 
-                        {link: "./posts/cc.html", thumbnail: "./src/cc.png", title: "cc", date: "2024-04-14", sNumber: "#200"},  
-                        {link: "./posts/bun.html", thumbnail: "./src/bun.png", title: "bun", date: "2024-04-10", sNumber: "#199"},
-                        {link: "./posts/squib2.html", thumbnail: "./src/squib2.png", title: "squib2", date: "2024-04-10", sNumber: "#198"},  
-                        {link: "./posts/squib.html", thumbnail: "./src/squib.png", title: "squib", date: "2024-04-10", sNumber: "#197"},  
-                        {link: "./posts/rolo.html", thumbnail: "./src/rolo.png", title: "rolo", date: "2024-04-10", sNumber: "#196"},  
-                        {link: "./posts/195.html", thumbnail: "./src/195.png", title: "195", date: "2024-04-10", sNumber: "#195"},  
-                        {link: "./posts/motus.html", thumbnail: "./src/motus.png", title: "motus", date: "2024-04-08", sNumber: "#194"},  
-                        {link: "./posts/dunno.html", thumbnail: "./src/dunno.png", title: "dunno", date: "2024-04-08", sNumber: "#193"},  
-                        {link: "./posts/groense.html", thumbnail: "./src/groense.png", title: "groense", date: "2024-04-07", sNumber: "#192"},  
-                        {link: "./posts/try.html", thumbnail: "./src/try.png", title: "try", date: "2024-04-07", sNumber: "#191"},  
-                        {link: "./posts/spike.html", thumbnail: "./src/spike.png", title: "spike", date: "2024-04-05", sNumber: "#190"},  
-                        {link: "./posts/interlace3.html", thumbnail: "./src/interlace3.png", title: "interlace3", date: "2024-03-16", sNumber: "#189"},  
-                        {link: "./posts/interlace2.html", thumbnail: "./src/interlace2.png", title: "interlace2", date: "2024-03-16", sNumber: "#188"},    
-                        {link: "./posts/interlace.html", thumbnail: "./src/interlace.png", title: "interlace", date: "2024-03-16", sNumber: "#187"},  
-                        {link: "./posts/drop.html", thumbnail: "./src/drop.png", title: "drop", date: "2024-03-02", sNumber: "#186"},  
-                        {link: "./posts/scratch.html", thumbnail: "./src/scratch.png", title: "scratch", date: "2024-02-29", sNumber: "#185"},  
-                        {link: "./posts/bright.html", thumbnail: "./src/bright.png", title: "bright", date: "2024-02-28", sNumber: "#184"},
-                        {link: "./posts/align.html", thumbnail: "./src/align.png", title: "align", date: "2024-02-24", sNumber: "#183"},
-                        {link: "./posts/impost.html", thumbnail: "./src/impost.png", title: "impost", date: "2024-02-24", sNumber: "#182"},
-                        {link: "./posts/gemini.html", thumbnail: "./src/gemini.png", title: "gemini", date: "2024-02-24", sNumber: "#181"},  
-                        {link: "./posts/truFlow.html", thumbnail: "./src/truFlow.png", title: "truFlow", date: "2024-02-24", sNumber: "#180"},            
-                        {link: "./posts/foren2.html", thumbnail: "./src/foren2.png", title: "foren2", date: "2024-02-18", sNumber: "#179"},  
-                        {link: "./posts/foren.html", thumbnail: "./src/foren.png", title: "foren", date: "2024-02-18", sNumber: "#178"},  
-                        {link: "./posts/fores.html", thumbnail: "./src/fores.png", title: "fores", date: "2024-02-18", sNumber: "#177"},
-                        {link: "./posts/foret.html", thumbnail: "./src/foret.png", title: "foret", date: "2024-02-17", sNumber: "#176"},  
-                        {link: "./posts/adagio3.html", thumbnail: "./src/adagio3.png", title: "adagio3", date: "2024-02-17", sNumber: "#175"},
-                        {link: "./posts/dave3.html", thumbnail: "./src/dave3.png", title: "dave3", date: "2024-02-17", sNumber: "#174"},
-                        {link: "./posts/dave2.html", thumbnail: "./src/dave2.png", title: "dave2", date: "2024-02-17", sNumber: "#173"},      
-                        {link: "./posts/dave.html", thumbnail: "./src/dave.png", title: "dave", date: "2024-02-17", sNumber: "#172"},
-                        {link: "./posts/normint.html", thumbnail: "./src/normint.png", title: "normint", date: "2024-02-17", sNumber: "#171"},  
-                        {link: "./posts/ed.html", thumbnail: "./src/ed.png", title: "ed", date: "2024-02-17", sNumber: "#170"},  
-                        {link: "./posts/sphere.html", thumbnail: "./src/sphere.png", title: "sphere", date: "2024-02-15", sNumber: "#169"},  
-                        {link: "./posts/pearl2.html", thumbnail: "./src/pearl.png", title: "pearl2", date: "2024-02-13", sNumber: "#168"},  
-                        {link: "./posts/ascii3.html", thumbnail: "./src/ascii3.png", title: "ascii3", date: "2024-02-13", sNumber: "#167"},  
-                        {link: "./posts/wsLine.html", thumbnail: "./src/wsLine.png", title: "wsLine", date: "2024-02-11", sNumber: "#166"},  
-                        {link: "./posts/pearl.html", thumbnail: "./src/pearl.png", title: "pearl", date: "2024-02-11", sNumber: "#165"},    
-                        {link: "./posts/snake.html", thumbnail: "./src/snake.png", title: "snake", date: "2024-02-10", sNumber: "#164"},  
-                        {link: "./posts/sandy.html", thumbnail: "./src/sandy.png", title: "sandy", date: "2024-02-09", sNumber: "#163"},  
-                        {link: "./posts/stonne.html", thumbnail: "./src/stonne.png", title: "stonne", date: "2024-02-01", sNumber: "#162"},  
-                        {link: "./posts/20mins.html", thumbnail: "./src/20mins.png", title: "20mins", date: "2024-01-23", sNumber: "#161"},  
-                        {link: "./posts/gird2.html", thumbnail: "./src/gird2.png", title: "gird2", date: "2024-01-20", sNumber: "#160"},
-                        {link: "./posts/gird.html", thumbnail: "./src/gird.png", title: "gird", date: "2024-01-20", sNumber: "#159"},      
-                        {link: "./posts/autodrw.html", thumbnail: "./src/autodrw.png", title: "autodrw", date: "2024-01-20", sNumber: "#158"},  
-                        {link: "./posts/isometry.html", thumbnail: "./src/isometry.png", title: "isometry", date: "2024-01-20", sNumber: "#157"},  
-                        {link: "./posts/boxy.html", thumbnail: "./src/boxy.png", title: "boxy", date: "2024-01-20", sNumber: "#156"},    
-                        {link: "./posts/ference3.html", thumbnail: "./src/ference3.png", title: "ference3", date: "2024-01-20", sNumber: "#155"},  
-                        {link: "./posts/ference2.html", thumbnail: "./src/ference2.png", title: "ference2", date: "2024-01-20", sNumber: "#154"},
-                        {link: "./posts/ference.html", thumbnail: "./src/ference.png", title: "ference", date: "2024-01-20", sNumber: "#153"},
-                        {link: "./posts/drw.html", thumbnail: "./src/drw.png", title: "drw", date: "2024-01-17", sNumber: "#152"},  
-                        {link: "./posts/splatt.html", thumbnail: "./src/splatt.png", title: "splatt", date: "2024-01-17", sNumber: "#151"},  
-                        {link: "./posts/LHR.html", thumbnail: "./src/LHR.png", title: "LHR", date: "2024-01-15", sNumber: "#150"},  
-                        {link: "./posts/atomic.html", thumbnail: "./src/atomic.png", title: "atomic", date: "2024-01-15", sNumber: "#149"},  
-                        {link: "./posts/pending.html", thumbnail: "./src/pending.png", title: "pending", date: "2024-01-15", sNumber: "#148"},  
-                        {link: "./posts/32x32mini.html", thumbnail: "./src/32x32.png", title: "32x32mini", date: "2024-01-14", sNumber: "#147"}, 
-                        {link: "./posts/bold.html", thumbnail: "./src/bold.png", title: "bold", date: "2024-01-13", sNumber: "#146"},  
-                        {link: "./posts/brewing.html", thumbnail: "./src/brewing.png", title: "brewing", date: "2024-01-13", sNumber: "#145"},  
-                        {link: "./posts/blobb.html", thumbnail: "./src/blobb.png", title: "blobb", date: "2024-01-13", sNumber: "#144"},
-                        {link: "./posts/sonos.html", thumbnail: "./src/sonos.png", title: "sonos", date: "2024-01-13", sNumber: "#143"},  
-                        {link: "./posts/shaderist.html", thumbnail: "./src/shaderist.png", title: "shaderist", date: "2024-01-13", sNumber: "#142"},  
-                        {link: "./posts/monochrone.html", thumbnail: "./src/monochrone.png", title: "monochrone", date: "2024-01-11", sNumber: "#141"},  
-                        {link: "./posts/subdivision.html", thumbnail: "./src/subdivision.png", title: "subdivision", date: "2024-01-11", sNumber: "#140"}, 
-                        {link: "./posts/kwikdraw.html", thumbnail: "./src/kwikdraw.png", title: "kwikdraw", date: "2024-01-11", sNumber: "#139"},  
-                        {link: "./posts/randint.html", thumbnail: "./src/randint.png", title: "randint", date: "2024-01-11", sNumber: "#138"},
-                        {link: "./posts/500lines.html", thumbnail: "./src/500lines.png", title: "500lines", date: "2024-01-09", sNumber: "#137"},  
-                        {link: "./posts/SDFs2.html", thumbnail: "./src/sdfs2.png", title: "sdfs2", date: "2024-01-01", sNumber: "#136"},  
-                        {link: "./posts/skeuos.html", thumbnail: "./src/skeuos.png", title: "skeuos", date: "2024-01-01", sNumber: "#135"}, 
-                        {link: "./posts/1hr.html", thumbnail: "./src/1hr.png", title: "1hr", date: "2023-12-31", sNumber: "#134"},    
-                        {link: "./posts/seedling.html", thumbnail: "./src/seedling.png", title: "seedling", date: "2023-12-31", sNumber: "#133"},  
-                        {link: "./posts/pattern.html", thumbnail: "./src/pattern.png", title: "pattern", date: "2023-12-30", sNumber: "#132"}, 
-                        {link: "./posts/undecided.html", thumbnail: "./src/undecided.png", title: "undecided", date: "2023-12-30", sNumber: "#131"},  
-                        {link: "./posts/32x32.html", thumbnail: "./src/32x32.png", title: "32x32", date: "2023-12-29", sNumber: "#130"},  
-                        {link: "./posts/polipl.html", thumbnail: "./src/polipl.png", title: "polipl", date: "2023-12-29", sNumber: "#129"},    
-                        {link: "./posts/leafletjs.html", thumbnail: "./src/leafletjs.png", title: "leafletjs", date: "2023-12-29", sNumber: "#128"},      
-                        {link: "./posts/typo.html", thumbnail: "./src/typo.png", title: "tpyo", date: "2023-12-29", sNumber: "#127"},
-                        {link: "./posts/flocking2.html", thumbnail: "./src/flocking2.png", title: "flocking2", date: "2023-12-29", sNumber: "#126"},
-                        {link: "./posts/flocking.html", thumbnail: "./src/flocking.png", title: "flocking", date: "2023-12-29", sNumber: "#125"},
-                        {link: "./posts/bauhaus.html", thumbnail: "./src/bauhaus.png", title: "bauhaus", date: "2023-12-29", sNumber: "#124"},
-                        {link: "./posts/sifr.html", thumbnail: "./src/sifr.png", title: "sifr", date: "2023-12-29", sNumber: "#123"},      
-                        {link: "./posts/10k2.html", thumbnail: "./src/10k2.png", title: "10k2", date: "2023-12-29", sNumber: "#122"},  
-                        {link: "./posts/matter.html", thumbnail: "./src/matter.png", title: "matter", date: "2023-12-28", sNumber: "#121"},    
-                        {link: "./posts/1kb.html", thumbnail: "./src/1kb.png", title: "1kb", date: "2023-12-28", sNumber: "#120"},      
-                        {link: "./posts/wobblers.html", thumbnail: "./src/wobblers.png", title: "wobblers", date: "2023-12-28", sNumber: "#119"},      
-                        {link: "./posts/lava.html", thumbnail: "./src/lava.png", title: "lava", date: "2023-12-28", sNumber: "#118"},        
-                        {link: "./posts/albers.html", thumbnail: "./src/albers.png", title: "albers", date: "2023-12-28", sNumber: "#117"},
-                        {link: "./posts/hex.html", thumbnail: "./src/hex.png", title: "hex", date: "2023-12-27", sNumber: "#116"},  
-                        {link: "./posts/ascii2.html", thumbnail: "./src/ascii2.png", title: "ascii2", date: "2023-12-27", sNumber: "#115"},    
-                        {link: "./posts/pendulous.html", thumbnail: "./src/pendulous.png", title: "pendulous", date: "2023-12-27", sNumber: "#114"},    
-                        {link: "./posts/loading.html", thumbnail: "./src/loading.png", title: "loading", date: "2023-12-27", sNumber: "#113"},      
-                        {link: "./posts/screensaver.html", thumbnail: "./src/screensaver.png", title: "screensaver", date: "2023-12-27", sNumber: "#112"},    
-                        {link: "./posts/molnar2.html", thumbnail: "./src/molnar2.png", title: "molnar2", date: "2023-12-27", sNumber: "#111"},
-                        {link: "./posts/pixels.html", thumbnail: "./src/pixels.png", title: "pixels", date: "2023-12-26", sNumber: "#110"},
-                        {link: "./posts/droste.html", thumbnail: "./src/droste.png", title: "droste", date: "2023-12-26", sNumber: "#109"},  
-                        {link: "./posts/epalette.html", thumbnail: "./src/epalette.png", title: "epalette", date: "2023-12-26", sNumber: "#108"},  
-                        {link: "./posts/particles.html", thumbnail: "./src/particles.png", title: "particles", date: "2023-12-26", sNumber: "#107"},
-                        {link: "./posts/kline2.html", thumbnail: "./src/kline2.png", title: "kline2", date: "2023-12-15", sNumber: "#106"},
-                        {link: "./posts/kline.html", thumbnail: "./src/kline.png", title: "kline", date: "2023-12-11", sNumber: "#105"},  
-                        {link: "./posts/wringers.html", thumbnail: "./src/wringers.png", title: "wringers", date: "2023-12-10", sNumber: "#104"},
-                        {link: "./posts/mnist.html", thumbnail: "./src/mnist.png", title: "mnist", date: "2023-11-25", sNumber: "#103"},
-                        {link: "./posts/pnd.html", thumbnail: "./src/pnd.png", title: "pnd", date: "2023-11-25", sNumber: "#102"},  
-                        {link: "./posts/gridder.html", thumbnail: "./src/gridder.png", title: "gridder", date: "2023-11-25", sNumber: "#101"},
-                        {link: "./posts/picsum.html", thumbnail: "./src/picsum.png", title: "picsum", date: "2023-11-25", sNumber: "#100"},      
-                        {link: "./posts/tubular.html", thumbnail: "./src/tubular.png", title: "tubular", date: "2023-11-19", sNumber: "#99"},
-                        {link: "./posts/vista.html", thumbnail: "./src/vista.png", title: "vista", date: "2023-11-18", sNumber: "#98"},  
-                        {link: "./posts/gorillagorilla.html", thumbnail: "./src/gorillagorilla.png", title: "gorillagorilla", date: "2023-11-18", sNumber: "#97"},  
-                        {link: "./posts/fff.html", thumbnail: "./src/fff.png", title: "fff", date: "2023-11-18", sNumber: "#96"},  
-                        {link: "./posts/ffs.html", thumbnail: "./src/ffs.png", title: "ffs", date: "2023-11-18", sNumber: "#95"},  
-                        {link: "./posts/gorillaTree.html", thumbnail: "./src/gorillaTree.png", title: "gorillaTree", date: "2023-11-18", sNumber: "#94"},  
-                        {link: "./posts/angst.html", thumbnail: "./src/angst.png", title: "angst", date: "2023-11-10", sNumber: "#93"},
-                        {link: "./posts/orbit2.html", thumbnail: "./src/orbit2.png", title: "orbit2", date: "2023-11-09", sNumber: "#92"},  
-                        {link: "./posts/orbit.html", thumbnail: "./src/orbit.png", title: "orbit", date: "2023-11-09", sNumber: "#91"},
-                        {link: "./posts/e.html", thumbnail: "./src/e.png", title: "e", date: "2023-11-08", sNumber: "#90"},
-                        {link: "./posts/barbells.html", thumbnail: "./src/barbells.png", title: "barbells", date: "2023-09-30", sNumber: "#89"},
-                        {link: "./posts/ankara.html", thumbnail: "./src/ankara.png", title: "ankara", date: "2023-08-12", sNumber: "#88"},
-                        {link: "./posts/adagio2.html", thumbnail: "./src/adagio2.png", title: "adagio2", date: "2023-07-07", sNumber: "#87"},
-                        {link: "./posts/adagio.html", thumbnail: "./src/adagio.png", title: "adagio", date: "2023-07-07", sNumber: "#86"},  
-                        {link: "./posts/bleus.html", thumbnail: "./src/bleus.png", title: "bleus", date: "2023-07-06", sNumber: "#85"},  
-                        {link: "./posts/anscombe.html", thumbnail: "./src/anscombe.png", title: "anscombe", date: "2023-07-05", sNumber: "#84"},
-                        {link: "./posts/dasher.html", thumbnail: "./src/dasher.png", title: "dasher", date: "2023-07-03", sNumber: "#83"}, 
-                        {link: "./posts/playfair.html", thumbnail: "./src/playfair.png", title: "playfair", date: "2023-06-24", sNumber: "#82"},
-                        {link: "./posts/nightingale.html", thumbnail: "./src/rose.png", title: "nightingale", date: "2023-06-18", sNumber: "#81"},
-                        {link: "./posts/ascii.html", thumbnail: "./src/ascii.png", title: "ascii", date: "2023-06-17", sNumber: "#80"},  
-                        {link: "./posts/flow3.html", thumbnail: "./src/flow3.png", title: "flow3", date: "2023-06-16", sNumber: "#79"},  
-                        {link: "./posts/wibble.html", thumbnail: "./src/wibble.png", title: "wibble", date: "2023-06-15", sNumber: "#79"},  
-                        {link: "./posts/yuanquan.html", thumbnail: "./src/yuanquan.png", title: "圆圈", date: "2023-06-12", sNumber: "#78"},
-                        {link: "./posts/kolomyjec.html", thumbnail: "./src/kolomyjec.png", title: "kolomyjec", date: "2023-06-11", sNumber: "#77"},  
-                        {link: "./posts/neesUp.html", thumbnail: "./src/neesUp.png", title: "neesUp", date: "2023-06-11", sNumber: "#76"},  
-                        {link: "./posts/division.html", thumbnail: "./src/division.png", title: "division", date: "2023-06-11", sNumber: "#75"},  
-                        {link: "./posts/molnar.html", thumbnail: "./src/molnar.png", title: "molnar", date: "2023-06-11", sNumber: "#74"},
-                        {link: "./posts/lines.html", thumbnail: "./src/lines.png", title: "lines", date: "2023-06-11", sNumber: "#73"},  
-                        {link: "./posts/balls2.html", thumbnail: "./src/balls2.png", title: "balls2", date: "2023-06-10", sNumber: "#72"},  
-                        {link: "./posts/balls.html", thumbnail: "./src/balls.png", title: "balls", date: "2023-06-09", sNumber: "#71"},
-                        {link: "./posts/wheel.html", thumbnail: "./src/wheel.png", title: "wheel", date: "2023-06-05", sNumber: "#70"},  
-                        {link: "./posts/iso.html", thumbnail: "./src/iso.png", title: "iso", date: "2023-06-05", sNumber: "#69"},  
-                        {link: "./posts/invader.html", thumbnail: "./src/invader.png", title: "invader", date: "2023-06-04", sNumber: "#68"},
-                        {link: "./posts/mondrian.html", thumbnail: "./src/mondrian.png", title: "mondrian", date: "2023-06-03", sNumber: "#67"},
-                        {link: "./posts/clock.html", thumbnail: "./src/clock.png", title: "clock", date: "2023-06-03", sNumber: "#66"},
-                        {link: "./posts/pride.html", thumbnail: "./src/pride.png", title: "pride", date: "2023-06-03", sNumber: "#65"},  
-                        {link: "./posts/gsibs.html", thumbnail: "./src/gsibs.png", title: "gsibs", date: "2023-05-22", sNumber: "#64"},
-                        {link: "./posts/dvsSoti.html", thumbnail: "./src/dvsSoti.png", title: "pirouette", date: "2023-05-14", sNumber: "#63"},  
-                        {link: "./posts/titanic.html", thumbnail: "./src/titanic.png", title: "titanic", date: "2023-03-25", sNumber: "#62"},  
-                        {link: "./posts/copilot.html", thumbnail: "./src/copilot.png", title: "copilot", date: "2023-03-25", sNumber: "#61"},    
-                        {link: "./posts/paletteer.html", thumbnail: "./src/paletteer.png", title: "paletteer", date: "2023-02-28", sNumber: "#60"},  
-                        {link: "./posts/qube.html", thumbnail: "./src/qube.png", title: "qube", date: "2023-02-27", sNumber: "#59"},  
-                        {link: "./posts/VHS.html", thumbnail: "./src/vhs.png", title: "VHS", date: "2023-02-26", sNumber: "#58"},
-                        {link: "./posts/scape.html", thumbnail: "./src/scape.png", title: "scape", date: "2023-02-25", sNumber: "#57"},  
-                        {link: "./posts/sol.html", thumbnail: "./src/sol.png", title: "sol", date: "2023-02-24", sNumber: "#56"},  
-                        {link: "./posts/destroy.html", thumbnail: "./src/destroy.png", title: "destroy", date: "2023-02-23", sNumber: "#55"},
-                        {link: "./posts/circles2.html", thumbnail: "./src/circles2.png", title: "circles2", date: "2023-02-22", sNumber: "#54"},
-                        {link: "./posts/10print.html", thumbnail: "./src/10print.png", title: "10print", date: "2023-02-21", sNumber: "#53"},
-                        {link: "./posts/metaballs.html", thumbnail: "./src/meatballs.png", title: "meatballs", date: "2023-02-20", sNumber: "#52"},  
-                        {link: "./posts/marching.html", thumbnail: "./src/marching.png", title: "marching", date: "2023-02-19", sNumber: "#51"}, 
-                        {link: "./posts/epicycloid.html", thumbnail: "./src/epicycloid.png", title: "epicycloid", date: "2023-02-18", sNumber: "#50"},  
-                        {link: "./posts/squires.html", thumbnail: "./src/squires.png", title: "squires", date: "2023-02-17", sNumber: "#49"},  
-                        {link: "./posts/truchet.html", thumbnail: "./src/truchet.png", title: "truchet", date: "2023-02-16", sNumber: "#48"},
-                        {link: "./posts/BBM.html", thumbnail: "./src/BBM.png", title: "BBM", date: "2023-02-15", sNumber: "#47"},  
-                        {link: "./posts/julia.html", thumbnail: "./src/julia.png", title: "julia", date: "2023-02-14", sNumber: "#46"},    
-                        {link: "./posts/rule30.html", thumbnail: "./src/rule30.png", title: "rule30", date: "2023-02-13", sNumber: "#45"},  
-                        {link: "./posts/life.html", thumbnail: "./src/life.png", title: "life", date: "2023-02-12", sNumber: "#44"},
-                        {link: "./posts/tree.html", thumbnail: "./src/tree.png", title: "tree", date: "2023-02-11", sNumber: "#43"},  
-                        {link: "./posts/flow2.html", thumbnail: "./src/flow2.png", title: "flow2", date: "2023-02-10", sNumber: "#42"},
-                        {link: "./posts/flow.html", thumbnail: "./src/flow.png", title: "flow", date: "2023-02-09", sNumber: "#41"},
-                        {link: "./posts/negative.html", thumbnail: "./src/negative.png", title: "negative", date: "2023-02-08", sNumber: "#40"},  
-                        {link: "./posts/movement.html", thumbnail: "./src/movement.png", title: "movement", date: "2023-02-07", sNumber: "#39"},      
-                        {link: "./posts/dithr.html", thumbnail: "./src/dithr.png", title: "Dithr", date: "2023-02-06", sNumber: "#38"},    
-                        {link: "./posts/10k.html", thumbnail: "./src/day36.png", title: "10k", date: "2023-02-05", sNumber: "#37"},  
-                        {link: "./posts/rotations.html", thumbnail: "./src/day35.png", title: "Rotations", date: "2023-02-04", sNumber: "#36"},  
-                        {link: "./posts/circles.html", thumbnail: "./src/day34.png", title: "Circles", date: "2023-02-03", sNumber: "#35"}, 
-                        {link: "./posts/network.html", thumbnail: "./src/day33.png", title: "Network", date: "2023-02-02", sNumber: "#34"},    
-                        {link: "./posts/retro.html", thumbnail: "./src/day32.png", title: "Retro", date: "2023-02-01", sNumber: "#33"}, 
-                        {link: "./posts/brokenweave.html", thumbnail: "./src/day31.png", title: "Broken weave", date: "2023-01-31", sNumber: "#32"}, 
-                        {link: "./posts/minimalism.html", thumbnail: "./src/day30.png", title: "Minimalism", date: "2023-01-30", sNumber: "#31"},
-                        {link: "./posts/maximalism.html", thumbnail: "./src/day29.png", title: "Maximalism", date: "2023-01-29", sNumber: "#30"},  
-                        {link: "./posts/hacku.html", thumbnail: "./src/day28.png", title: "Hacku", date: "2023-01-28", sNumber: "#29"}, 
-                        {link: "./posts/hilmaafklint.html", thumbnail: "./src/day27.png", title: "Hilma af Klint", date: "2023-01-27", sNumber: "#28"}, 
-                        {link: "./posts/childsplay.html", thumbnail: "./src/day26.png", title: "Child's play", date: "2023-01-26", sNumber: "#27"},
-                        {link: "./posts/yayoikusama.html", thumbnail: "./src/day25.png", title: "Yayoi Kusama", date: "2023-01-25", sNumber: "#26"},
-                        {link: "./posts/weave.html", thumbnail: "./src/day24.png", title: "Weave", date: "2023-01-24", sNumber: "#25"}, 
-                        {link: "./posts/moire.html", thumbnail: "./src/day23.png", title: "Moiré", date: "2023-01-23", sNumber: "#24"}, 
-                        {link: "./posts/shadows.html", thumbnail: "./src/day22.png", title: "Shadows", date: "2023-01-22", sNumber: "#23"},
-                        {link: "./posts/cybercarpets.html", thumbnail: "./src/day21.png", title: "Cybercarpets", date: "2023-01-21", sNumber: "#22"},      
-                        {link: "./posts/whotdeco.html", thumbnail: "./src/day20.png", title: "Whot deco", date: "2023-01-20", sNumber: "#21"}, 
-                        {link: "./posts/blackandwhite.html", thumbnail: "./src/day19.png", title: "B&W", date: "2023-01-19", sNumber: "#20"}, 
-                        {link: "./posts/notagrid.html", thumbnail: "./src/day18.png", title: "Not a grid", date: "2023-01-18", sNumber: "#19"},
-                        {link: "./posts/grids.html", thumbnail: "./src/day17.png", title: "Grids", date: "2023-01-17", sNumber: "#18"},    
-                        {link: "./posts/reflections.html", thumbnail: "./src/day16.png", title: "Reflections", date: "2023-01-16", sNumber: "#17"}, 
-                        {link: "./posts/sinewaves.html", thumbnail: "./src/day15.png", title: "Sine waves", date: "2023-01-15", sNumber: "#16"}, 
-                        {link: "./posts/aesemic.html", thumbnail: "./src/day14.png", title: "Aesemic", date: "2023-01-14", sNumber: "#15"},
-                        {link: "./posts/snakerpinski.html", thumbnail: "./src/day13.png", title: "Snakerpinski", date: "2023-01-13", sNumber: "#14"},  
-                        {link: "./posts/tessellation.html", thumbnail: "./src/day12.png", title: "Tessellation", date: "2023-01-12", sNumber: "#13"}, 
-                        {link: "./posts/suprematism.html", thumbnail: "./src/day11.png", title: "Suprematism", date: "2023-01-11", sNumber: "#12"}, 
-                        {link: "./posts/generativemusic.html", thumbnail: "./src/day10.png", title: "Generative music", date: "2023-01-10", sNumber: "#11"},
-                        {link: "./posts/barnsleyferns.html", thumbnail: "./src/day9.png", title: "Barnsley ferns", date: "2023-01-09", sNumber: "#10"},
-                        {link: "./posts/sdfs.html", thumbnail: "./src/day8.png", title: "SDFs", date: "2023-01-08", sNumber: "#9"}, 
-                        {link: "./posts/moviepalette.html", thumbnail: "./src/day7.png", title: "Movie palette", date: "2023-01-07", sNumber: "#8"}, 
-                        {link: "./posts/stolenmotif.html", thumbnail: "./src/day6.png", title: "Stolen motif", date: "2023-01-06", sNumber: "#7"},
-                        {link: "./posts/debugview.html", thumbnail: "./src/day5.png", title: "Debug view", date: "2023-01-05", sNumber: "#6"},
-                        {link: "./posts/intersections.html", thumbnail: "./src/day4.png", title: "Intersections", date: "2023-01-04", sNumber: "#5"}, 
-                        {link: "./posts/glitchart.html", thumbnail: "./src/day3.png", title: "Glitch art", date: "2023-01-03", sNumber: "#4"}, 
-                        {link: "./posts/rainbowlissajous.html", thumbnail: "./src/day2.png", title: "&#127752; lissajous", date: "2023-01-02", sNumber: "#3"},
-                        {link: "./posts/infinteloop.html", thumbnail: "./src/day1.png", title: "Infinite loop", date: "2023-01-01", sNumber: "#2"},
-                        {link: "https://daniellewisdl-streamlit-cheat-sheet-app-ytm9sg.streamlit.app/", thumbnail: "./src/scst.png", title: "Streamlit cht sht", date: "2020-08-01", sNumber: "#1"}
-                        ]
-
-        const cardBoilerplate = (post) => {
+        const cardBoilerplate = (section) => {
             return `
 
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 mb-4 mx-auto d-flex justify-content-center">
-              <a href="${post.link}" class="myCardLink">
-                <div class="card">
-                  <img src="${post.thumbnail}" alt="${post.title}" class="card-img-top">
-                  <div class="col-12">
-                    <div class="card-body">
-                      <div class="my-card-header">
-                        <p class="card-title">${post.title}</p>
-                        <p class="text-muted" style="font-size: xx-small;">${post.date}</p>
-                        <p class="text-muted" style="font-size: xx-small;">${post.sNumber}</p>
+
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt-2 mb-2 mx-auto d-flex justify-content-center">
+                <a href="${section.link}" class="myCardLink">
+                  <div class="card" style="max-width: 180px">
+                    <img src="${section.thumbnail}" alt="${section.title}" style="max-width: 180px">
+                    <div class="col-12">
+                      <div class="card-body">
+                        <div class="my-card-header">
+                          <p class="card-title">${section.title}</p>
+                          <p class="text-muted" style="font-size: xx-small;">${section.description}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </div>
-
+                </a>
+              </div>
             `
         }
 
-        postData.forEach(post => {
-            document.getElementById('blogPosts').innerHTML += cardBoilerplate(post)
+        sectionData.forEach(section => {
+            document.getElementById('sections').innerHTML += cardBoilerplate(section)
         })
 
       </script>
 
       <script>
         let canvas
-        let x1
-        let y1
-        let choice_of_viz
-        let choice_of_color
-        let theta = 0
- 
-        let lightDark = 255 // 0 // 255
 
         function windowResized() {
-            resizeCanvas(windowWidth, windowHeight);
+            resizeCanvas(windowWidth, 250);
         }
 
         function setup() {
-            canvas = createCanvas(windowWidth, windowHeight);
-            background(255,255,200)
+            canvas = createCanvas(windowWidth, 250);
             canvas.position(0,0);
             canvas.style('z-index', '0');
-            background(255);
-            fill(255);
-            noStroke();
-            x1 = width/2;
-            y1 = height/2;
-            choice_of_viz = random([0,1,2,3]);
-            choice_of_color = random([0,1,2]);
-            theta=0;
-          }
+            noFill()
+        }
           
         function draw() {
-          background(255,255,200,5)
-          wienerCircles()
+            background(255)
+
+            stroke(255,0,0,40)
+            strokeWeight(0.5)
+            for (let i = 0; i < windowWidth; i+=10) {
+                line(i, 0, i, 250)
+            }
+            for (let i = 0; i < 250; i+=10) {
+                line(0, i, windowWidth, i)
+            }
+
+            strokeWeight(1)
+            stroke(0,0,0,40)
+            line(0, 250, windowWidth, 250)
+            line(0,mouseY, windowWidth, mouseY)
+            line(mouseX, 0, mouseX, 250)
+            circle(mouseX, mouseY, 10)
         }
 
-        wienerCircles = () => {
-          if (frameCount%2==0) stroke(0,0,100,40);
-          else stroke(255,255,200);
-          noFill()
-          let r = random(50,100)
-          // x1 = mouseX
-          // y1 = mouseY
-          for (i=0;i<10;i++) {
-              // if ( choice_of_color == 0) {fill(random(255),lightDark,lightDark,80)}
-              // else if ( choice_of_color == 1) {fill(lightDark,random(255),lightDark,80)}
-              // else if ( choice_of_color == 2) {fill(lightDark,lightDark,random(255),80)}
-              let shapeChoice = random(['circle','ellipse','rect','triangle'])
-              // shapeChoice="ellipse"
-              if (shapeChoice == 'circle') {
-                circle(x1, y1, r);
-              } else if (shapeChoice == 'ellipse') {
-                ellipse(x1, y1, r, r/2);
-              } else if (shapeChoice == 'rect') {
-                rect(x1, y1, r, r);
-              } else if (shapeChoice == 'triangle') {
-                push()
-                translate(x1, y1)
-                rotate(random(PI))
-                triangle(-r/2,0,r/2,0,0,Math.sqrt(3)/2 * r)
-                pop()
-              }
 
-              if ( x1 > width + r/2 || y1 > height + r/2 || x1 < -r/2 || y1 < -r/2) {
-                  x1 = width/2 // random(width)
-                  y1 = height/2 // random(height)
-              } else {
-                  x1 = x1+random(r)-r/2;
-                  y1 = y1+random(r)-r/2;
-              }
-          }
-        }
-
-        sinewy = () => {
-          let sines = []
-
-        }
-
-     </script>
+      </script>
 
     </body>
 
