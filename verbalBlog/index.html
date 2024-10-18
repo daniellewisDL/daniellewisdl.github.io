@@ -108,7 +108,7 @@
       <script>
 
         const sectionData = [
-            {link: "./posts/post001.html", title: "Post 001", description: "Post 001 description"},
+            {link: "./posts/post001.html", title: "Going Vegan", description: "Better for you. Better for the planet. Better for the animals."},
             // {link: "./stampsBlog/index.html", thumbnail: "./src/stamps.png", title: "Stamps", description: "A tour through some philatelic delights."},
             // {link: "./dataBlog/index.html", thumbnail: "./src/data.png", title: "Data Insights", description: "A collection of data visualisations."},
             // {link: "./verbalBlog/index.html", thumbnail: "./src/verbal.png", title: "Verbal Blog", description: "A verbal blog on various topics."},
@@ -117,8 +117,7 @@
 
         const cardBoilerplate = (section) => {
             return `
-
-
+              <div class="row w-100">
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt-2 mb-2 mx-auto d-flex justify-content-center">
                 <a href="${section.link}" class="myCardLink">
                   <div class="card" style="min-width: 300px">
@@ -133,6 +132,7 @@
                   </div>
                 </a>
               </div>
+              </div> 
             `
         }
 

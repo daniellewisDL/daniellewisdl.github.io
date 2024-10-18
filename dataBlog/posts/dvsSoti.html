@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PNQX1JJWVB');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>DVS SOTI</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {font-family: sans-serif; font-size: 8pt;}
+        select {font-family: sans-serif; font-size: 8pt;}
+        input {font-family: sans-serif; font-size: 8pt;}
+    </style>
+</head>
+
+<body>
+
+    <div id="input_group" style="display: inline; position: absolute; left: 10px;">
+    <b><a href="https://www.datavisualizationsociety.org/">Data Visualization Society</a> | State of the Industry <a href="https://www.datavisualizationsociety.org/survey">Survey</a> | 2022 data | Pirouette Table </b>| 
+        yPivot: <select name="dropdown_1" id="dropdown_1"></select> xPivot: <select name="dropdown_2" id="dropdown_2"></select> Color: <select name="dropdown_3" id="dropdown_3"></select>
+         Search: <input type="text" id="search" placeholder="'Excel', 'Bremer', 'd3'..." spellcheck="false">
+    <!-- . . . Toggle:
+        <input class="checkbox" type="checkbox" id="toggle" checked>  -->
+    </div>
+
+    <br>
+    <br>
+    <div id="chart"></div>
+
+    <script src="./js/dvsSoti.js"></script>
+
+</body>

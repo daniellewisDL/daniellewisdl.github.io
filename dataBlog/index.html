@@ -108,30 +108,36 @@
       <script>
 
         const sectionData = [
-            {link: "./posts/post001.html", title: "Post 001", description: "Post 001 description"},
-            // {link: "./stampsBlog/index.html", thumbnail: "./src/stamps.png", title: "Stamps", description: "A tour through some philatelic delights."},
-            // {link: "./dataBlog/index.html", thumbnail: "./src/data.png", title: "Data Insights", description: "A collection of data visualisations."},
-            // {link: "./verbalBlog/index.html", thumbnail: "./src/verbal.png", title: "Verbal Blog", description: "A verbal blog on various topics."},
+            {link: "./posts/dvsSoti.html", title: "DVS SOTI", description: "Data Visualization Society State of the Industry Survey 2022 Pirouette Table", thumbnail: "./src/dvsSoti.png"},
+            {link: "./posts/gsibs.html", title: "GSIBs", description: "Global Systemically Important Banks", thumbnail: "./src/gsibs.png"},
+            {link: "./posts/nightingale.html", title: "Nightingale", description: "Florence Nightingale's Rose Diagram", thumbnail: "./src/rose.png"},
+            {link: "./posts/playfair.html", title: "Playfair", description: "William Playfair's Inventions", thumbnail: "./src/playfair.png"},
+            {link: "./posts/titanic.html", title: "Titanic", description: "Titanic Survival Analysis", thumbnail: "./src/titanic.png"},
+            {link: "./posts/yieldCurve.html", title: "Yield Curve", description: "US Treasury Yield Curve", thumbnail: "./src/yieldCurve.png"},
+            {link: "./posts/d3dasher.html", title: "Penguins", description: "Palmer Penguins Dataset", thumbnail: "./src/penguins.png"},
             
             ]
 
         const cardBoilerplate = (section) => {
             return `
 
-
+              <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt-2 mb-2 mx-auto d-flex justify-content-center">
                 <a href="${section.link}" class="myCardLink">
                   <div class="card" style="min-width: 300px">
                     <div class="col-12">
-                      <div class="card-body">
-                        <div class="my-card-header">
+                        <div class="card-body d-flex justify-content-between">
+                        <div>
                           <p class="card-title">${section.title}</p>
                           <p class="text-muted" style="font-size: xx-small;">${section.description}</p>
+                        </div>
+                        <img src="${section.thumbnail}" alt="${section.title}" style="width: 100px; height: 100px; border: 1px solid gray; border-radius: 5px;">
                         </div>
                       </div>
                     </div>
                   </div>
                 </a>
+              </div>
               </div>
             `
         }
