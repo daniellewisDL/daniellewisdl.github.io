@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>teu</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let boats = []
+
+      // let boatWidth = squareWidth/3.5
+      // let boatHeight = squareWidth/20
+      let boatWidth = squareWidth/7
+      let boatHeight = squareWidth/40
+
+      const colorOptions2 = [
+          // {"name": "Signal White", "hex": "#ECECE7"},
+          // {"name": "Light Grey", "hex": "#C0C0C0"},
+          // {"name": "Light Ivory", "hex": "#F0F0E6"},
+          // {"name": "Beige", "hex": "#F5F5DC"},
+          {"name": "Signal Green", "hex": "#609360"},
+          {"name": "Pearl Green", "hex": "#4682B4"},
+          {"name": "Capri Blue", "hex": "#63B5E0"},
+          {"name": "Ultramarine Blue", "hex": "#000080"},
+          {"name": "Signal Red", "hex": "#C80000"},
+          {"name": "Sepia Brown", "hex": "#A96644"},
+          // {"name": "Signal Black", "hex": "#000000"},
+          // {"name": "Jet Black", "hex": "#000000"}
+          ]
+
+          const colorOptions = [
+  // {"name": "Black", "hex": "#000000"},
+  // {"name": "Dark Gray", "hex": "#292929"},
+  // {"name": "Medium Gray", "hex": "#404040"},
+  // {"name": "Gray", "hex": "#606060"},
+  // {"name": "Light Gray", "hex": "#808080"},
+  // {"name": "Very Light Gray", "hex": "#B0B0B0"},
+  // {"name": "Off-White", "hex": "#D0D0D0"},
+  // {"name": "White", "hex": "#F0F0F0"},
+  {"name": "Dodger Blue", "hex": "#007FFF"},
+  {"name": "Blue", "hex": "#0000FF"},
+  {"name": "Navy Blue", "hex": "#000080"},
+  {"name": "Purple", "hex": "#800080"},
+  {"name": "Red", "hex": "#FF0000"},
+  {"name": "Dark Red", "hex": "#800000"},
+  {"name": "Orange", "hex": "#FF8000"},
+  // {"name": "Yellow", "hex": "#FFFF00"},
+  // {"name": "Lime Green", "hex": "#80FF00"},
+  // {"name": "Green", "hex": "#00FF00"}
+]
+
+      function containersGenerator() {
+        let containers = []
+        for (let i=0; i<63; i++) {
+          containers.push(colorOptions[Math.floor(Math.random()*colorOptions.length)].hex)
+        }
+        return containers
+      }
+
+      for (let i=0; i<10; i++) {
+        let direction = Math.random() < 0.5 ? "left" : "right"
+        let baseColor = Math.random() < 0.5 ? "#505050" : "#808080"
+        let bridgeColor = baseColor == "#505050" ? "#404040" : "#707070"
+        let x = width/2-squareWidth/2 + Math.random() * squareWidth
+        boats.push(
+          {
+            x: x,
+            y: height/2 - squareWidth/2 + boatHeight*2+(boatHeight*2+boatHeight*2)*i,
+            w: boatWidth,
+            h: boatHeight,
+            baseColor: baseColor,
+            bridgeColor: bridgeColor,
+            direction: direction,
+            containers: containersGenerator()
+          }
+        )
+      }
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(255)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+
+        stroke("grey")
+        strokeWeight(1)
+        fill("#2f6a82")
+        rect(width/2-squareWidth/2,height/2-squareWidth/2,squareWidth,squareWidth)
+
+        noStroke()
+        boats.forEach(boat => {
+          fill(boat.baseColor)
+          rect(boat.x-boat.w,boat.y-boat.h,boat.w*2,boat.h*2)
+          
+          if (boat.direction=="left") {
+            fill(boat.baseColor)
+            beginShape()
+            vertex(boat.x-boat.w,     boat.y-boat.h)
+            vertex(boat.x-boat.w*1.2, boat.y)
+            vertex(boat.x-boat.w,     boat.y+boat.h)
+            endShape(CLOSE)
+
+            fill(boat.bridgeColor)
+            rect(boat.x+boat.w*0.49,boat.y-boat.h,boat.w*0.07,boat.h*2)
+
+            let containerWidth = boat.w/5
+            let containerHeight = boat.h/4.6
+            let containerBuffer = boat.w/100
+            
+            for (let j=0; j<9; j++) {
+              for (let i=0; i<7; i++) {
+                fill(boat.containers[i*9+j])
+                let x = boat.x-boat.w+containerBuffer+(containerWidth+containerBuffer)*j
+                if (j>=7) x += boat.w*0.1
+                let y = boat.y-boat.h+containerBuffer+(containerHeight+containerBuffer)*i
+                rect(x,y,containerWidth,containerHeight)
+              }
+            }
+          }
+          else if (boat.direction=="right") {
+            fill(boat.baseColor)
+            beginShape()
+            vertex(boat.x+boat.w,     boat.y-boat.h)
+            vertex(boat.x+boat.w*1.2, boat.y)
+            vertex(boat.x+boat.w,     boat.y+boat.h)
+            endShape(CLOSE)
+
+            fill(boat.bridgeColor)
+            rect(boat.x-boat.w*0.56,boat.y-boat.h,boat.w*0.07,boat.h*2)
+
+            let containerWidth = boat.w/5
+            let containerHeight = boat.h/4.6
+            let containerBuffer = boat.w/100
+            
+            for (let j=0; j<9; j++) {
+              for (let i=0; i<7; i++) {
+                fill(boat.containers[i*9+j])
+                let x = boat.x-boat.w+containerBuffer+(containerWidth+containerBuffer)*j
+                if (j>=2) x += boat.w*0.1
+                let y = boat.y-boat.h+containerBuffer+(containerHeight+containerBuffer)*i
+                rect(x,y,containerWidth,containerHeight)
+              }
+            }
+          }
+
+        })
+
+        updateBoats()
+
+
+        // clip rects
+        fill(255)
+        noStroke()
+        rect(0,0,width/2-squareWidth/2,height)
+        rect(width/2+squareWidth/2,0,width/2-squareWidth/2,height)
+        rect(0,0,width,height/2-squareWidth/2)
+        rect(0,height/2+squareWidth/2,width,height/2-squareWidth/2)
+  
+      }
+
+      updateBoats = () => {
+
+        let boatSpeed = 2
+
+        boats.forEach(boat => {
+          if (boat.direction=="right") {
+            boat.x += boatSpeed
+            if (boat.x > width/2+squareWidth/2+boat.w) {
+              boat.x = width/2-squareWidth/2-boat.w*1.2
+            }
+          }
+          else if (boat.direction=="left") {
+            boat.x -= boatSpeed
+            if (boat.x < width/2-squareWidth/2-boat.w) {
+              boat.x = width/2+squareWidth/2+boat.w*1.2
+            }
+          }
+        })
+      }
+
+
+    </script>
+  </body>
+</html>
+

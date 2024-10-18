@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>candles</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+      let numCandles = 30
+      let candleYMargin = 20
+      let candleBuffer = 10
+      let candleWidth = (squareWidth-candleYMargin*2-(numCandles-1)*candleBuffer)/(numCandles)
+
+      
+      let candles = []
+      for (let i=0; i<numCandles+2; i++) {
+        let high = Math.random()*25+50
+        let low = Math.random()*25+25
+        let open = (i==0) ? Math.random()*(high-low)+low : candles[i-1].close
+        let close = Math.random()*(high-low)+low
+        let x = width/2-squareWidth/2 + candleYMargin + i*(candleWidth+candleBuffer)
+
+        candles.push({
+          high: high,
+          low: low,
+          open: open,
+          close: close,
+          x: x
+        })
+      }
+
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+        stroke("gray")
+        strokeWeight(0.5)
+        noFill()
+        rect(width/2-squareWidth/2, height/2-squareWidth/2, squareWidth, squareWidth)
+
+        for (let i=0; i<candles.length; i++) {
+          drawCandle(candles[i].high, candles[i].low, candles[i].open, candles[i].close, candles[i].x)
+        }
+
+        updateCandles()
+
+        // clip rects
+        fill(255)
+        noStroke()
+        rect(0, 0, width/2-squareWidth/2, height)
+        rect(width/2+squareWidth/2, 0, width/2-squareWidth/2, height)
+
+ 
+      }
+
+      updateCandles = () => {
+        for (let i=0; i<candles.length; i++) {
+          candles[i].x -= 1
+        }
+        if (candles[0].x < width/2-squareWidth/2-candleWidth) {
+          candles.shift()
+          let high = Math.random()*25+50
+          let low = Math.random()*25+25
+          let open = candles[candles.length-1].close
+          let close = Math.random()*(high-low)+low
+          let x = candles[candles.length-1].x + candleWidth + candleBuffer
+
+          candles.push({
+            high: high,
+            low: low,
+            open: open,
+            close: close,
+            x: x
+          })
+        }
+      }
+
+
+      drawCandle = (high, low, open, close, x) => {
+
+        let candleHeight = map(high, 100, 0, 0.1*squareWidth, 0.9*squareWidth)
+        let candleLow = map(low, 100, 0, 0.1*squareWidth, 0.9*squareWidth)
+        let candleOpen = map(open, 100, 0, 0.1*squareWidth, 0.9*squareWidth)
+        let candleClose = map(close, 100, 0, 0.1*squareWidth, 0.9*squareWidth)
+        let candleColor = close > open ? "green" : "red"
+
+        stroke("black")
+        strokeWeight(1)
+        line(x+candleWidth/2, height/2-squareWidth/2+candleHeight, x+candleWidth/2, height/2-squareWidth/2+candleLow)
+
+        noStroke()
+        fill(candleColor)
+        rect(x, height/2-squareWidth/2+candleOpen, candleWidth, candleClose-candleOpen)
+
+        
+      }
+
+    </script>
+  </body>
+</html>
+
