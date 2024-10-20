@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>etch</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.7
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let numWide = 18
+      let numHigh = numWide
+      let radius = squareWidth/numWide * .9
+      let t = 0
+      let tIncrements = 0.04
+
+      let piSlice = 0.2*Math.PI
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        noStroke()
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        for (let i=0; i<numWide; i++) {
+          for (let j=0; j<numHigh; j++) {
+            let x = i * squareWidth/numWide + squareWidth/numWide/2
+            let y = j * squareWidth/numHigh + squareWidth/numHigh/2
+            let d = dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2)
+            let angle = atan2(y-squareWidth/2,x-squareWidth/2)
+            let offset = 14*d+2*angle-t
+            let s = map(sin(offset),-1,1,piSlice,Math.PI-piSlice)
+            let s2 = map(sin(offset*0.5),-1,1,piSlice,Math.PI-piSlice)
+            
+            push()
+            translate(x,y)
+
+            // stroke("black")
+            // strokeWeight(2)
+            let myAlpha = (s>Math.PI) ? map(s,piSlice,Math.PI-piSlice,200,10) : map(s,piSlice,Math.PI-piSlice,10,200)
+            // myAlpha = 255
+            fill(map(s2,piSlice,Math.PI-piSlice,0,200),0,map(s2,piSlice,Math.PI-piSlice,200,0),myAlpha)
+
+
+
+            circle(0,0,radius)
+            
+            pop()
+          }
+        }
+        pop()
+        
+        t += tIncrements
+
+      }
+
+    </script>
+  </body>
+</html>
+

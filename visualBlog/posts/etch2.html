@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>etch2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.7
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let numWide = 30
+      let numHigh = numWide
+      let radius = squareWidth/numWide * .5
+      let t = 0
+      let tIncrements = 0.04
+
+      let piSlice = 0.2*Math.PI
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        noStroke()
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+
+        push()
+        translate(width/2-squareWidth/2,height/2-squareWidth/2)
+        for (let i=0; i<numWide; i++) {
+          for (let j=0; j<numHigh; j++) {
+            let x = i * squareWidth/numWide + squareWidth/numWide/2
+            let y = j * squareWidth/numHigh + squareWidth/numHigh/2
+            let d = dist(x,y,squareWidth/2,squareWidth/2)/dist(0,0,squareWidth/2,squareWidth/2)
+            let angle = atan2(y-squareWidth/2,x-squareWidth/2)
+            let offset = 14*d+2*angle-t
+            let s = map(sin(offset),-1,1,piSlice,Math.PI-piSlice)
+            let s2 = map(sin(offset*0.5),-1,1,piSlice,Math.PI-piSlice)
+            
+            push()
+            translate(x,y)
+
+            let myAlpha = (s>Math.PI) ? map(s,piSlice,Math.PI-piSlice,255,100) : map(s,piSlice,Math.PI-piSlice,100,255)
+            // myAlpha = 255
+            let steelBlue = [88,121,165]
+            let orange = [225,143,0]
+
+            let black0 = [0,0,0]
+            let white1 = [255,255,255]
+
+            let myColor = interpolateTwoColors(steelBlue,orange, s2/(Math.PI-piSlice) )
+            // let myColor = interpolateTwoColors(black0, white1, s2/(Math.PI-piSlice) )
+
+            fill(myColor[0],myColor[1],myColor[2],myAlpha)
+
+            // rect(0,0,radius)
+            // triangle(0,0,radius/2,radius,radius,0)
+            rotate(s2)
+            drawHexagon(0,0,radius)
+            
+            pop()
+          }
+        }
+        pop()
+        
+        t += tIncrements
+
+      }
+
+      function drawHexagon(x,y,radius) {
+        beginShape()
+        for (let i=0; i<6; i++) {
+          let angle = TWO_PI/6*i
+          let x0 = x + cos(angle)*radius
+          let y0 = y + sin(angle)*radius
+          vertex(x0,y0)
+        }
+        endShape(CLOSE)
+      }
+
+      function interpolateTwoColors(color1, color2, weight) {
+        let w1 = weight;
+        let w2 = 1 - w1;
+        let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+                   Math.round(color1[1] * w1 + color2[1] * w2),
+                   Math.round(color1[2] * w1 + color2[2] * w2)];
+        return rgb;
+      }
+
+
+    </script>
+  </body>
+</html>
+

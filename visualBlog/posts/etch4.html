@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>etch3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(255, 255, 255); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.5
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let numWide = 40
+      let numHigh = numWide
+      let radius = squareWidth/numWide * 0.8
+      let t = 0
+      let tIncrements = 0.04
+
+      let piSlice = 0.2*Math.PI
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        noStroke()
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(255)
+       
+        push()
+        translate(width/2,height/2)
+        for (let i=0; i<numWide; i++) {
+          for (let j=0; j<numHigh; j++) {
+
+            let x = -squareWidth/2 + i*(squareWidth/numWide) + squareWidth/numWide/2
+            let y = -squareWidth/2 + j*(squareWidth/numHigh) + squareWidth/numHigh/2
+            let d = dist(x,y,0,0)/dist(0,0,squareWidth/2,squareWidth/2)
+            let angle = atan2(y,x)
+
+            let dPrime = d * 0.5*squareWidth/2
+            let xPrime = x + dPrime*cos(angle)
+            let yPrime = y + dPrime*sin(angle)
+
+
+            let offset = 14*d+2*angle-t
+            let s = map(sin(offset),-1,1,piSlice,Math.PI-piSlice)
+            let s2 = map(sin(offset*0.5),-1,1,piSlice,Math.PI-piSlice)
+
+            let xNew = map(sin(offset), -1, 1, x, xPrime)
+            let yNew = map(sin(offset), -1, 1, y, yPrime)
+            
+            push()
+            translate(0,0)
+            let myAlpha = (s>Math.PI) ? map(s,piSlice,Math.PI-piSlice,255,0) : map(s,piSlice,Math.PI-piSlice,0,255)
+            let awesomeGreen = [200,0,0]
+            let awesomeBlue = [0,0,200]
+            let myColor = interpolateTwoColors(awesomeGreen,awesomeBlue, s2/(Math.PI-piSlice) )
+            fill(myColor[0],myColor[1],myColor[2],myAlpha)
+            circle(xNew,yNew,radius)
+            pop()
+          }
+        }
+        pop()
+        
+        t += tIncrements
+
+      }
+
+      function interpolateTwoColors(color1, color2, weight) {
+        let w1 = weight;
+        let w2 = 1 - w1;
+        let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+                   Math.round(color1[1] * w1 + color2[1] * w2),
+                   Math.round(color1[2] * w1 + color2[2] * w2)];
+        return rgb;
+      }
+
+
+    </script>
+  </body>
+</html>
+
