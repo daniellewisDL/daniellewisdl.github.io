@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>akiyoshi</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+
+      let squareWidth = Math.min(width,height)*initialMargin
+
+      let t = 0
+      let tIncrement = 0.001
+
+      let looper = true
+  
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+
+        fill("grey")
+
+        push()
+        translate(width/2, height/2)
+        rect(-squareWidth/2, -squareWidth/2, squareWidth, squareWidth)
+
+        let aSize = 30
+
+        for (let i=0; i<11; i++) {
+          drawAkiyoshi(-(squareWidth/2)*0.8, -(squareWidth/2)*0.75 + i*aSize*2.8 , aSize, 30, (i%2))
+        }
+        
+        pop()
+
+        console.log(squareWidth)
+
+        // on mouse pressed, alternate looping
+        if (mouseIsPressed) {
+          looper = !looper
+        }
+
+        if (looper) {
+          tIncrement=0.001
+        } else {
+          tIncrement=0
+        }
+
+
+      }
+
+      function drawAkiyoshi(x, y, size, numSquares, myMod) {
+        push()
+        let scl = (myMod==0) ? 1 : -1
+        scale(scl,1)
+        translate(x, y)
+        
+        for (let i=0; i<numSquares; i++) {
+
+          strokeWeight(squareWidth/900)
+          noFill()
+          let offset = i*size + myMod*size/2 + map(sin(t), -1, 1, -size, size)
+          let stroke1 = (i%2==0) ? "white" : "black"
+          let stroke2 = (i%2==0) ? "black" : "white"
+
+          stroke(stroke1)
+
+          line(0 + offset, -size/2, size + offset, -size/2)
+          line(0 + offset, -size/2, 0 + offset, size/2)
+          stroke(stroke2)
+          line(size + offset, -size/2, size + offset, size/2)
+          line(0 + offset, size/2, size + offset, size/2)
+
+          let smallRectSize = size*0.25
+          noStroke()
+
+          push()
+          translate(offset, -size/2)
+          rotate(PI/4)
+          fill(stroke2)
+          rect(-smallRectSize/2, -smallRectSize/2, smallRectSize/2, smallRectSize)
+          fill(stroke1)
+          rect(0, -smallRectSize/2, smallRectSize/2, smallRectSize)
+          pop()
+
+          push()
+          translate(offset, size/2)
+          rotate(PI/4)
+          fill(stroke1)
+          rect(-smallRectSize/2, -smallRectSize/2, smallRectSize/2, smallRectSize)
+          fill(stroke2)
+          rect(0, -smallRectSize/2, smallRectSize/2, smallRectSize)
+          pop()
+
+          if (i==numSquares-1) {
+            push()
+            translate(offset+size, -size/2)
+            rotate(PI/4)
+            fill(stroke1)
+            rect(-smallRectSize/2, -smallRectSize/2, smallRectSize/2, smallRectSize)
+            fill(stroke2)
+            rect(0, -smallRectSize/2, smallRectSize/2, smallRectSize)
+            pop()
+
+            push()
+            translate(offset+size, size/2)
+            rotate(PI/4)
+            fill(stroke2)
+            rect(-smallRectSize/2, -smallRectSize/2, smallRectSize/2, smallRectSize)
+            fill(stroke1)
+            rect(0, -smallRectSize/2, smallRectSize/2, smallRectSize)
+
+            pop()
+
+          }
+
+
+        }
+        
+        pop()
+        t+=tIncrement
+      }
+
+    </script>
+  </body>
+</html>
+
