@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Google tag (gtag.js) -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PNQX1JJWVB');
+	</script> -->
+    <title>lanscapy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>body { background-color: rgb(0, 0, 0); font-family: monospace; border-width: 0; margin:0; padding:0; overflow: hidden;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.min.js"></script>
+    <!-- <script src="../p5/p5.min.js"></script> -->
+  </head>
+
+  <body>
+	<div id="canvas"></div>
+    <script>
+
+      const landscapePalette = [
+        { name: "SkyBlue", dark: "#4682B4", mid: "#87CEEB", light: "#B0E2FF" },
+        { name: "GrassGreen", dark: "#006400", mid: "#7CFC00", light: "#98FB98" },
+        { name: "EarthBrown", dark: "#5C4033", mid: "#8B4513", light: "#CD853F" },
+        { name: "MountainGray", dark: "#696969", mid: "#A9A9A9", light: "#D3D3D3" },
+        { name: "SunYellow", dark: "#FFD700", mid: "#FFFACD", light: "#FFFFE0" },
+        { name: "WaterBlue", dark: "#2B65EC", mid: "#4682B4", light: "#ADD8E6" },
+        { name: "TreeGreen", dark: "#006400", mid: "#228B22", light: "#32CD32" },
+        { name: "FlowerRed", dark: "#8B0000", mid: "#FF6347", light: "#FFA07A" },
+        { name: "SandBeige", dark: "#C2B280", mid: "#F4A460", light: "#FFE4C4" },
+        { name: "CloudWhite", dark: "#DCDCDC", mid: "#F0F8FF", light: "#FFFFFF" }
+      ]
+
+      let width = window.innerWidth
+      let height = window.innerHeight
+			let initialMargin = 0.9
+      let squareWidth = Math.min(width,height)*initialMargin
+
+
+      preload = () => {
+        
+      }
+
+			setup = () => {
+        createCanvas(width, height)
+        pixelDensity(1)
+        background(0)
+        // saveGif('./myGif.gif', 420, {units: "frames"})
+			}
+
+			draw = () => {
+
+        background(0)
+        noStroke()
+        fill(255)
+        rect(width/2 - squareWidth/2, height/2 - squareWidth/2, squareWidth, squareWidth)
+        
+        drawSky()
+        drawMountains()
+
+
+        // black clip rects
+
+        fill(0)
+        noStroke()
+        rect(0, 0, width/2 - squareWidth/2, height)
+        rect(width/2 + squareWidth/2, 0, width/2 - squareWidth/2, height)
+        rect(0, 0, width, height/2 - squareWidth/2)
+        rect(0, height/2 + squareWidth/2, width, height/2 - squareWidth/2)
+
+        noFill()
+        stroke(255)
+        strokeWeight(1)
+        rect(width/2 - squareWidth/2, height/2 - squareWidth/2, squareWidth, squareWidth)
+
+        // if (frameCount%10 == 0) {
+        //   console.log(frameRate())
+        // }
+        noLoop()
+        // frameRate(3)
+  
+      }
+
+      function drawSky() {
+        let dayDusk = (random(1) > 0.5) ? "SkyBlue" : "FlowerRed"
+        let skyColor = landscapePalette.find(p => p.name == dayDusk)
+        let skyColors = [color(skyColor.dark), color(skyColor.mid), color(skyColor.light)]
+
+        for (let i = 0; i < 1000; i++) {
+          let c1 = random(skyColors)
+          let c2 = random(skyColors)
+          let x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+          let y1 = height/2 - squareWidth*0.6 + random(squareWidth*0.6)
+          let x2 = x1 + random(squareWidth*0.2)-squareWidth*0.1
+          let y2 = y1 + random(squareWidth*0.2)-squareWidth*0.1
+          let w2h = random(0.1, 1)
+          let alpha1 = random(100, 255)
+          let alpha2 = random(100, 255)
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+
+        }
+
+        // drawSun
+
+        let sunColor = landscapePalette.find(p => p.name == "SunYellow")
+        let sunColors = [color(sunColor.dark), color(sunColor.mid), color(sunColor.mid)]
+        let sunX = width/2 - squareWidth*0.4 + random(squareWidth*0.8)
+        let sunY = height/2 - squareWidth*0.5 + random(squareWidth*0.1)
+        for (let i = 0; i < 100; i++) {
+          let c1 = random(sunColors)
+          let c2 = random(sunColors)
+          let x1 = sunX + random(squareWidth*0.1)-squareWidth*0.05
+          let y1 = sunY + random(squareWidth*0.1)-squareWidth*0.05
+          let x2 = x1 + squareWidth*0.05
+          let y2 = y1
+          let w2h = random(0.1, 1)
+          let alpha1 = 255
+          let alpha2 = 255
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+
+        }
+
+        // drawClouds
+        let cloudColor = landscapePalette.find(p => p.name == "CloudWhite")
+        let cloudColors = [color(cloudColor.dark), color(cloudColor.mid), color(cloudColor.light)]
+        for (let i = 0; i < 100; i++) {
+          let c1 = random(cloudColors)
+          let c2 = random(cloudColors)
+          let x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+          let y1 = height/2 - squareWidth*0.6 + random(squareWidth*0.3)
+          let x2 = x1 + random(squareWidth*0.1)-squareWidth*0.05
+          let y2 = y1
+          let w2h = random(0.1, 1)
+          let alpha1 = 200
+          let alpha2 = 200
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+
+        }
+  
+      }
+
+      function drawMountains() {
+        let mountainColor = landscapePalette.find(p => p.name == "MountainGray")
+        let mountainColors = [color(mountainColor.dark), color(mountainColor.mid), color(mountainColor.light)]
+
+        for (let i = 0; i < 1500; i++) {
+          let c1 = random(mountainColors)
+          let c2 = random(mountainColors)
+          let x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+          let y1 = height/2 - squareWidth*0.3 + random(squareWidth*0.4)
+          let x2 = x1 + random(squareWidth*0.1)-squareWidth*0.05
+          let y2 = y1 + random(squareWidth*0.1)-squareWidth*0.05
+
+          let pointMeet = false
+          let count = 0
+
+          while (!pointMeet) {
+
+            let mappedX1 = map(x1, width/2 - squareWidth/2, width/2 + squareWidth/2, 0, 1)
+            let mappedY1 = map(y1, height/2 - squareWidth/2, height/2 + squareWidth/2, 0, 1)
+
+            if (mappedX1<=0.5) {
+              if (mappedX1 + mappedY1 > 0.6) {
+                pointMeet = true
+                break
+              }
+            } else {
+              if (mappedX1 - mappedY1 < 0.4) {
+                pointMeet = true
+                break
+              }
+            }
+
+            x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+            y1 = height/2 - squareWidth*0.3 + random(squareWidth*0.4)
+            x2 = x1 + random(squareWidth*0.1)-squareWidth*0.05
+            y2 = y1 + random(squareWidth*0.1)-squareWidth*0.05
+
+            count++
+            if (count > 100) {
+              pointMeet = true
+              console.log('break')
+              break
+            }
+
+          }
+
+          let w2h = random(0.1, 1)
+          let alpha1 = random(100, 255)
+          let alpha2 = random(100, 255)
+
+          if(y1<height/2-squareWidth*0.2 || y2<height/2-squareWidth*0.2) {
+            c1 = color("white")
+            c2 = color("white")
+            alpha1 = 200
+            alpha2 = 200
+          }
+
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+        }
+
+        // draw Grass
+
+        let grassColor = landscapePalette.find(p => p.name == "GrassGreen")
+        let grassColors = [color(grassColor.dark), color(grassColor.mid), color(grassColor.light)]
+        for (let i = 0; i < 1000; i++) {
+          let c1 = random(grassColors)
+          let c2 = random(grassColors)
+          let x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+          let y1 = height/2 + squareWidth*0.1 + random(squareWidth*0.6)
+          let x2 = x1 + random(squareWidth*0.1)
+          let y2 = y1 + random(squareWidth*0.1)
+          let w2h = random(0.1, 1)
+          let alpha1 = random(100, 255)
+          let alpha2 = random(100, 255)
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+        }
+
+        // draw trees
+        let treeColor = landscapePalette.find(p => p.name == "TreeGreen")
+        let treeColors = [color(treeColor.dark), color(treeColor.mid), color(treeColor.light)]
+        for (let i = 0; i < 100; i++) {
+          let c1 = random(treeColors)
+          let c2 = random(treeColors)
+          let x1 = width/2 - squareWidth*0.6 + random(squareWidth*1.2)
+          let y1 = height/2 - squareWidth*0.0 + random(squareWidth*0.2)
+          let x2 = x1
+          let y2 = y1 + random(squareWidth*0.1)
+          let w2h = random(0.1, 1)
+          let alpha1 = 200
+          let alpha2 = 200
+          drawPill(x1, y1, x2, y2, w2h, c1, c2, alpha1, alpha2)
+        }
+      }
+
+      function drawPill(x1, y1, x2, y2, w2h, c1="red", c2="white", alpha1=255, alpha2=255) {
+
+        let length = dist(x1, y1, x2, y2)
+        let angle = atan2(y2 - y1, x2 - x1)
+        let halfLength = length/2
+        let height = w2h * length
+
+        push()
+        translate((x1+x2)/2 , (y1+y2)/2)
+        rotate(angle)
+        let c1withAlpha = color(c1)
+        c1withAlpha.setAlpha(alpha1)
+        fill(c1withAlpha)
+        noStroke()
+
+        push()
+        beginClip({ invert: true })
+        circle(-halfLength, 0, height/3)
+        endClip()
+        arc(-halfLength, 0, height, height, HALF_PI, -HALF_PI)
+        pop()
+
+        push()
+        beginClip({ invert: true })
+        circle(halfLength, 0, height/3)
+        endClip()
+        arc(halfLength, 0, height, height, -HALF_PI, HALF_PI)
+        pop()
+
+        rect(-halfLength, -height/2, length, height/3)
+        rect(-halfLength, height/6, length, height/3)
+
+        // draw the inner white part
+        let c2WithAlpha = color(c2)
+        c2WithAlpha.setAlpha(alpha2)
+        fill(c2WithAlpha)
+        arc(-halfLength, 0, height/3, height/3, HALF_PI, -HALF_PI)
+        arc(halfLength, 0, height/3, height/3, -HALF_PI, HALF_PI)
+        rect(-halfLength, -height/6, length, height/3)
+        pop()
+
+      }
+
+    </script>
+  </body>
+</html>
+
