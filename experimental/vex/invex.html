@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Flags of the World</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        font-family: sans-serif;
+        border-width: 0;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+        background-color: skyblue;
+      }
+      .title-bar {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 24px;
+      }
+      .content {
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .start-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px; /* Added margin below the button */
+      }
+      .start-button:hover {
+        background-color: #45a049;
+      }
+      .footer-bar {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 12px;
+      }
+      .footer-bar a {
+        color: white;
+        text-decoration: none;
+      }
+      .option-button {
+        background-color: #008CBA;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+      }
+      .option-button:hover {
+        background-color: #007bb5;
+      }
+      .alert-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        display: none;
+        z-index: 10;
+      }
+      .flag-container {
+        position: relative;
+        display: inline-block;
+      }
+      .black-background {
+        background-color: black;
+        height: 100vh;
+      }
+    </style>
+    <!-- Source: https://flagpedia.net/ -->
+  </head>
+
+  <body>
+    <div class="title-bar">Flags of the World</div>
+    <div class="content">
+      <p>Welcome to the Flags of the World game! See how many flags you can identify.</p>
+      <button class="start-button" onclick="startGame()">New flag</button>
+      <p></p>
+      <div id="flag-container" class="flag-container"></div>
+      <p></p>
+      <div id="options-container"></div>
+      <p></p>
+    </div>
+    <div id="canvas"></div>
+    <div class="footer-bar">
+      &copy; <a href="https://github.com/daniellewisdl" target="_blank">Daniel Lewis</a> 2025
+    </div>
+    <div class="black-background"></div>
+    <script src="flagData.js"></script>
+    <script>
+      function startGame() {
+        const randomIndex = Math.floor(Math.random() * flagData.length);
+        const randomFlag = flagData[randomIndex];
+        console.log(randomFlag);
+
+        const flagContainer = document.getElementById('flag-container');
+        flagContainer.innerHTML = ''; // Clear previous flag
+
+        const img = document.createElement('img');
+        img.src = `./flags/${randomFlag.filename}`;
+        img.alt = randomFlag.country;
+        img.style.maxWidth = '400px'; // Set max width to 400px
+        img.style.width = '100%'; // Ensure it scales down if needed
+        img.style.height = 'auto'; // Preserve aspect ratio
+
+        flagContainer.appendChild(img);
+
+        const alertMessage = document.createElement('div');
+        alertMessage.id = 'alert-message';
+        alertMessage.className = 'alert-message';
+        flagContainer.appendChild(alertMessage);
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = ''; // Clear previous options
+
+        const options = [randomFlag.country];
+        while (options.length < 4) {
+          const option = flagData[Math.floor(Math.random() * flagData.length)].country;
+          if (!options.includes(option)) {
+            options.push(option);
+          }
+        }
+
+        // Shuffle options
+        options.sort(() => Math.random() - 0.5);
+
+        options.forEach(option => {
+          const button = document.createElement('button');
+          button.className = 'option-button';
+          button.textContent = option;
+          button.onclick = () => checkAnswer(option, randomFlag.country, randomFlag.population);
+          optionsContainer.appendChild(button);
+        });
+      }
+
+      function formatPopulation(population) {
+        if (population >= 1e9) {
+          return (population / 1e9).toFixed(2) + 'bn';
+        } else if (population >= 1e6) {
+          return Math.round(population / 1e6) + 'm';
+        } else if (population >= 1e3) {
+          return Math.round(population / 1e3) + 'k';
+        } else {
+          return population.toLocaleString();
+        }
+      }
+
+      function checkAnswer(selected, correct, population) {
+        const alertMessage = document.getElementById('alert-message');
+        const formattedPopulation = formatPopulation(population);
+        if (selected === correct) {
+          alertMessage.textContent = `Correct! Did you know the population of ${correct} is ${formattedPopulation}?`;
+        } else {
+          alertMessage.textContent = `Incorrect. The correct answer is ${correct}.`;
+        }
+        alertMessage.style.display = 'block';
+        setTimeout(() => {
+          alertMessage.style.display = 'none';
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>
