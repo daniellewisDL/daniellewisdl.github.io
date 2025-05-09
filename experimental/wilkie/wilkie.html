@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilkie Collins' Works Infographic</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            width: auto;
+            max-width: 300px;
+            padding: 10px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .tooltip h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .tooltip p {
+            margin: 3px 0;
+        }
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .bubble {
+            stroke: #fff;
+            stroke-width: 1.5px;
+            cursor: pointer;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wilkie Collins: A Timeline of Works by Length</h1>
+    <div class="chart-container">
+        <svg id="infographic"></svg>
+    </div>
+
+    <script>
+        const jsonData = [
+          {
+            "title": "Antonina; or, The Fall of Rome",
+            "release_date": "1850",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 4.5,
+            "word_count": 120000,
+            "key_characters": ["Antonina", "Goisvintha", "Ulpius"],
+            "genre": "Historical fiction",
+            "narrative_structure": "Third-person",
+            "setting": "Rome, 5th century",
+            "themes": ["religious conflict", "barbarian invasions", "fall of empires"],
+            "reception_history": "Collins' debut novel; received modest attention but established his interest in historical settings."
+          },
+          {
+            "title": "Basil",
+            "release_date": "1852",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 4.6,
+            "word_count": 90000,
+            "key_characters": ["Basil", "Margaret Sherwin", "Mannion"],
+            "genre": "Sensation novel",
+            "narrative_structure": "First-person",
+            "setting": "London, mid-19th century",
+            "themes": ["obsession", "revenge", "social class"],
+            "reception_history": "Noted for its dark themes and psychological depth; helped define the sensation genre."
+          },
+          {
+            "title": "Hide and Seek",
+            "release_date": "1854",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 4.6,
+            "word_count": 100000,
+            "key_characters": ["Mary Grice", "Matthew Grice", "Zack Thorpe"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person",
+            "setting": "England, mid-19th century",
+            "themes": ["identity", "family secrets", "disability"],
+            "reception_history": "Introduced one of the first deaf characters in English literature; praised for its compassionate portrayal."
+          },
+          {
+            "title": "The Dead Secret",
+            "release_date": "1856",
+            "publication_format": "Serialized in 'Household Words'; later published in volume form",
+            "average_word_length": 4.5,
+            "word_count": 110000,
+            "key_characters": ["Sarah Leeson", "Rosamond Treverton", "Leonard Frankland"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person",
+            "setting": "Cornwall, England",
+            "themes": ["secrets", "identity", "class"],
+            "reception_history": "Well-received for its suspenseful plot and atmospheric setting."
+          },
+          {
+            "title": "A Rogue's Life",
+            "release_date": "1856",
+            "publication_format": "Serialized in 'Household Words'; later published in volume form",
+            "average_word_length": 4.6,
+            "word_count": 60000,
+            "key_characters": ["Frank Softly"],
+            "genre": "Picaresque novel",
+            "narrative_structure": "First-person",
+            "setting": "England, mid-19th century",
+            "themes": ["adventure", "social mobility", "humor"],
+            "reception_history": "Appreciated for its light-hearted tone and satirical elements."
+          },
+          {
+            "title": "The Woman in White",
+            "release_date": "1860",
+            "publication_format": "Serialized in 'All the Year Round'; later published in three-volume format",
+            "average_word_length": 4.7,
+            "word_count": 215000,
+            "key_characters": ["Walter Hartright", "Laura Fairlie", "Marian Halcombe", "Count Fosco", "Sir Percival Glyde"],
+            "genre": "Sensation novel / Mystery",
+            "narrative_structure": "Multiple narrators",
+            "setting": "England, mid-19th century",
+            "themes": ["identity", "madness", "oppression of women"],
+            "reception_history": "Achieved immediate popular acclaim; ran to seven editions in 1860 alone. Recognized as a pioneering work in the sensation novel genre."
+          },
+          {
+            "title": "No Name",
+            "release_date": "1862",
+            "publication_format": "Serialized in 'All the Year Round'; later published in three-volume format",
+            "average_word_length": 4.6,
+            "word_count": 200000,
+            "key_characters": ["Magdalen Vanstone", "Norah Vanstone", "Captain Wragge", "Mrs. Lecount"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["inheritance", "social injustice", "female agency"],
+            "reception_history": "Praised for its strong female protagonist and social commentary; solidified Collins' reputation in the sensation genre."
+          },
+          {
+            "title": "Armadale",
+            "release_date": "1866",
+            "publication_format": "Serialized in 'Cornhill Magazine'; later published in three-volume format",
+            "average_word_length": 4.8,
+            "word_count": 225000,
+            "key_characters": ["Allan Armadale", "Ozias Midwinter", "Lydia Gwilt"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person with letters and diary entries",
+            "setting": "England and the Mediterranean",
+            "themes": ["identity", "destiny", "moral ambiguity"],
+            "reception_history": "Noted for its complex plot and controversial themes; received mixed reviews but has gained appreciation over time."
+          },
+          {
+            "title": "The Moonstone",
+            "release_date": "1868",
+            "publication_format": "Serialized in 'All the Year Round'; later published in three-volume format",
+            "average_word_length": 4.6,
+            "word_count": 150000,
+            "key_characters": ["Rachel Verinder", "Franklin Blake", "Sergeant Cuff", "Drusilla Clack", "Gabriel Betteredge"],
+            "genre": "Detective fiction",
+            "narrative_structure": "Epistolary / Multiple perspectives",
+            "setting": "Yorkshire, England and India",
+            "themes": ["colonialism", "fate", "truth and evidence"],
+            "reception_history": "Widely regarded as the first English detective novel; praised for its innovative narrative structure and character development."
+          },
+          {
+            "title": "Man and Wife",
+            "release_date": "1870",
+            "publication_format": "Serialized in 'The Graphic'; later published in three-volume format",
+            "average_word_length": 4.7,
+            "word_count": 130000,
+            "key_characters": ["Anne Silvester", "Geoffrey Delamayn", "Arnold Brinkworth"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person",
+            "setting": "Scotland and England",
+            "themes": ["marriage laws", "identity", "social critique"],
+            "reception_history": "Critically acclaimed for its examination of marriage laws; contributed to legal reforms."
+          },
+          {
+            "title": "Poor Miss Finch",
+            "release_date": "1872",
+            "publication_format": "Serialized in 'Cassell's Magazine'; later published in three-volume format",
+            "average_word_length": 4.6,
+            "word_count": 120000,
+            "key_characters": ["Lucilla Finch", "Oscar Dubourg", "Nugent Dubourg"],
+            "genre": "Sensation novel",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["blindness", "identity", "deception"],
+            "reception_history": "Noted for its unique plot involving a blind protagonist; received positive reviews."
+          },
+          {
+            "title": "The Law and the Lady",
+            "release_date": "1875",
+            "publication_format": "Published in three-volume format",
+            "average_word_length": 4.7,
+            "word_count": 130000,
+            "key_characters": ["Valeria Brinton", "Eustace Woodville", "Major Fitz-David", "Miserrimus Dexter"],
+            "genre": "Mystery / Courtroom drama",
+            "narrative_structure": "First-person",
+            "setting": "Scotland and England",
+            "themes": ["truth", "female detective", "justice"],
+            "reception_history": "Recognized for featuring one of the earliest female detectives in literature; received moderate acclaim."
+          },
+          {
+            "title": "The Two Destinies",
+            "release_date": "1876",
+            "publication_format": "Published in three-volume format",
+            "average_word_length": 4.6,
+            "word_count": 110000,
+            "key_characters": ["George Germaine", "Mary Dermody"],
+            "genre": "Supernatural romance",
+            "narrative_structure": "First-person",
+            "setting": "England and abroad",
+            "themes": ["destiny", "love", "supernatural"],
+            "reception_history": "Mixed reviews; noted for its departure into supernatural themes."
+          },
+          {
+            "title": "The Haunted Hotel",
+            "release_date": "1878",
+            "publication_format": "Serialized in 'Belgravia'; later published in volume form",
+            "average_word_length": 4.6,
+            "word_count": 90000,
+            "key_characters": ["Countess Narona", "Agnes Lockwood", "Lord Montbarry"],
+            "genre": "Gothic mystery",
+            "narrative_structure": "Third-person",
+            "setting": "Venice, Italy",
+            "themes": ["haunting", "mystery", "revenge"],
+            "reception_history": "Popular for its gothic elements and suspenseful narrative."
+          },
+          {
+            "title": "The Fallen Leaves",
+            "release_date": "1879",
+            "publication_format": "Serialized in 'The Graphic'; later published in volume form",
+            "average_word_length": 4.5,
+            "word_count": 80000,
+            "key_characters": ["Amelius Goldenheart", "Rufus Dingwell", "Mrs Farnaby", "Jervis (Jervy)"],
+            "genre": "Social commentary",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["social class", "morality", "human nature"],
+            "reception_history": "Critically acclaimed for its social critique and character development."
+          },
+          {
+            "title": "Jezebel's Daughter",
+            "release_date": "1880",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 4.6,
+            "word_count": 95000,
+            "key_characters": ["Madame Fontaine", "Jack Straw", "Mrs. Wagner", "Minna"],
+            "genre": "Sensation novel / Gothic",
+            "narrative_structure": "Third-person",
+            "setting": "Frankfurt and London, 1828",
+            "themes": ["poison", "mental illness", "inheritance", "women's rights"],
+            "reception_history": "Moderately successful; praised for its complex female villain."
+          },
+          {
+            "title": "The Black Robe",
+            "release_date": "1881",
+            "publication_format": "Serialized in 'The Graphic'; later published in volume form",
+            "average_word_length": 4.7,
+            "word_count": 100000,
+            "key_characters": ["Father Benwell", "Mrs. Macallan", "Mr. Macallan", "Lewis Romayne", "Stella Eyrecourt"],
+            "genre": "Mystery / Gothic",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["religion", "mystery", "deception"],
+            "reception_history": "Mixed reviews; noted for its exploration of religious themes and moral ambiguity."
+          },
+          {
+            "title": "Heart and Science",
+            "release_date": "1883",
+            "publication_format": "Serialized in 'The Graphic'; later published in volume form",
+            "average_word_length": 4.6,
+            "word_count": 90000,
+            "key_characters": ["Ovid Vere", "Carmina Graywell", "Mrs. Gallilee", "Dr. Nathan Benjulia", "Zo Gallilee", "Maria Gallilee", "Teresa", "Mr. Mool", "Miss Minerva"],
+            "genre": "Social commentary",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["science vs. morality", "human relationships", "vivisection"],
+            "reception_history": "Critically acclaimed for its exploration of the conflict between science and morality."
+          },
+          {
+            "title": "The Evil Genius",
+            "release_date": "1886",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 4.5,
+            "word_count": 100000,
+            "key_characters": ["Sydney Westerfield", "Kitty Linely", "Herbert Linely", "Catherine Linely", "Captain Roderick Westerfield", "Randal Linley"],
+            "genre": "Social commentary / Domestic story",
+            "narrative_structure": "Third-person",
+            "setting": "England",
+            "themes": ["morality", "human relationships", "divorce", "child custody"],
+            "reception_history": "Explores social and family issues; stereotype breaking novel."
+          },
+          {
+            "title": "The Legacy of Cain",
+            "release_date": "1889",
+            "publication_format": "Serialized; later published in volume form",
+            "average_word_length": 4.7,
+            "word_count": 120000,
+            "key_characters": ["Reverend Abel Gracedieu", "Helena Gracedieu", "Eunice Gracedieu", "Philip Dunboyne", "Selina Jillgall", "Mrs. Tegenbruggen (Miss Chance)"],
+            "genre": "Mystery / Gothic / Social commentary",
+            "narrative_structure": "Multiple narrators (Prison governor, diary entries)",
+            "setting": "England",
+            "themes": ["inheritance", "mystery", "deception", "hereditary evil", "nature vs. nurture"],
+            "reception_history": "Explores theme of hereditary evil; attacks idea of 'bad blood'."
+          },
+          {
+            "title": "Iolani, or Tahiti as it was. A Romance",
+            "release_date": "1999 (written 1844)",
+            "publication_format": "Novel (published posthumously)",
+            "average_word_length": 0.0,
+            "word_count": "Page count unknown",
+            "key_characters": ["Iolani", "Aimata", "Idia", "Mahine"],
+            "genre": "Romance / Adventure",
+            "narrative_structure": "Third-person (assumed)",
+            "setting": "Tahiti, Polynesia (pre-colonial)",
+            "themes": ["savage life", "indigenous cultures", "infanticide", "romance"],
+            "reception_history": "Collins's first written novel; unpublished in his lifetime due to its then-controversial themes and depiction of 'savage life'. Provides insight into his early literary development."
+          },
+          {
+            "title": "Mr. Wray's Cash Box; or, the Mask and the Mystery",
+            "release_date": "1852",
+            "publication_format": "Single volume book / Christmas story",
+            "average_word_length": 0.0,
+            "word_count": "Approx. 125 pages",
+            "key_characters": [],
+            "genre": "Christmas story / Mystery / Victorian fiction",
+            "narrative_structure": "First-person (likely, or direct address)",
+            "setting": "Victorian England",
+            "themes": ["honesty", "storytelling", "mystery", "appearances vs. reality"],
+            "reception_history": "An early short novel or Christmas sketch by Collins."
+          },
+          {
+            "title": "The New Magdalen",
+            "release_date": "1873",
+            "publication_format": "Two-volume novel",
+            "average_word_length": 0.0,
+            "word_count": "Approx. 300-400 pages",
+            "key_characters": ["Mercy Merrick"],
+            "genre": "Sensation novel / Melodrama",
+            "narrative_structure": "Third-person (assumed)",
+            "setting": "Victorian England",
+            "themes": ["fallen woman", "redemption", "assumed identity", "social class", "satire"],
+            "reception_history": "A notable sensation novel dealing with themes of social ostracism and rehabilitation."
+          },
+          {
+            "title": "\"I Say No\"",
+            "release_date": "1884",
+            "publication_format": "Three-volume novel",
+            "average_word_length": 0.0,
+            "word_count": "Approx. 300-400 pages",
+            "key_characters": ["Emily Brown", "Miss Ladd", "Francine de Sor", "Sarah Jethro", "Miles Mirabel", "Alban Morris"],
+            "genre": "Mystery / Romance / Victorian fiction",
+            "narrative_structure": "Third-person (assumed)",
+            "setting": "Victorian England",
+            "themes": ["mystery", "orphanhood", "identity", "courtship", "perseverance", "true love"],
+            "reception_history": "One of Collins's later novels, focusing on mystery and romance."
+          },
+          {
+            "title": "The Guilty River",
+            "release_date": "1886",
+            "publication_format": "Short novel / Novella (Arrowsmith's Christmas Annual)",
+            "average_word_length": 0.0,
+            "word_count": "Approx. 120-180 pages",
+            "key_characters": ["Gerard Roylake", "Cristel Toller", "The Lodger", "Gloody", "Lady Rachel", "Stephen Toller"],
+            "genre": "Mystery / Suspense / Psychological fiction",
+            "narrative_structure": "First-person (narrated by Gerard Roylake)",
+            "setting": "Trimley Deen, River Loke, England",
+            "themes": ["deafness", "social class differences", "love", "jealousy", "inherited evil", "false appearances", "poison"],
+            "reception_history": "A shorter, late-career novel with psychological themes."
+          },
+          {
+            "title": "Blind Love",
+            "release_date": "1890",
+            "publication_format": "Novel (serialized 1889, completed by Walter Besant)",
+            "average_word_length": 0.0,
+            "word_count": "Approx. 250-350 pages",
+            "key_characters": ["Iris Henley", "Lord Harry Norland", "Sir Giles Mountjoy", "Dennis Howmore"],
+            "genre": "Mystery / Suspense / Historical fiction",
+            "narrative_structure": "Third-person (assumed)",
+            "setting": "Ireland (during the Land War of the early 1880s)",
+            "themes": ["love", "loyalty", "conspiracy", "secret societies", "Irish independence", "fraud"],
+            "reception_history": "Collins's final novel, left unfinished at his death and completed by Walter Besant. It engaged with contemporary Irish political issues."
+          }
+        ];
+
+        // Function to parse release_date to a year
+        function parseYear(dateStr) {
+            if (!dateStr) return null;
+            const match = dateStr.match(/\b(\d{4})\b/);
+            return match ? parseInt(match[1]) : null;
+        }
+
+        // Function to parse word_count (and estimate from pages if necessary)
+        // For simplicity in this example, we will only plot numeric word_counts.
+        // A more robust solution would handle page estimates.
+        function parseWordCount(wc) {
+            if (typeof wc === 'number') {
+                return wc;
+            }
+            if (typeof wc === 'string') {
+                if (wc.toLowerCase().includes("pages")) {
+                    // Basic estimation: average pages * 275 words/page
+                    const pageMatch = wc.match(/(\d+)(?:-(\d+))?\s*pages/i);
+                    if (pageMatch) {
+                        const p1 = parseInt(pageMatch[1]);
+                        const p2 = pageMatch[2] ? parseInt(pageMatch[2]) : p1;
+                        return Math.round(((p1 + p2) / 2) * 275); // Rough estimate
+                    }
+                }
+            }
+            return null; // Cannot reliably parse to a number
+        }
+
+
+        const processedData = jsonData.map(d => ({
+            ...d,
+            year: parseYear(d.release_date),
+            numeric_word_count: parseWordCount(d.word_count)
+        })).filter(d => d.year !== null && d.numeric_word_count !== null && d.numeric_word_count > 0);
+
+
+        const margin = {top: 50, right: 50, bottom: 70, left: 80};
+        const width = 960 - margin.left - margin.right;
+        const height = 600 - margin.top - margin.bottom;
+
+        const svg = d3.select("#infographic")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Scales
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(processedData, d => new Date(d.year, 0, 1)))
+            .range([0, width])
+            .nice();
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(processedData, d => d.numeric_word_count) * 1.1]) // Add some padding to max
+            .range([height, 0])
+            .nice();
+
+        const radiusScale = d3.scaleSqrt()
+            .domain([0, d3.max(processedData, d => d.numeric_word_count)])
+            .range([3, 30]); // Min and max radius for bubbles
+
+        const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+
+
+        // Axes
+        const xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%Y"));
+        const yAxis = d3.axisLeft(yScale).tickFormat(d => `${d/1000}k`);
+
+        svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-45)");
+
+        svg.append("g")
+            .call(yAxis);
+
+        // Axis Labels
+        svg.append("text")
+            .attr("class", "axis-label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom - 10)
+            .text("Publication Year");
+
+        svg.append("text")
+            .attr("class", "axis-label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 20)
+            .text("Word Count");
+
+        // Tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+        // Bubbles
+        svg.selectAll(".bubble")
+            .data(processedData)
+            .enter().append("circle")
+            .attr("class", "bubble")
+            .attr("cx", d => xScale(new Date(d.year, 0, 1)))
+            .attr("cy", d => yScale(d.numeric_word_count))
+            .attr("r", d => radiusScale(d.numeric_word_count))
+            .style("fill", d => colorScale(d.genre)) // Color by genre, for example
+            .style("opacity", 0.7)
+            .on("mouseover", function(event, d) {
+                d3.select(this).style("opacity", 1).style("stroke-width", 3);
+                tooltip.transition().duration(200).style("opacity", .95);
+                let tooltipContent = `<h3>${d.title}</h3>`;
+                tooltipContent += `<p><strong>Release Date:</strong> ${d.release_date}</p>`;
+                tooltipContent += `<p><strong>Word Count:</strong> ${d.word_count.toLocaleString()}</p>`; // Show original word_count string or formatted number
+                tooltipContent += `<p><strong>Publication Format:</strong> ${d.publication_format || 'N/A'}</p>`;
+                tooltipContent += `<p><strong>Genre:</strong> ${d.genre || 'N/A'}</p>`;
+                if (d.key_characters && d.key_characters.length > 0) {
+                     tooltipContent += `<p><strong>Key Characters:</strong> ${d.key_characters.join(', ')}</p>`;
+                }
+                tooltipContent += `<p><strong>Narrative Structure:</strong> ${d.narrative_structure || 'N/A'}</p>`;
+                tooltipContent += `<p><strong>Setting:</strong> ${d.setting || 'N/A'}</p>`;
+                if (d.themes && d.themes.length > 0) {
+                    tooltipContent += `<p><strong>Themes:</strong> ${Array.isArray(d.themes) ? d.themes.join(', ') : d.themes}</p>`;
+                }
+                tooltipContent += `<p><strong>Reception:</strong> ${d.reception_history || 'N/A'}</p>`;
+
+                tooltip.html(tooltipContent)
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                d3.select(this).style("opacity", 0.7).style("stroke-width", 1.5);
+                tooltip.transition().duration(500).style("opacity", 0);
+            });
+
+        // Legend (simple example for genres)
+        const legendContainer = svg.append("g")
+            .attr("class", "legend-container")
+            .attr("transform", `translate(${width - 150}, ${-margin.top + 20})`);
+
+        const uniqueGenres = Array.from(new Set(processedData.map(d => d.genre))).filter(g => g);
+
+        const legend = legendContainer.selectAll(".legend-item")
+            .data(uniqueGenres.slice(0, 10)) // Limit to a few for space
+            .enter().append("g")
+            .attr("class", "legend-item")
+            .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+
+        legend.append("rect")
+            .attr("x", 0)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", d => colorScale(d));
+
+        legend.append("text")
+            .attr("x", 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .style("font-size", "10px")
+            .text(d => d.length > 20 ? d.substring(0,17) + "..." : d);
+
+
+    </script>
+</body>
+</html>
