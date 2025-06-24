@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tannins & Rinds - Artisanal Vegan Cheese & Wine</title>
+    <style>
+        /* FONT IMPORTS */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400&display=swap');
+
+        /* CSS RESET & BASE STYLES */
+        :root {
+            --bg-color: #f5f1ed; /* Faded, parchment-like background */
+            --text-color: #3a3a3a; /* Deep, warm grey */
+            --accent-color: #8c5e58; /* Muted wine/terracotta */
+            --light-accent: #a58a86;
+            --border-color: #e0d9d3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: var(--accent-color);
+            margin: 1rem auto 0;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            max-width: 70ch; /* For optimal readability */
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--light-accent);
+        }
+
+        /* LAYOUT & CONTAINERS */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* HEADER & NAVIGATION */
+        .main-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            font-size: 1rem;
+            font-weight: 400;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            border-color: rgba(255, 255, 255, 0.7);
+            color: white;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero-bg-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #5c5c5c url('https://via.placeholder.com/1920x1080/5c5c5c/FFFFFF?text=Large+Banner+Image+of+Wine+Cellar') no-repeat center center/cover;
+            filter: brightness(0.7);
+            z-index: -1;
+        }
+
+        .hero-content {
+            padding: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* IMAGE PLACEHOLDERS */
+        .img-placeholder {
+            width: 100%;
+            background: #e0d9d3;
+            border: 1px dashed var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--accent-color);
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* ABOUT SECTION */
+        #about .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image-placeholder {
+            height: 500px;
+        }
+        
+        /* PRODUCTS SECTION */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            text-align: center;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+            transform: translateY(-5px);
+        }
+
+        .product-image-placeholder {
+            height: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card p {
+            font-size: 0.9rem;
+        }
+
+        /* CTA SECTION */
+        #cta {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            text-align: center;
+        }
+
+        #cta h2 {
+            color: var(--bg-color);
+        }
+        #cta h2::after {
+            background: var(--bg-color);
+        }
+        #cta p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            padding: 0.8rem 2.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--bg-color);
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--bg-color);
+        }
+
+        /* FOOTER */
+        .main-footer {
+            background-color: var(--text-color);
+            color: #ccc;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            align-items: center;
+                        text-align: center;
+        }
+        
+        .main-footer a {
+           color: #fff;
+           font-weight: bold;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .main-header { flex-direction: column; gap: 1rem; }
+            .hero { height: 80vh; }
+            
+            #about .container {
+                grid-template-columns: 1fr;
+            }
+
+            .container { padding: 3rem 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">Tannins & Rinds</div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#about">Our Story</a></li>
+                <li><a href="#products">Collection</a></li>
+                <li><a href="#cta">Tastings</a></li>
+                <li><a href="#footer">Visit</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero">
+            <div class="hero-bg-placeholder" aria-hidden="true">
+                <img src="src/banner.png" alt="Wine cellar banner" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="hero-content">
+                <h1>Tannins & Rinds</h1>
+                <p class="hero-subtitle">Artisanal Vegan Cheeses & Curated Wines</p>
+            </div>
+        </section>
+
+        <!-- ABOUT / OUR STORY SECTION -->
+        <section id="about">
+            <div class="container">
+                <div class="about-text">
+                    <h2>Our Philosophy</h2>
+                    <p>At Tannins & Rinds, we believe that luxury and compassion can coexist beautifully. We are dedicated to the art of plant-based cheesemaking, creating complex, flavourful, and utterly convincing vegan cheeses that honour traditional methods.</p>
+                    <p>Each wheel is aged with care, developing nuanced rinds and deep character. We pair our creations with a meticulously curated selection of vegan wines, chosen to complement and elevate the tasting experience. This is a new chapter in opulence—crafted by nature, perfected by passion.</p>
+                </div>
+                <div class="about-image">
+                    <div class="img-placeholder about-image-placeholder">
+                        <img src="src/cheeseboard.png" alt="A styled vegan cheese board" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS / COLLECTION SECTION -->
+        <section id="products" style="background-color: #fff;">
+            <div class="container">
+                <h2>The Collection</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="img-placeholder product-image-placeholder">
+                            <img src="src/smoked-cashew-gouda.jpg" alt="Image of Smoked Cashew Gouda" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3>Smoked Cashew Gouda</h3>
+                        <p>A firm, smoky cheese with a creamy finish. Aged for 60 days and cold-smoked over hickory wood. Pairs wonderfully with a bold Syrah.</p>
+                    </div>
+                    <div class="product-card">
+                        <div class="img-placeholder product-image-placeholder">
+                            <img src="src/herbed-almond-chevre.png" alt="Image of Herbed Almond Chèvre" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3>Herbed Almond Chèvre</h3>
+                        <p>A soft, tangy, and spreadable cheese rolled in fresh herbs de Provence. Bright and zesty, perfect with a crisp Sauvignon Blanc.</p>
+                    </div>
+                    <div class="product-card">
+                        <div class="img-placeholder product-image-placeholder">
+                            <img src="src/truffle-macadamia-camembert.png" alt="Image of Truffle & Macadamia Camembert" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3>Truffle & Macadamia Camembert</h3>
+                        <p>An indulgent, bloomy-rind cheese with a rich, buttery texture and an earthy black truffle aroma. A true delight with a glass of Pinot Noir.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA / TASTINGS SECTION -->
+        <section id="cta">
+            <div class="container">
+                <h2>Private Tastings</h2>
+                <p>Join us for an intimate and guided exploration of our finest pairings. Our private tasting events are an opportunity to deepen your appreciation for the craft of vegan cheese and wine. Hosted in our cellar tasting room, it is an experience of pure indulgence.</p>
+                <a href="mailto:bookings@tanninsandrinds.com" class="btn">Book an Experience</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER / VISIT US -->
+    <footer id="footer" class="main-footer">
+        <div class="container">
+            <p><strong>Tannins & Rinds</strong></p>
+            <p>123 Opulence Lane, Vineyard Valley, 90210</p>
+            <p>Open Wednesday - Sunday, 11am - 7pm</p>
+            <p>© 2025 Tannins & Rinds. All Rights Reserved. Created with a passion for excellence.</p>
+            <p>For inquiries, please email <a href="mailto:hello@tanninsandrinds.com">hello@tanninsandrinds.com</a>.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
