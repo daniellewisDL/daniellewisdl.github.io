@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CFOP Mobile Timer</title>
     <style>
-        /* FONT IMPORT - Using Roboto Mono for a technical, timer look */
+        /* FONT IMPORT */
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
         /* RESET & BASIC SETUP */
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* Removes gray highlight on tap on iOS */
+            -webkit-tap-highlight-color: transparent; 
         }
 
         body, html {
@@ -19,15 +19,14 @@
             padding: 0;
             height: 100%;
             width: 100%;
-            background-color: #0c0c0c; /* Deep black background */
+            background-color: #0c0c0c; 
             color: #ffffff;
             font-family: 'Roboto Mono', monospace;
-            overflow: hidden; /* Prevent scrolling */
-            user-select: none; /* Prevent text selection */
-            touch-action: manipulation; /* Optimize for touch interactions */
+            overflow: hidden; 
+            user-select: none; 
+            touch-action: manipulation; 
         }
 
-        /* MAIN CONTAINER - Centering everything */
         #app-container {
             height: 100%;
             width: 100%;
@@ -36,70 +35,118 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            /* The whole screen is the trigger area */
             cursor: pointer;
         }
 
         /* SCRAMBLE SECTION */
         #scramble {
             margin-top: 20px;
-            font-size: 14px;
+            font-size: 16px;
             color: #aaaaaa;
             text-align: center;
-            letter-spacing: 1px;
-            line-height: 1.4;
+            letter-spacing: 2px;
+            line-height: 1.5;
             max-width: 90%;
+            min-height: 48px; /* Prevents jumping if scramble wraps */
         }
 
         /* MAIN BIG TIMER */
         #main-timer-display {
-            font-size: 20vw; /* Responsive font size based on screen width */
+            font-size: 20vw; 
             font-weight: 400;
-            margin: auto 0; /* Vertically center in available space */
+            margin: auto 0; 
             transition: color 0.2s ease;
         }
 
-        /* SPLITS SECTION */
+        /* SPLITS SECTION - 2x2 Grid */
         #splits-container {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 30px 40px; 
             width: 100%;
-            max-width: 500px; /* prevent spreading too wide on tablets */
-            margin-bottom: 40px;
+            max-width: 350px; 
+            margin-bottom: 30px;
         }
 
         .split-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 25%; /* 4 items, share space equally */
+            width: 100%; 
         }
 
         .split-label {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             color: #555555;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             margin-bottom: 8px;
             text-transform: uppercase;
         }
 
         .split-time {
-            font-size: 28px;
-            color: #555555; /* Default inactive color */
+            font-size: 32px;
+            color: #555555; 
             font-weight: 400;
         }
 
+        /* HISTORY SECTION */
+        #history-container {
+            margin-bottom: 25px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        #history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        }
+
+        .history-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #444444;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        #clear-btn {
+            background: none;
+            border: 1px solid #333;
+            color: #777;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 9px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        #clear-btn:active {
+            background: #333;
+            color: #fff;
+        }
+
+        #history-list {
+            font-size: 16px;
+            color: #aaaaaa;
+            letter-spacing: 2px;
+            min-height: 20px; 
+        }
+
         /* DYNAMIC COLORS */
-        .color-active { color: #4dff88 !important; } /* Neon Green */
-        .color-done { color: #ffffff !important; }   /* White */
-        .color-wait { color: #ff4d4d !important; }   /* Red for holding */
-        .color-muted { color: #555555 !important; }  /* Gray for future */
+        .color-active { color: #4dff88 !important; } 
+        .color-done { color: #ffffff !important; }   
+        .color-wait { color: #ff4d4d !important; }   
+        .color-muted { color: #555555 !important; }  
 
         /* FOOTER INSTRUCTIONS */
         #instructions {
-            position: fixed;
-            bottom: 15px;
+            margin-bottom: 10px;
             font-size: 10px;
             color: #444444;
             letter-spacing: 1px;
@@ -110,7 +157,7 @@
 <body>
 
     <div id="app-container">
-        <div id="scramble">R' U2 R' D' U' R L U2 F B' D' B2 R2 F2 L D2 F D2 L2 B</div>
+        <div id="scramble">Loading Scramble...</div>
 
         <div id="main-timer-display">0.00</div>
 
@@ -133,22 +180,33 @@
             </div>
         </div>
 
+        <div id="history-container">
+            <div id="history-header">
+                <div class="history-label">Last 5 Solves</div>
+                <button id="clear-btn">CLEAR</button>
+            </div>
+            <div id="history-list">- - - - -</div>
+        </div>
+
         <div id="instructions">HOLD TO START - TAP TO SPLIT</div>
     </div>
 
-
     <script>
         // --- Variables ---
-        let state = 'IDLE'; // Possible states: IDLE, HOLDING, READY, RUNNING, ENDED
+        let state = 'IDLE'; 
         let startTime;
         let timerInterval;
-        let currentStage = 0; // 0:Cross, 1:F2L, 2:OLL, 3:PLL
-        let stageTimes = [0, 0, 0, 0]; // Store cumulative times for each stage finish
+        let currentStage = 0; 
+        let stageTimes = [0, 0, 0, 0]; 
         let holdTimeout;
+        let solveHistory = []; 
 
         // --- DOM Elements ---
         const container = document.getElementById('app-container');
         const mainDisplay = document.getElementById('main-timer-display');
+        const scrambleDisplay = document.getElementById('scramble');
+        const historyList = document.getElementById('history-list');
+        const clearBtn = document.getElementById('clear-btn');
         const splitElements = [
             document.getElementById('split-time-0'),
             document.getElementById('split-time-1'),
@@ -156,43 +214,77 @@
             document.getElementById('split-time-3')
         ];
 
-        // --- Helper Functions ---
+        // --- Scramble Generator ---
+        function generateScramble() {
+            const faces = ['R', 'L', 'U', 'D', 'F', 'B'];
+            const modifiers = ["", "'", "2"];
+            let scramble = [];
+            let lastFace = -1;
+            let secondLastFace = -1;
 
-        // Formats time in seconds to "S.MS" (e.g., 5.83)
-        function formatTime(ms) {
-            let seconds = (ms / 1000).toFixed(2);
-            return seconds;
+            for (let i = 0; i < 21; i++) {
+                let face;
+                // Prevent same face twice in a row, and prevent R L R patterns
+                do {
+                    face = Math.floor(Math.random() * 6);
+                } while (face === lastFace || (Math.floor(face / 2) === Math.floor(lastFace / 2) && face === secondLastFace)); 
+                
+                let mod = modifiers[Math.floor(Math.random() * 3)];
+                scramble.push(faces[face] + mod);
+                
+                secondLastFace = lastFace;
+                lastFace = face;
+            }
+            return scramble.join(' ');
         }
 
-        // Updates the main big display
+        function updateScramble() {
+            scrambleDisplay.textContent = generateScramble();
+        }
+
+        // --- Helper Functions ---
+        function formatTime(ms) {
+            return (ms / 1000).toFixed(2);
+        }
+
         function updateMainDisplay(ms) {
             mainDisplay.textContent = formatTime(ms);
         }
 
-        // Updates the small split displays and their colors
+        function updateHistoryUI() {
+            if (solveHistory.length === 0) {
+                historyList.textContent = "- - - - -";
+            } else {
+                historyList.textContent = solveHistory.join(" • ");
+            }
+        }
+
         function updateSplitUI() {
             for (let i = 0; i < 4; i++) {
                 const element = splitElements[i];
-                
-                // Calculate segment duration based on cumulative previous times
                 let segmentDuration = 0;
-                if (i <= currentStage && state !== 'IDLE' && state !== 'HOLDING' && state !== 'READY') {
+                
+                if (state !== 'IDLE' && state !== 'HOLDING' && state !== 'READY') {
                      if (i === 0) {
                          segmentDuration = stageTimes[0];
                      } else {
                          segmentDuration = stageTimes[i] - stageTimes[i-1];
                      }
-                     element.textContent = formatTime(segmentDuration > 0 ? segmentDuration : 0);
+                     
+                     if (i <= currentStage || stageTimes[i] > 0) {
+                         element.textContent = formatTime(Math.max(0, segmentDuration));
+                     } else {
+                         element.textContent = "0.00";
+                     }
                 } else {
                      element.textContent = "0.00";
                 }
 
-                // Color Logic
                 element.classList.remove('color-active', 'color-done', 'color-muted');
                 if (state === 'RUNNING') {
-                    if (i === currentStage) element.classList.add('color-active'); // Current stage green
-                    else if (i < currentStage) element.classList.add('color-done'); // Past stages white
-                    else element.classList.add('color-muted'); // Future stages gray
+                    if (i === currentStage) element.classList.add('color-active'); 
+                    else if (i < currentStage) element.classList.add('color-done'); 
+                    else element.classList.add('color-muted'); 
                 } else if (state === 'ENDED') {
                      element.classList.add('color-done');
                 } else {
@@ -202,42 +294,45 @@
         }
 
         // --- Timer Logic ---
-
         function startTimer() {
             state = 'RUNNING';
             startTime = Date.now();
             currentStage = 0;
             stageTimes = [0,0,0,0];
             updateSplitUI();
-            mainDisplay.classList.remove('color-active'); // Back to white while running
+            mainDisplay.classList.remove('color-active', 'color-wait', 'color-done'); 
 
             timerInterval = setInterval(() => {
-                const now = Date.now();
-                const elapsed = now - startTime;
+                const elapsed = Date.now() - startTime;
                 updateMainDisplay(elapsed);
-            }, 30); // Update roughly every 30ms
+            }, 30);
         }
 
         function stopTimer() {
             clearInterval(timerInterval);
             state = 'ENDED';
             const finalTime = Date.now() - startTime;
-            updateMainDisplay(finalTime);
-            // Record final split if not already done
+            
             if(stageTimes[3] === 0) stageTimes[3] = finalTime;
+            
+            updateMainDisplay(finalTime);
             updateSplitUI();
+            
+            solveHistory.push(formatTime(finalTime));
+            if (solveHistory.length > 5) {
+                solveHistory.shift(); 
+            }
+            updateHistoryUI();
+            updateScramble(); // Generate new scramble for next solve
         }
 
         function recordSplit() {
-            const now = Date.now();
-            const cumulativeTime = now - startTime;
+            const cumulativeTime = Date.now() - startTime;
             stageTimes[currentStage] = cumulativeTime;
             
             if (currentStage < 3) {
                 currentStage++;
                 updateSplitUI();
-                // Optional: immediately show the split time on main display briefly
-                // updateMainDisplay(cumulativeTime); 
             } else {
                 stopTimer();
             }
@@ -250,29 +345,27 @@
             stageTimes = [0, 0, 0, 0];
             updateMainDisplay(0);
             updateSplitUI();
-            mainDisplay.style.color = ''; // Reset color
+            mainDisplay.className = ''; 
         }
 
-
         // --- Interaction Handlers ---
-
-        // Handle Touch Start / Mouse Down (Pressing)
         function handlePressStart(e) {
-            // Prevent default to stop scrolling or zooming on double taps
+            // Ignore if clicking the clear button
+            if (e.target.tagName === 'BUTTON') return;
+            
             if(e.cancelable && e.type === 'touchstart') e.preventDefault();
 
             if (state === 'IDLE' || state === 'ENDED') {
                 if(state === 'ENDED') reset();
                 
                 state = 'HOLDING';
-                mainDisplay.classList.add('color-wait'); // Turn Red
+                mainDisplay.classList.add('color-wait'); 
 
-                // Wait 300ms to define it as a "hold" intent
                 holdTimeout = setTimeout(() => {
                     if (state === 'HOLDING') {
                         state = 'READY';
                         mainDisplay.classList.remove('color-wait');
-                        mainDisplay.classList.add('color-active'); // Turn Green
+                        mainDisplay.classList.add('color-active'); 
                     }
                 }, 300);
 
@@ -281,34 +374,37 @@
             }
         }
 
-        // Handle Touch End / Mouse Up (Releasing)
         function handlePressEnd(e) {
-             // Prevent default
-            if(e.cancelable && e.type === 'touchend') e.preventDefault();
+            if (e.target.tagName === 'BUTTON') return;
 
-            clearTimeout(holdTimeout); // Stop waiting for hold timer
+            if(e.cancelable && e.type === 'touchend') e.preventDefault();
+            clearTimeout(holdTimeout); 
 
             if (state === 'READY') {
-                // Released after holding long enough -> START
                 startTimer();
             } else if (state === 'HOLDING') {
-                // Released too early -> Reset back to idle
                 mainDisplay.classList.remove('color-wait');
                 state = 'IDLE';
             }
-            // If RUNNING, releasing doesn't do anything (the press handled the split)
         }
 
+        // Clear History Button
+        clearBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Double check to prevent bubbling
+            solveHistory = [];
+            updateHistoryUI();
+        });
 
-        // --- Event Listeners attached to the whole screen container ---
-        // Using both Touch and Mouse events for broad compatibility
+        // Listeners
         container.addEventListener('touchstart', handlePressStart, { passive: false });
         container.addEventListener('touchend', handlePressEnd, { passive: false });
         container.addEventListener('mousedown', handlePressStart);
         container.addEventListener('mouseup', handlePressEnd);
 
-        // Initialize UI on load
+        // Init
         reset();
+        updateHistoryUI();
+        updateScramble();
 
     </script>
 </body>
