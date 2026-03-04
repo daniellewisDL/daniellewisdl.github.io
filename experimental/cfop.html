@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CFOP Mobile Timer</title>
+    <style>
+        /* FONT IMPORT - Using Roboto Mono for a technical, timer look */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+        /* RESET & BASIC SETUP */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Removes gray highlight on tap on iOS */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #0c0c0c; /* Deep black background */
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+            overflow: hidden; /* Prevent scrolling */
+            user-select: none; /* Prevent text selection */
+            touch-action: manipulation; /* Optimize for touch interactions */
+        }
+
+        /* MAIN CONTAINER - Centering everything */
+        #app-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            /* The whole screen is the trigger area */
+            cursor: pointer;
+        }
+
+        /* SCRAMBLE SECTION */
+        #scramble {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaaaaa;
+            text-align: center;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            max-width: 90%;
+        }
+
+        /* MAIN BIG TIMER */
+        #main-timer-display {
+            font-size: 20vw; /* Responsive font size based on screen width */
+            font-weight: 400;
+            margin: auto 0; /* Vertically center in available space */
+            transition: color 0.2s ease;
+        }
+
+        /* SPLITS SECTION */
+        #splits-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px; /* prevent spreading too wide on tablets */
+            margin-bottom: 40px;
+        }
+
+        .split-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%; /* 4 items, share space equally */
+        }
+
+        .split-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #555555;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .split-time {
+            font-size: 28px;
+            color: #555555; /* Default inactive color */
+            font-weight: 400;
+        }
+
+        /* DYNAMIC COLORS */
+        .color-active { color: #4dff88 !important; } /* Neon Green */
+        .color-done { color: #ffffff !important; }   /* White */
+        .color-wait { color: #ff4d4d !important; }   /* Red for holding */
+        .color-muted { color: #555555 !important; }  /* Gray for future */
+
+        /* FOOTER INSTRUCTIONS */
+        #instructions {
+            position: fixed;
+            bottom: 15px;
+            font-size: 10px;
+            color: #444444;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="scramble">R' U2 R' D' U' R L U2 F B' D' B2 R2 F2 L D2 F D2 L2 B</div>
+
+        <div id="main-timer-display">0.00</div>
+
+        <div id="splits-container">
+            <div class="split-item">
+                <div class="split-label">CROSS</div>
+                <div class="split-time" id="split-time-0">0.00</div>
+            </div>
+            <div class="split-item">
+                <div class="split-label">F2L</div>
+                <div class="split-time" id="split-time-1">0.00</div>
+            </div>
+            <div class="split-item">
+                <div class="split-label">OLL</div>
+                <div class="split-time" id="split-time-2">0.00</div>
+            </div>
+            <div class="split-item">
+                <div class="split-label">PLL</div>
+                <div class="split-time" id="split-time-3">0.00</div>
+            </div>
+        </div>
+
+        <div id="instructions">HOLD TO START - TAP TO SPLIT</div>
+    </div>
+
+
+    <script>
+        // --- Variables ---
+        let state = 'IDLE'; // Possible states: IDLE, HOLDING, READY, RUNNING, ENDED
+        let startTime;
+        let timerInterval;
+        let currentStage = 0; // 0:Cross, 1:F2L, 2:OLL, 3:PLL
+        let stageTimes = [0, 0, 0, 0]; // Store cumulative times for each stage finish
+        let holdTimeout;
+
+        // --- DOM Elements ---
+        const container = document.getElementById('app-container');
+        const mainDisplay = document.getElementById('main-timer-display');
+        const splitElements = [
+            document.getElementById('split-time-0'),
+            document.getElementById('split-time-1'),
+            document.getElementById('split-time-2'),
+            document.getElementById('split-time-3')
+        ];
+
+        // --- Helper Functions ---
+
+        // Formats time in seconds to "S.MS" (e.g., 5.83)
+        function formatTime(ms) {
+            let seconds = (ms / 1000).toFixed(2);
+            return seconds;
+        }
+
+        // Updates the main big display
+        function updateMainDisplay(ms) {
+            mainDisplay.textContent = formatTime(ms);
+        }
+
+        // Updates the small split displays and their colors
+        function updateSplitUI() {
+            for (let i = 0; i < 4; i++) {
+                const element = splitElements[i];
+                
+                // Calculate segment duration based on cumulative previous times
+                let segmentDuration = 0;
+                if (i <= currentStage && state !== 'IDLE' && state !== 'HOLDING' && state !== 'READY') {
+                     if (i === 0) {
+                         segmentDuration = stageTimes[0];
+                     } else {
+                         segmentDuration = stageTimes[i] - stageTimes[i-1];
+                     }
+                     element.textContent = formatTime(segmentDuration > 0 ? segmentDuration : 0);
+                } else {
+                     element.textContent = "0.00";
+                }
+
+                // Color Logic
+                element.classList.remove('color-active', 'color-done', 'color-muted');
+                if (state === 'RUNNING') {
+                    if (i === currentStage) element.classList.add('color-active'); // Current stage green
+                    else if (i < currentStage) element.classList.add('color-done'); // Past stages white
+                    else element.classList.add('color-muted'); // Future stages gray
+                } else if (state === 'ENDED') {
+                     element.classList.add('color-done');
+                } else {
+                    element.classList.add('color-muted');
+                }
+            }
+        }
+
+        // --- Timer Logic ---
+
+        function startTimer() {
+            state = 'RUNNING';
+            startTime = Date.now();
+            currentStage = 0;
+            stageTimes = [0,0,0,0];
+            updateSplitUI();
+            mainDisplay.classList.remove('color-active'); // Back to white while running
+
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const elapsed = now - startTime;
+                updateMainDisplay(elapsed);
+            }, 30); // Update roughly every 30ms
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            state = 'ENDED';
+            const finalTime = Date.now() - startTime;
+            updateMainDisplay(finalTime);
+            // Record final split if not already done
+            if(stageTimes[3] === 0) stageTimes[3] = finalTime;
+            updateSplitUI();
+        }
+
+        function recordSplit() {
+            const now = Date.now();
+            const cumulativeTime = now - startTime;
+            stageTimes[currentStage] = cumulativeTime;
+            
+            if (currentStage < 3) {
+                currentStage++;
+                updateSplitUI();
+                // Optional: immediately show the split time on main display briefly
+                // updateMainDisplay(cumulativeTime); 
+            } else {
+                stopTimer();
+            }
+        }
+
+        function reset() {
+            clearInterval(timerInterval);
+            state = 'IDLE';
+            currentStage = 0;
+            stageTimes = [0, 0, 0, 0];
+            updateMainDisplay(0);
+            updateSplitUI();
+            mainDisplay.style.color = ''; // Reset color
+        }
+
+
+        // --- Interaction Handlers ---
+
+        // Handle Touch Start / Mouse Down (Pressing)
+        function handlePressStart(e) {
+            // Prevent default to stop scrolling or zooming on double taps
+            if(e.cancelable && e.type === 'touchstart') e.preventDefault();
+
+            if (state === 'IDLE' || state === 'ENDED') {
+                if(state === 'ENDED') reset();
+                
+                state = 'HOLDING';
+                mainDisplay.classList.add('color-wait'); // Turn Red
+
+                // Wait 300ms to define it as a "hold" intent
+                holdTimeout = setTimeout(() => {
+                    if (state === 'HOLDING') {
+                        state = 'READY';
+                        mainDisplay.classList.remove('color-wait');
+                        mainDisplay.classList.add('color-active'); // Turn Green
+                    }
+                }, 300);
+
+            } else if (state === 'RUNNING') {
+                recordSplit();
+            }
+        }
+
+        // Handle Touch End / Mouse Up (Releasing)
+        function handlePressEnd(e) {
+             // Prevent default
+            if(e.cancelable && e.type === 'touchend') e.preventDefault();
+
+            clearTimeout(holdTimeout); // Stop waiting for hold timer
+
+            if (state === 'READY') {
+                // Released after holding long enough -> START
+                startTimer();
+            } else if (state === 'HOLDING') {
+                // Released too early -> Reset back to idle
+                mainDisplay.classList.remove('color-wait');
+                state = 'IDLE';
+            }
+            // If RUNNING, releasing doesn't do anything (the press handled the split)
+        }
+
+
+        // --- Event Listeners attached to the whole screen container ---
+        // Using both Touch and Mouse events for broad compatibility
+        container.addEventListener('touchstart', handlePressStart, { passive: false });
+        container.addEventListener('touchend', handlePressEnd, { passive: false });
+        container.addEventListener('mousedown', handlePressStart);
+        container.addEventListener('mouseup', handlePressEnd);
+
+        // Initialize UI on load
+        reset();
+
+    </script>
+</body>
+</html>
