@@ -17,31 +17,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Mobile toggle
+  // Mobile toggle — create DOM overlay at body level to avoid stacking context issues
   if (navToggle && navLinks) {
+    let mobileOverlay = null;
+
+    function createMobileOverlay() {
+      mobileOverlay = document.createElement('div');
+      mobileOverlay.id = 'mobile-nav-overlay';
+
+      // Clone all nav links into overlay
+      const allLinks = navLinks.querySelectorAll('a');
+      allLinks.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.textContent;
+        if (link.classList.contains('active')) a.classList.add('active');
+        a.addEventListener('click', closeMobileMenu);
+        mobileOverlay.appendChild(a);
+      });
+
+      document.body.appendChild(mobileOverlay);
+      // Force reflow then add visible class for animation
+      mobileOverlay.offsetHeight;
+      mobileOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function destroyMobileOverlay() {
+      if (mobileOverlay) {
+        mobileOverlay.classList.remove('visible');
+        setTimeout(() => {
+          if (mobileOverlay && mobileOverlay.parentNode) {
+            mobileOverlay.parentNode.removeChild(mobileOverlay);
+          }
+          mobileOverlay = null;
+        }, 300);
+      }
+      document.body.style.overflow = '';
+    }
+
+    function closeMobileMenu() {
+      navLinks.classList.remove('open');
+      document.body.classList.remove('nav-open');
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '1';
+      spans[2].style.transform = '';
+      destroyMobileOverlay();
+    }
+
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
+      document.body.classList.toggle('nav-open');
       const spans = navToggle.querySelectorAll('span');
       if (navLinks.classList.contains('open')) {
         spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
         spans[1].style.opacity = '0';
         spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        createMobileOverlay();
       } else {
         spans[0].style.transform = '';
         spans[1].style.opacity = '1';
         spans[2].style.transform = '';
+        destroyMobileOverlay();
       }
-    });
-
-    // Close menu on link click
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        const spans = navToggle.querySelectorAll('span');
-        spans[0].style.transform = '';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = '';
-      });
     });
   }
 

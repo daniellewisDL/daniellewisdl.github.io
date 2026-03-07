@@ -763,6 +763,42 @@ aside.sidebar li {
   color: rgba(245,240,232,.5);
 }
 
+/* ---------- Mobile Nav Overlay (DOM element appended to body by JS) ---------- */
+#mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1a1714;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 3rem 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#mobile-nav-overlay.visible {
+  opacity: 1;
+}
+#mobile-nav-overlay a {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ivory);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+#mobile-nav-overlay a:hover,
+#mobile-nav-overlay a.active {
+  color: var(--gold);
+}
+
 /* ---------- Scroll Reveal Animations ---------- */
 .reveal {
   opacity: 0;
@@ -978,6 +1014,8 @@ aside.sidebar li {
 }
 
 /* ---------- Responsive ---------- */
+
+/* --- Tablet (max 992px) --- */
 @media (max-width: 992px) {
   .two-col,
   .two-col-prose {
@@ -993,59 +1031,359 @@ aside.sidebar li {
   aside.sidebar {
     position: static;
   }
+
+  .section {
+    padding: var(--space-3xl) var(--space-lg);
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 }
 
+/* --- Mobile (max 768px) --- */
 @media (max-width: 768px) {
-  .nav-links {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, rgba(26,23,20,.98), rgba(62,31,13,.98));
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-xl);
-    transform: translateX(100%);
-    transition: transform var(--transition-base);
+  /* Navigation — full-screen overlay menu using DOM overlay (appended to body by JS) */
+  .nav {
+    padding: 0 var(--space-md);
+    backdrop-filter: none;
   }
-  .nav-links.open {
-    transform: translateX(0);
+  .nav-inner {
+    height: 60px;
   }
-  .nav-links a {
-    font-size: 1.2rem;
-  }
-  .nav-toggle {
-    display: flex;
+  .nav-logo {
+    font-size: 1.1rem;
   }
 
+  /* Hide original nav links on mobile */
+  .nav-links {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    z-index: 10000;
+  }
+
+  /* Hero — shorter on mobile, better spacing */
+  .hero {
+    min-height: 85vh;
+    padding: 80px var(--space-md) var(--space-3xl);
+  }
+  .hero-sub {
+    min-height: 45vh;
+    padding-top: 80px;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+    margin-bottom: var(--space-sm);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--space-lg);
+  }
+  .hero-quote {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+    padding: 0 var(--space-sm);
+  }
+  .hero-content {
+    padding: 0 var(--space-sm);
+  }
+  .hero::after {
+    height: 60px;
+  }
+
+  /* Sections — reduce padding for breathing room */
+  .section {
+    padding: var(--space-2xl) var(--space-md);
+  }
+  .section-header {
+    margin-bottom: var(--space-2xl);
+  }
+  .section-header p {
+    font-size: 1rem;
+    padding: 0 var(--space-sm);
+  }
+
+  /* Body text */
+  body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  /* Cards — full-width single column */
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .card {
+    padding: var(--space-lg);
+  }
+  .card-title {
+    font-size: 1.2rem;
+  }
+  .card-text {
+    font-size: 1rem;
+  }
+
+  /* Family grid */
+  .family-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .family-card {
+    padding: var(--space-lg);
+  }
+
+  /* Timeline — single column left-aligned */
   .timeline::before {
-    left: 20px;
+    left: 16px;
+    transform: none;
   }
   .timeline-item {
     width: 100%;
-    padding-left: 50px !important;
-    padding-right: var(--space-lg) !important;
+    padding: var(--space-md) var(--space-md) var(--space-md) 44px !important;
     text-align: left !important;
   }
   .timeline-item:nth-child(even) {
     left: 0;
   }
   .timeline-item::before {
-    left: 12px !important;
+    left: 8px !important;
     right: auto !important;
+    width: 14px;
+    height: 14px;
+    top: 24px;
+  }
+  .timeline-year {
+    font-size: 1.2rem;
+  }
+  .timeline-content {
+    padding: var(--space-md);
+  }
+  .timeline-content h4 {
+    font-size: 1.05rem;
+  }
+  .timeline-content p {
+    font-size: 0.95rem;
   }
 
-  .card-grid {
-    grid-template-columns: 1fr;
+  /* Carousel — taller for longer quotes */
+  .carousel {
+    min-height: 250px;
   }
-  .family-grid {
-    grid-template-columns: 1fr;
+  .carousel-slide {
+    padding: var(--space-md);
+  }
+  .carousel-quote {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  .carousel-author {
+    font-size: 0.9rem;
   }
 
+  /* Pull quotes */
+  .pull-quote {
+    font-size: 1.2rem;
+    padding: var(--space-lg) var(--space-md);
+    margin: var(--space-2xl) auto;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    font-size: 1.1rem;
+    padding: var(--space-md) var(--space-lg);
+    margin: var(--space-lg) 0;
+  }
+  blockquote::before {
+    font-size: 3.5rem;
+    top: -5px;
+    left: 10px;
+  }
+
+  /* Prose / long-form text */
+  .prose {
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+  .prose h2 {
+    margin-top: var(--space-2xl);
+  }
+  .prose .drop-cap::first-letter {
+    font-size: 3.2rem;
+  }
+
+  /* Profile cards */
+  .profile {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+  .profile-img {
+    width: 160px;
+    height: 200px;
+    margin: 0 auto;
+  }
+  .profile-name {
+    font-size: 1.4rem;
+  }
+
+  /* Two-column layouts */
+  .two-col,
+  .two-col-prose {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  /* Sidebar */
+  aside.sidebar {
+    position: static;
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+  }
+
+  /* Footer */
+  .footer {
+    padding: var(--space-2xl) var(--space-md) var(--space-lg);
+  }
+  .footer-links {
+    gap: var(--space-md);
+  }
+  .footer-links a {
+    font-size: 0.85rem;
+  }
+  .footer-ornament {
+    font-size: 1.4rem;
+    letter-spacing: 0.3em;
+  }
+  .footer-copy {
+    font-size: 0.8rem;
+  }
+
+  /* Filter buttons — scrollable row */
+  .works-filter {
+    gap: var(--space-sm);
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-sm);
+    flex-wrap: nowrap;
+  }
+  .filter-btn {
+    font-size: 0.85rem;
+    padding: var(--space-xs) var(--space-md);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Buttons */
+  .btn {
+    font-size: 0.9rem;
+    padding: var(--space-sm) var(--space-lg);
+  }
+
+  /* Figure images */
+  .fig img {
+    border-width: 3px;
+  }
+
+  /* Dividers */
+  .divider-ornate {
+    margin: var(--space-2xl) auto;
+  }
+}
+
+/* --- Small phones (max 480px) --- */
+@media (max-width: 480px) {
+  .hero {
+    min-height: 75vh;
+    padding: 70px var(--space-sm) var(--space-2xl);
+  }
+  .hero-sub {
+    min-height: 40vh;
+    padding-top: 70px;
+  }
   .hero-title {
-    font-size: 2.4rem;
+    font-size: clamp(1.7rem, 10vw, 2.4rem);
+  }
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  .hero-quote {
+    font-size: 0.85rem;
+  }
+
+  .section {
+    padding: var(--space-xl) var(--space-sm);
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+  }
+  h3 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+  }
+
+  .card {
+    padding: var(--space-md);
+  }
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .carousel {
+    min-height: 280px;
+  }
+  .carousel-quote {
+    font-size: 1rem;
+  }
+
+  .profile-img {
+    width: 130px;
+    height: 165px;
+  }
+
+  .pull-quote {
+    font-size: 1.05rem;
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .prose .drop-cap::first-letter {
+    font-size: 2.6rem;
+  }
+
+  blockquote {
+    font-size: 0.95rem;
+    padding: var(--space-sm) var(--space-md);
+  }
+  blockquote::before {
+    font-size: 2.5rem;
+  }
+
+  .timeline-item {
+    padding-left: 38px !important;
+  }
+  .timeline::before {
+    left: 12px;
+  }
+  .timeline-item::before {
+    left: 5px !important;
+    width: 12px;
+    height: 12px;
+  }
+
+  .nav-logo {
+    font-size: 0.95rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 }
 
