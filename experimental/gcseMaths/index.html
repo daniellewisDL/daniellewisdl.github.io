@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Mastery — the most comprehensive interactive revision resource for UK GCSE Mathematics. Learn Number, Algebra, Geometry, Probability, Statistics and more.">
+  <title>GCSE Maths Mastery — Your Complete Revision Hub</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">π</div>
+        GCSE Maths
+      </div>
+      <nav></nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Hero -->
+      <section class="hero fade-in">
+        <h1>GCSE Maths Mastery</h1>
+        <p class="subtitle">Master every topic in the UK GCSE Mathematics specification with interactive lessons, worked examples, quizzes, and rewards.</p>
+      </section>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar fade-in">
+        <div class="stat-item">
+          <div class="stat-value" id="home-xp">0</div>
+          <div class="stat-label">XP Earned</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="home-quizzes">0</div>
+          <div class="stat-label">Quizzes Done</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="home-badges">0</div>
+          <div class="stat-label">Badges</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Topic Areas</div>
+        </div>
+      </div>
+
+      <!-- Topic Cards -->
+      <h2 style="text-align:center;margin-top:3rem;">Explore Topics</h2>
+      <div class="topic-grid fade-in">
+
+        <a href="number.html" class="topic-card" style="--card-accent:var(--color-number)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-number),#60a5fa);color:#fff">🔢</div>
+          <h3>1. Number</h3>
+          <p>Integers, fractions, decimals, percentages, powers, roots, standard form, and accuracy.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-number" style="width:0%"></div></div>
+        </a>
+
+        <a href="algebra.html" class="topic-card" style="--card-accent:var(--color-algebra)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-algebra),#a78bfa);color:#fff">📐</div>
+          <h3>2. Algebra</h3>
+          <p>Expressions, equations, graphs, functions, sequences, inequalities, and proof.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-algebra" style="width:0%"></div></div>
+        </a>
+
+        <a href="ratio.html" class="topic-card" style="--card-accent:var(--color-ratio)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-ratio),#fbbf24);color:#fff">⚖️</div>
+          <h3>3. Ratio, Proportion & Rates</h3>
+          <p>Ratios, direct & inverse proportion, percentages, compound measures, growth & decay.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-ratio" style="width:0%"></div></div>
+        </a>
+
+        <a href="geometry.html" class="topic-card" style="--card-accent:var(--color-geometry)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-geometry),#34d399);color:#fff">📏</div>
+          <h3>4. Geometry & Measures</h3>
+          <p>Shapes, angles, transformations, trigonometry, circles, vectors, constructions, and mensuration.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-geometry" style="width:0%"></div></div>
+        </a>
+
+        <a href="probability.html" class="topic-card" style="--card-accent:var(--color-probability)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-probability),#f87171);color:#fff">🎲</div>
+          <h3>5. Probability</h3>
+          <p>Experimental & theoretical probability, tree diagrams, Venn diagrams, conditional probability.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-probability" style="width:0%"></div></div>
+        </a>
+
+        <a href="statistics.html" class="topic-card" style="--card-accent:var(--color-statistics)">
+          <div class="topic-icon" style="background:linear-gradient(135deg,var(--color-statistics),#22d3ee);color:#fff">📊</div>
+          <h3>6. Statistics</h3>
+          <p>Data representation, averages, spread, sampling, histograms, scatter graphs & correlation.</p>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="prog-statistics" style="width:0%"></div></div>
+        </a>
+      </div>
+
+      <!-- Daily Challenge -->
+      <div class="daily-challenge fade-in">
+        <h3>⚡ Daily Challenge</h3>
+        <p style="margin:.75rem 0 1.25rem;color:var(--text-secondary)">Test yourself with a quick mixed question!</p>
+        <div id="daily-quiz" class="quiz-widget" style="border:none;padding:0;margin:0;background:none;"></div>
+      </div>
+
+      <!-- Badges Section -->
+      <h2 style="text-align:center;margin-top:3rem;">🏆 Your Badges</h2>
+      <div class="badge-container fade-in" id="home-badges-container" style="justify-content:center;margin-top:1rem;"></div>
+
+      <!-- Footer -->
+      <div style="text-align:center;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border-glass);">
+        <p style="font-size:.82rem;color:var(--text-muted);">GCSE Maths Mastery · Covers the complete AQA / Edexcel / OCR GCSE specification</p>
+        <p style="font-size:.78rem;color:var(--text-muted);margin-top:.3rem;">Built for students who want to truly understand mathematics 🎯</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Update stats
+      const progress = getProgress();
+      document.getElementById('home-quizzes').textContent = Object.keys(progress.quizScores).length;
+      document.getElementById('home-badges').textContent = progress.badges.length;
+
+      // Update progress bars
+      const topics = ['number', 'algebra', 'ratio', 'geometry', 'probability', 'statistics'];
+      const totals = { number: 14, algebra: 16, ratio: 8, geometry: 11, probability: 5, statistics: 5 };
+      topics.forEach(t => {
+        const bar = document.getElementById(`prog-${t}`);
+        if (bar) bar.style.width = getTopicProgress(t, totals[t]) + '%';
+      });
+
+      // Show badges
+      const container = document.getElementById('home-badges-container');
+      BADGES.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `badge ${progress.badges.includes(b.id) ? 'earned' : ''}`;
+        div.title = b.desc;
+        div.innerHTML = `${b.icon} ${b.name}`;
+        container.appendChild(div);
+      });
+
+      // Daily challenge
+      const dailyQuestions = [
+        { type: 'multiple', question: 'What is 15% of 240?', options: ['36', '24', '30', '40'], answer: '36', explanation: '15% × 240 = 0.15 × 240 = 36' },
+        { type: 'multiple', question: 'Simplify: 3x + 2y − x + 5y', options: ['2x + 7y', '4x + 7y', '2x + 3y', '3x + 7y'], answer: '2x + 7y', explanation: '3x − x = 2x and 2y + 5y = 7y' },
+        { type: 'multiple', question: 'What is the area of a triangle with base 8 cm and height 5 cm?', options: ['20 cm²', '40 cm²', '13 cm²', '80 cm²'], answer: '20 cm²', explanation: 'Area = ½ × base × height = ½ × 8 × 5 = 20 cm²' },
+        { type: 'multiple', question: 'A fair dice is rolled. What is P(even number)?', options: ['1/2', '1/3', '1/6', '2/3'], answer: '1/2', explanation: 'Even numbers: 2, 4, 6 → 3 out of 6 = 1/2' },
+        { type: 'multiple', question: 'What is the mean of 3, 7, 8, 10, 12?', options: ['8', '7', '10', '9'], answer: '8', explanation: '(3+7+8+10+12) ÷ 5 = 40 ÷ 5 = 8' },
+        { type: 'multiple', question: 'Express 0.75 as a fraction in simplest form.', options: ['3/4', '7/5', '75/100', '15/20'], answer: '3/4', explanation: '0.75 = 75/100 = 3/4' },
+        { type: 'multiple', question: 'What is 2³ × 2²?', options: ['2⁵ = 32', '2⁶ = 64', '4⁵', '2¹ = 2'], answer: '2⁵ = 32', explanation: 'When multiplying powers with the same base, add the indices: 2³⁺² = 2⁵ = 32' },
+      ];
+      // Pick a "daily" question based on day of year
+      const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+      const todayQ = dailyQuestions[dayOfYear % dailyQuestions.length];
+      createQuiz('daily-quiz', [todayQ], { quizId: 'daily-challenge', xpPerQuestion: 25 });
+    });
+  </script>
+</body>
+</html>

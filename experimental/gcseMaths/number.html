@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Number — master integers, fractions, decimals, percentages, powers, roots, standard form, HCF, LCM, and accuracy with interactive lessons and quizzes.">
+  <title>Number — GCSE Maths Mastery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="topic-number">
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-icon">π</div> GCSE Maths</div>
+      <nav></nav>
+    </aside>
+    <main class="main-content">
+
+      <h1>🔢 Number</h1>
+      <p>Master the fundamentals of number — from ordering integers and decimals to standard form and bounds.</p>
+
+      <div class="subtopic-nav">
+        <a href="#ordering">Ordering Numbers</a>
+        <a href="#operations">Four Operations</a>
+        <a href="#inverse">Inverse & BIDMAS</a>
+        <a href="#primes">Primes & Factors</a>
+        <a href="#systematic">Systematic Listing</a>
+        <a href="#powers">Powers & Roots</a>
+        <a href="#indices">Indices</a>
+        <a href="#surds">Surds & Exact Values</a>
+        <a href="#standard-form">Standard Form</a>
+        <a href="#decimals">Recurring Decimals</a>
+        <a href="#fractions-percent">Fractions & Percentages</a>
+        <a href="#measures">Standard Measures</a>
+        <a href="#estimation">Estimation</a>
+        <a href="#accuracy">Accuracy & Bounds</a>
+      </div>
+
+      <!-- =============== 1.1 ORDERING NUMBERS =============== -->
+      <section id="ordering" class="topic-section fade-in">
+        <h2>1.1 Ordering Positive & Negative Numbers</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>You can order integers, decimals, and fractions using a <strong>number line</strong>. Numbers increase from left to right. Use inequality symbols: <span class="math">&lt;</span> (less than), <span class="math">&gt;</span> (greater than), <span class="math">≤</span> (less than or equal), <span class="math">≥</span> (greater than or equal), <span class="math">=</span> (equal).</p>
+        </div>
+
+        <div class="explanation-tabs">
+          <button class="active" data-tab="visual">🎨 Visual</button>
+          <button data-tab="steps">📝 Step-by-Step</button>
+          <button data-tab="example">✏️ Worked Example</button>
+        </div>
+
+        <div class="explanation-panel active" data-panel="visual">
+          <p>On a number line, negative numbers sit to the left of zero, and positive numbers to the right. The further left, the smaller the value.</p>
+          <div class="widget-container">
+            <canvas id="numberline1" width="500" height="80"></canvas>
+          </div>
+          <p>Notice: <span class="math">−3 &lt; −1 &lt; 0 &lt; 2 &lt; 4.5</span></p>
+        </div>
+        <div class="explanation-panel" data-panel="steps">
+          <h4>How to order numbers:</h4>
+          <ol style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li>If comparing negatives, remember: the bigger the digit, the <em>smaller</em> the value (e.g., −5 &lt; −2).</li>
+            <li>Convert fractions to decimals if needed to compare easily.</li>
+            <li>Line them up on a number line or by place value.</li>
+            <li>Use the correct inequality symbol between each pair.</li>
+          </ol>
+        </div>
+        <div class="explanation-panel" data-panel="example">
+          <div class="worked-example">
+            <h4>✏️ Worked Example</h4>
+            <p><strong>Put in ascending order:</strong> <span class="math">−2, 0.5, −0.8, 3, 1¼</span></p>
+            <div class="step hidden-step">Step 1: Convert 1¼ to a decimal → 1.25</div>
+            <div class="step hidden-step">Step 2: Place on number line: −2, −0.8, 0.5, 1.25, 3</div>
+            <div class="step hidden-step">Step 3: Answer: −2 &lt; −0.8 &lt; 0.5 &lt; 1.25 &lt; 3 ✓</div>
+          </div>
+        </div>
+
+        <div id="quiz-ordering" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.2 FOUR OPERATIONS =============== -->
+      <section id="operations" class="topic-section fade-in">
+        <h2>1.2 Four Operations & Place Value</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>The four operations are <strong>addition (+), subtraction (−), multiplication (×),</strong> and <strong>division (÷)</strong>. You must be able to apply formal written methods (column methods, long multiplication, long/short division) to integers, decimals, and fractions.</p>
+        </div>
+
+        <h3>Place Value</h3>
+        <p>Every digit in a number has a <strong>place value</strong>. For example, in <span class="math">4 827.36</span>:</p>
+        <div class="card accent-border">
+          <table style="width:100%;color:var(--text-secondary);font-size:.9rem;">
+            <tr><td><strong>Thousands</strong></td><td><strong>Hundreds</strong></td><td><strong>Tens</strong></td><td><strong>Units</strong></td><td>.</td><td><strong>Tenths</strong></td><td><strong>Hundredths</strong></td></tr>
+            <tr style="font-size:1.3rem;color:var(--accent);font-weight:700"><td>4</td><td>8</td><td>2</td><td>7</td><td>.</td><td>3</td><td>6</td></tr>
+          </table>
+        </div>
+
+        <h3>Adding & Subtracting Decimals</h3>
+        <p>Line up the decimal points, then add/subtract column by column.</p>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Calculate:</strong> <span class="math">34.7 + 8.56</span></p>
+          <div class="step hidden-step">Step 1: Write it as a column — line up the decimal points. 34.70 + 8.56</div>
+          <div class="step hidden-step">Step 2: Add hundredths: 0 + 6 = 6</div>
+          <div class="step hidden-step">Step 3: Add tenths: 7 + 5 = 12, write 2 carry 1</div>
+          <div class="step hidden-step">Step 4: Add units: 4 + 8 + 1 = 13, write 3 carry 1</div>
+          <div class="step hidden-step">Step 5: Add tens: 3 + 0 + 1 = 4</div>
+          <div class="step hidden-step">Step 6: Answer = 43.26 ✓</div>
+        </div>
+
+        <h3>Multiplying & Dividing Fractions</h3>
+        <p><strong>Multiply:</strong> Multiply numerators together and denominators together. <strong>Divide:</strong> Flip the second fraction (reciprocal) and multiply.</p>
+        <div class="math-block">a/b × c/d = (a×c)/(b×d)   |   a/b ÷ c/d = a/b × d/c</div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Calculate:</strong> <span class="math">²⁄₃ × ⁴⁄₅</span></p>
+          <div class="step hidden-step">Step 1: Multiply numerators: 2 × 4 = 8</div>
+          <div class="step hidden-step">Step 2: Multiply denominators: 3 × 5 = 15</div>
+          <div class="step hidden-step">Step 3: Answer = 8/15 (already in simplest form) ✓</div>
+        </div>
+
+        <div id="quiz-operations" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.3 INVERSE & BIDMAS =============== -->
+      <section id="inverse" class="topic-section fade-in">
+        <h2>1.3 Inverse Operations & Order of Operations</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>BIDMAS/BODMAS</strong> tells you the order to perform operations:<br>
+          <strong>B</strong>rackets → <strong>I</strong>ndices (powers/roots) → <strong>D</strong>ivision & <strong>M</strong>ultiplication → <strong>A</strong>ddition & <strong>S</strong>ubtraction<br>
+          Work left to right when operations are of equal priority.</p>
+        </div>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Inverse Operations</h4>
+          <p><strong>Addition ↔ Subtraction</strong> and <strong>Multiplication ↔ Division</strong> are inverse operations. Use them to check answers and rearrange equations.</p>
+          <p>Also: <strong>Squaring ↔ Square root</strong>, <strong>Cubing ↔ Cube root</strong></p>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Calculate:</strong> <span class="math">3 + 4 × 2² − (6 ÷ 3)</span></p>
+          <div class="step hidden-step">Step 1: Brackets first → 6 ÷ 3 = 2. Expression becomes: 3 + 4 × 2² − 2</div>
+          <div class="step hidden-step">Step 2: Indices → 2² = 4. Expression becomes: 3 + 4 × 4 − 2</div>
+          <div class="step hidden-step">Step 3: Multiplication → 4 × 4 = 16. Expression becomes: 3 + 16 − 2</div>
+          <div class="step hidden-step">Step 4: Left to right → 3 + 16 = 19, then 19 − 2 = 17</div>
+          <div class="step hidden-step">Answer: 17 ✓</div>
+        </div>
+
+        <div id="quiz-inverse" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.4 PRIMES & FACTORS =============== -->
+      <section id="primes" class="topic-section fade-in">
+        <h2>1.4 Prime Numbers, Factors, HCF & LCM</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>prime number</strong> has exactly two factors: 1 and itself. The first primes are 2, 3, 5, 7, 11, 13, 17, 19, 23, 29…<br>
+          <strong>Factors</strong> (divisors) divide exactly into a number. <strong>Multiples</strong> are the times-table values of a number.</p>
+        </div>
+
+        <h3>HCF and LCM</h3>
+        <p><strong>HCF</strong> (Highest Common Factor): the largest number that divides into two or more numbers.<br>
+        <strong>LCM</strong> (Lowest Common Multiple): the smallest number that is a multiple of two or more numbers.</p>
+
+        <h3>Prime Factorisation</h3>
+        <p>Every integer greater than 1 can be written as a product of prime factors. This is the <strong>Unique Factorisation Theorem</strong>.</p>
+        <div class="math-block">60 = 2² × 3 × 5</div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Using Prime Factorisation for HCF and LCM</h4>
+          <p><strong>Find the HCF and LCM of 24 and 36.</strong></p>
+          <div class="step hidden-step">Step 1: Prime factorise 24 = 2³ × 3</div>
+          <div class="step hidden-step">Step 2: Prime factorise 36 = 2² × 3²</div>
+          <div class="step hidden-step">Step 3: HCF = take the lowest power of each common prime = 2² × 3 = 12</div>
+          <div class="step hidden-step">Step 4: LCM = take the highest power of each prime = 2³ × 3² = 72</div>
+          <div class="step hidden-step">Answer: HCF = 12, LCM = 72 ✓</div>
+        </div>
+
+        <div class="explanation-tabs">
+          <button class="active" data-tab="visual-pf">🎨 Visual Factor Tree</button>
+          <button data-tab="venn-pf">🔵 Venn Diagram Method</button>
+        </div>
+        <div class="explanation-panel active" data-panel="visual-pf">
+          <div class="card">
+            <h4 style="margin-top:0">Factor Tree for 60</h4>
+            <pre style="color:var(--text-secondary);font-family:'JetBrains Mono';text-align:center;line-height:1.8;">
+        60
+       /  \
+      6    10
+     / \   / \
+    2   3 2   5
+
+  60 = 2 × 3 × 2 × 5 = 2² × 3 × 5
+            </pre>
+          </div>
+        </div>
+        <div class="explanation-panel" data-panel="venn-pf">
+          <div class="card">
+            <h4 style="margin-top:0">Venn Diagram Method for HCF and LCM</h4>
+            <p>Place prime factors in a Venn diagram. Shared factors go in the overlap.</p>
+            <pre style="color:var(--text-secondary);font-family:'JetBrains Mono';text-align:center;line-height:1.8;">
+    24           36
+   ┌─────┬──────┬─────┐
+   │  2  │ 2,2,3│  3  │
+   └─────┴──────┴─────┘
+   HCF = overlap = 2×2×3 = 12
+   LCM = all = 2×2×2×3×3 = 72
+            </pre>
+          </div>
+        </div>
+
+        <div id="quiz-primes" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.5 SYSTEMATIC LISTING =============== -->
+      <section id="systematic" class="topic-section fade-in">
+        <h2>1.5 Systematic Listing Strategies</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>When asked to list all possible outcomes or combinations, use a <strong>systematic method</strong> so you don't miss any. List in an ordered way (e.g., alphabetical, numerical).</p>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>A meal deal lets you pick one starter (Soup, Salad) and one main (Chicken, Fish, Pasta). List all combinations.</strong></p>
+          <div class="step hidden-step">Soup + Chicken, Soup + Fish, Soup + Pasta</div>
+          <div class="step hidden-step">Salad + Chicken, Salad + Fish, Salad + Pasta</div>
+          <div class="step hidden-step">Total = 2 × 3 = 6 combinations ✓</div>
+        </div>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Product Rule for Counting <span class="higher-tier">Higher</span></h4>
+          <p>If there are <span class="math">m</span> ways to do one thing and <span class="math">n</span> ways to do another, total ways = <span class="math">m × n</span>.</p>
+          <p><strong>Example:</strong> 4 shirts and 3 trousers → 4 × 3 = 12 outfits</p>
+        </div>
+
+        <div id="quiz-systematic" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.6 POWERS & ROOTS =============== -->
+      <section id="powers" class="topic-section fade-in">
+        <h2>1.6 Powers & Roots</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Powers</strong> (indices) represent repeated multiplication. A <strong>root</strong> is the inverse of a power.</p>
+          <div class="math-block">3⁴ = 3 × 3 × 3 × 3 = 81     |     ∜81 = 3</div>
+        </div>
+
+        <h3>Key Powers to Know</h3>
+        <div class="card">
+          <table style="width:100%;color:var(--text-secondary);font-size:.9rem;text-align:center;">
+            <tr><th>n</th><th>n²</th><th>n³</th></tr>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>2</td><td>4</td><td>8</td></tr>
+            <tr><td>3</td><td>9</td><td>27</td></tr>
+            <tr><td>4</td><td>16</td><td>64</td></tr>
+            <tr><td>5</td><td>25</td><td>125</td></tr>
+            <tr><td>6</td><td>36</td><td>216</td></tr>
+            <tr><td>7</td><td>49</td><td>—</td></tr>
+            <tr><td>8</td><td>64</td><td>—</td></tr>
+            <tr><td>9</td><td>81</td><td>—</td></tr>
+            <tr><td>10</td><td>100</td><td>1000</td></tr>
+            <tr><td>12</td><td>144</td><td>—</td></tr>
+            <tr><td>15</td><td>225</td><td>—</td></tr>
+          </table>
+        </div>
+
+        <h3>Estimating Powers & Roots <span class="higher-tier">Higher</span></h3>
+        <p>To estimate, say, <span class="math">√50</span>: since 7² = 49 and 8² = 64, <span class="math">√50 ≈ 7.1</span>.</p>
+
+        <div id="quiz-powers" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.7 INDICES =============== -->
+      <section id="indices" class="topic-section fade-in">
+        <h2>1.7 Index Laws</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept — The Laws of Indices</h4>
+          <div class="math-block">
+aᵐ × aⁿ = aᵐ⁺ⁿ    |    aᵐ ÷ aⁿ = aᵐ⁻ⁿ    |    (aᵐ)ⁿ = aᵐⁿ
+a⁰ = 1    |    a⁻ⁿ = 1/aⁿ    |    a^(1/n) = ⁿ√a
+          </div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Simplify:</strong> <span class="math">2⁴ × 2³ ÷ 2⁵</span></p>
+          <div class="step hidden-step">Step 1: 2⁴ × 2³ = 2⁴⁺³ = 2⁷ (add indices when multiplying)</div>
+          <div class="step hidden-step">Step 2: 2⁷ ÷ 2⁵ = 2⁷⁻⁵ = 2² (subtract indices when dividing)</div>
+          <div class="step hidden-step">Step 3: 2² = 4 ✓</div>
+        </div>
+
+        <h3>Fractional & Negative Indices <span class="higher-tier">Higher</span></h3>
+        <div class="card accent-border">
+          <p><span class="math">a^(m/n) = ⁿ√(aᵐ)</span> — Take the root first, then raise to the power.</p>
+          <p><strong>Example:</strong> <span class="math">8^(2/3) = (³√8)² = 2² = 4</span></p>
+          <p><span class="math">a⁻ⁿ = 1/aⁿ</span> — A negative index means "one over".</p>
+          <p><strong>Example:</strong> <span class="math">5⁻² = 1/5² = 1/25</span></p>
+        </div>
+
+        <div id="quiz-indices" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.8 SURDS & EXACT VALUES =============== -->
+      <section id="surds" class="topic-section fade-in">
+        <h2>1.8 Exact Calculations: Surds & π <span class="higher-tier">Higher</span></h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>An <strong>exact value</strong> uses surds (like √2), π, or fractions instead of rounded decimals. Surds are irrational numbers left in root form.</p>
+        </div>
+
+        <h3>Simplifying Surds</h3>
+        <p>Find a square number factor and split the root.</p>
+        <div class="math-block">√12 = √(4 × 3) = √4 × √3 = 2√3</div>
+        <div class="math-block">√72 = √(36 × 2) = 6√2</div>
+
+        <h3>Rules for Surds</h3>
+        <div class="card accent-border">
+          <p><span class="math">√a × √b = √(ab)</span></p>
+          <p><span class="math">√a ÷ √b = √(a/b)</span></p>
+          <p><span class="math">(√a)² = a</span></p>
+        </div>
+
+        <h3>Rationalising the Denominator</h3>
+        <p>Remove the surd from the denominator by multiplying top and bottom by the surd.</p>
+        <div class="math-block">1/√3 = 1/√3 × √3/√3 = √3/3</div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Simplify:</strong> <span class="math">(3 + √5)(3 − √5)</span></p>
+          <div class="step hidden-step">Step 1: Use difference of two squares: (a+b)(a−b) = a² − b²</div>
+          <div class="step hidden-step">Step 2: = 3² − (√5)² = 9 − 5 = 4 ✓</div>
+        </div>
+
+        <div id="quiz-surds" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.9 STANDARD FORM =============== -->
+      <section id="standard-form" class="topic-section fade-in">
+        <h2>1.9 Standard Form</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Standard form</strong> writes numbers as <span class="math">A × 10ⁿ</span> where <span class="math">1 ≤ A &lt; 10</span> and n is an integer.</p>
+          <p>Use it for very large or very small numbers.</p>
+        </div>
+
+        <div class="card accent-border">
+          <p><strong>Large numbers:</strong> <span class="math">4 500 000 = 4.5 × 10⁶</span> (move decimal 6 places left)</p>
+          <p><strong>Small numbers:</strong> <span class="math">0.00032 = 3.2 × 10⁻⁴</span> (move decimal 4 places right)</p>
+        </div>
+
+        <h3>Calculating with Standard Form</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Calculate:</strong> <span class="math">(3 × 10⁴) × (2 × 10³)</span></p>
+          <div class="step hidden-step">Step 1: Multiply the numbers: 3 × 2 = 6</div>
+          <div class="step hidden-step">Step 2: Add the powers: 10⁴ × 10³ = 10⁷</div>
+          <div class="step hidden-step">Step 3: Answer = 6 × 10⁷ ✓</div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Calculate:</strong> <span class="math">(8 × 10⁵) ÷ (4 × 10²)</span></p>
+          <div class="step hidden-step">Step 1: Divide the numbers: 8 ÷ 4 = 2</div>
+          <div class="step hidden-step">Step 2: Subtract the powers: 10⁵ ÷ 10² = 10³</div>
+          <div class="step hidden-step">Step 3: Answer = 2 × 10³ = 2000 ✓</div>
+        </div>
+
+        <div id="quiz-standard-form" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.10 RECURRING DECIMALS =============== -->
+      <section id="decimals" class="topic-section fade-in">
+        <h2>1.10 Terminating & Recurring Decimals</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>terminating decimal</strong> ends: 0.25, 0.375. A <strong>recurring decimal</strong> repeats forever: 0.333... = 0.3̇</p>
+          <p>A fraction terminates if its denominator (in simplest form) has only 2s and 5s as prime factors.</p>
+        </div>
+
+        <h3>Converting Recurring Decimals to Fractions <span class="higher-tier">Higher</span></h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Convert 0.363636... to a fraction.</strong></p>
+          <div class="step hidden-step">Step 1: Let x = 0.363636...</div>
+          <div class="step hidden-step">Step 2: 100x = 36.363636... (multiply by 100 because 2 digits repeat)</div>
+          <div class="step hidden-step">Step 3: 100x − x = 36.3636... − 0.3636... = 36</div>
+          <div class="step hidden-step">Step 4: 99x = 36 → x = 36/99 = 4/11 ✓</div>
+        </div>
+
+        <div id="quiz-decimals" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.11 FRACTIONS & PERCENTAGES =============== -->
+      <section id="fractions-percent" class="topic-section fade-in">
+        <h2>1.11 Fractions & Percentages as Operators</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Fractions, decimals, and percentages are interchangeable:</p>
+          <div class="math-block">1/4 = 0.25 = 25%    |    1/3 ≈ 0.333... = 33.3̇%    |    3/5 = 0.6 = 60%</div>
+        </div>
+
+        <h3>Using Fractions & Percentages as Operators</h3>
+        <p>"Find ²⁄₅ of 60" means <span class="math">2/5 × 60 = 24</span>.</p>
+        <p>"Find 35% of 200" means <span class="math">0.35 × 200 = 70</span>.</p>
+
+        <h3>Key Fraction-Decimal-Percentage Equivalents</h3>
+        <div class="card">
+          <table style="width:100%;color:var(--text-secondary);font-size:.88rem;text-align:center;">
+            <tr><th>Fraction</th><th>Decimal</th><th>Percentage</th></tr>
+            <tr><td>1/2</td><td>0.5</td><td>50%</td></tr>
+            <tr><td>1/4</td><td>0.25</td><td>25%</td></tr>
+            <tr><td>3/4</td><td>0.75</td><td>75%</td></tr>
+            <tr><td>1/5</td><td>0.2</td><td>20%</td></tr>
+            <tr><td>1/10</td><td>0.1</td><td>10%</td></tr>
+            <tr><td>1/3</td><td>0.3̇</td><td>33.3̇%</td></tr>
+            <tr><td>1/8</td><td>0.125</td><td>12.5%</td></tr>
+          </table>
+        </div>
+
+        <div id="quiz-fractions" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.12 STANDARD MEASURES =============== -->
+      <section id="measures" class="topic-section fade-in">
+        <h2>1.12 Standard Measures & Units</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>You must know and convert between standard units of mass, length, time, and money.</p>
+        </div>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Key Conversions</h4>
+          <p><strong>Length:</strong> 10 mm = 1 cm, 100 cm = 1 m, 1000 m = 1 km</p>
+          <p><strong>Mass:</strong> 1000 g = 1 kg, 1000 kg = 1 tonne</p>
+          <p><strong>Capacity:</strong> 1000 ml = 1 litre, 100 cl = 1 litre</p>
+          <p><strong>Time:</strong> 60 s = 1 min, 60 min = 1 hr, 24 hr = 1 day</p>
+        </div>
+
+        <h3>Compound Units</h3>
+        <p><strong>Speed</strong> = distance/time (m/s, km/h). <strong>Density</strong> = mass/volume (g/cm³, kg/m³).</p>
+
+        <div id="quiz-measures" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.13 ESTIMATION =============== -->
+      <section id="estimation" class="topic-section fade-in">
+        <h2>1.13 Approximation & Estimation</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>To <strong>estimate</strong> a calculation, round each number to 1 significant figure and then calculate.</p>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Estimate:</strong> <span class="math">(4.87 × 21.3) ÷ 0.52</span></p>
+          <div class="step hidden-step">Step 1: Round to 1 s.f.: 5 × 20 ÷ 0.5</div>
+          <div class="step hidden-step">Step 2: 5 × 20 = 100</div>
+          <div class="step hidden-step">Step 3: 100 ÷ 0.5 = 200</div>
+          <div class="step hidden-step">Estimated answer ≈ 200 (actual ≈ 199.5) ✓</div>
+        </div>
+
+        <div id="quiz-estimation" class="quiz-widget"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- =============== 1.14 ACCURACY & BOUNDS =============== -->
+      <section id="accuracy" class="topic-section fade-in">
+        <h2>1.14 Accuracy, Rounding & Bounds</h2>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Rounding:</strong> Look at the next digit. If it's 5 or more, round up; otherwise round down.</p>
+          <p><strong>Significant figures (s.f.):</strong> Count from the first non-zero digit. Leading zeros don't count.</p>
+        </div>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Examples of Rounding</h4>
+          <p>4.372 → 4.37 (2 d.p.) → 4.4 (1 d.p.) → 4 (nearest integer)</p>
+          <p>0.04823 → 0.048 (2 s.f.) → 0.05 (1 s.f.)</p>
+        </div>
+
+        <h3>Error Intervals</h3>
+        <p>A value rounded to a certain degree has an <strong>error interval</strong> showing the range it could be.</p>
+        <div class="math-block">A length measured as 7.3 cm (to 1 d.p.) → 7.25 ≤ length &lt; 7.35</div>
+
+        <h3>Upper & Lower Bounds <span class="higher-tier">Higher</span></h3>
+        <p>The <strong>lower bound</strong> is the smallest value that rounds to the given value. The <strong>upper bound</strong> is the largest.</p>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>A rectangle has length 5.4 cm (1 d.p.) and width 3.2 cm (1 d.p.). Find the bounds of its area.</strong></p>
+          <div class="step hidden-step">Step 1: Length bounds: 5.35 ≤ l &lt; 5.45</div>
+          <div class="step hidden-step">Step 2: Width bounds: 3.15 ≤ w &lt; 3.25</div>
+          <div class="step hidden-step">Step 3: Min area = 5.35 × 3.15 = 16.8525 cm²</div>
+          <div class="step hidden-step">Step 4: Max area = 5.45 × 3.25 = 17.7125 cm²</div>
+          <div class="step hidden-step">Answer: 16.8525 ≤ Area &lt; 17.7125 cm² ✓</div>
+        </div>
+
+        <div id="quiz-accuracy" class="quiz-widget"></div>
+      </section>
+
+      <!-- =============== SECTION QUIZ =============== -->
+      <div class="section-divider"></div>
+      <section class="fade-in">
+        <h2>🏆 Number — Section Quiz</h2>
+        <p>Test everything you've learned in this section!</p>
+        <div id="quiz-number-final" class="quiz-widget"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Canvas: Number line for ordering
+      drawNumberLine('numberline1', -4, 5, [
+        { value: -3, label: '−3', color: '#ef4444' },
+        { value: -1, label: '−1', color: '#f59e0b' },
+        { value: 0, label: '0', color: '#94a3b8' },
+        { value: 2, label: '2', color: '#3b82f6' },
+        { value: 4.5, label: '4.5', color: '#10b981' },
+      ]);
+
+      // Quizzes
+      createQuiz('quiz-ordering', [
+        { type: 'multiple', question: 'Which symbol goes in the gap? −3 ___ −1', options: ['<', '>', '=', '≤'], answer: '<', explanation: '−3 is further left on the number line, so −3 < −1.' },
+        { type: 'multiple', question: 'Put in order from smallest: 0.5, −2, 1.3, −0.7', options: ['−2, −0.7, 0.5, 1.3', '−0.7, −2, 0.5, 1.3', '0.5, 1.3, −0.7, −2', '1.3, 0.5, −0.7, −2'], answer: '−2, −0.7, 0.5, 1.3', explanation: 'Negative numbers are smallest; −2 < −0.7 < 0.5 < 1.3.' },
+        { type: 'multiple', question: 'Which is larger: ³⁄₄ or ⁷⁄₁₀?', options: ['³⁄₄', '⁷⁄₁₀', 'They are equal'], answer: '³⁄₄', explanation: '³⁄₄ = 0.75 and ⁷⁄₁₀ = 0.70, so ³⁄₄ is larger.' },
+      ], { quizId: 'number-ordering', topicId: 'number', sectionId: 'ordering' });
+
+      createQuiz('quiz-operations', [
+        { type: 'fill', question: 'Calculate: 34.7 + 8.56 = ?', answer: ['43.26'], explanation: 'Line up decimals: 34.70 + 8.56 = 43.26' },
+        { type: 'fill', question: 'Calculate: ²⁄₃ × ⁴⁄₅ = ? (write as a fraction e.g. 8/15)', answer: ['8/15'], explanation: 'Multiply tops: 2×4=8, multiply bottoms: 3×5=15 → 8/15' },
+        { type: 'multiple', question: 'Calculate: 1³⁄₄ ÷ ²⁄₃', options: ['2⁵⁄₈', '1¹⁄₆', '7/6', '2¹⁄₄'], answer: '2⁵⁄₈', explanation: '1³⁄₄ = 7/4. 7/4 ÷ 2/3 = 7/4 × 3/2 = 21/8 = 2⁵⁄₈' },
+      ], { quizId: 'number-operations', topicId: 'number', sectionId: 'operations' });
+
+      createQuiz('quiz-inverse', [
+        { type: 'fill', question: 'Calculate using BIDMAS: 5 + 3 × 4 = ?', answer: ['17'], explanation: 'Multiply first: 3 × 4 = 12, then add: 5 + 12 = 17' },
+        { type: 'fill', question: 'Calculate: (8 + 2)² ÷ 5 = ?', answer: ['20'], explanation: 'Brackets: 10. Indices: 10² = 100. Divide: 100 ÷ 5 = 20' },
+        { type: 'multiple', question: 'What is the inverse of squaring?', options: ['Square rooting', 'Halving', 'Doubling', 'Cubing'], answer: 'Square rooting', explanation: 'Squaring and square rooting are inverse operations.' },
+      ], { quizId: 'number-inverse', topicId: 'number', sectionId: 'inverse' });
+
+      createQuiz('quiz-primes', [
+        { type: 'multiple', question: 'What is the HCF of 18 and 24?', options: ['6', '3', '12', '9'], answer: '6', explanation: '18 = 2 × 3², 24 = 2³ × 3. HCF = 2 × 3 = 6' },
+        { type: 'fill', question: 'What is the LCM of 6 and 8?', answer: ['24'], explanation: '6 = 2 × 3, 8 = 2³. LCM = 2³ × 3 = 24' },
+        { type: 'multiple', question: 'Write 120 as a product of primes.', options: ['2³ × 3 × 5', '2² × 3 × 5', '2 × 3² × 5', '2⁴ × 5'], answer: '2³ × 3 × 5', explanation: '120 = 2 × 60 = 2 × 2 × 30 = 2 × 2 × 2 × 15 = 2³ × 3 × 5' },
+      ], { quizId: 'number-primes', topicId: 'number', sectionId: 'primes' });
+
+      createQuiz('quiz-systematic', [
+        { type: 'fill', question: 'How many 3-digit numbers can be made using the digits 1, 2, 3 (each used once)?', answer: ['6'], explanation: '3 × 2 × 1 = 6 (this is 3 factorial)' },
+        { type: 'multiple', question: 'A menu has 3 starters and 4 mains. How many different 2-course meals are there?', options: ['12', '7', '24', '9'], answer: '12', explanation: 'Product rule: 3 × 4 = 12' },
+      ], { quizId: 'number-systematic', topicId: 'number', sectionId: 'systematic' });
+
+      createQuiz('quiz-powers', [
+        { type: 'fill', question: 'What is 5³?', answer: ['125'], explanation: '5 × 5 × 5 = 125' },
+        { type: 'fill', question: 'What is √144?', answer: ['12'], explanation: '12² = 144, so √144 = 12' },
+        { type: 'multiple', question: 'Between which two integers does √30 lie?', options: ['5 and 6', '4 and 5', '6 and 7', '3 and 4'], answer: '5 and 6', explanation: '5² = 25 and 6² = 36, and 25 < 30 < 36.' },
+      ], { quizId: 'number-powers', topicId: 'number', sectionId: 'powers' });
+
+      createQuiz('quiz-indices', [
+        { type: 'fill', question: 'Simplify: 3⁴ × 3² = 3^? (write the power)', answer: ['6'], explanation: 'Add indices when multiplying: 4 + 2 = 6' },
+        { type: 'multiple', question: 'What is 2⁻³?', options: ['1/8', '−8', '−6', '8'], answer: '1/8', explanation: '2⁻³ = 1/2³ = 1/8' },
+        { type: 'multiple', question: 'What is 27^(1/3)?', options: ['3', '9', '27', '1/3'], answer: '3', explanation: '27^(1/3) = ³√27 = 3' },
+      ], { quizId: 'number-indices', topicId: 'number', sectionId: 'indices' });
+
+      createQuiz('quiz-surds', [
+        { type: 'multiple', question: 'Simplify √48', options: ['4√3', '2√12', '6√2', '8√3'], answer: '4√3', explanation: '√48 = √(16 × 3) = 4√3' },
+        { type: 'fill', question: 'Rationalise 1/√5 (write as √5/n)', answer: ['√5/5'], explanation: 'Multiply by √5/√5: 1/√5 × √5/√5 = √5/5' },
+      ], { quizId: 'number-surds', topicId: 'number', sectionId: 'surds' });
+
+      createQuiz('quiz-standard-form', [
+        { type: 'multiple', question: 'Write 3 200 000 in standard form.', options: ['3.2 × 10⁶', '32 × 10⁵', '3.2 × 10⁷', '0.32 × 10⁷'], answer: '3.2 × 10⁶', explanation: 'Move decimal 6 places: 3.2 × 10⁶' },
+        { type: 'multiple', question: 'Write 0.00045 in standard form.', options: ['4.5 × 10⁻⁴', '45 × 10⁻⁵', '4.5 × 10⁻³', '0.45 × 10⁻³'], answer: '4.5 × 10⁻⁴', explanation: 'Move decimal 4 places right: 4.5 × 10⁻⁴' },
+        { type: 'fill', question: '(2 × 10³) × (4 × 10⁵) = ? × 10^? (write as e.g. 8x10^8)', answer: ['8x10^8', '8 x 10^8'], explanation: '2 × 4 = 8, powers: 3 + 5 = 8. Answer: 8 × 10⁸' },
+      ], { quizId: 'number-standard-form', topicId: 'number', sectionId: 'standard-form' });
+
+      createQuiz('quiz-decimals', [
+        { type: 'multiple', question: 'Does ³⁄₈ give a terminating or recurring decimal?', options: ['Terminating', 'Recurring'], answer: 'Terminating', explanation: '8 = 2³, only has 2 as a prime factor, so it terminates: 3/8 = 0.375' },
+        { type: 'multiple', question: 'Convert 0.1̇8̇ (0.181818...) to a fraction.', options: ['2/11', '18/100', '9/50', '1/8'], answer: '2/11', explanation: 'x = 0.181818..., 100x = 18.1818..., 99x = 18, x = 18/99 = 2/11' },
+      ], { quizId: 'number-decimals', topicId: 'number', sectionId: 'decimals' });
+
+      createQuiz('quiz-fractions', [
+        { type: 'fill', question: 'Find ³⁄₅ of 80.', answer: ['48'], explanation: '80 ÷ 5 = 16, 16 × 3 = 48' },
+        { type: 'fill', question: 'Express 0.35 as a fraction in simplest form (e.g. 7/20).', answer: ['7/20'], explanation: '0.35 = 35/100 = 7/20' },
+        { type: 'fill', question: 'What is 40% of 250?', answer: ['100'], explanation: '0.4 × 250 = 100' },
+      ], { quizId: 'number-fractions', topicId: 'number', sectionId: 'fractions' });
+
+      createQuiz('quiz-measures', [
+        { type: 'fill', question: 'How many millimetres in 3.5 cm?', answer: ['35'], explanation: '1 cm = 10 mm, so 3.5 × 10 = 35 mm' },
+        { type: 'multiple', question: 'Convert 2.5 hours to minutes.', options: ['150 minutes', '120 minutes', '250 minutes', '130 minutes'], answer: '150 minutes', explanation: '2.5 × 60 = 150 minutes' },
+      ], { quizId: 'number-measures', topicId: 'number', sectionId: 'measures' });
+
+      createQuiz('quiz-estimation', [
+        { type: 'fill', question: 'Estimate 4.9 × 21.3 by rounding to 1 s.f.', answer: ['100'], explanation: '5 × 20 = 100' },
+        { type: 'multiple', question: 'Estimate (198 × 0.52) ÷ 9.7', options: ['≈ 10', '≈ 100', '≈ 1', '≈ 50'], answer: '≈ 10', explanation: '(200 × 0.5) ÷ 10 = 100 ÷ 10 = 10' },
+      ], { quizId: 'number-estimation', topicId: 'number', sectionId: 'estimation' });
+
+      createQuiz('quiz-accuracy', [
+        { type: 'fill', question: 'Round 4.376 to 2 decimal places.', answer: ['4.38'], explanation: 'Third d.p. is 6 ≥ 5, so round up: 4.38' },
+        { type: 'multiple', question: 'A length is 8 cm to the nearest cm. What is the error interval?', options: ['7.5 ≤ l < 8.5', '7 ≤ l ≤ 9', '7.5 < l < 8.5', '8.0 ≤ l ≤ 8.0'], answer: '7.5 ≤ l < 8.5', explanation: 'Half a unit below and above: 7.5 ≤ l < 8.5' },
+        { type: 'fill', question: 'Round 0.006472 to 2 significant figures.', answer: ['0.0065'], explanation: 'First two s.f. are 6, 4. Third is 7 ≥ 5 → round up to 0.0065' },
+      ], { quizId: 'number-accuracy', topicId: 'number', sectionId: 'accuracy' });
+
+      // Final section quiz
+      createQuiz('quiz-number-final', [
+        { type: 'fill', question: 'What is the HCF of 36 and 48?', answer: ['12'], explanation: '36 = 2² × 3², 48 = 2⁴ × 3. HCF = 2² × 3 = 12' },
+        { type: 'multiple', question: 'Simplify: 2⁵ ÷ 2² × 2³', options: ['2⁶ = 64', '2¹⁰', '2⁰ = 1', '2⁴ = 16'], answer: '2⁶ = 64', explanation: '5 − 2 + 3 = 6, so 2⁶ = 64' },
+        { type: 'fill', question: 'Write 0.00067 in standard form (e.g. 6.7x10^-4).', answer: ['6.7x10^-4', '6.7 x 10^-4'], explanation: 'Move decimal 4 places right: 6.7 × 10⁻⁴' },
+        { type: 'multiple', question: 'Estimate: (5.1² + 3.9) ÷ 2.8', options: ['≈ 10', '≈ 3', '≈ 30', '≈ 7'], answer: '≈ 10', explanation: '(5² + 4) ÷ 3 = (25 + 4) ÷ 3 = 29 ÷ 3 ≈ 10' },
+        { type: 'multiple', question: 'What is √200 simplified?', options: ['10√2', '5√8', '2√50', '4√5'], answer: '10√2', explanation: '√200 = √(100 × 2) = 10√2' },
+      ], { quizId: 'number-final', topicId: 'number', sectionId: 'final', xpPerQuestion: 15 });
+    });
+  </script>
+</body>
+</html>

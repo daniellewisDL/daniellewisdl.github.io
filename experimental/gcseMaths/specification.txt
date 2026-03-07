@@ -1,0 +1,148 @@
+THIS IS THE SPECIFICATION FOR THE MATHEMATICS GCSE IN ENGLAND
+
+1. Number (Structure, Calculation, Fractions, Decimals, Percentages, Measures, and Accuracy)
+Integers, Decimals, and Fractions: Order positive and negative integers, decimals, and fractions, and use inequality symbols (=,
+
+=,<,>,≤,≥)
+.
+Four Operations and Place Value: Apply formal written methods for addition, subtraction, multiplication, and division to positive and negative integers, decimals, simple proper/improper fractions, and mixed numbers, while understanding place value
+.
+Operations Relationships: Recognise and use inverse operations, and follow the conventional priority of operations including brackets, powers, roots, and reciprocals
+.
+Prime Numbers and Factors: Use concepts and vocabulary of prime numbers, factors (divisors), multiples, HCF, LCM, and prime factorisation, including using product notation and the unique factorisation theorem
+.
+Systematic Listing: Apply systematic listing strategies; Higher tier students must also use the product rule for counting (e.g., m×n ways)
+.
+Powers and Roots: Use positive integer powers and real roots, recognising powers of 2, 3, 4, and 5; Higher tier students must also estimate powers and roots of any positive number
+.
+Indices: Calculate with roots and integer indices; Higher tier students must also calculate with fractional indices
+.
+Exact Calculations: Calculate exactly with fractions and multiples of π; Higher tier students must also calculate exactly with surds, simplify surd expressions (e.g.,  
+12
+
+​
+ =2 
+3
+
+​
+ ), and rationalise denominators
+.
+Standard Form: Calculate with and interpret standard form (A×10 
+n
+ , where 1≤A<10 and n is an integer)
+.
+Terminating and Recurring Decimals: Work interchangeably with terminating decimals and their corresponding fractions; Higher tier students must also change recurring decimals into fractions and vice versa
+.
+Fractions and Percentages: Identify/work with fractions in ratio problems and interpret fractions and percentages as operators
+.
+Standard Measures: Use standard and compound units for mass, length, time, and money using decimal quantities
+.
+Approximation and Estimation: Estimate answers and check calculations using approximation, estimation, and technology
+.
+Accuracy and Limits: Round numbers/measures to specified decimal places or significant figures, use inequality notation for error intervals, and interpret limits of accuracy; Higher tier students must also work with upper and lower bounds
+.
+2. Algebra (Notation, Vocabulary, Manipulation, Graphs, Equations, Inequalities, and Sequences)
+Algebraic Manipulation and Notation: Interpret standard notation (e.g., ab for a×b, 3y for y+y+y, a 
+2
+  for a×a, coefficients as fractions, brackets) and substitute numerical values into formulae and expressions
+.
+Vocabulary: Understand expressions, equations, formulae, identities, inequalities, terms, and factors
+.
+Simplifying Expressions: Simplify by collecting like terms, multiplying a single term over a bracket, taking out common factors, expanding binomial products, and factorising quadratic expressions (x 
+2
+ +bx+c, and difference of two squares); Higher tier students must also factorise ax 
+2
+ +bx+c and manipulate algebraic fractions
+.
+Formulae and Equivalence: Use and rearrange standard formulae, distinguish between equations and identities, and mathematically show algebraic equivalence; Higher tier students must also construct arguments and proofs
+.
+Functions: Interpret expressions as functions; Higher tier students must also interpret inverse functions and composite functions using formal function notation
+.
+Coordinates and Linear Graphs: Work with coordinates in all four quadrants, plot straight-line graphs, identify gradients/intercepts, use y=mx+c for parallel lines, and find equations from given points/gradients; Higher tier students must also identify perpendicular lines
+.
+Roots and Turning Points: Identify and interpret roots, intercepts, and turning points of quadratic functions graphically, and deduce roots algebraically; Higher tier students must deduce turning points by completing the square
+.
+Graph Sketching: Sketch/interpret linear, quadratic, simple cubic, and reciprocal functions; Higher tier students must also sketch exponential functions (y=k 
+x
+ ), trigonometric functions (y=sinx,cosx,tanx), and sketch translations/reflections of functions
+.
+Graphs in Context: Plot and interpret non-standard graphs for real contexts (e.g., kinematics involving distance, speed, acceleration); Higher tier students must calculate/estimate gradients and areas under non-linear graphs
+.
+Circles: Recognise and use the equation of a circle centred at the origin and find the equation of its tangent (Higher tier only)
+.
+Solving Linear and Quadratic Equations: Solve linear equations algebraically/graphically and solve quadratics by factorising; Higher tier students must also solve quadratics by completing the square and using the quadratic formula
+.
+Simultaneous Equations: Solve two simultaneous equations in two variables (linear/linear); Higher tier students must also solve linear/quadratic simultaneous equations
+.
+Iteration: Find approximate solutions to equations numerically using iteration (Higher tier only)
+.
+Inequalities: Solve linear inequalities in one variable and represent them on a number line; Higher tier students must also solve linear inequalities in two variables and quadratic inequalities in one variable
+.
+Sequences: Generate sequence terms, deduce the nth term of linear sequences, and recognise triangular, square, cube, arithmetic, Fibonacci-type, and quadratic sequences; Higher tier students must also deduce the nth term of quadratic sequences and recognise simple geometric progressions involving surds
+.
+3. Ratio, Proportion and Rates of Change
+Units and Scale: Change freely between standard and compound units (e.g., speed, rates of pay, density, pressure) and use scale factors, diagrams, and maps
+.
+Ratio Applications: Express quantities as fractions of another, reduce ratios to simplest form, divide quantities into part:part or part:whole ratios, and apply to context (e.g., conversion, scaling, mixing)
+.
+Proportion: Express multiplicative relationships, understand proportion as equality of ratios, relate ratios to linear functions, and solve direct/inverse proportion problems graphically and algebraically
+.
+Percentages: Define percentage as parts per hundred, express quantities as percentages, handle values >100%, and solve percentage change, original value, and simple/compound interest problems
+.
+Similarity and Scale Factors: Compare lengths, areas, and volumes using ratio notation, making links to similarity and scale factors
+.
+Inverse Proportion Equations: Understand that X inversely proportional to Y means X is proportional to 1/Y and interpret these equations
+.
+Rates of Change Graphs: Interpret straight-line gradients as rates of change; Higher tier students must also interpret instantaneous rates of change (gradients of tangents/chords) on curves
+.
+Growth and Decay: Set up, solve, and interpret growth and decay problems; Higher tier students must also work with general iterative processes
+.
+4. Geometry and Measures
+Properties and Definitions: Use conventional terms for points, lines, polygons, and symmetries; derive properties of specific quadrilaterals (square, rectangle, parallelogram, trapezium, kite, rhombus) and triangles
+.
+Constructions and Loci: Use ruler and compass to construct perpendicular bisectors, perpendiculars from/at a point, and angle bisectors, and use these to solve loci problems
+.
+Angle Facts: Apply properties of angles at a point, on a straight line, vertically opposite, alternate/corresponding angles on parallel lines, and sum of angles in triangles and polygons
+.
+Congruence and Similarity: Use basic triangle congruence criteria (SSS, SAS, ASA, RHS) and apply similarity and Pythagoras' theorem to obtain simple proofs
+.
+Transformations: Construct and identify similar/congruent shapes through rotation, reflection, translation, and enlargement using fractional scale factors; Higher tier students must also use negative scale factors and describe changes achieved by combinations of transformations
+.
+Circles: Identify definitions (centre, radius, chord, diameter, circumference, tangent, arc, sector, segment); Higher tier students must also apply and prove standard circle theorems concerning angles, radii, tangents, and chords
+.
+3D Shapes: Identify properties (faces, edges, vertices) of cubes, cuboids, prisms, cylinders, pyramids, cones, and spheres, and construct/interpret plans and elevations
+.
+Mensuration: Measure lines/angles, use bearings, and calculate area (triangles, parallelograms, trapezia), volume (cuboids, right prisms, cylinders), circumference/area of circles, and perimeter
+.
+Advanced Mensuration: Calculate arc lengths, sector areas, and surface area/volume of spheres, pyramids, cones, and composite solids. Apply relationships between lengths in similar figures; Higher tier students must also apply relationships between areas and volumes in similar figures
+.
+Trigonometry: Use Pythagoras' theorem and trigonometric ratios (sin,cos,tan) in right-angled 2D triangles, and know exact values for 0°, 30°, 45°, 60° (and 90° for sin/cos); Higher tier students must also apply these in 3D figures, general triangles, use the sine rule, cosine rule, and the area formula  
+2
+1
+​
+ absinC
+.
+Vectors: Describe translations as 2D vectors, apply addition, subtraction, scalar multiplication, and use column/diagrammatic representations; Higher tier students must also use vectors to construct geometric arguments and proofs
+.
+5. Probability
+Frequencies and Experiments: Record, describe, and analyse frequency outcomes using tables/frequency trees, and apply ideas of randomness, fairness, and expected outcomes of multiple experiments
+.
+Probability Scales and Properties: Relate relative expected frequencies to theoretical probability on a 0-1 scale, and understand that probabilities of exhaustive or mutually exclusive events sum to one
+.
+Sampling: Understand that empirical unbiased samples tend towards theoretical probability distributions as sample size increases
+.
+Possibility Spaces and Events: Systematically enumerate sets/combinations using tables, grids, Venn diagrams, and tree diagrams, and construct theoretical possibility spaces to calculate probabilities for single and combined equally likely outcomes
+.
+Combined and Conditional Events: Calculate the probability of independent and dependent combined events; Higher tier students must also calculate and interpret conditional probabilities using expected frequencies, two-way tables, tree diagrams, and Venn diagrams
+.
+6. Statistics
+Populations and Sampling: Infer properties of populations or distributions from a sample while knowing the limitations of sampling
+.
+Data Representation: Interpret and construct frequency tables, bar charts, pie charts, pictograms, vertical line charts, and time series line graphs
+.
+Continuous and Grouped Data: Construct and interpret histograms with equal/unequal class intervals and cumulative frequency graphs (Higher tier only)
+.
+Distribution Analysis: Interpret, analyse, and compare data sets using appropriate graphical representation and measures of central tendency (mean, median, mode, modal class) and spread (range, outliers); Higher tier students must also use box plots, quartiles, and inter-quartile range
+.
+Population Statistics and Bivariate Data: Apply statistics to describe a population, use and interpret scatter graphs, recognise correlation (understanding it doesn't indicate causation), draw lines of best fit, make predictions, and safely interpolate/extrapolate
+.

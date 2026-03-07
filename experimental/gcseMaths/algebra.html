@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Algebra — expressions, equations, graphs, functions, sequences, inequalities and proof with interactive graph plotter and quizzes.">
+  <title>Algebra — GCSE Maths Mastery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="topic-algebra">
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <aside class="sidebar"><div class="sidebar-logo"><div class="logo-icon">π</div> GCSE Maths</div><nav></nav></aside>
+    <main class="main-content">
+
+      <h1>📐 Algebra</h1>
+      <p>From expressions and equations to graphs, sequences, and proof — algebra is the language of mathematics.</p>
+
+      <div class="subtopic-nav">
+        <a href="#notation">Notation</a>
+        <a href="#vocabulary">Vocabulary</a>
+        <a href="#simplifying">Simplifying</a>
+        <a href="#expanding">Expanding & Factorising</a>
+        <a href="#formulae">Formulae</a>
+        <a href="#functions">Functions</a>
+        <a href="#coordinates">Coordinates & Lines</a>
+        <a href="#quadratics">Quadratics</a>
+        <a href="#sketching">Graph Sketching</a>
+        <a href="#context">Graphs in Context</a>
+        <a href="#circles">Circles</a>
+        <a href="#linear-eq">Solving Equations</a>
+        <a href="#simultaneous">Simultaneous Eq.</a>
+        <a href="#iteration">Iteration</a>
+        <a href="#inequalities">Inequalities</a>
+        <a href="#sequences">Sequences</a>
+      </div>
+
+      <!-- ===== 2.1 NOTATION ===== -->
+      <section id="notation" class="topic-section fade-in">
+        <h2>2.1 Algebraic Notation</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>In algebra, letters represent unknown values or variables. Standard conventions:</p>
+          <ul style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li><span class="math">ab</span> means <span class="math">a × b</span></li>
+            <li><span class="math">3y</span> means <span class="math">y + y + y</span> (or <span class="math">3 × y</span>)</li>
+            <li><span class="math">a²</span> means <span class="math">a × a</span></li>
+            <li>Coefficients can be fractions, e.g. <span class="math">½x</span></li>
+          </ul>
+        </div>
+        <h3>Substitution</h3>
+        <p>Replace letters with numbers to evaluate an expression.</p>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>If a = 3 and b = −2, find the value of 2a² − 3b</strong></p>
+          <div class="step hidden-step">Step 1: Substitute: 2(3)² − 3(−2)</div>
+          <div class="step hidden-step">Step 2: = 2 × 9 − (−6)</div>
+          <div class="step hidden-step">Step 3: = 18 + 6 = 24 ✓</div>
+        </div>
+        <div id="quiz-notation" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.2 VOCABULARY ===== -->
+      <section id="vocabulary" class="topic-section fade-in">
+        <h2>2.2 Algebraic Vocabulary</h2>
+        <div class="card accent-border">
+          <table style="width:100%;color:var(--text-secondary);font-size:.88rem;">
+            <tr><th style="text-align:left;width:30%">Term</th><th style="text-align:left">Definition</th><th style="text-align:left;width:25%">Example</th></tr>
+            <tr><td><strong>Expression</strong></td><td>A collection of terms (no = sign)</td><td>3x + 2y − 5</td></tr>
+            <tr><td><strong>Equation</strong></td><td>An expression equal to something</td><td>3x + 2 = 14</td></tr>
+            <tr><td><strong>Formula</strong></td><td>A rule connecting variables</td><td>A = πr²</td></tr>
+            <tr><td><strong>Identity</strong></td><td>True for ALL values (uses ≡)</td><td>2(x+1) ≡ 2x+2</td></tr>
+            <tr><td><strong>Inequality</strong></td><td>Uses &lt;, &gt;, ≤, ≥</td><td>x &gt; 3</td></tr>
+            <tr><td><strong>Term</strong></td><td>A single number or variable part</td><td>5x² is one term</td></tr>
+            <tr><td><strong>Factor</strong></td><td>Something that divides exactly</td><td>3 is a factor of 3x</td></tr>
+          </table>
+        </div>
+        <div id="quiz-vocabulary" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.3 SIMPLIFYING ===== -->
+      <section id="simplifying" class="topic-section fade-in">
+        <h2>2.3 Simplifying Expressions</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Like terms</strong> have the same letter(s) raised to the same power. Only like terms can be added or subtracted.</p>
+        </div>
+        <div class="math-block">5x + 3y − 2x + y = 3x + 4y</div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Simplify: 4a²b − 2ab + 3a²b + 5ab</strong></p>
+          <div class="step hidden-step">Step 1: Group like terms: (4a²b + 3a²b) + (−2ab + 5ab)</div>
+          <div class="step hidden-step">Step 2: = 7a²b + 3ab ✓</div>
+        </div>
+        <div id="quiz-simplifying" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.4 EXPANDING & FACTORISING ===== -->
+      <section id="expanding" class="topic-section fade-in">
+        <h2>2.4 Expanding Brackets & Factorising</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Expanding</strong> means multiplying out brackets. <strong>Factorising</strong> is the reverse — putting brackets in.</p>
+        </div>
+        <h3>Single Bracket</h3>
+        <div class="math-block">3(2x + 5) = 6x + 15</div>
+        <h3>Double Brackets (FOIL)</h3>
+        <div class="math-block">(x + 3)(x + 5) = x² + 5x + 3x + 15 = x² + 8x + 15</div>
+
+        <h3>Factorising Quadratics</h3>
+        <p>Find two numbers that multiply to give the constant term and add to give the coefficient of x.</p>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Factorise: x² + 7x + 12</strong></p>
+          <div class="step hidden-step">Step 1: Need two numbers that multiply to 12 and add to 7</div>
+          <div class="step hidden-step">Step 2: 3 × 4 = 12 and 3 + 4 = 7 ✓</div>
+          <div class="step hidden-step">Step 3: Answer = (x + 3)(x + 4) ✓</div>
+        </div>
+
+        <h3>Difference of Two Squares</h3>
+        <div class="math-block">a² − b² = (a + b)(a − b)</div>
+        <p><strong>Example:</strong> <span class="math">x² − 25 = (x + 5)(x − 5)</span></p>
+
+        <h3>Factorising ax² + bx + c <span class="higher-tier">Higher</span></h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Factorise: 2x² + 7x + 3</strong></p>
+          <div class="step hidden-step">Step 1: Multiply a × c = 2 × 3 = 6</div>
+          <div class="step hidden-step">Step 2: Find two numbers that multiply to 6 and add to 7: 1 and 6</div>
+          <div class="step hidden-step">Step 3: Split middle term: 2x² + x + 6x + 3</div>
+          <div class="step hidden-step">Step 4: Factorise in pairs: x(2x + 1) + 3(2x + 1)</div>
+          <div class="step hidden-step">Step 5: = (x + 3)(2x + 1) ✓</div>
+        </div>
+
+        <div id="quiz-expanding" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.5 FORMULAE ===== -->
+      <section id="formulae" class="topic-section fade-in">
+        <h2>2.5 Formulae & Rearranging</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>To <strong>rearrange</strong> a formula, use inverse operations to isolate the required variable. What you do to one side, you must do to the other.</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Make t the subject of: v = u + at</strong></p>
+          <div class="step hidden-step">Step 1: Subtract u from both sides: v − u = at</div>
+          <div class="step hidden-step">Step 2: Divide both sides by a: t = (v − u)/a ✓</div>
+        </div>
+
+        <h3>Proving Identities <span class="higher-tier">Higher</span></h3>
+        <p>Show that one side of an identity can be manipulated to equal the other side.</p>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Show that (n + 1)² − (n − 1)² ≡ 4n</strong></p>
+          <div class="step hidden-step">Step 1: Expand (n+1)² = n² + 2n + 1</div>
+          <div class="step hidden-step">Step 2: Expand (n−1)² = n² − 2n + 1</div>
+          <div class="step hidden-step">Step 3: Subtract: (n² + 2n + 1) − (n² − 2n + 1) = 4n ✓</div>
+        </div>
+        <div id="quiz-formulae" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.6 FUNCTIONS ===== -->
+      <section id="functions" class="topic-section fade-in">
+        <h2>2.6 Functions <span class="higher-tier">Higher</span></h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>function</strong> maps an input to a single output. Notation: <span class="math">f(x) = 2x + 3</span>.</p>
+          <p><strong>Composite function:</strong> <span class="math">fg(x)</span> means apply g first, then f.</p>
+          <p><strong>Inverse function:</strong> <span class="math">f⁻¹(x)</span> reverses the function.</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>If f(x) = 2x + 3, find f⁻¹(x).</strong></p>
+          <div class="step hidden-step">Step 1: Let y = 2x + 3</div>
+          <div class="step hidden-step">Step 2: Swap x and y: x = 2y + 3</div>
+          <div class="step hidden-step">Step 3: Rearrange: y = (x − 3)/2</div>
+          <div class="step hidden-step">Step 4: f⁻¹(x) = (x − 3)/2 ✓</div>
+        </div>
+        <div id="quiz-functions" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.7 COORDINATES & LINEAR GRAPHS ===== -->
+      <section id="coordinates" class="topic-section fade-in">
+        <h2>2.7 Coordinates & Straight-Line Graphs</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>The equation of a straight line is <span class="math">y = mx + c</span>, where <strong>m</strong> is the gradient (steepness) and <strong>c</strong> is the y-intercept (where it crosses the y-axis).</p>
+          <div class="math-block">gradient m = (y₂ − y₁) / (x₂ − x₁) = rise / run</div>
+        </div>
+
+        <div class="explanation-tabs">
+          <button class="active" data-tab="visual-graph">🎨 Interactive Graph</button>
+          <button data-tab="steps-graph">📝 Theory</button>
+        </div>
+        <div class="explanation-panel active" data-panel="visual-graph">
+          <div class="widget-container">
+            <canvas id="graph-linear" width="500" height="400"></canvas>
+            <div class="widget-controls">
+              <label>m (gradient): <input type="range" id="slope-m" min="-5" max="5" step="0.5" value="2"></label>
+              <label>c (intercept): <input type="range" id="intercept-c" min="-5" max="5" step="0.5" value="1"></label>
+              <span id="eq-display" class="math" style="margin-left:1rem">y = 2x + 1</span>
+            </div>
+          </div>
+        </div>
+        <div class="explanation-panel" data-panel="steps-graph">
+          <h4>Parallel & Perpendicular Lines</h4>
+          <p><strong>Parallel lines</strong> have the same gradient. If line 1 has gradient m, any parallel line also has gradient m.</p>
+          <p><strong>Perpendicular lines</strong> <span class="higher-tier">Higher</span> have gradients that multiply to −1. If one line has gradient m, the perpendicular gradient is −1/m.</p>
+          <div class="card accent-border">
+            <p><strong>Example:</strong> Line has gradient 3. Parallel line: gradient = 3. Perpendicular line: gradient = −1/3.</p>
+          </div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Find the equation of the line through (1, 5) and (3, 11).</strong></p>
+          <div class="step hidden-step">Step 1: Gradient m = (11 − 5)/(3 − 1) = 6/2 = 3</div>
+          <div class="step hidden-step">Step 2: Substitute into y = mx + c: 5 = 3(1) + c → c = 2</div>
+          <div class="step hidden-step">Step 3: Equation: y = 3x + 2 ✓</div>
+        </div>
+        <div id="quiz-coordinates" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.8 QUADRATICS ===== -->
+      <section id="quadratics" class="topic-section fade-in">
+        <h2>2.8 Quadratic Functions</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A quadratic function has the form <span class="math">y = ax² + bx + c</span>. Its graph is a <strong>parabola</strong> (U-shape if a &gt; 0, ∩-shape if a &lt; 0).</p>
+          <p><strong>Roots</strong> are where the parabola crosses the x-axis (y = 0). The <strong>turning point</strong> is the vertex.</p>
+        </div>
+
+        <div class="widget-container">
+          <canvas id="graph-quadratic" width="500" height="400"></canvas>
+          <div class="widget-controls">
+            <label>a: <input type="number" id="quad-a" value="1" step="0.5"></label>
+            <label>b: <input type="number" id="quad-b" value="-2" step="0.5"></label>
+            <label>c: <input type="number" id="quad-c" value="-3" step="0.5"></label>
+            <span id="quad-eq" class="math" style="margin-left:1rem">y = x² − 2x − 3</span>
+          </div>
+        </div>
+
+        <h3>Completing the Square <span class="higher-tier">Higher</span></h3>
+        <div class="math-block">x² + bx + c = (x + b/2)² − (b/2)² + c</div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Write x² + 6x + 2 in completed square form.</strong></p>
+          <div class="step hidden-step">Step 1: Half of 6 is 3, so (x + 3)²</div>
+          <div class="step hidden-step">Step 2: (x + 3)² = x² + 6x + 9</div>
+          <div class="step hidden-step">Step 3: x² + 6x + 2 = (x + 3)² − 9 + 2 = (x + 3)² − 7 ✓</div>
+          <div class="step hidden-step">Turning point is at (−3, −7) ✓</div>
+        </div>
+        <div id="quiz-quadratics" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.9 GRAPH SKETCHING ===== -->
+      <section id="sketching" class="topic-section fade-in">
+        <h2>2.9 Graph Sketching</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>You should recognise and sketch these key graph shapes:</p>
+        </div>
+        <div class="card">
+          <table style="width:100%;color:var(--text-secondary);font-size:.88rem;">
+            <tr><th>Type</th><th>Equation</th><th>Shape</th></tr>
+            <tr><td>Linear</td><td>y = mx + c</td><td>Straight line</td></tr>
+            <tr><td>Quadratic</td><td>y = ax² + bx + c</td><td>U or ∩ parabola</td></tr>
+            <tr><td>Cubic</td><td>y = x³</td><td>S-shaped curve</td></tr>
+            <tr><td>Reciprocal</td><td>y = 1/x</td><td>Two curves in opposite quadrants</td></tr>
+            <tr><td>Exponential <span class="higher-tier">H</span></td><td>y = kˣ</td><td>Rapid growth/decay curve</td></tr>
+          </table>
+        </div>
+
+        <h3>Graph Transformations <span class="higher-tier">Higher</span></h3>
+        <div class="card accent-border">
+          <p><span class="math">f(x) + a</span> — translate up by a</p>
+          <p><span class="math">f(x + a)</span> — translate left by a</p>
+          <p><span class="math">−f(x)</span> — reflect in x-axis</p>
+          <p><span class="math">f(−x)</span> — reflect in y-axis</p>
+        </div>
+        <div id="quiz-sketching" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.10 GRAPHS IN CONTEXT ===== -->
+      <section id="context" class="topic-section fade-in">
+        <h2>2.10 Graphs in Real-Life Context</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Graphs can model real situations. A <strong>distance-time graph</strong> shows how position changes over time. The <strong>gradient</strong> equals speed. A horizontal line means stationary.</p>
+        </div>
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Speed-Time Graphs</h4>
+          <p><strong>Gradient</strong> = acceleration. <strong>Area under the graph</strong> = distance travelled.</p>
+        </div>
+        <h3>Estimating Gradients and Areas <span class="higher-tier">Higher</span></h3>
+        <p>For curved graphs, draw a <strong>tangent</strong> at the point to estimate the gradient. Use the <strong>trapezium rule</strong> to estimate the area under a curve.</p>
+        <div id="quiz-context" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.11 CIRCLES ===== -->
+      <section id="circles" class="topic-section fade-in">
+        <h2>2.11 Equation of a Circle <span class="higher-tier">Higher</span></h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>The equation of a circle centred at the origin with radius r is:</p>
+          <div class="math-block">x² + y² = r²</div>
+        </div>
+        <p><strong>Example:</strong> <span class="math">x² + y² = 25</span> is a circle with centre (0,0) and radius 5.</p>
+        <p>The tangent to a circle is <strong>perpendicular</strong> to the radius at the point of contact.</p>
+        <div id="quiz-circles" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.12 SOLVING EQUATIONS ===== -->
+      <section id="linear-eq" class="topic-section fade-in">
+        <h2>2.12 Solving Linear & Quadratic Equations</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Solving</strong> means finding the value(s) of the unknown that make the equation true.</p>
+        </div>
+        <h3>Linear Equations</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Solve: 3(2x − 1) = 4x + 7</strong></p>
+          <div class="step hidden-step">Step 1: Expand: 6x − 3 = 4x + 7</div>
+          <div class="step hidden-step">Step 2: Subtract 4x: 2x − 3 = 7</div>
+          <div class="step hidden-step">Step 3: Add 3: 2x = 10</div>
+          <div class="step hidden-step">Step 4: Divide by 2: x = 5 ✓</div>
+        </div>
+        <h3>Solving Quadratics by Factorising</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Solve: x² − 5x + 6 = 0</strong></p>
+          <div class="step hidden-step">Step 1: Factorise: (x − 2)(x − 3) = 0</div>
+          <div class="step hidden-step">Step 2: Either x − 2 = 0 → x = 2, or x − 3 = 0 → x = 3</div>
+          <div class="step hidden-step">Solutions: x = 2 or x = 3 ✓</div>
+        </div>
+        <h3>The Quadratic Formula <span class="higher-tier">Higher</span></h3>
+        <div class="math-block">x = (−b ± √(b² − 4ac)) / 2a</div>
+        <div id="quiz-linear-eq" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.13 SIMULTANEOUS EQUATIONS ===== -->
+      <section id="simultaneous" class="topic-section fade-in">
+        <h2>2.13 Simultaneous Equations</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Two equations with two unknowns. Solve by <strong>elimination</strong> or <strong>substitution</strong>.</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Elimination</h4>
+          <p><strong>Solve: 2x + 3y = 12 and 4x − 3y = 6</strong></p>
+          <div class="step hidden-step">Step 1: Add the equations (3y and −3y cancel): 6x = 18</div>
+          <div class="step hidden-step">Step 2: x = 3</div>
+          <div class="step hidden-step">Step 3: Substitute into first equation: 2(3) + 3y = 12 → 3y = 6 → y = 2</div>
+          <div class="step hidden-step">Solution: x = 3, y = 2 ✓</div>
+        </div>
+        <h3>Linear/Quadratic Simultaneous Equations <span class="higher-tier">Higher</span></h3>
+        <p>Substitute the linear equation into the quadratic to form a single quadratic equation.</p>
+        <div id="quiz-simultaneous" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.14 ITERATION ===== -->
+      <section id="iteration" class="topic-section fade-in">
+        <h2>2.14 Iteration <span class="higher-tier">Higher</span></h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Iteration</strong> uses a formula repeatedly to approach a solution. Given <span class="math">xₙ₊₁ = f(xₙ)</span> and a starting value x₀, calculate x₁, x₂, x₃, … until values converge.</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Use xₙ₊₁ = (5 + xₙ)^(1/3) with x₀ = 2 to find a solution to x³ − x = 5.</strong></p>
+          <div class="step hidden-step">x₁ = (5 + 2)^(1/3) = 7^(1/3) ≈ 1.9129</div>
+          <div class="step hidden-step">x₂ = (5 + 1.9129)^(1/3) ≈ 1.9063</div>
+          <div class="step hidden-step">x₃ ≈ 1.9058 — converging to x ≈ 1.906</div>
+        </div>
+        <div id="quiz-iteration" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.15 INEQUALITIES ===== -->
+      <section id="inequalities" class="topic-section fade-in">
+        <h2>2.15 Inequalities</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Solve inequalities just like equations, BUT when you multiply or divide by a <strong>negative number</strong>, flip the inequality sign!</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Solve: 3x − 7 &lt; 2x + 4</strong></p>
+          <div class="step hidden-step">Step 1: Subtract 2x: x − 7 &lt; 4</div>
+          <div class="step hidden-step">Step 2: Add 7: x &lt; 11 ✓</div>
+        </div>
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Number Line Representation</h4>
+          <p>Open circle ○ for &lt; or &gt; (not included). Filled circle ● for ≤ or ≥ (included). Shade the valid region.</p>
+        </div>
+        <h3>Quadratic Inequalities <span class="higher-tier">Higher</span></h3>
+        <p>Solve by factorising the quadratic, finding the roots, and using a sketch to determine the solution region.</p>
+        <div id="quiz-inequalities" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- ===== 2.16 SEQUENCES ===== -->
+      <section id="sequences" class="topic-section fade-in">
+        <h2>2.16 Sequences</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>sequence</strong> is an ordered list of numbers following a rule. The <strong>nth term</strong> formula gives you any term directly.</p>
+        </div>
+
+        <h3>Types of Sequences</h3>
+        <div class="card">
+          <table style="width:100%;color:var(--text-secondary);font-size:.88rem;">
+            <tr><th>Type</th><th>Example</th><th>Description</th></tr>
+            <tr><td>Arithmetic (linear)</td><td>3, 7, 11, 15, …</td><td>Common difference (+4)</td></tr>
+            <tr><td>Quadratic</td><td>2, 6, 12, 20, …</td><td>Second differences constant</td></tr>
+            <tr><td>Geometric</td><td>2, 6, 18, 54, …</td><td>Common ratio (×3)</td></tr>
+            <tr><td>Fibonacci-type</td><td>1, 1, 2, 3, 5, 8, …</td><td>Each term = sum of previous two</td></tr>
+            <tr><td>Triangular</td><td>1, 3, 6, 10, 15, …</td><td>n(n+1)/2</td></tr>
+            <tr><td>Square</td><td>1, 4, 9, 16, 25, …</td><td>n²</td></tr>
+            <tr><td>Cube</td><td>1, 8, 27, 64, …</td><td>n³</td></tr>
+          </table>
+        </div>
+
+        <h3>Finding the nth Term of a Linear Sequence</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Find the nth term of: 5, 8, 11, 14, …</strong></p>
+          <div class="step hidden-step">Step 1: Common difference = 3, so it starts 3n</div>
+          <div class="step hidden-step">Step 2: When n = 1: 3(1) = 3, but first term is 5. Adjust: +2</div>
+          <div class="step hidden-step">Step 3: nth term = 3n + 2 ✓</div>
+        </div>
+
+        <h3>Quadratic Sequences <span class="higher-tier">Higher</span></h3>
+        <p>If second differences are constant (say = 2a), the nth term has the form <span class="math">an² + bn + c</span>.</p>
+        <div id="quiz-sequences" class="quiz-widget"></div>
+      </section>
+
+      <!-- ===== SECTION QUIZ ===== -->
+      <div class="section-divider"></div>
+      <section class="fade-in">
+        <h2>🏆 Algebra — Section Quiz</h2>
+        <p>Test everything you've learned across all algebra subtopics!</p>
+        <div id="quiz-algebra-final" class="quiz-widget"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Interactive linear graph
+      const linearPlotter = new GraphPlotter('graph-linear');
+      function updateLinear() {
+        const m = parseFloat(document.getElementById('slope-m').value);
+        const c = parseFloat(document.getElementById('intercept-c').value);
+        document.getElementById('eq-display').textContent = `y = ${m}x ${c >= 0 ? '+' : '−'} ${Math.abs(c)}`;
+        linearPlotter.clearFunctions();
+        linearPlotter.plotFunction(x => m * x + c, '#8b5cf6');
+      }
+      document.getElementById('slope-m').addEventListener('input', updateLinear);
+      document.getElementById('intercept-c').addEventListener('input', updateLinear);
+      updateLinear();
+
+      // Interactive quadratic graph
+      const quadPlotter = new GraphPlotter('graph-quadratic');
+      function updateQuad() {
+        const a = parseFloat(document.getElementById('quad-a').value) || 1;
+        const b = parseFloat(document.getElementById('quad-b').value) || 0;
+        const c = parseFloat(document.getElementById('quad-c').value) || 0;
+        document.getElementById('quad-eq').textContent = `y = ${a}x² ${b >= 0 ? '+' : '−'} ${Math.abs(b)}x ${c >= 0 ? '+' : '−'} ${Math.abs(c)}`;
+        quadPlotter.clearFunctions();
+        quadPlotter.plotFunction(x => a * x * x + b * x + c, '#a78bfa');
+      }
+      ['quad-a','quad-b','quad-c'].forEach(id => document.getElementById(id).addEventListener('input', updateQuad));
+      updateQuad();
+
+      // Quizzes
+      createQuiz('quiz-notation', [
+        { type: 'fill', question: 'If x = 4, find the value of 3x + 2.', answer: ['14'], explanation: '3(4) + 2 = 12 + 2 = 14' },
+        { type: 'fill', question: 'If a = 5 and b = −3, find 2a + b².', answer: ['19'], explanation: '2(5) + (−3)² = 10 + 9 = 19' },
+      ], { quizId: 'alg-notation', topicId: 'algebra', sectionId: 'notation' });
+
+      createQuiz('quiz-vocabulary', [
+        { type: 'multiple', question: 'Which of these is an expression?', options: ['3x + 5', '3x + 5 = 11', 'x > 2', '2(x+1) ≡ 2x+2'], answer: '3x + 5', explanation: 'An expression has no equals sign or inequality.' },
+        { type: 'multiple', question: 'Which is an identity?', options: ['2(x+1) ≡ 2x+2', '3x = 9', 'A = πr²', 'x > 5'], answer: '2(x+1) ≡ 2x+2', explanation: 'An identity is true for ALL values of the variable.' },
+      ], { quizId: 'alg-vocabulary', topicId: 'algebra', sectionId: 'vocabulary' });
+
+      createQuiz('quiz-simplifying', [
+        { type: 'multiple', question: 'Simplify: 5x + 3y − 2x − y', options: ['3x + 2y', '7x + 4y', '3x − 2y', '3x + 4y'], answer: '3x + 2y', explanation: '5x − 2x = 3x and 3y − y = 2y' },
+        { type: 'fill', question: 'Simplify: 4a × 3b = ?', answer: ['12ab'], explanation: '4 × 3 = 12 and a × b = ab → 12ab' },
+      ], { quizId: 'alg-simplifying', topicId: 'algebra', sectionId: 'simplifying' });
+
+      createQuiz('quiz-expanding', [
+        { type: 'multiple', question: 'Expand: 3(2x − 5)', options: ['6x − 15', '6x − 5', '5x − 15', '6x + 15'], answer: '6x − 15', explanation: '3 × 2x = 6x, 3 × (−5) = −15' },
+        { type: 'multiple', question: 'Factorise: x² + 5x + 6', options: ['(x+2)(x+3)', '(x+1)(x+6)', '(x+2)(x+4)', '(x−2)(x−3)'], answer: '(x+2)(x+3)', explanation: '2 × 3 = 6 and 2 + 3 = 5' },
+        { type: 'multiple', question: 'Factorise: x² − 9', options: ['(x+3)(x−3)', '(x−3)(x−3)', '(x+9)(x−1)', '(x+3)(x+3)'], answer: '(x+3)(x−3)', explanation: 'Difference of two squares: x² − 3² = (x+3)(x−3)' },
+      ], { quizId: 'alg-expanding', topicId: 'algebra', sectionId: 'expanding' });
+
+      createQuiz('quiz-formulae', [
+        { type: 'multiple', question: 'Make x the subject of: y = 3x − 7', options: ['x = (y+7)/3', 'x = (y−7)/3', 'x = 3y + 7', 'x = y/3 − 7'], answer: 'x = (y+7)/3', explanation: 'y + 7 = 3x → x = (y+7)/3' },
+      ], { quizId: 'alg-formulae', topicId: 'algebra', sectionId: 'formulae' });
+
+      createQuiz('quiz-functions', [
+        { type: 'fill', question: 'If f(x) = 3x − 1, find f(4).', answer: ['11'], explanation: 'f(4) = 3(4) − 1 = 12 − 1 = 11' },
+        { type: 'multiple', question: 'If f(x) = x + 2 and g(x) = 2x, find fg(3).', options: ['8', '10', '12', '6'], answer: '8', explanation: 'g(3) = 6, then f(6) = 6 + 2 = 8' },
+      ], { quizId: 'alg-functions', topicId: 'algebra', sectionId: 'functions' });
+
+      createQuiz('quiz-coordinates', [
+        { type: 'fill', question: 'A line has equation y = 4x − 3. What is its gradient?', answer: ['4'], explanation: 'In y = mx + c, m is the gradient = 4.' },
+        { type: 'fill', question: 'What is the y-intercept of y = −2x + 7?', answer: ['7'], explanation: 'In y = mx + c, c is the y-intercept = 7.' },
+        { type: 'multiple', question: 'Two lines are parallel. One has gradient 5. What is the gradient of the other?', options: ['5', '−5', '1/5', '−1/5'], answer: '5', explanation: 'Parallel lines have equal gradients.' },
+      ], { quizId: 'alg-coordinates', topicId: 'algebra', sectionId: 'coordinates' });
+
+      createQuiz('quiz-quadratics', [
+        { type: 'multiple', question: 'What shape is the graph of y = −x² + 4?', options: ['∩-shaped parabola', 'U-shaped parabola', 'Straight line', 'S-curve'], answer: '∩-shaped parabola', explanation: 'Negative coefficient of x² → ∩-shaped.' },
+        { type: 'fill', question: 'Find the roots of x² − 4x − 5 = 0 (smaller root first, separated by comma).', answer: ['-1, 5', '-1,5'], explanation: 'Factorise: (x−5)(x+1) = 0 → x = 5 or x = −1' },
+      ], { quizId: 'alg-quadratics', topicId: 'algebra', sectionId: 'quadratics' });
+
+      createQuiz('quiz-sketching', [
+        { type: 'multiple', question: 'What type of graph is y = 1/x?', options: ['Reciprocal', 'Linear', 'Quadratic', 'Cubic'], answer: 'Reciprocal', explanation: 'y = 1/x gives a reciprocal (hyperbola) graph.' },
+      ], { quizId: 'alg-sketching', topicId: 'algebra', sectionId: 'sketching' });
+
+      createQuiz('quiz-context', [
+        { type: 'multiple', question: 'On a distance-time graph, what does the gradient represent?', options: ['Speed', 'Acceleration', 'Distance', 'Time'], answer: 'Speed', explanation: 'Gradient = distance/time = speed.' },
+      ], { quizId: 'alg-context', topicId: 'algebra', sectionId: 'context' });
+
+      createQuiz('quiz-circles', [
+        { type: 'multiple', question: 'What is the radius of the circle x² + y² = 49?', options: ['7', '49', '14', '√7'], answer: '7', explanation: 'r² = 49 → r = 7' },
+      ], { quizId: 'alg-circles', topicId: 'algebra', sectionId: 'circles' });
+
+      createQuiz('quiz-linear-eq', [
+        { type: 'fill', question: 'Solve: 5x − 3 = 2x + 12', answer: ['5'], explanation: '3x = 15 → x = 5' },
+        { type: 'multiple', question: 'Solve x² − x − 12 = 0', options: ['x = 4 or x = −3', 'x = −4 or x = 3', 'x = 6 or x = −2', 'x = 12 or x = −1'], answer: 'x = 4 or x = −3', explanation: '(x − 4)(x + 3) = 0' },
+      ], { quizId: 'alg-linear-eq', topicId: 'algebra', sectionId: 'linear-eq' });
+
+      createQuiz('quiz-simultaneous', [
+        { type: 'multiple', question: 'Solve: x + y = 10 and x − y = 4', options: ['x=7, y=3', 'x=3, y=7', 'x=5, y=5', 'x=6, y=4'], answer: 'x=7, y=3', explanation: 'Add equations: 2x = 14 → x = 7. Then y = 3.' },
+      ], { quizId: 'alg-simultaneous', topicId: 'algebra', sectionId: 'simultaneous' });
+
+      createQuiz('quiz-iteration', [
+        { type: 'multiple', question: 'If xₙ₊₁ = √(10 − xₙ) and x₀ = 3, what is x₁ (to 2 d.p.)?', options: ['2.65', '2.83', '3.00', '7.00'], answer: '2.65', explanation: 'x₁ = √(10 − 3) = √7 ≈ 2.65' },
+      ], { quizId: 'alg-iteration', topicId: 'algebra', sectionId: 'iteration' });
+
+      createQuiz('quiz-inequalities', [
+        { type: 'multiple', question: 'Solve: 2x + 3 > 11', options: ['x > 4', 'x > 7', 'x < 4', 'x > 5.5'], answer: 'x > 4', explanation: '2x > 8 → x > 4' },
+        { type: 'multiple', question: 'What type of circle is used on a number line for x < 5?', options: ['Open circle ○', 'Filled circle ●'], answer: 'Open circle ○', explanation: 'Open circle means the value is NOT included (strict inequality).' },
+      ], { quizId: 'alg-inequalities', topicId: 'algebra', sectionId: 'inequalities' });
+
+      createQuiz('quiz-sequences', [
+        { type: 'fill', question: 'Find the nth term of: 5, 9, 13, 17, …', answer: ['4n+1'], explanation: 'Common difference = 4 → 4n. Adjust: 4(1) = 4, need 5, so +1. nth term = 4n + 1' },
+        { type: 'multiple', question: 'What is the next term in: 1, 1, 2, 3, 5, 8, …?', options: ['13', '10', '11', '14'], answer: '13', explanation: 'Fibonacci: each term = sum of previous two. 5 + 8 = 13' },
+        { type: 'multiple', question: 'What type of sequence is: 3, 12, 48, 192, …?', options: ['Geometric (×4)', 'Arithmetic (+9)', 'Quadratic', 'Fibonacci'], answer: 'Geometric (×4)', explanation: '12/3 = 4, 48/12 = 4. Common ratio = 4.' },
+      ], { quizId: 'alg-sequences', topicId: 'algebra', sectionId: 'sequences' });
+
+      // Final section quiz
+      createQuiz('quiz-algebra-final', [
+        { type: 'fill', question: 'Expand and simplify: (x + 4)(x − 2)', answer: ['x²+2x-8', 'x² + 2x - 8', 'x²+2x−8'], explanation: 'x² − 2x + 4x − 8 = x² + 2x − 8' },
+        { type: 'fill', question: 'Solve: 4(x − 3) = 2x + 6. x = ?', answer: ['9'], explanation: '4x − 12 = 2x + 6 → 2x = 18 → x = 9' },
+        { type: 'multiple', question: 'A line passes through (0, 3) with gradient 2. What is its equation?', options: ['y = 2x + 3', 'y = 3x + 2', 'y = 2x − 3', 'y = x + 3'], answer: 'y = 2x + 3', explanation: 'y = mx + c where m = 2 and c = 3 (y-intercept)' },
+        { type: 'fill', question: 'What is the 10th term of the sequence with nth term 3n − 1?', answer: ['29'], explanation: '3(10) − 1 = 29' },
+      ], { quizId: 'alg-final', topicId: 'algebra', sectionId: 'final', xpPerQuestion: 15 });
+    });
+  </script>
+</body>
+</html>
