@@ -3,409 +3,1205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CFOP Mobile Timer</title>
+    <title>CFOP Pro Timer</title>
+    <meta name="description" content="Professional CFOP speedcubing timer with split timing, session management, statistics, and performance charts.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* FONT IMPORT */
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* RESET & BASIC SETUP */
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; 
+        :root {
+            --bg: #08090c;
+            --surface: #111318;
+            --surface2: #181b22;
+            --surface3: #1e222b;
+            --border: rgba(255,255,255,0.06);
+            --border2: rgba(255,255,255,0.1);
+            --text: #e0e4ec;
+            --text2: #8a92a4;
+            --text3: #4a5168;
+            --accent: #7eb3ff;
+            --accent2: #5b8def;
+            --green: #4ade80;
+            --red: #f87171;
+            --orange: #fb923c;
+            --purple: #a78bfa;
+            --cross: #f59e0b;
+            --f2l: #3b82f6;
+            --oll: #a855f7;
+            --pll: #22c55e;
+            --radius: 12px;
+            --tab-h: 56px;
+            --safe-b: env(safe-area-inset-bottom, 0px);
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            background-color: #0c0c0c; 
-            color: #ffffff;
-            font-family: 'Roboto Mono', monospace;
-            overflow: hidden; 
-            user-select: none; 
-            touch-action: manipulation; 
+            height: 100%; width: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        #app-container {
+        /* ═══ APP SHELL ═══ */
+        #app {
             height: 100%;
-            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ═══ TOP BAR ═══ */
+        #topbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        #topbar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .session-select {
+            flex: 1;
+            min-width: 0;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+        .session-select:focus { outline: none; border-color: var(--accent); }
+        .session-select option { background: var(--surface2); }
+        .topbar-btn {
+            width: 32px; height: 32px;
+            border: 1px solid var(--border2);
+            background: var(--surface2);
+            color: var(--text2);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .topbar-btn:hover { background: var(--surface3); color: var(--text); }
+
+        /* ═══ TAB CONTENT ═══ */
+        .tab-content {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        .tab-content.active { display: flex; }
+
+        /* ═══ BOTTOM TABS ═══ */
+        #tabs {
+            display: flex;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+            padding-bottom: var(--safe-b);
+        }
+        .tab-btn {
+            flex: 1;
+            height: var(--tab-h);
+            background: none;
+            border: none;
+            color: var(--text3);
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .tab-btn .tab-icon { font-size: 18px; }
+        .tab-btn.active { color: var(--accent); }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%; right: 20%;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 0 0 2px 2px;
+        }
+
+        /* ═══ TIMER TAB ═══ */
+        #timer-view {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 12px 16px;
             cursor: pointer;
+            overflow: hidden;
         }
 
-        /* SCRAMBLE SECTION */
         #scramble {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #aaaaaa;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text2);
             text-align: center;
-            letter-spacing: 2px;
-            line-height: 1.5;
-            max-width: 90%;
-            min-height: 48px; /* Prevents jumping if scramble wraps */
+            letter-spacing: 1px;
+            line-height: 1.6;
+            max-width: 100%;
+            word-break: break-word;
+            min-height: 44px;
         }
 
-        /* MAIN BIG TIMER */
-        #main-timer-display {
-            font-size: 20vw; 
-            font-weight: 400;
-            margin: auto 0; 
-            transition: color 0.2s ease;
+        #main-timer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: min(20vw, 100px);
+            font-weight: 600;
+            transition: color 0.15s;
+            text-align: center;
         }
+        #main-timer.wait { color: var(--red); }
+        #main-timer.ready { color: var(--green); }
+        #main-timer.running { color: var(--text); }
+        #main-timer.ended { color: var(--accent); }
 
-        /* SPLITS SECTION - 2x2 Grid */
-        #splits-container {
+        #splits {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-gap: 30px 40px; 
+            gap: 12px 20px;
             width: 100%;
-            max-width: 350px; 
-            margin-bottom: 30px;
+            max-width: 320px;
         }
-
         .split-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%; 
         }
-
         .split-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #555555;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .split-time {
-            font-size: 32px;
-            color: #555555; 
-            font-weight: 400;
-        }
-
-        /* HISTORY SECTION */
-        #history-container {
-            margin-bottom: 25px;
-            text-align: center;
-            width: 100%;
-            max-width: 350px;
-        }
-
-        #history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 0 10px;
-        }
-
-        .history-label {
             font-size: 10px;
             font-weight: 700;
-            color: #444444;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .split-label.cross { color: var(--cross); }
+        .split-label.f2l { color: var(--f2l); }
+        .split-label.oll { color: var(--oll); }
+        .split-label.pll { color: var(--pll); }
+        .split-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text3);
+        }
+        .split-time.done { color: var(--text); }
+        .split-time.active { color: var(--green); }
+
+        /* Quick stats row */
+        #quick-stats {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            max-width: 400px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .qs-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            min-width: 64px;
+        }
+        .qs-label { font-size: 9px; font-weight: 600; color: var(--text3); letter-spacing: 0.5px; text-transform: uppercase; }
+        .qs-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text2); margin-top: 2px; }
+
+        #timer-hint {
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: 0.5px;
         }
 
-        #clear-btn {
-            background: none;
-            border: 1px solid #333;
-            color: #777;
-            font-family: 'Roboto Mono', monospace;
+        /* ═══ HISTORY TAB ═══ */
+        #history-view {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        #history-header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+        }
+        #history-header .hh-title { font-size: 14px; font-weight: 700; flex: 1; }
+        #history-header .hh-count { font-size: 12px; color: var(--text3); }
+        .clear-hist-btn {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            color: var(--red);
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        #history-list { padding: 0; }
+
+        .solve-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .solve-row:hover { background: var(--surface); }
+        .solve-row .sr-num { font-size: 12px; color: var(--text3); min-width: 28px; font-weight: 600; }
+        .solve-row .sr-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 70px;
+        }
+        .solve-row .sr-time.dnf { color: var(--red); }
+        .solve-row .sr-time.plus2 { color: var(--orange); }
+        .solve-row .sr-ao5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text3); min-width: 50px; }
+        .solve-row .sr-ao12 { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text3); min-width: 50px; }
+        .solve-row .sr-date { font-size: 10px; color: var(--text3); margin-left: auto; }
+        .solve-row .sr-actions { display: flex; gap: 4px; margin-left: 4px; }
+        .penalty-btn {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text3);
+            font-family: 'Inter', sans-serif;
             font-size: 9px;
-            padding: 4px 8px;
+            font-weight: 700;
+            padding: 3px 6px;
             border-radius: 4px;
             cursor: pointer;
-            letter-spacing: 1px;
+        }
+        .penalty-btn:hover { background: var(--surface3); color: var(--text); }
+        .penalty-btn.active-penalty { border-color: var(--orange); color: var(--orange); }
+        .penalty-btn.dnf-active { border-color: var(--red); color: var(--red); }
+        .del-btn { color: var(--red); }
+        .del-btn:hover { background: rgba(248,113,113,0.1); }
+
+        .solve-detail {
+            display: none;
+            padding: 8px 16px 12px 54px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        .solve-detail.open { display: block; }
+        .sd-splits {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .sd-split {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+        .sd-split span { font-weight: 700; }
+        .sd-scramble {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text3);
+            word-break: break-all;
         }
 
-        #clear-btn:active {
-            background: #333;
-            color: #fff;
+        .empty-hist {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text3);
+            gap: 8px;
         }
+        .empty-hist .eh-icon { font-size: 32px; }
+        .empty-hist .eh-text { font-size: 13px; }
 
-        #history-list {
+        /* ═══ STATS TAB ═══ */
+        #stats-view {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+            text-align: center;
+        }
+        .stat-card .sc-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; color: var(--text3); text-transform: uppercase; }
+        .stat-card .sc-value {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 16px;
-            color: #aaaaaa;
-            letter-spacing: 2px;
-            min-height: 20px; 
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 4px;
         }
+        .stat-card .sc-value.best { color: var(--green); }
+        .stat-card .sc-value.worst { color: var(--red); }
 
-        /* DYNAMIC COLORS */
-        .color-active { color: #4dff88 !important; } 
-        .color-done { color: #ffffff !important; }   
-        .color-wait { color: #ff4d4d !important; }   
-        .color-muted { color: #555555 !important; }  
-
-        /* FOOTER INSTRUCTIONS */
-        #instructions {
-            margin-bottom: 10px;
+        .chart-section {
+            margin-bottom: 16px;
+        }
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .chart-title { font-size: 13px; font-weight: 700; }
+        .chart-toggle-group { display: flex; gap: 4px; }
+        .chart-toggle {
+            font-family: 'Inter', sans-serif;
             font-size: 10px;
-            color: #444444;
-            letter-spacing: 1px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border2);
+            background: var(--surface2);
+            color: var(--text3);
+            cursor: pointer;
+        }
+        .chart-toggle.active { background: rgba(126,179,255,0.15); border-color: rgba(126,179,255,0.3); color: var(--accent); }
+
+        .chart-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            position: relative;
+            height: 220px;
         }
 
+        .export-section {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .export-btn {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            color: var(--text2);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .export-btn:hover { background: var(--surface2); color: var(--text); }
+
+        /* ═══ SCROLLBAR ═══ */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+        /* ═══ HIDDEN FILE INPUT ═══ */
+        #import-input { display: none; }
     </style>
 </head>
 <body>
-
-    <div id="app-container">
-        <div id="scramble">Loading Scramble...</div>
-
-        <div id="main-timer-display">0.00</div>
-
-        <div id="splits-container">
-            <div class="split-item">
-                <div class="split-label">CROSS</div>
-                <div class="split-time" id="split-time-0">0.00</div>
-            </div>
-            <div class="split-item">
-                <div class="split-label">F2L</div>
-                <div class="split-time" id="split-time-1">0.00</div>
-            </div>
-            <div class="split-item">
-                <div class="split-label">OLL</div>
-                <div class="split-time" id="split-time-2">0.00</div>
-            </div>
-            <div class="split-item">
-                <div class="split-label">PLL</div>
-                <div class="split-time" id="split-time-3">0.00</div>
-            </div>
-        </div>
-
-        <div id="history-container">
-            <div id="history-header">
-                <div class="history-label">Last 5 Solves</div>
-                <button id="clear-btn">CLEAR</button>
-            </div>
-            <div id="history-list">- - - - -</div>
-        </div>
-
-        <div id="instructions">HOLD TO START - TAP TO SPLIT</div>
+<div id="app">
+    <!-- TOP BAR -->
+    <div id="topbar">
+        <span class="logo">CFOP</span>
+        <select id="session-select" class="session-select"></select>
+        <button class="topbar-btn" id="new-session-btn" title="New session">＋</button>
+        <button class="topbar-btn" id="rename-session-btn" title="Rename session">✎</button>
+        <button class="topbar-btn" id="delete-session-btn" title="Delete session">🗑</button>
     </div>
 
-    <script>
-        // --- Variables ---
-        let state = 'IDLE'; 
-        let startTime;
-        let timerInterval;
-        let currentStage = 0; 
-        let stageTimes = [0, 0, 0, 0]; 
-        let holdTimeout;
-        let solveHistory = []; 
+    <!-- TIMER TAB -->
+    <div class="tab-content active" id="tab-timer">
+        <div id="timer-view">
+            <div id="scramble">Loading…</div>
+            <div id="main-timer">0.00</div>
+            <div id="splits">
+                <div class="split-item"><div class="split-label cross">CROSS</div><div class="split-time" id="sp0">0.00</div></div>
+                <div class="split-item"><div class="split-label f2l">F2L</div><div class="split-time" id="sp1">0.00</div></div>
+                <div class="split-item"><div class="split-label oll">OLL</div><div class="split-time" id="sp2">0.00</div></div>
+                <div class="split-item"><div class="split-label pll">PLL</div><div class="split-time" id="sp3">0.00</div></div>
+            </div>
+            <div id="quick-stats"></div>
+            <div id="timer-hint">HOLD TO START · TAP TO SPLIT</div>
+        </div>
+    </div>
 
-        // --- DOM Elements ---
-        const container = document.getElementById('app-container');
-        const mainDisplay = document.getElementById('main-timer-display');
-        const scrambleDisplay = document.getElementById('scramble');
-        const historyList = document.getElementById('history-list');
-        const clearBtn = document.getElementById('clear-btn');
-        const splitElements = [
-            document.getElementById('split-time-0'),
-            document.getElementById('split-time-1'),
-            document.getElementById('split-time-2'),
-            document.getElementById('split-time-3')
-        ];
+    <!-- HISTORY TAB -->
+    <div class="tab-content" id="tab-history">
+        <div id="history-header">
+            <span class="hh-title">Solve History</span>
+            <span class="hh-count" id="solve-count"></span>
+            <button class="clear-hist-btn" id="clear-hist-btn">CLEAR ALL</button>
+        </div>
+        <div id="history-view">
+            <div id="history-list"></div>
+        </div>
+    </div>
 
-        // --- Scramble Generator ---
-        function generateScramble() {
-            const faces = ['R', 'L', 'U', 'D', 'F', 'B'];
-            const modifiers = ["", "'", "2"];
-            let scramble = [];
-            let lastFace = -1;
-            let secondLastFace = -1;
+    <!-- STATS TAB -->
+    <div class="tab-content" id="tab-stats">
+        <div id="stats-view">
+            <div class="stats-grid" id="stats-grid"></div>
 
-            for (let i = 0; i < 21; i++) {
-                let face;
-                // Prevent same face twice in a row, and prevent R L R patterns
-                do {
-                    face = Math.floor(Math.random() * 6);
-                } while (face === lastFace || (Math.floor(face / 2) === Math.floor(lastFace / 2) && face === secondLastFace)); 
-                
-                let mod = modifiers[Math.floor(Math.random() * 3)];
-                scramble.push(faces[face] + mod);
-                
-                secondLastFace = lastFace;
-                lastFace = face;
-            }
-            return scramble.join(' ');
-        }
+            <div class="chart-section">
+                <div class="chart-header">
+                    <span class="chart-title">Solve Times</span>
+                    <div class="chart-toggle-group">
+                        <button class="chart-toggle active" data-chart="times">Times</button>
+                        <button class="chart-toggle" data-chart="splits">Splits</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-canvas"></canvas>
+                </div>
+            </div>
 
-        function updateScramble() {
-            scrambleDisplay.textContent = generateScramble();
-        }
+            <div class="export-section">
+                <button class="export-btn" id="export-btn">📤 Export JSON</button>
+                <button class="export-btn" id="import-btn">📥 Import JSON</button>
+            </div>
+            <input type="file" id="import-input" accept=".json">
+        </div>
+    </div>
 
-        // --- Helper Functions ---
-        function formatTime(ms) {
-            return (ms / 1000).toFixed(2);
-        }
+    <!-- BOTTOM TABS -->
+    <div id="tabs">
+        <button class="tab-btn active" data-tab="tab-timer"><span class="tab-icon">⏱</span>Timer</button>
+        <button class="tab-btn" data-tab="tab-history"><span class="tab-icon">📋</span>History</button>
+        <button class="tab-btn" data-tab="tab-stats"><span class="tab-icon">📊</span>Stats</button>
+    </div>
+</div>
 
-        function updateMainDisplay(ms) {
-            mainDisplay.textContent = formatTime(ms);
-        }
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA LAYER — localStorage backed
+// ═══════════════════════════════════════════════════════
+const STORAGE_KEY = 'cfop_pro_data';
 
-        function updateHistoryUI() {
-            if (solveHistory.length === 0) {
-                historyList.textContent = "- - - - -";
+function loadAppData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch(e) { console.warn('Failed to parse stored data', e); }
+    return null;
+}
+
+function saveAppData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        sessions: sessions,
+        activeSessionId: activeSessionId
+    }));
+}
+
+function createSession(name) {
+    return { id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), name, solves: [] };
+}
+
+let sessions = [];
+let activeSessionId = null;
+
+function getActiveSession() { return sessions.find(s => s.id === activeSessionId) || sessions[0]; }
+
+(function initData() {
+    const stored = loadAppData();
+    if (stored && stored.sessions && stored.sessions.length) {
+        sessions = stored.sessions;
+        activeSessionId = stored.activeSessionId || sessions[0].id;
+    } else {
+        const def = createSession('Session 1');
+        sessions = [def];
+        activeSessionId = def.id;
+        saveAppData();
+    }
+})();
+
+// ═══════════════════════════════════════════════════════
+//  SCRAMBLE GENERATOR
+// ═══════════════════════════════════════════════════════
+function generateScramble() {
+    const faces = ['R','L','U','D','F','B'];
+    const mods = ["","'","2"];
+    const moves = [];
+    let last = -1, second = -1;
+    for (let i = 0; i < 21; i++) {
+        let f;
+        do { f = Math.floor(Math.random()*6); }
+        while (f === last || (Math.floor(f/2) === Math.floor(last/2) && f === second));
+        moves.push(faces[f] + mods[Math.floor(Math.random()*3)]);
+        second = last; last = f;
+    }
+    return moves.join(' ');
+}
+
+// ═══════════════════════════════════════════════════════
+//  FORMAT HELPERS
+// ═══════════════════════════════════════════════════════
+function fmt(ms) { return ms == null ? '-' : (ms / 1000).toFixed(2); }
+function fmtSolve(solve) {
+    if (solve.penalty === 'dnf') return 'DNF';
+    const t = solve.penalty === '+2' ? solve.time + 2000 : solve.time;
+    return fmt(t);
+}
+function effectiveTime(solve) {
+    if (solve.penalty === 'dnf') return Infinity;
+    return solve.penalty === '+2' ? solve.time + 2000 : solve.time;
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATISTICS CALCULATIONS
+// ═══════════════════════════════════════════════════════
+function calcAo(solves, n) {
+    if (solves.length < n) return null;
+    const window = solves.slice(-n);
+    const dnfCount = window.filter(s => s.penalty === 'dnf').length;
+    if (dnfCount > 1) return Infinity; // DNF average
+    const times = window.map(effectiveTime);
+    times.sort((a,b) => a - b);
+    // Trim best and worst
+    const trimmed = times.slice(1, -1);
+    return trimmed.reduce((a,b) => a+b, 0) / trimmed.length;
+}
+
+function bestAo(solves, n) {
+    if (solves.length < n) return null;
+    let best = Infinity;
+    for (let i = n; i <= solves.length; i++) {
+        const ao = calcAo(solves.slice(0, i), n);
+        if (ao !== null && ao < best) best = ao;
+    }
+    return best === Infinity ? null : best;
+}
+
+function calcMean(solves) {
+    const valid = solves.filter(s => s.penalty !== 'dnf');
+    if (!valid.length) return null;
+    return valid.reduce((a,s) => a + effectiveTime(s), 0) / valid.length;
+}
+
+function calcStdDev(solves) {
+    const valid = solves.filter(s => s.penalty !== 'dnf');
+    if (valid.length < 2) return null;
+    const times = valid.map(effectiveTime);
+    const mean = times.reduce((a,b) => a+b,0) / times.length;
+    const variance = times.reduce((a,t) => a + (t-mean)**2, 0) / (times.length-1);
+    return Math.sqrt(variance);
+}
+
+function bestSingle(solves) {
+    const valid = solves.filter(s => s.penalty !== 'dnf');
+    if (!valid.length) return null;
+    return Math.min(...valid.map(effectiveTime));
+}
+function worstSingle(solves) {
+    const valid = solves.filter(s => s.penalty !== 'dnf');
+    if (!valid.length) return null;
+    return Math.max(...valid.map(effectiveTime));
+}
+
+// Compute ao5 at each solve index
+function aoAtIndex(solves, idx, n) {
+    if (idx + 1 < n) return null;
+    return calcAo(solves.slice(0, idx+1), n);
+}
+
+// ═══════════════════════════════════════════════════════
+//  DOM REFS
+// ═══════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const mainTimer = $('main-timer');
+const scrambleEl = $('scramble');
+const timerView = $('timer-view');
+const sp = [0,1,2,3].map(i => $('sp'+i));
+const quickStats = $('quick-stats');
+const sessionSelect = $('session-select');
+const historyList = $('history-list');
+const solveCountEl = $('solve-count');
+const statsGrid = $('stats-grid');
+const chartCanvas = $('chart-canvas');
+
+// ═══════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ═══════════════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        $(btn.dataset.tab).classList.add('active');
+        if (btn.dataset.tab === 'tab-history') renderHistory();
+        if (btn.dataset.tab === 'tab-stats') renderStats();
+    });
+});
+
+// ═══════════════════════════════════════════════════════
+//  SESSION MANAGEMENT
+// ═══════════════════════════════════════════════════════
+function populateSessionSelect() {
+    sessionSelect.innerHTML = '';
+    sessions.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name + ` (${s.solves.length})`;
+        sessionSelect.appendChild(opt);
+    });
+    sessionSelect.value = activeSessionId;
+}
+
+sessionSelect.addEventListener('change', () => {
+    activeSessionId = sessionSelect.value;
+    saveAppData();
+    refreshAll();
+});
+
+$('new-session-btn').addEventListener('click', () => {
+    const name = prompt('Session name:', `Session ${sessions.length + 1}`);
+    if (!name) return;
+    const s = createSession(name.trim());
+    sessions.push(s);
+    activeSessionId = s.id;
+    saveAppData();
+    populateSessionSelect();
+    refreshAll();
+});
+
+$('rename-session-btn').addEventListener('click', () => {
+    const s = getActiveSession();
+    const name = prompt('Rename session:', s.name);
+    if (!name) return;
+    s.name = name.trim();
+    saveAppData();
+    populateSessionSelect();
+});
+
+$('delete-session-btn').addEventListener('click', () => {
+    if (sessions.length <= 1) { alert('Cannot delete the last session.'); return; }
+    if (!confirm('Delete this session and all its solves?')) return;
+    sessions = sessions.filter(s => s.id !== activeSessionId);
+    activeSessionId = sessions[0].id;
+    saveAppData();
+    populateSessionSelect();
+    refreshAll();
+});
+
+// ═══════════════════════════════════════════════════════
+//  TIMER LOGIC
+// ═══════════════════════════════════════════════════════
+let state = 'IDLE'; // IDLE, HOLDING, READY, RUNNING, ENDED
+let startTime, timerInterval, holdTimeout;
+let currentStage = 0;
+let stageTimes = [0,0,0,0];
+let currentScramble = '';
+
+function updateTimerDisplay(ms) { mainTimer.textContent = fmt(ms); }
+
+function updateSplitsUI() {
+    for (let i = 0; i < 4; i++) {
+        let seg = 0;
+        if (state !== 'IDLE' && state !== 'HOLDING' && state !== 'READY') {
+            seg = i === 0 ? stageTimes[0] : stageTimes[i] - stageTimes[i-1];
+            if (stageTimes[i] > 0 || i <= currentStage) {
+                sp[i].textContent = fmt(Math.max(0, seg));
             } else {
-                historyList.textContent = solveHistory.join(" • ");
+                sp[i].textContent = '0.00';
             }
+        } else {
+            sp[i].textContent = '0.00';
         }
+        sp[i].className = 'split-time';
+        if (state === 'RUNNING') {
+            if (i === currentStage) sp[i].classList.add('active');
+            else if (i < currentStage) sp[i].classList.add('done');
+        } else if (state === 'ENDED') {
+            sp[i].classList.add('done');
+        }
+    }
+}
 
-        function updateSplitUI() {
-            for (let i = 0; i < 4; i++) {
-                const element = splitElements[i];
-                let segmentDuration = 0;
-                
-                if (state !== 'IDLE' && state !== 'HOLDING' && state !== 'READY') {
-                     if (i === 0) {
-                         segmentDuration = stageTimes[0];
-                     } else {
-                         segmentDuration = stageTimes[i] - stageTimes[i-1];
-                     }
-                     
-                     if (i <= currentStage || stageTimes[i] > 0) {
-                         element.textContent = formatTime(Math.max(0, segmentDuration));
-                     } else {
-                         element.textContent = "0.00";
-                     }
-                } else {
-                     element.textContent = "0.00";
-                }
+function startTimer() {
+    state = 'RUNNING';
+    startTime = performance.now();
+    currentStage = 0;
+    stageTimes = [0,0,0,0];
+    mainTimer.className = 'running';
+    updateSplitsUI();
+    timerInterval = setInterval(() => {
+        updateTimerDisplay(performance.now() - startTime);
+    }, 30);
+}
 
-                element.classList.remove('color-active', 'color-done', 'color-muted');
-                if (state === 'RUNNING') {
-                    if (i === currentStage) element.classList.add('color-active'); 
-                    else if (i < currentStage) element.classList.add('color-done'); 
-                    else element.classList.add('color-muted'); 
-                } else if (state === 'ENDED') {
-                     element.classList.add('color-done');
-                } else {
-                    element.classList.add('color-muted');
-                }
+function stopTimer() {
+    clearInterval(timerInterval);
+    state = 'ENDED';
+    const final = performance.now() - startTime;
+    if (!stageTimes[3]) stageTimes[3] = final;
+    updateTimerDisplay(final);
+    mainTimer.className = 'ended';
+    updateSplitsUI();
+
+    // Record solve
+    const session = getActiveSession();
+    session.solves.push({
+        id: Date.now().toString(36),
+        time: Math.round(final),
+        splits: stageTimes.map((t,i) => Math.round(i === 0 ? t : t - stageTimes[i-1])),
+        scramble: currentScramble,
+        date: Date.now(),
+        penalty: null
+    });
+    saveAppData();
+    renderQuickStats();
+    populateSessionSelect();
+}
+
+function recordSplit() {
+    const cumulative = performance.now() - startTime;
+    stageTimes[currentStage] = cumulative;
+    if (currentStage < 3) { currentStage++; updateSplitsUI(); }
+    else stopTimer();
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    state = 'IDLE';
+    currentStage = 0;
+    stageTimes = [0,0,0,0];
+    updateTimerDisplay(0);
+    mainTimer.className = '';
+    updateSplitsUI();
+}
+
+function newScramble() {
+    currentScramble = generateScramble();
+    scrambleEl.textContent = currentScramble;
+}
+
+// ═══════════════════════════════════════════════════════
+//  TIMER INTERACTION
+// ═══════════════════════════════════════════════════════
+function handleDown(e) {
+    // Ignore clicks on buttons or non-timer-view
+    if (e.target.closest('button, select, .tab-btn, #topbar, #tabs, #quick-stats')) return;
+    if (e.cancelable && e.type === 'touchstart') e.preventDefault();
+
+    if (state === 'IDLE' || state === 'ENDED') {
+        if (state === 'ENDED') { resetTimer(); newScramble(); }
+        state = 'HOLDING';
+        mainTimer.className = 'wait';
+        holdTimeout = setTimeout(() => {
+            if (state === 'HOLDING') { state = 'READY'; mainTimer.className = 'ready'; }
+        }, 300);
+    } else if (state === 'RUNNING') {
+        recordSplit();
+    }
+}
+
+function handleUp(e) {
+    if (e.target.closest('button, select, .tab-btn, #topbar, #tabs, #quick-stats')) return;
+    if (e.cancelable && e.type === 'touchend') e.preventDefault();
+    clearTimeout(holdTimeout);
+    if (state === 'READY') {
+        startTimer();
+    } else if (state === 'HOLDING') {
+        mainTimer.className = '';
+        state = 'IDLE';
+    }
+}
+
+timerView.addEventListener('touchstart', handleDown, { passive: false });
+timerView.addEventListener('touchend', handleUp, { passive: false });
+timerView.addEventListener('mousedown', handleDown);
+timerView.addEventListener('mouseup', handleUp);
+
+// Keyboard support (spacebar)
+document.addEventListener('keydown', e => {
+    if (e.code !== 'Space' || e.repeat) return;
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab.id !== 'tab-timer') return;
+    e.preventDefault();
+    handleDown(e);
+});
+document.addEventListener('keyup', e => {
+    if (e.code !== 'Space') return;
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab.id !== 'tab-timer') return;
+    e.preventDefault();
+    handleUp(e);
+});
+
+// ═══════════════════════════════════════════════════════
+//  QUICK STATS (on timer tab)
+// ═══════════════════════════════════════════════════════
+function renderQuickStats() {
+    const solves = getActiveSession().solves;
+    const items = [
+        { label: 'Best', value: bestSingle(solves), cls: 'best' },
+        { label: 'ao5', value: calcAo(solves, 5) },
+        { label: 'ao12', value: calcAo(solves, 12) },
+        { label: 'ao100', value: calcAo(solves, 100) },
+        { label: 'Mean', value: calcMean(solves) },
+    ];
+    quickStats.innerHTML = items.map(it => {
+        const v = it.value === null ? '-' : it.value === Infinity ? 'DNF' : fmt(it.value);
+        return `<div class="qs-item"><span class="qs-label">${it.label}</span><span class="qs-value ${it.cls||''}">${v}</span></div>`;
+    }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  HISTORY TAB
+// ═══════════════════════════════════════════════════════
+let expandedSolveId = null;
+
+function renderHistory() {
+    const solves = getActiveSession().solves;
+    solveCountEl.textContent = `${solves.length} solve${solves.length !== 1 ? 's':''}`;
+
+    if (!solves.length) {
+        historyList.innerHTML = '<div class="empty-hist"><span class="eh-icon">⏱</span><span class="eh-text">No solves yet. Start timing!</span></div>';
+        return;
+    }
+
+    let html = '';
+    for (let i = solves.length - 1; i >= 0; i--) {
+        const s = solves[i];
+        const num = i + 1;
+        const ao5 = aoAtIndex(solves, i, 5);
+        const ao12 = aoAtIndex(solves, i, 12);
+        const ao5s = ao5 === null ? '' : ao5 === Infinity ? 'DNF' : fmt(ao5);
+        const ao12s = ao12 === null ? '' : ao12 === Infinity ? 'DNF' : fmt(ao12);
+        const timeStr = fmtSolve(s);
+        const tcls = s.penalty === 'dnf' ? 'dnf' : s.penalty === '+2' ? 'plus2' : '';
+        const dateStr = new Date(s.date).toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+        const expanded = expandedSolveId === s.id;
+
+        html += `<div class="solve-row" data-id="${s.id}">
+            <span class="sr-num">${num}.</span>
+            <span class="sr-time ${tcls}">${timeStr}</span>
+            <span class="sr-ao5">${ao5s}</span>
+            <span class="sr-ao12">${ao12s}</span>
+            <span class="sr-date">${dateStr}</span>
+            <span class="sr-actions">
+                <button class="penalty-btn ${s.penalty==='+2'?'active-penalty':''}" data-action="+2" data-sid="${s.id}" title="+2">+2</button>
+                <button class="penalty-btn ${s.penalty==='dnf'?'dnf-active':''}" data-action="dnf" data-sid="${s.id}" title="DNF">DNF</button>
+                <button class="penalty-btn del-btn" data-action="del" data-sid="${s.id}" title="Delete">✕</button>
+            </span>
+        </div>
+        <div class="solve-detail ${expanded?'open':''}" data-detail="${s.id}">
+            <div class="sd-splits">
+                <span class="sd-split" style="color:var(--cross)"><span>Cross:</span> ${fmt(s.splits[0])}</span>
+                <span class="sd-split" style="color:var(--f2l)"><span>F2L:</span> ${fmt(s.splits[1])}</span>
+                <span class="sd-split" style="color:var(--oll)"><span>OLL:</span> ${fmt(s.splits[2])}</span>
+                <span class="sd-split" style="color:var(--pll)"><span>PLL:</span> ${fmt(s.splits[3])}</span>
+            </div>
+            <div class="sd-scramble">${s.scramble}</div>
+        </div>`;
+    }
+    historyList.innerHTML = html;
+
+    // Row click → expand detail
+    historyList.querySelectorAll('.solve-row').forEach(row => {
+        row.addEventListener('click', e => {
+            if (e.target.closest('.penalty-btn')) return;
+            const id = row.dataset.id;
+            expandedSolveId = expandedSolveId === id ? null : id;
+            renderHistory();
+        });
+    });
+
+    // Penalty / delete buttons
+    historyList.querySelectorAll('.penalty-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const sid = btn.dataset.sid;
+            const action = btn.dataset.action;
+            const session = getActiveSession();
+            const solve = session.solves.find(s => s.id === sid);
+            if (!solve) return;
+            if (action === 'del') {
+                session.solves = session.solves.filter(s => s.id !== sid);
+            } else if (action === '+2') {
+                solve.penalty = solve.penalty === '+2' ? null : '+2';
+            } else if (action === 'dnf') {
+                solve.penalty = solve.penalty === 'dnf' ? null : 'dnf';
             }
-        }
+            saveAppData();
+            renderHistory();
+            renderQuickStats();
+            populateSessionSelect();
+        });
+    });
+}
 
-        // --- Timer Logic ---
-        function startTimer() {
-            state = 'RUNNING';
-            startTime = Date.now();
-            currentStage = 0;
-            stageTimes = [0,0,0,0];
-            updateSplitUI();
-            mainDisplay.classList.remove('color-active', 'color-wait', 'color-done'); 
+$('clear-hist-btn').addEventListener('click', () => {
+    if (!confirm('Delete all solves in this session?')) return;
+    getActiveSession().solves = [];
+    saveAppData();
+    renderHistory();
+    renderQuickStats();
+    populateSessionSelect();
+});
 
-            timerInterval = setInterval(() => {
-                const elapsed = Date.now() - startTime;
-                updateMainDisplay(elapsed);
-            }, 30);
-        }
+// ═══════════════════════════════════════════════════════
+//  STATS TAB
+// ═══════════════════════════════════════════════════════
+let currentChart = null;
+let chartMode = 'times';
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-            state = 'ENDED';
-            const finalTime = Date.now() - startTime;
-            
-            if(stageTimes[3] === 0) stageTimes[3] = finalTime;
-            
-            updateMainDisplay(finalTime);
-            updateSplitUI();
-            
-            solveHistory.push(formatTime(finalTime));
-            if (solveHistory.length > 5) {
-                solveHistory.shift(); 
-            }
-            updateHistoryUI();
-            updateScramble(); // Generate new scramble for next solve
-        }
+function renderStats() {
+    const solves = getActiveSession().solves;
 
-        function recordSplit() {
-            const cumulativeTime = Date.now() - startTime;
-            stageTimes[currentStage] = cumulativeTime;
-            
-            if (currentStage < 3) {
-                currentStage++;
-                updateSplitUI();
-            } else {
-                stopTimer();
-            }
-        }
+    // Stat cards
+    const pairs = [
+        ['Best', bestSingle(solves), 'best'],
+        ['Worst', worstSingle(solves), 'worst'],
+        ['Cur ao5', calcAo(solves,5)],
+        ['Best ao5', bestAo(solves,5), 'best'],
+        ['Cur ao12', calcAo(solves,12)],
+        ['Best ao12', bestAo(solves,12), 'best'],
+        ['ao50', calcAo(solves,50)],
+        ['ao100', calcAo(solves,100)],
+        ['Mean', calcMean(solves)],
+        ['Std Dev', calcStdDev(solves)],
+        ['Solves', solves.length, 'plain'],
+        ['DNFs', solves.filter(s=>s.penalty==='dnf').length, 'plain'],
+    ];
+    statsGrid.innerHTML = pairs.map(([label, val, cls]) => {
+        let v;
+        if (cls === 'plain') v = val;
+        else v = val === null ? '-' : val === Infinity ? 'DNF' : fmt(val);
+        return `<div class="stat-card"><div class="sc-label">${label}</div><div class="sc-value ${cls||''}">${v}</div></div>`;
+    }).join('');
 
-        function reset() {
-            clearInterval(timerInterval);
-            state = 'IDLE';
-            currentStage = 0;
-            stageTimes = [0, 0, 0, 0];
-            updateMainDisplay(0);
-            updateSplitUI();
-            mainDisplay.className = ''; 
-        }
+    renderChart();
+}
 
-        // --- Interaction Handlers ---
-        function handlePressStart(e) {
-            // Ignore if clicking the clear button
-            if (e.target.tagName === 'BUTTON') return;
-            
-            if(e.cancelable && e.type === 'touchstart') e.preventDefault();
+// Chart toggles
+document.querySelectorAll('.chart-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.chart-toggle').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        chartMode = btn.dataset.chart;
+        renderChart();
+    });
+});
 
-            if (state === 'IDLE' || state === 'ENDED') {
-                if(state === 'ENDED') reset();
-                
-                state = 'HOLDING';
-                mainDisplay.classList.add('color-wait'); 
+function renderChart() {
+    if (currentChart) { currentChart.destroy(); currentChart = null; }
 
-                holdTimeout = setTimeout(() => {
-                    if (state === 'HOLDING') {
-                        state = 'READY';
-                        mainDisplay.classList.remove('color-wait');
-                        mainDisplay.classList.add('color-active'); 
-                    }
-                }, 300);
+    const solves = getActiveSession().solves;
+    if (solves.length < 1) return;
 
-            } else if (state === 'RUNNING') {
-                recordSplit();
-            }
-        }
+    const ctx = chartCanvas.getContext('2d');
 
-        function handlePressEnd(e) {
-            if (e.target.tagName === 'BUTTON') return;
-
-            if(e.cancelable && e.type === 'touchend') e.preventDefault();
-            clearTimeout(holdTimeout); 
-
-            if (state === 'READY') {
-                startTimer();
-            } else if (state === 'HOLDING') {
-                mainDisplay.classList.remove('color-wait');
-                state = 'IDLE';
-            }
-        }
-
-        // Clear History Button
-        clearBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Double check to prevent bubbling
-            solveHistory = [];
-            updateHistoryUI();
+    if (chartMode === 'times') {
+        const labels = solves.map((_, i) => i + 1);
+        const times = solves.map(s => effectiveTime(s) === Infinity ? null : effectiveTime(s) / 1000);
+        const ao5Data = solves.map((_, i) => {
+            const a = aoAtIndex(solves, i, 5);
+            return a === null || a === Infinity ? null : a / 1000;
+        });
+        const ao12Data = solves.map((_, i) => {
+            const a = aoAtIndex(solves, i, 12);
+            return a === null || a === Infinity ? null : a / 1000;
         });
 
-        // Listeners
-        container.addEventListener('touchstart', handlePressStart, { passive: false });
-        container.addEventListener('touchend', handlePressEnd, { passive: false });
-        container.addEventListener('mousedown', handlePressStart);
-        container.addEventListener('mouseup', handlePressEnd);
+        currentChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Time',
+                        data: times,
+                        borderColor: 'rgba(126,179,255,0.5)',
+                        backgroundColor: 'rgba(126,179,255,0.08)',
+                        pointRadius: solves.length > 50 ? 0 : 3,
+                        pointBackgroundColor: '#7eb3ff',
+                        borderWidth: 1.5,
+                        fill: true,
+                        tension: 0.2,
+                        spanGaps: true,
+                    },
+                    {
+                        label: 'ao5',
+                        data: ao5Data,
+                        borderColor: '#4ade80',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        spanGaps: true,
+                    },
+                    {
+                        label: 'ao12',
+                        data: ao12Data,
+                        borderColor: '#f59e0b',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        spanGaps: true,
+                    }
+                ]
+            },
+            options: chartOpts('Time (s)')
+        });
+    } else {
+        // Splits stacked bar
+        const labels = solves.map((_, i) => i + 1);
+        const cross = solves.map(s => s.splits[0] / 1000);
+        const f2l = solves.map(s => s.splits[1] / 1000);
+        const oll = solves.map(s => s.splits[2] / 1000);
+        const pll = solves.map(s => s.splits[3] / 1000);
 
-        // Init
-        reset();
-        updateHistoryUI();
-        updateScramble();
+        currentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'Cross', data: cross, backgroundColor: 'rgba(245,158,11,0.7)', borderRadius: 2 },
+                    { label: 'F2L', data: f2l, backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 2 },
+                    { label: 'OLL', data: oll, backgroundColor: 'rgba(168,85,247,0.7)', borderRadius: 2 },
+                    { label: 'PLL', data: pll, backgroundColor: 'rgba(34,197,94,0.7)', borderRadius: 2 },
+                ]
+            },
+            options: {
+                ...chartOpts('Time (s)'),
+                scales: {
+                    ...chartOpts('Time (s)').scales,
+                    x: { ...chartOpts('').scales.x, stacked: true },
+                    y: { ...chartOpts('').scales.y, stacked: true, title: { display: true, text: 'Time (s)', color: '#4a5168', font: { size: 10 } } }
+                }
+            }
+        });
+    }
+}
 
-    </script>
+function chartOpts(yLabel) {
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 300 },
+        plugins: {
+            legend: { labels: { color: '#8a92a4', font: { size: 10, family: 'Inter' }, boxWidth: 10, padding: 12 } },
+            tooltip: {
+                backgroundColor: 'rgba(17,19,24,0.95)',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1,
+                titleColor: '#e0e4ec',
+                bodyColor: '#8a92a4',
+                titleFont: { family: 'Inter', size: 12 },
+                bodyFont: { family: 'JetBrains Mono', size: 11 },
+                cornerRadius: 8,
+                padding: 10,
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#4a5168', font: { size: 9 }, maxTicksLimit: 20 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: { ticks: { color: '#4a5168', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' }, title: { display: !!yLabel, text: yLabel, color: '#4a5168', font: { size: 10 } } }
+        }
+    };
+}
+
+// ═══════════════════════════════════════════════════════
+//  EXPORT / IMPORT
+// ═══════════════════════════════════════════════════════
+$('export-btn').addEventListener('click', () => {
+    const data = JSON.stringify({ sessions, activeSessionId }, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'cfop_data.json'; a.click();
+    URL.revokeObjectURL(url);
+});
+
+$('import-btn').addEventListener('click', () => $('import-input').click());
+$('import-input').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        try {
+            const data = JSON.parse(ev.target.result);
+            if (data.sessions) {
+                sessions = data.sessions;
+                activeSessionId = data.activeSessionId || sessions[0].id;
+                saveAppData();
+                populateSessionSelect();
+                refreshAll();
+                alert('Imported successfully!');
+            }
+        } catch(err) { alert('Invalid JSON file.'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+});
+
+// ═══════════════════════════════════════════════════════
+//  REFRESH ALL
+// ═══════════════════════════════════════════════════════
+function refreshAll() {
+    renderQuickStats();
+    renderHistory();
+    if (document.querySelector('.tab-content.active').id === 'tab-stats') renderStats();
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+populateSessionSelect();
+newScramble();
+resetTimer();
+renderQuickStats();
+</script>
 </body>
 </html>
