@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore the extraordinary life and times of Wilkie Collins — pioneer of the sensation novel, master storyteller, and literary rebel of the Victorian age.">
+  <title>The Life &amp; Times of Wilkie Collins</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Wilkie Collins</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="biography.html">Biography</a></li>
+        <li><a href="works.html">Works</a></li>
+        <li><a href="collaborators.html">Collaborators</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="era.html">The Era</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero" style="background-image: linear-gradient(135deg, rgba(26,23,20,.82), rgba(74,16,25,.7), rgba(62,31,13,.75)), url('images/hero-study.png'); background-size: cover; background-position: center;">
+    <div class="hero-content">
+      <p class="hero-subtitle">The Father of the Sensation Novel</p>
+      <h1 class="hero-title">Wilkie Collins</h1>
+      <p class="hero-quote">
+        "I have always held the old-fashioned opinion that the primary object of a work of fiction should be to tell a story."
+      </p>
+      <a href="biography.html" class="btn" style="margin-top: 1rem;">Discover His Story</a>
+    </div>
+  </section>
+
+  <!-- Introduction -->
+  <section class="section" id="intro">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>A Literary Revolutionary</h2>
+        <p>William Wilkie Collins (1824–1889) shattered the conventions of Victorian fiction, weaving tales of mystery, suspense, and social commentary that continue to captivate readers to this day.</p>
+      </div>
+
+      <div class="two-col reveal">
+        <div>
+          <p>Born into a world of art and privilege as the son of the celebrated landscape painter William Collins RA, Wilkie Collins would grow to become one of the most innovative and widely read novelists of the nineteenth century. His masterworks — <em>The Woman in White</em> and <em>The Moonstone</em> — are credited with inventing the sensation novel and the detective novel respectively.</p>
+          <p>Yet Collins was far more than a mere entertainer. Beneath the gripping plots and labyrinthine mysteries lay a fierce intelligence and a radical social conscience. He championed the rights of women, challenged the rigid class structures of his age, and lived a private life as unconventional as any of his fictional creations.</p>
+          <p>This website invites you to explore every facet of this extraordinary man — his art, his world, his loves, and his legacy.</p>
+        </div>
+        <div>
+          <figure class="fig">
+            <img src="images/portrait.png" alt="Portrait of Wilkie Collins" style="max-width: 380px;">
+            <figcaption>Wilkie Collins, circa 1860</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ornamental Divider -->
+  <div class="divider-ornate"><span>✦</span></div>
+
+  <!-- Quote Carousel Section -->
+  <section class="section section-dark" id="quotes">
+    <div class="container">
+      <div class="section-header">
+        <h2 style="color: var(--gold);">Words from the Master</h2>
+      </div>
+      <div class="carousel" id="quote-carousel">
+        <div class="carousel-slide active">
+          <p class="carousel-quote">"The best friend a man has in the world may turn against him and become his enemy. The one absolutely unselfish friend that man can have in this selfish world — the one that never deserts him — is his dog."</p>
+          <p class="carousel-author">— from <em>The Woman in White</em></p>
+        </div>
+        <div class="carousel-slide">
+          <p class="carousel-quote">"My hour for tea is half-past five, and my buttered toast waits for nobody."</p>
+          <p class="carousel-author">— from <em>The Woman in White</em> (Mr. Fairlie)</p>
+        </div>
+        <div class="carousel-slide">
+          <p class="carousel-quote">"When the bottle of laudanum was empty, I could write no more."</p>
+          <p class="carousel-author">— Wilkie Collins, on his creative process</p>
+        </div>
+        <div class="carousel-slide">
+          <p class="carousel-quote">"I haven't much time to be fond of anything. But when I have a moment's fondness to bestow, most times the roses get it."</p>
+          <p class="carousel-author">— from <em>The Moonstone</em></p>
+        </div>
+        <div class="carousel-slide">
+          <p class="carousel-quote">"The law will tell you that the dying man's last will and testament is an instrument of the highest importance. The true importance is in his dying wishes — and these his heart alone can utter."</p>
+          <p class="carousel-author">— from <em>No Name</em></p>
+        </div>
+      </div>
+      <div class="carousel-dots" style="margin-top: var(--space-xl);">
+        <button class="carousel-dot active" aria-label="Quote 1"></button>
+        <button class="carousel-dot" aria-label="Quote 2"></button>
+        <button class="carousel-dot" aria-label="Quote 3"></button>
+        <button class="carousel-dot" aria-label="Quote 4"></button>
+        <button class="carousel-dot" aria-label="Quote 5"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore Section — Navigation Cards -->
+  <section class="section section-parchment" id="explore">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Explore His World</h2>
+        <p>Delve into the many dimensions of Wilkie Collins — from his ground-breaking novels to his most intimate relationships.</p>
+      </div>
+
+      <div class="card-grid stagger-children reveal">
+        <a href="biography.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">📜 Biography</h3>
+          <p class="card-text">From his birth in Marylebone to his final resting place at Kensal Green — discover the arc of a remarkable life lived against convention.</p>
+        </a>
+        <a href="works.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">📖 Literary Works</h3>
+          <p class="card-text">Explore <em>The Woman in White</em>, <em>The Moonstone</em>, <em>No Name</em>, <em>Armadale</em>, and the full canon of novels, plays, and stories.</p>
+        </a>
+        <a href="collaborators.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">🤝 Collaborators</h3>
+          <p class="card-text">His legendary friendship with Charles Dickens, joint theatrical ventures, and connections with the Pre-Raphaelite Brotherhood.</p>
+        </a>
+        <a href="family.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">👨‍👩‍👧 Family &amp; Personal Life</h3>
+          <p class="card-text">Two households, two women, three children — the unconventional domestic world that scandalised Victorian society.</p>
+        </a>
+        <a href="era.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">🏛️ The Victorian Era</h3>
+          <p class="card-text">Industrialisation, empire, social reform — the turbulent age that shaped Collins and which he, in turn, interrogated through fiction.</p>
+        </a>
+        <a href="timeline.html" class="card" style="text-decoration:none;">
+          <h3 class="card-title">📅 Timeline &amp; Gallery</h3>
+          <p class="card-text">An interactive chronology of key events from 1824 to 1889, enriched with images, milestones, and historical context.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Facts Strip -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="card-grid reveal" style="text-align:center;">
+        <div>
+          <h3 style="font-size:2.5rem; color: var(--gold); margin-bottom:0.5rem;">30+</h3>
+          <p class="text-ivory">Published Novels</p>
+        </div>
+        <div>
+          <h3 style="font-size:2.5rem; color: var(--gold); margin-bottom:0.5rem;">65</h3>
+          <p class="text-ivory">Years of Life (1824–1889)</p>
+        </div>
+        <div>
+          <h3 style="font-size:2.5rem; color: var(--gold); margin-bottom:0.5rem;">15+</h3>
+          <p class="text-ivory">Plays &amp; Collaborations</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Work -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>The Masterpiece</h2>
+      </div>
+      <div class="two-col reveal">
+        <div>
+          <h3><em>The Woman in White</em> (1859–60)</h3>
+          <p>Published in serial form in Dickens's journal <em>All the Year Round</em>, <em>The Woman in White</em> was an instant sensation. Its intricate plot — revolving around identity theft, false imprisonment, and a terrifying conspiracy — held Victorian readers spellbound week after week.</p>
+          <p>The novel pioneered the use of multiple narrators, each telling their portion of the story as though giving testimony in a court of law. Its unforgettable characters — the sinister Count Fosco, the courageous Marian Halcombe, and the ethereal Anne Catherick — remain iconic figures of English literature.</p>
+          <blockquote>
+            "This is the story of what a Woman's patience can endure, and what a Man's resolution can achieve."
+            <cite>— Opening lines of <em>The Woman in White</em></cite>
+          </blockquote>
+          <p>The novel's extraordinary success made Collins one of the highest-paid authors in England and cemented his reputation as the master of the sensation novel.</p>
+        </div>
+        <div>
+          <h3><em>The Moonstone</em> (1868)</h3>
+          <p>Widely regarded as the first true detective novel in the English language, <em>The Moonstone</em> introduced narrative techniques and plot devices that would become staples of the mystery genre: the country-house setting, a bumbling local detective contrasted with a brilliant investigator, the reconstruction of events, and the least-likely-suspect twist.</p>
+          <p>The story follows the disappearance of a priceless Indian diamond — the Moonstone — bequeathed to Rachel Verinder on her eighteenth birthday. Through the testimonies of multiple narrators, Collins unravels a mystery that spans continents and social classes.</p>
+          <blockquote>
+            "I am not a groping, blindfold sort of man. I see my way through a difficulty as quickly as the best of them."
+            <cite>— Sergeant Cuff, <em>The Moonstone</em></cite>
+          </blockquote>
+          <p>T. S. Eliot would later call it "the first, the longest, and the best of modern English detective novels."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-ornament">❧ ✦ ❧</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="biography.html">Biography</a></li>
+      <li><a href="works.html">Works</a></li>
+      <li><a href="collaborators.html">Collaborators</a></li>
+      <li><a href="family.html">Family</a></li>
+      <li><a href="era.html">The Era</a></li>
+      <li><a href="timeline.html">Timeline</a></li>
+    </ul>
+    <p class="footer-copy">The Life &amp; Times of Wilkie Collins &middot; A literary tribute &middot; MMXXVI</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
