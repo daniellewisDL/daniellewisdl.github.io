@@ -1,0 +1,40 @@
+:root {
+  /* Colors */
+  --bg-dark: #07070a;
+  --bg-card: rgba(20, 20, 25, 0.4);
+  --bg-card-hover: rgba(30, 30, 40, 0.6);
+  --accent-primary: #8a2be2; /* Electric Purple */
+  --accent-secondary: #00e5ff; /* Cyan */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --text-muted: #666677;
+  
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  /* Typography */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* Layout */
+  --sidebar-width: 280px;
+  --max-width: 1200px;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(138, 43, 226, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+}
