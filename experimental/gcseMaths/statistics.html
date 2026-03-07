@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Statistics — data representation, averages, spread, sampling, histograms, scatter graphs, correlation, and box plots.">
+  <title>Statistics — GCSE Maths Mastery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="topic-statistics">
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <aside class="sidebar"><div class="sidebar-logo"><div class="logo-icon">π</div> GCSE Maths</div><nav></nav></aside>
+    <main class="main-content">
+
+      <h1>📊 Statistics</h1>
+      <p>Collect, represent, and analyse data — from bar charts and pie charts to scatter graphs, averages, and box plots.</p>
+
+      <div class="subtopic-nav">
+        <a href="#populations">Populations & Sampling</a>
+        <a href="#representation">Data Representation</a>
+        <a href="#histograms">Histograms & Cumulative Frequency</a>
+        <a href="#distribution">Distribution Analysis</a>
+        <a href="#bivariate">Scatter Graphs & Correlation</a>
+      </div>
+
+      <!-- 6.1 POPULATIONS & SAMPLING -->
+      <section id="populations" class="topic-section fade-in">
+        <h2>6.1 Populations & Sampling</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>population</strong> is the entire group you want to study. A <strong>sample</strong> is a subset used to make inferences about the population.</p>
+        </div>
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Limitations of Sampling</h4>
+          <ul style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li>A sample may not represent the full population.</li>
+            <li>Different samples give different results.</li>
+            <li>Sampling bias occurs when some members are more likely to be selected.</li>
+            <li>Larger samples are generally more reliable.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin-top:0">Types of Sampling</h4>
+          <p><strong>Random sampling:</strong> every member has an equal chance of selection.</p>
+          <p><strong>Systematic sampling:</strong> select every kth item from a list.</p>
+          <p><strong>Stratified sampling:</strong> divide population into groups (strata) and sample proportionally from each.</p>
+        </div>
+        <div id="quiz-populations" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 6.2 DATA REPRESENTATION -->
+      <section id="representation" class="topic-section fade-in">
+        <h2>6.2 Data Representation</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Choose the right chart type for your data. You must be able to interpret AND construct these charts:</p>
+        </div>
+        <div class="card">
+          <table style="width:100%;color:var(--text-secondary);font-size:.85rem;">
+            <tr><th>Chart Type</th><th>Best For</th><th>Key Features</th></tr>
+            <tr><td><strong>Bar chart</strong></td><td>Categorical data</td><td>Bars don't touch, equal width</td></tr>
+            <tr><td><strong>Pie chart</strong></td><td>Proportions of a whole</td><td>Angle = (value/total) × 360°</td></tr>
+            <tr><td><strong>Pictogram</strong></td><td>Simple comparisons</td><td>Each symbol = set number</td></tr>
+            <tr><td><strong>Line graph</strong></td><td>Time series data</td><td>Points connected by lines</td></tr>
+            <tr><td><strong>Vertical line chart</strong></td><td>Discrete data</td><td>Vertical lines instead of bars</td></tr>
+            <tr><td><strong>Frequency table</strong></td><td>Organising raw data</td><td>Tally and frequency columns</td></tr>
+          </table>
+        </div>
+
+        <!-- Interactive chart builder -->
+        <div class="widget-container">
+          <h4 style="margin-top:0">📊 Interactive Chart Builder</h4>
+          <p style="font-size:.85rem;color:var(--text-muted)">Enter comma-separated data to create charts instantly!</p>
+          <div class="widget-controls" style="margin-top:.75rem">
+            <label>Labels: <input type="text" id="chart-labels" value="Mon,Tue,Wed,Thu,Fri" style="width:200px"></label>
+            <label>Values: <input type="text" id="chart-values" value="12,18,7,22,15" style="width:200px"></label>
+          </div>
+          <div class="widget-controls" style="margin-top:.5rem">
+            <button class="btn-primary" onclick="buildBarChart()">Bar Chart</button>
+            <button class="btn-primary" onclick="buildPieChart()">Pie Chart</button>
+          </div>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+            <canvas id="user-bar-chart"></canvas>
+            <canvas id="user-pie-chart"></canvas>
+          </div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Pie Chart Angles</h4>
+          <p><strong>30 students chose their favourite colour: Red 8, Blue 12, Green 6, Yellow 4. Find the angle for Blue.</strong></p>
+          <div class="step hidden-step">Step 1: Angle = (frequency / total) × 360°</div>
+          <div class="step hidden-step">Step 2: = (12/30) × 360° = 144° ✓</div>
+        </div>
+        <div id="quiz-representation" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 6.3 HISTOGRAMS & CUMULATIVE FREQUENCY -->
+      <section id="histograms" class="topic-section fade-in">
+        <h2>6.3 Histograms & Cumulative Frequency <span class="higher-tier">Higher</span></h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>histogram</strong> looks like a bar chart but represents continuous data. The <strong>area</strong> of each bar represents frequency (not the height). For unequal class widths:</p>
+          <div class="math-block">Frequency density = frequency ÷ class width</div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Drawing a Histogram</h4>
+          <p><strong>Given this grouped frequency table:</strong></p>
+          <div class="card" style="margin:.5rem 0;">
+            <table style="width:100%;color:var(--text-secondary);font-size:.88rem;text-align:center;">
+              <tr><th>Time (min)</th><th>Frequency</th><th>Class Width</th><th>Frequency Density</th></tr>
+              <tr><td>0–10</td><td>20</td><td>10</td><td>2</td></tr>
+              <tr><td>10–25</td><td>30</td><td>15</td><td>2</td></tr>
+              <tr><td>25–30</td><td>25</td><td>5</td><td>5</td></tr>
+              <tr><td>30–50</td><td>40</td><td>20</td><td>2</td></tr>
+            </table>
+          </div>
+          <p>Plot with frequency density on the y-axis and time on the x-axis. The bar for 25–30 will be the tallest despite not having the highest frequency!</p>
+        </div>
+
+        <h3>Cumulative Frequency</h3>
+        <p>A <strong>cumulative frequency</strong> table adds up the frequencies as you go. Plot on a graph to find the <strong>median</strong>, <strong>lower quartile (LQ)</strong>, <strong>upper quartile (UQ)</strong>, and <strong>interquartile range (IQR)</strong>.</p>
+        <div class="card accent-border">
+          <p><strong>Median</strong> = value at the n/2 th point</p>
+          <p><strong>LQ</strong> = value at n/4 th point</p>
+          <p><strong>UQ</strong> = value at 3n/4 th point</p>
+          <p><strong>IQR</strong> = UQ − LQ</p>
+        </div>
+        <div id="quiz-histograms" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 6.4 DISTRIBUTION ANALYSIS -->
+      <section id="distribution" class="topic-section fade-in">
+        <h2>6.4 Averages & Spread</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept — Measures of Central Tendency</h4>
+          <div style="color:var(--text-secondary)">
+            <p><strong>Mean</strong> = sum of all values ÷ number of values</p>
+            <p><strong>Median</strong> = middle value when data is ordered</p>
+            <p><strong>Mode</strong> = most frequently occurring value</p>
+            <p><strong>Modal class</strong> = class interval with the highest frequency (for grouped data)</p>
+          </div>
+        </div>
+
+        <div class="key-concept">
+          <h4>💡 Key Concept — Measures of Spread</h4>
+          <div style="color:var(--text-secondary)">
+            <p><strong>Range</strong> = largest value − smallest value</p>
+            <p><strong>IQR</strong> = UQ − LQ <span class="higher-tier">Higher</span></p>
+            <p><strong>Outliers</strong> = values more than 1.5 × IQR beyond quartiles <span class="higher-tier">Higher</span></p>
+          </div>
+        </div>
+
+        <!-- Interactive mean/median/mode calculator -->
+        <div class="widget-container">
+          <h4 style="margin-top:0">📈 Averages Calculator</h4>
+          <div class="widget-controls" style="margin-top:.5rem">
+            <label>Data (comma-separated): <input type="text" id="avg-data" value="3, 5, 7, 7, 9, 12, 15" style="width:250px"></label>
+            <button class="btn-primary" onclick="calcAverages()">Calculate</button>
+          </div>
+          <div id="avg-result" style="margin-top:1rem;color:var(--text-secondary);"></div>
+        </div>
+
+        <h3>Mean from a Frequency Table</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Find the mean from this frequency table:</strong></p>
+          <div class="card" style="margin:.5rem 0">
+            <table style="width:100%;color:var(--text-secondary);font-size:.88rem;text-align:center;">
+              <tr><th>Score</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+              <tr><th>Frequency</th><td>3</td><td>5</td><td>8</td><td>4</td><td>2</td></tr>
+            </table>
+          </div>
+          <div class="step hidden-step">Step 1: Multiply each score by its frequency: 3,10,24,16,10</div>
+          <div class="step hidden-step">Step 2: Sum of fx = 63, Sum of f = 22</div>
+          <div class="step hidden-step">Step 3: Mean = 63/22 ≈ 2.86 ✓</div>
+        </div>
+
+        <h3>Box Plots <span class="higher-tier">Higher</span></h3>
+        <div class="card accent-border">
+          <p>A <strong>box plot</strong> shows the five-number summary: Minimum, LQ, Median, UQ, Maximum.</p>
+          <p>The box shows the IQR (middle 50% of data). Whiskers extend to min and max (or to the nearest non-outlier).</p>
+          <p>Box plots are excellent for <strong>comparing</strong> two data sets side by side.</p>
+        </div>
+
+        <h3>Comparing Data Sets</h3>
+        <p>When comparing, always state:</p>
+        <div class="card">
+          <ol style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li>A comparison of <strong>average</strong> (mean or median) — "on average, group A scored higher because…"</li>
+            <li>A comparison of <strong>spread</strong> (range or IQR) — "group B was more consistent because the range was smaller…"</li>
+            <li><strong>In context</strong> — always refer to the original data context (e.g., test scores, heights)</li>
+          </ol>
+        </div>
+        <div id="quiz-distribution" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 6.5 SCATTER GRAPHS & CORRELATION -->
+      <section id="bivariate" class="topic-section fade-in">
+        <h2>6.5 Scatter Graphs & Correlation</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>scatter graph</strong> shows two variables plotted against each other. The pattern shows the <strong>correlation</strong>:</p>
+          <ul style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li><strong>Positive correlation:</strong> as one increases, the other increases (upward trend)</li>
+            <li><strong>Negative correlation:</strong> as one increases, the other decreases (downward trend)</li>
+            <li><strong>No correlation:</strong> no clear pattern</li>
+          </ul>
+        </div>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">⚠️ Correlation ≠ Causation</h4>
+          <p>Just because two things are correlated does NOT mean one <strong>causes</strong> the other. For example, ice cream sales and drowning rates both increase in summer, but ice cream doesn't cause drowning!</p>
+        </div>
+
+        <h3>Line of Best Fit</h3>
+        <p>Draw a straight line that passes through the data with roughly equal numbers of points above and below. Use it to:</p>
+        <ul style="color:var(--text-secondary);padding-left:1.5rem;">
+          <li><strong>Interpolate:</strong> estimate values WITHIN the data range (reliable)</li>
+          <li><strong>Extrapolate:</strong> estimate values OUTSIDE the data range (less reliable)</li>
+        </ul>
+
+        <!-- Interactive scatter plot -->
+        <div class="widget-container">
+          <h4 style="margin-top:0">📈 Scatter Graph Explorer</h4>
+          <p style="font-size:.85rem;color:var(--text-muted)">Click on the canvas to add data points. The line of best fit updates automatically!</p>
+          <canvas id="scatter-canvas" width="500" height="400"></canvas>
+          <div class="widget-controls">
+            <button class="btn-secondary" onclick="clearScatter()">Clear All</button>
+            <span id="scatter-info" style="font-size:.85rem;color:var(--text-muted);margin-left:1rem"></span>
+          </div>
+        </div>
+
+        <div id="quiz-bivariate" class="quiz-widget"></div>
+      </section>
+
+      <!-- SECTION QUIZ -->
+      <div class="section-divider"></div>
+      <section class="fade-in">
+        <h2>🏆 Statistics — Section Quiz</h2>
+        <div id="quiz-stats-final" class="quiz-widget"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    // Interactive chart builder
+    window.buildBarChart = function() {
+      const labels = document.getElementById('chart-labels').value.split(',').map(s=>s.trim());
+      const values = document.getElementById('chart-values').value.split(',').map(s=>parseFloat(s.trim()));
+      const data = labels.map((l,i) => ({ label: l, value: values[i] || 0 }));
+      drawBarChart('user-bar-chart', data, { width: 400, height: 250 });
+    };
+    window.buildPieChart = function() {
+      const labels = document.getElementById('chart-labels').value.split(',').map(s=>s.trim());
+      const values = document.getElementById('chart-values').value.split(',').map(s=>parseFloat(s.trim()));
+      const data = labels.map((l,i) => ({ label: l, value: values[i] || 0 }));
+      drawPieChart('user-pie-chart', data, { width: 280, height: 280 });
+    };
+
+    // Averages calculator
+    window.calcAverages = function() {
+      const raw = document.getElementById('avg-data').value.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+      if (raw.length === 0) return;
+      const sorted = [...raw].sort((a,b)=>a-b);
+      const mean = raw.reduce((a,b)=>a+b,0) / raw.length;
+      const median = sorted.length % 2 === 0
+        ? (sorted[sorted.length/2 - 1] + sorted[sorted.length/2]) / 2
+        : sorted[Math.floor(sorted.length/2)];
+      const freq = {};
+      raw.forEach(v => freq[v] = (freq[v]||0) + 1);
+      const maxFreq = Math.max(...Object.values(freq));
+      const modes = Object.keys(freq).filter(k => freq[k] === maxFreq);
+      const range = sorted[sorted.length-1] - sorted[0];
+      const lq = sorted[Math.floor(sorted.length * 0.25)];
+      const uq = sorted[Math.floor(sorted.length * 0.75)];
+      const iqr = uq - lq;
+      document.getElementById('avg-result').innerHTML = `
+        <p><strong>Sorted data:</strong> ${sorted.join(', ')}</p>
+        <p><strong>Mean:</strong> ${mean.toFixed(2)}</p>
+        <p><strong>Median:</strong> ${median}</p>
+        <p><strong>Mode:</strong> ${maxFreq > 1 ? modes.join(', ') : 'No mode'}</p>
+        <p><strong>Range:</strong> ${range}</p>
+        <p><strong>Lower Quartile:</strong> ${lq} | <strong>Upper Quartile:</strong> ${uq} | <strong>IQR:</strong> ${iqr}</p>
+      `;
+    };
+
+    // Scatter graph
+    let scatterPoints = [];
+    function drawScatter() {
+      const canvas = document.getElementById('scatter-canvas');
+      const ctx = canvas.getContext('2d');
+      const w = 500, h = 400;
+      canvas.width = w; canvas.height = h;
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.fillRect(0,0,w,h);
+      // Grid
+      const pad = 40;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 1;
+      for(let i=0;i<=10;i++){
+        const x = pad + i*(w-2*pad)/10;
+        ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,h-pad);ctx.stroke();
+        const y = pad + i*(h-2*pad)/10;
+        ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke();
+      }
+      // Axes
+      ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,h-pad);ctx.lineTo(w-pad,h-pad);ctx.stroke();
+      // Points
+      scatterPoints.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
+        ctx.fillStyle='#06b6d4';
+        ctx.fill();
+      });
+      // Line of best fit
+      if (scatterPoints.length >= 2) {
+        const n = scatterPoints.length;
+        const sumX = scatterPoints.reduce((s,p)=>s+p.x,0);
+        const sumY = scatterPoints.reduce((s,p)=>s+p.y,0);
+        const sumXY = scatterPoints.reduce((s,p)=>s+p.x*p.y,0);
+        const sumX2 = scatterPoints.reduce((s,p)=>s+p.x*p.x,0);
+        const m = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
+        const b = (sumY - m*sumX) / n;
+        if (isFinite(m) && isFinite(b)) {
+          ctx.strokeStyle='rgba(250,204,21,0.6)';
+          ctx.lineWidth=2;
+          ctx.setLineDash([6,4]);
+          ctx.beginPath();
+          ctx.moveTo(pad, m*pad+b);
+          ctx.lineTo(w-pad, m*(w-pad)+b);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          // Determine correlation
+          const corrType = Math.abs(m) < 0.1 ? 'No clear' : m < 0 ? 'Negative' : 'Positive';
+          document.getElementById('scatter-info').textContent = `${scatterPoints.length} points | ${corrType} correlation`;
+        }
+      } else {
+        document.getElementById('scatter-info').textContent = `${scatterPoints.length} points — add more to see line of best fit`;
+      }
+    }
+    window.clearScatter = function() { scatterPoints = []; drawScatter(); };
+    document.addEventListener('DOMContentLoaded', () => {
+      const sc = document.getElementById('scatter-canvas');
+      drawScatter();
+      sc.addEventListener('click', (e) => {
+        const rect = sc.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (x > 40 && x < 460 && y > 40 && y < 360) {
+          scatterPoints.push({x,y});
+          drawScatter();
+        }
+      });
+
+      buildBarChart();
+
+      // Quizzes
+      createQuiz('quiz-populations', [
+        { type: 'multiple', question: 'Which sampling method divides the population into groups and samples proportionally?', options: ['Stratified', 'Random', 'Systematic', 'Convenience'], answer: 'Stratified', explanation: 'Stratified sampling splits into strata (groups) and samples from each in proportion.' },
+        { type: 'multiple', question: 'A school survey only asks Year 11 students about the canteen. This sample is:', options: ['Biased', 'Random', 'Stratified', 'Perfect'], answer: 'Biased', explanation: 'It only includes one year group, not representative of the whole school.' },
+      ], { quizId: 'stats-populations', topicId: 'statistics', sectionId: 'populations' });
+
+      createQuiz('quiz-representation', [
+        { type: 'fill', question: 'In a pie chart, 25 out of 100 people chose "yes". What angle represents "yes"?', answer: ['90'], explanation: '(25/100) × 360° = 90°' },
+        { type: 'multiple', question: 'Which chart is best for showing how data changes over time?', options: ['Line graph', 'Pie chart', 'Bar chart', 'Pictogram'], answer: 'Line graph', explanation: 'Line graphs (time series) show trends over time.' },
+      ], { quizId: 'stats-representation', topicId: 'statistics', sectionId: 'representation' });
+
+      createQuiz('quiz-histograms', [
+        { type: 'multiple', question: 'In a histogram, what does the y-axis represent?', options: ['Frequency density', 'Frequency', 'Class width', 'Percentage'], answer: 'Frequency density', explanation: 'Histograms use frequency density = frequency ÷ class width.' },
+        { type: 'fill', question: 'Frequency = 30, class width = 5. What is the frequency density?', answer: ['6'], explanation: '30 ÷ 5 = 6' },
+      ], { quizId: 'stats-histograms', topicId: 'statistics', sectionId: 'histograms' });
+
+      createQuiz('quiz-distribution', [
+        { type: 'fill', question: 'Find the mean of: 4, 6, 8, 10, 12.', answer: ['8'], explanation: '(4+6+8+10+12) ÷ 5 = 40 ÷ 5 = 8' },
+        { type: 'fill', question: 'Find the median of: 3, 7, 1, 9, 5.', answer: ['5'], explanation: 'Ordered: 1, 3, 5, 7, 9. Middle value = 5.' },
+        { type: 'fill', question: 'Find the range of: 15, 3, 22, 8, 11.', answer: ['19'], explanation: '22 − 3 = 19' },
+        { type: 'multiple', question: 'Which average is best for skewed data?', options: ['Median', 'Mean', 'Mode', 'Range'], answer: 'Median', explanation: 'The median is not affected by extreme values (outliers), making it best for skewed data.' },
+      ], { quizId: 'stats-distribution', topicId: 'statistics', sectionId: 'distribution' });
+
+      createQuiz('quiz-bivariate', [
+        { type: 'multiple', question: 'As temperature increases, ice cream sales increase. This is:', options: ['Positive correlation', 'Negative correlation', 'No correlation', 'Causation'], answer: 'Positive correlation', explanation: 'Both increase together = positive correlation.' },
+        { type: 'multiple', question: 'Correlation implies:', options: ['A relationship, not necessarily cause', 'One variable causes the other', 'No connection at all', 'Perfect prediction'], answer: 'A relationship, not necessarily cause', explanation: 'Correlation shows a relationship but does NOT prove causation.' },
+        { type: 'multiple', question: 'Using a line of best fit to predict beyond the data range is called:', options: ['Extrapolation', 'Interpolation', 'Correlation', 'Estimation'], answer: 'Extrapolation', explanation: 'Extrapolation predicts outside the data range and is less reliable.' },
+      ], { quizId: 'stats-bivariate', topicId: 'statistics', sectionId: 'bivariate' });
+
+      // Final quiz
+      createQuiz('quiz-stats-final', [
+        { type: 'fill', question: 'Mean of 10, 20, 30, 40, 50.', answer: ['30'], explanation: '150 ÷ 5 = 30' },
+        { type: 'fill', question: 'Median of 2, 4, 4, 6, 8, 10, 12.', answer: ['6'], explanation: 'Middle of 7 values = 4th value = 6.' },
+        { type: 'multiple', question: 'In a pie chart of 200 items, one category has an angle of 72°. How many items?', options: ['40', '36', '72', '20'], answer: '40', explanation: '(72/360) × 200 = 40' },
+        { type: 'multiple', question: 'As study hours increase, TV hours decrease. What type of correlation?', options: ['Negative', 'Positive', 'No correlation', 'Strong'], answer: 'Negative', explanation: 'One increases while the other decreases = negative correlation.' },
+      ], { quizId: 'stats-final', topicId: 'statistics', sectionId: 'final', xpPerQuestion: 15 });
+
+      // Calculate averages on load
+      calcAverages();
+    });
+  </script>
+</body>
+</html>

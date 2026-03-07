@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Ratio, Proportion & Rates of Change — units, scaling, ratios, percentages, compound measures, growth & decay.">
+  <title>Ratio, Proportion & Rates of Change — GCSE Maths Mastery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="topic-ratio">
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <aside class="sidebar"><div class="sidebar-logo"><div class="logo-icon">π</div> GCSE Maths</div><nav></nav></aside>
+    <main class="main-content">
+
+      <h1>⚖️ Ratio, Proportion & Rates of Change</h1>
+      <p>Understand proportional relationships, compound measures, percentages, and growth — essential real-world maths.</p>
+
+      <div class="subtopic-nav">
+        <a href="#units">Units & Scale</a>
+        <a href="#ratio-apps">Ratio Applications</a>
+        <a href="#proportion">Proportion</a>
+        <a href="#percentages">Percentages</a>
+        <a href="#similarity">Similarity & Scale</a>
+        <a href="#inverse-prop">Inverse Proportion</a>
+        <a href="#rates">Rates of Change</a>
+        <a href="#growth">Growth & Decay</a>
+      </div>
+
+      <!-- 3.1 UNITS & SCALE -->
+      <section id="units" class="topic-section fade-in">
+        <h2>3.1 Units & Scale Factors</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>You must convert fluently between standard and compound units. A <strong>scale factor</strong> describes how many times larger (or smaller) one quantity is compared to another.</p>
+        </div>
+        <h3>Compound Units</h3>
+        <div class="card accent-border">
+          <p><strong>Speed</strong> = distance ÷ time (m/s, km/h, mph)</p>
+          <p><strong>Density</strong> = mass ÷ volume (g/cm³, kg/m³)</p>
+          <p><strong>Pressure</strong> = force ÷ area (N/m², Pa)</p>
+          <p><strong>Rate of pay</strong> = pay ÷ time (£/hr)</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Convert 72 km/h to m/s.</strong></p>
+          <div class="step hidden-step">Step 1: 72 km = 72 000 m</div>
+          <div class="step hidden-step">Step 2: 1 hour = 3600 s</div>
+          <div class="step hidden-step">Step 3: 72 000 ÷ 3600 = 20 m/s ✓</div>
+        </div>
+        <h3>Scale Diagrams & Maps</h3>
+        <p>A map scale of <span class="math">1 : 50 000</span> means 1 cm on the map = 50 000 cm = 500 m in real life.</p>
+        <div id="quiz-units" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.2 RATIO APPLICATIONS -->
+      <section id="ratio-apps" class="topic-section fade-in">
+        <h2>3.2 Ratio Applications</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>ratio</strong> compares quantities. <span class="math">a : b</span> means "a parts to b parts". Always simplify to the lowest terms by dividing by the HCF.</p>
+        </div>
+        <h3>Dividing in a Given Ratio</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Divide £120 in the ratio 3 : 5</strong></p>
+          <div class="step hidden-step">Step 1: Total parts = 3 + 5 = 8</div>
+          <div class="step hidden-step">Step 2: One part = £120 ÷ 8 = £15</div>
+          <div class="step hidden-step">Step 3: 3 parts = £45, 5 parts = £75 ✓</div>
+        </div>
+
+        <div class="explanation-tabs">
+          <button class="active" data-tab="visual-ratio">🎨 Visual (Bar Model)</button>
+          <button data-tab="algebraic-ratio">📝 Algebraic</button>
+        </div>
+        <div class="explanation-panel active" data-panel="visual-ratio">
+          <div class="card">
+            <p>Think of the ratio as coloured blocks:</p>
+            <div style="display:flex;gap:4px;margin:1rem 0;">
+              <div style="flex:3;height:40px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;">3 parts = £45</div>
+              <div style="flex:5;height:40px;background:#8b5cf6;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;">5 parts = £75</div>
+            </div>
+            <p>Total = £120</p>
+          </div>
+        </div>
+        <div class="explanation-panel" data-panel="algebraic-ratio">
+          <p>Let the parts be 3x and 5x. Then 3x + 5x = 120 → 8x = 120 → x = 15. So 3x = 45 and 5x = 75.</p>
+        </div>
+        <div id="quiz-ratio-apps" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.3 PROPORTION -->
+      <section id="proportion" class="topic-section fade-in">
+        <h2>3.3 Direct & Inverse Proportion</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Direct proportion:</strong> as one quantity increases, the other increases at the same rate. <span class="math">y = kx</span></p>
+          <p><strong>Inverse proportion:</strong> as one increases, the other decreases. <span class="math">y = k/x</span></p>
+        </div>
+        <div class="card accent-border">
+          <h4 style="margin-top:0">The Unitary Method</h4>
+          <p>Find the value of ONE unit first, then multiply up.</p>
+          <p><strong>Example:</strong> 5 books cost £40. Find the cost of 3 books.</p>
+          <p>1 book = £40 ÷ 5 = £8 → 3 books = 3 × £8 = £24</p>
+        </div>
+        <h3>Proportion Graphs</h3>
+        <p>Direct proportion gives a <strong>straight line through the origin</strong>. Inverse proportion gives a <strong>reciprocal curve</strong>.</p>
+        <div class="widget-container">
+          <canvas id="proportion-graph" width="500" height="300"></canvas>
+        </div>
+        <div id="quiz-proportion" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.4 PERCENTAGES -->
+      <section id="percentages" class="topic-section fade-in">
+        <h2>3.4 Percentages</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Percentage</strong> means "per hundred". <span class="math">25% = 25/100 = 0.25</span></p>
+        </div>
+        <h3>Percentage of an Amount</h3>
+        <div class="math-block">% of amount = (percentage/100) × amount</div>
+        <h3>Percentage Change</h3>
+        <div class="math-block">% change = (change / original) × 100</div>
+        <h3>Using Multipliers</h3>
+        <div class="card accent-border">
+          <p><strong>Increase by 15%:</strong> multiply by 1.15</p>
+          <p><strong>Decrease by 20%:</strong> multiply by 0.80</p>
+          <p><strong>Finding original after increase:</strong> divide by the multiplier</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Reverse Percentage</h4>
+          <p><strong>After a 20% discount, a jacket costs £56. What was the original price?</strong></p>
+          <div class="step hidden-step">Step 1: 20% off → multiplier = 0.80</div>
+          <div class="step hidden-step">Step 2: Original × 0.80 = £56</div>
+          <div class="step hidden-step">Step 3: Original = £56 ÷ 0.80 = £70 ✓</div>
+        </div>
+
+        <h3>Compound Interest</h3>
+        <div class="math-block">Final = Original × (1 + r/100)ⁿ</div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>£2000 is invested at 3% per year compound interest. Find the value after 4 years.</strong></p>
+          <div class="step hidden-step">Step 1: Multiplier = 1.03</div>
+          <div class="step hidden-step">Step 2: Value = 2000 × 1.03⁴</div>
+          <div class="step hidden-step">Step 3: = 2000 × 1.12550881 ≈ £2251.02 ✓</div>
+        </div>
+
+        <!-- Interactive Compound Interest Calculator -->
+        <div class="widget-container">
+          <h4 style="margin-top:0">💰 Compound Interest Calculator</h4>
+          <div class="widget-controls" style="margin-top:.5rem">
+            <label>Principal £: <input type="number" id="ci-principal" value="1000" min="1"></label>
+            <label>Rate %: <input type="number" id="ci-rate" value="5" min="0" step="0.1"></label>
+            <label>Years: <input type="number" id="ci-years" value="10" min="1" max="50"></label>
+            <button class="btn-primary" onclick="calcCI()">Calculate</button>
+          </div>
+          <p id="ci-result" style="font-size:1.1rem;font-weight:700;color:var(--accent);margin-top:1rem;"></p>
+          <canvas id="ci-chart" width="500" height="200"></canvas>
+        </div>
+
+        <div id="quiz-percentages" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.5 SIMILARITY & SCALE FACTORS -->
+      <section id="similarity" class="topic-section fade-in">
+        <h2>3.5 Similarity & Scale Factors</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>If the <strong>linear scale factor</strong> is k, then:</p>
+          <ul style="color:var(--text-secondary);padding-left:1.5rem;">
+            <li>Lengths scale by k</li>
+            <li>Areas scale by k²</li>
+            <li>Volumes scale by k³</li>
+          </ul>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Two similar cones have heights 6 cm and 9 cm. If the smaller has volume 80 cm³, find the volume of the larger.</strong></p>
+          <div class="step hidden-step">Step 1: Scale factor k = 9/6 = 1.5</div>
+          <div class="step hidden-step">Step 2: Volume scale factor = k³ = 1.5³ = 3.375</div>
+          <div class="step hidden-step">Step 3: Larger volume = 80 × 3.375 = 270 cm³ ✓</div>
+        </div>
+        <div id="quiz-similarity" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.6 INVERSE PROPORTION EQUATIONS -->
+      <section id="inverse-prop" class="topic-section fade-in">
+        <h2>3.6 Inverse Proportion Equations</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>If X is <strong>inversely proportional</strong> to Y, then <span class="math">X = k/Y</span> (or equivalently, <span class="math">XY = k</span>).</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>y is inversely proportional to x. When x = 4, y = 6. Find y when x = 8.</strong></p>
+          <div class="step hidden-step">Step 1: y = k/x → 6 = k/4 → k = 24</div>
+          <div class="step hidden-step">Step 2: When x = 8: y = 24/8 = 3 ✓</div>
+        </div>
+        <div id="quiz-inverse-prop" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.7 RATES OF CHANGE -->
+      <section id="rates" class="topic-section fade-in">
+        <h2>3.7 Rates of Change Graphs</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>The <strong>gradient</strong> of a straight-line graph represents the <strong>rate of change</strong>. For example, on a distance-time graph, the gradient = speed.</p>
+        </div>
+        <h3>Interpreting Gradients on Curves <span class="higher-tier">Higher</span></h3>
+        <p>For curves, draw a <strong>tangent</strong> at the point and find its gradient. This gives the <strong>instantaneous rate of change</strong> at that point.</p>
+        <div id="quiz-rates" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 3.8 GROWTH & DECAY -->
+      <section id="growth" class="topic-section fade-in">
+        <h2>3.8 Growth & Decay</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Exponential growth:</strong> <span class="math">y = a(1 + r)ⁿ</span> (compound increase).</p>
+          <p><strong>Exponential decay:</strong> <span class="math">y = a(1 − r)ⁿ</span> (compound decrease).</p>
+        </div>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>A car worth £12 000 depreciates by 15% each year. What is it worth after 3 years?</strong></p>
+          <div class="step hidden-step">Step 1: Multiplier = 1 − 0.15 = 0.85</div>
+          <div class="step hidden-step">Step 2: Value = £12 000 × 0.85³</div>
+          <div class="step hidden-step">Step 3: = £12 000 × 0.614125 = £7369.50 ✓</div>
+        </div>
+        <div id="quiz-growth" class="quiz-widget"></div>
+      </section>
+
+      <!-- SECTION QUIZ -->
+      <div class="section-divider"></div>
+      <section class="fade-in">
+        <h2>🏆 Ratio & Proportion — Section Quiz</h2>
+        <div id="quiz-ratio-final" class="quiz-widget"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Proportion graph
+      const propPlotter = new GraphPlotter('proportion-graph', { width: 500, height: 300, xMin: 0, xMax: 10, yMin: 0, yMax: 20 });
+      propPlotter.plotFunction(x => 2 * x, '#f59e0b', 2.5);
+      propPlotter.plotFunction(x => x === 0 ? NaN : 20 / x, '#8b5cf6', 2.5);
+
+      // Compound Interest Calculator
+      window.calcCI = function() {
+        const P = parseFloat(document.getElementById('ci-principal').value);
+        const r = parseFloat(document.getElementById('ci-rate').value);
+        const n = parseInt(document.getElementById('ci-years').value);
+        const final = P * Math.pow(1 + r/100, n);
+        document.getElementById('ci-result').textContent = `After ${n} years: £${final.toFixed(2)} (interest earned: £${(final - P).toFixed(2)})`;
+        // Draw bar chart of value per year
+        const data = [];
+        for (let y = 0; y <= n; y++) {
+          data.push({ label: `Y${y}`, value: Math.round(P * Math.pow(1 + r/100, y)) });
+        }
+        drawBarChart('ci-chart', data, { height: 200 });
+      };
+      calcCI();
+
+      // Quizzes
+      createQuiz('quiz-units', [
+        { type: 'fill', question: 'Convert 3.5 km to metres.', answer: ['3500'], explanation: '3.5 × 1000 = 3500 m' },
+        { type: 'multiple', question: 'A map scale is 1:25000. A road is 8 cm on the map. How long is it in real life?', options: ['2 km', '0.2 km', '20 km', '200 m'], answer: '2 km', explanation: '8 × 25000 = 200000 cm = 2000 m = 2 km' },
+        { type: 'fill', question: 'Speed = 60 km/h. How far in 2.5 hours?', answer: ['150'], explanation: '60 × 2.5 = 150 km' },
+      ], { quizId: 'ratio-units', topicId: 'ratio', sectionId: 'units' });
+
+      createQuiz('quiz-ratio-apps', [
+        { type: 'fill', question: 'Divide 240 in the ratio 1:3. What is the larger share?', answer: ['180'], explanation: 'Total parts = 4. One part = 60. Larger = 3 × 60 = 180' },
+        { type: 'multiple', question: 'Purple paint is mixed in the ratio 3 red : 5 blue. How much blue for 600 ml total?', options: ['375 ml', '360 ml', '400 ml', '300 ml'], answer: '375 ml', explanation: '8 parts total. 600 ÷ 8 = 75 per part. Blue = 5 × 75 = 375 ml' },
+      ], { quizId: 'ratio-apps', topicId: 'ratio', sectionId: 'ratio-apps' });
+
+      createQuiz('quiz-proportion', [
+        { type: 'fill', question: '4 pens cost £6. How much do 10 pens cost? (just the number)', answer: ['15'], explanation: '1 pen = £6 ÷ 4 = £1.50. 10 pens = 10 × £1.50 = £15' },
+        { type: 'multiple', question: 'y is directly proportional to x. When x = 3, y = 12. Find y when x = 7.', options: ['28', '21', '36', '48'], answer: '28', explanation: 'y = kx → 12 = 3k → k = 4. When x = 7: y = 28' },
+      ], { quizId: 'ratio-proportion', topicId: 'ratio', sectionId: 'proportion' });
+
+      createQuiz('quiz-percentages', [
+        { type: 'fill', question: 'Find 35% of 240.', answer: ['84'], explanation: '0.35 × 240 = 84' },
+        { type: 'multiple', question: 'A price increases from £80 to £92. What is the percentage increase?', options: ['15%', '12%', '8%', '20%'], answer: '15%', explanation: 'Change = £12. % = (12/80) × 100 = 15%' },
+        { type: 'fill', question: 'After VAT of 20% is added, an item costs £96. What was the pre-VAT price?', answer: ['80'], explanation: '£96 ÷ 1.20 = £80' },
+      ], { quizId: 'ratio-percentages', topicId: 'ratio', sectionId: 'percentages' });
+
+      createQuiz('quiz-similarity', [
+        { type: 'multiple', question: 'Two similar shapes have a linear scale factor of 3. What is the area scale factor?', options: ['9', '3', '27', '6'], answer: '9', explanation: 'Area scale factor = k² = 3² = 9' },
+      ], { quizId: 'ratio-similarity', topicId: 'ratio', sectionId: 'similarity' });
+
+      createQuiz('quiz-inverse-prop', [
+        { type: 'fill', question: 'y is inversely proportional to x. When x=2, y=15. Find y when x=5.', answer: ['6'], explanation: 'k = 2 × 15 = 30. y = 30/5 = 6' },
+      ], { quizId: 'ratio-inverse-prop', topicId: 'ratio', sectionId: 'inverse-prop' });
+
+      createQuiz('quiz-rates', [
+        { type: 'multiple', question: 'On a distance-time graph, a steeper line means:', options: ['Faster speed', 'Slower speed', 'More distance', 'Stopped'], answer: 'Faster speed', explanation: 'Steeper gradient = higher speed.' },
+      ], { quizId: 'ratio-rates', topicId: 'ratio', sectionId: 'rates' });
+
+      createQuiz('quiz-growth', [
+        { type: 'fill', question: 'A population of 500 bacteria grows by 10% per hour. How many after 3 hours? (nearest whole number)', answer: ['665', '666'], explanation: '500 × 1.1³ = 500 × 1.331 = 665.5 ≈ 666' },
+      ], { quizId: 'ratio-growth', topicId: 'ratio', sectionId: 'growth' });
+
+      // Final quiz
+      createQuiz('quiz-ratio-final', [
+        { type: 'fill', question: 'Share £200 in the ratio 3:2. What is the larger share?', answer: ['120'], explanation: '5 parts, 1 part = £40. Larger = 3 × 40 = £120' },
+        { type: 'fill', question: 'A car travels at 50 mph for 2.5 hours. Distance?', answer: ['125'], explanation: '50 × 2.5 = 125 miles' },
+        { type: 'multiple', question: '£5000 at 4% compound interest for 2 years:', options: ['£5408', '£5400', '£5200', '£5416'], answer: '£5408', explanation: '5000 × 1.04² = 5000 × 1.0816 = £5408' },
+      ], { quizId: 'ratio-final', topicId: 'ratio', sectionId: 'final', xpPerQuestion: 15 });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GCSE Maths Probability — experimental, theoretical and conditional probability with interactive dice simulator, Venn diagrams, and tree diagrams.">
+  <title>Probability — GCSE Maths Mastery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="topic-probability">
+  <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  <div class="page-wrapper">
+    <aside class="sidebar"><div class="sidebar-logo"><div class="logo-icon">π</div> GCSE Maths</div><nav></nav></aside>
+    <main class="main-content">
+
+      <h1>🎲 Probability</h1>
+      <p>Explore chance, randomness, and the maths of uncertainty — from simple experiments to conditional probability.</p>
+
+      <div class="subtopic-nav">
+        <a href="#frequencies">Frequencies & Experiments</a>
+        <a href="#scales">Probability Scales</a>
+        <a href="#sampling">Sampling</a>
+        <a href="#possibility">Possibility Spaces</a>
+        <a href="#combined">Combined & Conditional Events</a>
+      </div>
+
+      <!-- 5.1 FREQUENCIES & EXPERIMENTS -->
+      <section id="frequencies" class="topic-section fade-in">
+        <h2>5.1 Frequencies & Experiments</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Relative frequency</strong> = number of times an event occurs ÷ total number of trials. As trials increase, the relative frequency approaches the <strong>theoretical probability</strong>.</p>
+        </div>
+
+        <h3>Recording Results</h3>
+        <p>Use <strong>frequency tables</strong> and <strong>frequency trees</strong> to organise experimental data.</p>
+
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Fair and Biased</h4>
+          <p>An experiment is <strong>fair</strong> if each outcome is equally likely. A coin is fair if P(heads) = P(tails) = 0.5.</p>
+          <p>If outcomes are NOT equally likely, the process is <strong>biased</strong>.</p>
+        </div>
+
+        <!-- Interactive dice simulator -->
+        <div class="widget-container">
+          <h4 style="margin-top:0">🎲 Dice Simulator — See the Law of Large Numbers in Action!</h4>
+          <canvas id="dice-canvas" width="500" height="250"></canvas>
+          <p id="dice-results" style="color:var(--text-muted);font-size:.85rem;margin-top:.5rem;">Roll the dice to see results!</p>
+          <div class="widget-controls">
+            <button class="btn-primary" onclick="diceSim.roll(1)">Roll 1</button>
+            <button class="btn-primary" onclick="diceSim.roll(10)">Roll 10</button>
+            <button class="btn-primary" onclick="diceSim.roll(100)">Roll 100</button>
+            <button class="btn-primary" onclick="diceSim.roll(1000)">Roll 1000</button>
+            <button class="btn-secondary" onclick="diceSim.reset()">Reset</button>
+          </div>
+          <p style="font-size:.82rem;color:var(--text-muted);margin-top:.5rem;">The yellow dashed line shows the expected (theoretical) frequency. Notice how the bars become more even as you roll more!</p>
+        </div>
+
+        <div id="quiz-frequencies" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 5.2 PROBABILITY SCALES -->
+      <section id="scales" class="topic-section fade-in">
+        <h2>5.2 Probability Scales & Properties</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>Probability is always between <span class="math">0</span> (impossible) and <span class="math">1</span> (certain). The probabilities of all <strong>mutually exclusive</strong> outcomes sum to 1.</p>
+          <div class="math-block">P(not A) = 1 − P(A)</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;color:var(--text-secondary);font-size:.85rem;">
+            <span style="color:var(--color-wrong)">0 — Impossible</span>
+            <span>0.25</span>
+            <span style="color:var(--color-xp)">0.5 — Even chance</span>
+            <span>0.75</span>
+            <span style="color:var(--color-correct)">1 — Certain</span>
+          </div>
+          <div style="height:8px;background:linear-gradient(90deg,var(--color-wrong),var(--color-xp),var(--color-correct));border-radius:4px;"></div>
+        </div>
+
+        <div class="card accent-border" style="margin-top:1.5rem">
+          <h4 style="margin-top:0">Mutually Exclusive Events</h4>
+          <p>Events that <strong>cannot happen at the same time</strong>. For mutually exclusive events A and B:</p>
+          <div class="math-block">P(A or B) = P(A) + P(B)</div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>A bag has 3 red, 5 blue, and 2 green balls. Find P(red) and P(not red).</strong></p>
+          <div class="step hidden-step">Step 1: Total balls = 3 + 5 + 2 = 10</div>
+          <div class="step hidden-step">Step 2: P(red) = 3/10 = 0.3</div>
+          <div class="step hidden-step">Step 3: P(not red) = 1 − 0.3 = 0.7 (or 7/10) ✓</div>
+        </div>
+        <div id="quiz-scales" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 5.3 SAMPLING -->
+      <section id="sampling" class="topic-section fade-in">
+        <h2>5.3 Sampling</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>As the <strong>sample size increases</strong>, the experimental probabilities tend towards the theoretical probabilities. A <strong>larger, unbiased sample</strong> gives more reliable results.</p>
+        </div>
+        <div class="card accent-border">
+          <h4 style="margin-top:0">Bias in Sampling</h4>
+          <p>A sample is <strong>biased</strong> if it doesn't fairly represent the population. For example, surveying only morning shoppers to estimate total daily footfall.</p>
+          <p>A <strong>random sample</strong> gives every member of the population an equal chance of being selected.</p>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>In 200 spins of a spinner, red appeared 70 times. Estimate the probability of red.</strong></p>
+          <div class="step hidden-step">Relative frequency = 70/200 = 7/20 = 0.35</div>
+          <div class="step hidden-step">So estimated P(red) ≈ 0.35 ✓</div>
+        </div>
+        <div id="quiz-sampling" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 5.4 POSSIBILITY SPACES -->
+      <section id="possibility" class="topic-section fade-in">
+        <h2>5.4 Possibility Spaces & Venn/Tree Diagrams</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p>A <strong>sample space</strong> lists all possible outcomes. Use tables, grids, <strong>Venn diagrams</strong>, or <strong>tree diagrams</strong> to systematically enumerate them.</p>
+        </div>
+
+        <h3>Sample Space Diagrams</h3>
+        <div class="worked-example">
+          <h4>✏️ Worked Example</h4>
+          <p><strong>Two fair dice are rolled. Find P(total = 7).</strong></p>
+          <div class="step hidden-step">Step 1: Total possible outcomes = 6 × 6 = 36</div>
+          <div class="step hidden-step">Step 2: Pairs summing to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) → 6 ways</div>
+          <div class="step hidden-step">Step 3: P(total = 7) = 6/36 = 1/6 ✓</div>
+        </div>
+
+        <h3>Venn Diagrams</h3>
+        <p>Show the overlap between sets. The <strong>intersection</strong> (∩) shows items in BOTH sets. The <strong>union</strong> (∪) shows items in EITHER set.</p>
+        <div class="card accent-border">
+          <p><span class="math">P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</span></p>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Venn Diagram</h4>
+          <p><strong>In a class of 30: 18 play football, 12 play netball, 5 play both. Find P(plays neither).</strong></p>
+          <div class="step hidden-step">Step 1: Only football = 18 − 5 = 13</div>
+          <div class="step hidden-step">Step 2: Only netball = 12 − 5 = 7</div>
+          <div class="step hidden-step">Step 3: Total playing at least one = 13 + 5 + 7 = 25</div>
+          <div class="step hidden-step">Step 4: Neither = 30 − 25 = 5. P(neither) = 5/30 = 1/6 ✓</div>
+        </div>
+
+        <h3>Tree Diagrams</h3>
+        <p>Branches show each possible outcome with its probability. Multiply along branches for AND, add between branches for OR.</p>
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Tree Diagram (without replacement)</h4>
+          <p><strong>A bag has 4 red and 6 blue balls. Two are picked without replacement. Find P(both red).</strong></p>
+          <div class="step hidden-step">Step 1: P(1st red) = 4/10</div>
+          <div class="step hidden-step">Step 2: P(2nd red | 1st was red) = 3/9 (one fewer red, one fewer total)</div>
+          <div class="step hidden-step">Step 3: P(both red) = 4/10 × 3/9 = 12/90 = 2/15 ✓</div>
+        </div>
+        <div id="quiz-possibility" class="quiz-widget"></div>
+      </section>
+      <div class="section-divider"></div>
+
+      <!-- 5.5 COMBINED & CONDITIONAL EVENTS -->
+      <section id="combined" class="topic-section fade-in">
+        <h2>5.5 Combined & Conditional Probability</h2>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Independent events:</strong> one doesn't affect the other. <span class="math">P(A and B) = P(A) × P(B)</span></p>
+          <p><strong>Dependent events:</strong> one affects the other (e.g., picking without replacement).</p>
+        </div>
+
+        <h3>Conditional Probability <span class="higher-tier">Higher</span></h3>
+        <div class="key-concept">
+          <h4>💡 Key Concept</h4>
+          <p><strong>Conditional probability</strong> is the probability of an event GIVEN that another has occurred:</p>
+          <div class="math-block">P(A | B) = P(A ∩ B) / P(B)</div>
+        </div>
+
+        <div class="worked-example">
+          <h4>✏️ Worked Example — Two-Way Table</h4>
+          <p><strong>A survey asks 100 students about pets:</strong></p>
+          <div class="card" style="margin:.5rem 0">
+            <table style="width:100%;color:var(--text-secondary);font-size:.88rem;text-align:center;">
+              <tr><th></th><th>Cat</th><th>No Cat</th><th>Total</th></tr>
+              <tr><td><strong>Dog</strong></td><td>15</td><td>25</td><td>40</td></tr>
+              <tr><td><strong>No Dog</strong></td><td>20</td><td>40</td><td>60</td></tr>
+              <tr><td><strong>Total</strong></td><td>35</td><td>65</td><td>100</td></tr>
+            </table>
+          </div>
+          <p><strong>Find: P(has a cat | has a dog)</strong></p>
+          <div class="step hidden-step">Step 1: We're given "has a dog", so our total is 40 (dog row)</div>
+          <div class="step hidden-step">Step 2: Of those 40, 15 also have a cat</div>
+          <div class="step hidden-step">Step 3: P(cat | dog) = 15/40 = 3/8 ✓</div>
+        </div>
+
+        <div class="explanation-tabs">
+          <button class="active" data-tab="tree-cond">🌳 Tree Diagram Method</button>
+          <button data-tab="venn-cond">🔵 Venn Diagram Method</button>
+          <button data-tab="freq-cond">📊 Expected Frequency Method</button>
+        </div>
+        <div class="explanation-panel active" data-panel="tree-cond">
+          <p>Draw a tree diagram where the <strong>second set of branches changes</strong> based on the first outcome (for dependent events). Multiply along branches to find combined probabilities.</p>
+        </div>
+        <div class="explanation-panel" data-panel="venn-cond">
+          <p>In a Venn diagram, conditional probability P(A|B) means: look only at circle B, and find what fraction is also in A.</p>
+          <div class="math-block">P(A|B) = n(A ∩ B) / n(B)</div>
+        </div>
+        <div class="explanation-panel" data-panel="freq-cond">
+          <p>Use a <strong>two-way table</strong> of expected frequencies. Given B has happened, restrict to B's row/column and find A within it.</p>
+        </div>
+
+        <div id="quiz-combined" class="quiz-widget"></div>
+      </section>
+
+      <!-- SECTION QUIZ -->
+      <div class="section-divider"></div>
+      <section class="fade-in">
+        <h2>🏆 Probability — Section Quiz</h2>
+        <div id="quiz-prob-final" class="quiz-widget"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    let diceSim;
+    document.addEventListener('DOMContentLoaded', () => {
+      diceSim = new DiceSimulator('dice-canvas', 'dice-results');
+      diceSim.draw();
+
+      createQuiz('quiz-frequencies', [
+        { type: 'multiple', question: 'A coin is flipped 50 times and lands heads 28 times. What is the relative frequency of heads?', options: ['0.56', '0.44', '0.50', '0.28'], answer: '0.56', explanation: '28 ÷ 50 = 0.56' },
+        { type: 'multiple', question: 'As the number of trials increases, relative frequency approaches:', options: ['Theoretical probability', 'Zero', 'One', 'Infinity'], answer: 'Theoretical probability', explanation: 'This is the Law of Large Numbers.' },
+      ], { quizId: 'prob-frequencies', topicId: 'probability', sectionId: 'frequencies' });
+
+      createQuiz('quiz-scales', [
+        { type: 'fill', question: 'P(rolling a 6 on a fair dice) = ? (as a fraction)', answer: ['1/6'], explanation: '1 out of 6 equally likely outcomes = 1/6' },
+        { type: 'fill', question: 'P(not rolling a 6) = ? (as a fraction)', answer: ['5/6'], explanation: 'P(not 6) = 1 − 1/6 = 5/6' },
+        { type: 'multiple', question: 'Events A and B are mutually exclusive. P(A) = 0.3, P(B) = 0.45. What is P(A or B)?', options: ['0.75', '0.135', '0.15', '1'], answer: '0.75', explanation: 'For mutually exclusive events: P(A or B) = P(A) + P(B) = 0.75' },
+      ], { quizId: 'prob-scales', topicId: 'probability', sectionId: 'scales' });
+
+      createQuiz('quiz-sampling', [
+        { type: 'multiple', question: 'Which gives a more reliable estimate of probability?', options: ['More trials', 'Fewer trials', 'Same result always', 'Biased sample'], answer: 'More trials', explanation: 'More trials → relative frequency is closer to theoretical probability.' },
+      ], { quizId: 'prob-sampling', topicId: 'probability', sectionId: 'sampling' });
+
+      createQuiz('quiz-possibility', [
+        { type: 'fill', question: 'Two dice are rolled. How many possible outcomes?', answer: ['36'], explanation: '6 × 6 = 36' },
+        { type: 'multiple', question: 'In a Venn diagram, what does the overlap represent?', options: ['Items in BOTH sets', 'Items in neither', 'Only set A', 'Only set B'], answer: 'Items in BOTH sets', explanation: 'The overlap (intersection) shows elements belonging to both sets.' },
+        { type: 'multiple', question: 'A bag has 5 red, 3 blue balls. One is drawn, NOT replaced, then another. P(both red)?', options: ['5/14', '25/64', '5/8', '1/4'], answer: '5/14', explanation: 'P(1st red) = 5/8. P(2nd red) = 4/7. P(both) = 5/8 × 4/7 = 20/56 = 5/14' },
+      ], { quizId: 'prob-possibility', topicId: 'probability', sectionId: 'possibility' });
+
+      createQuiz('quiz-combined', [
+        { type: 'multiple', question: 'Two independent events have P(A) = 0.4 and P(B) = 0.5. P(A and B) = ?', options: ['0.2', '0.9', '0.1', '0.45'], answer: '0.2', explanation: 'Independent: P(A and B) = P(A) × P(B) = 0.4 × 0.5 = 0.2' },
+        { type: 'multiple', question: 'In a two-way table, 30 out of 80 people are male AND like tea. Of 50 males total, P(likes tea | male) = ?', options: ['3/5', '30/80', '3/8', '50/80'], answer: '3/5', explanation: 'P(tea | male) = 30/50 = 3/5' },
+      ], { quizId: 'prob-combined', topicId: 'probability', sectionId: 'combined' });
+
+      // Final quiz
+      createQuiz('quiz-prob-final', [
+        { type: 'fill', question: 'P(head) on a fair coin?', answer: ['0.5', '1/2'], explanation: '1 out of 2 equally likely outcomes.' },
+        { type: 'multiple', question: 'A spinner shows red 42 times in 120 spins. Estimate P(red).', options: ['0.35', '0.42', '0.50', '0.30'], answer: '0.35', explanation: '42 ÷ 120 = 0.35' },
+        { type: 'fill', question: 'Two fair dice: P(double) = ? (as a fraction)', answer: ['1/6'], explanation: 'Doubles: (1,1),(2,2),(3,3),(4,4),(5,5),(6,6) → 6 out of 36 = 1/6' },
+        { type: 'multiple', question: 'Events X and Y are such that P(X) = 0.6 and P(Y|X) = 0.3. What is P(X and Y)?', options: ['0.18', '0.90', '0.30', '0.50'], answer: '0.18', explanation: 'P(X and Y) = P(X) × P(Y|X) = 0.6 × 0.3 = 0.18' },
+      ], { quizId: 'prob-final', topicId: 'probability', sectionId: 'final', xpPerQuestion: 15 });
+    });
+  </script>
+</body>
+</html>
