@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MathsPro GCSE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Ionicons for bottom nav icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Data Files -->
+    <script src="data/algebra.js"></script>
+    <script src="data/number.js"></script>
+    <script src="data/ratio.js"></script>
+    <script src="data/geometry.js"></script>
+    <script src="data/probability.js"></script>
+    <script src="data/statistics.js"></script>
+</head>
+<body>
+    <div id="device-frame">
+        <div id="app-container">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-top">
+                    <div class="profile-info">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=f5a623" alt="Profile" class="profile-img">
+                        <div class="user-details">
+                            <h1>MathsPro GCSE</h1>
+                            <span>Year 11</span>
+                        </div>
+                    </div>
+                    <button class="settings-btn" aria-label="Settings">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </button>
+                </div>
+                <div class="global-progress">
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 65%;"></div>
+                    </div>
+                    <span class="progress-text">65%</span>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                
+                <!-- VIEW 0: Home (Dashboard) -->
+                <div id="view-home" class="view active">
+                    <div class="card bg-gradient-brand text-white">
+                        <h2>Welcome back, Felix!</h2>
+                        <p>You're on a 3-day streak. Keep it up!</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <ion-icon name="checkmark-circle-outline" class="text-green"></ion-icon>
+                            <h3>142</h3>
+                            <p>Questions Answered</p>
+                        </div>
+                        <div class="stat-card">
+                            <ion-icon name="flame-outline" class="text-orange"></ion-icon>
+                            <h3>85%</h3>
+                            <p>Average Accuracy</p>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="view-header text-left">
+                            <h2 style="font-size: 1.25rem;">Recommended for you</h2>
+                        </div>
+                        <div class="recommended-list">
+                            <div class="recommended-item" onclick="appState.selectedTopic='algebra'; appState.selectedSubtopic='algebra-equations'; switchView('learn'); renderLearnView('algebra', 'algebra-equations');">
+                                <div class="icon-box bg-blue-light"><ion-icon name="git-network-outline"></ion-icon></div>
+                                <div class="item-text">
+                                    <h4>Equations & Inequalities</h4>
+                                    <p>Algebra</p>
+                                </div>
+                                <ion-icon name="chevron-forward-outline"></ion-icon>
+                            </div>
+                            <div class="recommended-item" onclick="appState.selectedTopic='ratio'; appState.selectedSubtopic='ratio-proportion'; switchView('learn'); renderLearnView('ratio', 'ratio-proportion');">
+                                <div class="icon-box bg-orange-light"><ion-icon name="pie-chart-outline"></ion-icon></div>
+                                <div class="item-text">
+                                    <h4>Proportion</h4>
+                                    <p>Ratio</p>
+                                </div>
+                                <ion-icon name="chevron-forward-outline"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 1: Syllabus Topics List -->
+                <div id="view-topics" class="view" style="display: none;">
+                    <div class="view-header mt-2">
+                        <h2>Syllabus Library</h2>
+                        <p>Select a topic to study</p>
+                    </div>
+                    <div class="topics-grid" id="topics-library-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- VIEW 1.5: Learn Content -->
+                <div id="view-learn" class="view" style="display: none;">
+                    <div class="view-header-inline">
+                        <button class="back-btn" onclick="switchView('topics')"><ion-icon name="arrow-back-outline"></ion-icon></button>
+                        <h2 id="learn-title">Topic Name</h2>
+                    </div>
+                    <div class="card learn-card">
+                        <div class="learn-content" id="learn-content-html">
+                            <!-- HTML content injected here from JS -->
+                        </div>
+                        <button class="primary-btn gradient-btn mt-4" onclick="switchView('start'); document.querySelector('.nav-item[data-view=\'start\']').click();">
+                            PRACTICE THIS TOPIC <ion-icon name="arrow-forward-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: Start Practice (Config) -->
+                <div id="view-start" class="view" style="display: none;">
+                    <div class="card">
+                        <div class="view-header">
+                            <h2>Start Practice</h2>
+                            <p>Choose your topic and generate questions</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Syllabus Topic</label>
+                            <!-- Custom Dropdown Component -->
+                            <div class="custom-dropdown" id="topic-dropdown">
+                                <div class="dropdown-header">
+                                    <span class="selected-text">Select Syllabus Topic:</span>
+                                    <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                </div>
+                                <div class="dropdown-body">
+                                    <!-- Options injected via JS -->
+                                    <div class="accordion-item" data-topic="number">
+                                        <div class="accordion-header">
+                                            <ion-icon name="grid-outline"></ion-icon>
+                                            <span>Number</span>
+                                            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="number-subtopics"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item active" data-topic="algebra">
+                                        <div class="accordion-header">
+                                            <ion-icon name="git-network-outline"></ion-icon>
+                                            <span>Algebra</span>
+                                            <ion-icon name="chevron-up-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="algebra-subtopics">
+                                                <!-- Populated by JS -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item" data-topic="ratio">
+                                        <div class="accordion-header">
+                                            <ion-icon name="pie-chart-outline"></ion-icon>
+                                            <span>Ratio & Proportion</span>
+                                            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="ratio-subtopics"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item" data-topic="geometry">
+                                        <div class="accordion-header">
+                                            <ion-icon name="triangle-outline"></ion-icon>
+                                            <span>Geometry</span>
+                                            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="geometry-subtopics"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item" data-topic="probability">
+                                        <div class="accordion-header">
+                                            <ion-icon name="dice-outline"></ion-icon>
+                                            <span>Probability</span>
+                                            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="probability-subtopics"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item" data-topic="statistics">
+                                        <div class="accordion-header">
+                                            <ion-icon name="bar-chart-outline"></ion-icon>
+                                            <span>Statistics</span>
+                                            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+                                        </div>
+                                        <div class="accordion-content">
+                                            <ul class="subtopic-list" id="statistics-subtopics"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Question Type</label>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" data-type="practice">
+                                    <ion-icon name="book-outline"></ion-icon>
+                                    <span>Practice<br>Questions</span>
+                                </button>
+                                <button class="toggle-btn" data-type="exam">
+                                    <ion-icon name="time-outline"></ion-icon>
+                                    <span>Exam<br>Questions</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button id="btn-generate" class="primary-btn gradient-btn">
+                            GENERATE QUESTIONS <ion-icon name="settings-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: Practice Session -->
+                <div id="view-session" class="view" style="display: none;">
+                    <div class="card session-card">
+                        <div class="session-header">
+                            <h2>Practice Session:<br><span id="session-title-subtopic">Graphs & Functions</span></h2>
+                        </div>
+                        
+                        <div class="session-progress">
+                            <div class="progress-labels">
+                                <span id="session-counter">Question 1 of 20</span>
+                                <span id="session-percent">5%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="session-progress-fill" style="width: 5%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="question-container">
+                            <p id="question-text" class="question-text">Q1: Calculate the gradient of the line connecting points (2, 4) and (6, 12).</p>
+                            
+                            <div id="hint-container" class="hint-container" style="display: none;">
+                                <ion-icon name="bulb"></ion-icon>
+                                <p id="hint-text"></p>
+                            </div>
+
+                            <input type="text" id="answer-input" class="answer-input" placeholder="Answer: e.g. 2">
+                            
+                            <div id="feedback-container" class="feedback-container" style="display: none;">
+                                <!-- Valid states: success, error -->
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="btn-check-answer" class="primary-btn green-btn">Check Answer</button>
+                            <button id="btn-next-question" class="primary-btn green-btn" style="display: none;">Next Question</button>
+                            <button id="btn-hint" class="secondary-btn blue-btn">Hint</button>
+                            <button id="btn-finish-early" class="ghost-btn">Finish Session</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: Results -->
+                <div id="view-results" class="view" style="display: none;">
+                    <div class="card">
+                        <div class="view-header">
+                            <h2>Session Complete!</h2>
+                        </div>
+                        <div class="results-container">
+                            <div class="score-circle">
+                                <span id="final-score">18/20</span>
+                            </div>
+                            <p id="results-message">Great job on Graphs & Functions!</p>
+                            <button id="btn-return-home" class="primary-btn green-btn mt-4">Return Home</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: Progress -->
+                <div id="view-progress" class="view" style="display: none;">
+                    <div class="view-header mt-2">
+                        <h2>Your Progress</h2>
+                        <p>Track your GCSE preparation</p>
+                    </div>
+                    <div class="card">
+                        <h3>Overall Mastery</h3>
+                        <div class="global-progress mt-2 mb-4" style="flex-direction: column; align-items: stretch; gap: 0.25rem;">
+                            <div class="progress-labels" style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>Overall Completion</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4 mb-2">Topic Breakdown</h3>
+                        <div class="topic-progress-list">
+                            <div class="topic-progress-item">
+                                <div class="tp-info"><span>Algebra</span><span>80%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 80%; background-color: var(--color-primary);"></div></div>
+                            </div>
+                            <div class="topic-progress-item">
+                                <div class="tp-info"><span>Number</span><span>90%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 90%; background-color: var(--color-primary);"></div></div>
+                            </div>
+                            <div class="topic-progress-item">
+                                <div class="tp-info"><span>Ratio</span><span>40%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 40%; background-color: #ef4444;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 6: Profile & Settings -->
+                <div id="view-profile" class="view" style="display: none;">
+                    <div class="card text-center profile-header-card">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=f5a623" alt="Profile" class="profile-img-large mx-auto">
+                        <h2 class="mt-2">Felix</h2>
+                        <p class="text-muted">Target Grade: 8</p>
+                    </div>
+
+                    <div class="settings-list">
+                        <div class="settings-item">
+                            <div class="si-left">
+                                <div class="icon-box bg-gray"><ion-icon name="notifications-outline"></ion-icon></div>
+                                <span>Notifications</span>
+                            </div>
+                            <div class="toggle-switch active"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="si-left">
+                                <div class="icon-box bg-gray"><ion-icon name="moon-outline"></ion-icon></div>
+                                <span>Dark Mode</span>
+                            </div>
+                            <div class="toggle-switch"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="si-left">
+                                <div class="icon-box bg-gray"><ion-icon name="school-outline"></ion-icon></div>
+                                <span>Exam Board</span>
+                            </div>
+                            <span class="text-muted">Edexcel <ion-icon name="chevron-forward-outline"></ion-icon></span>
+                        </div>
+                    </div>
+                    
+                    <button class="ghost-btn text-error mt-4">Log Out</button>
+                </div>
+
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <a href="#" class="nav-item active" data-view="home">
+                    <ion-icon name="home"></ion-icon>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-view="topics">
+                    <ion-icon name="library-outline"></ion-icon>
+                    <span>Library</span>
+                </a>
+                <a href="#" class="nav-item" data-view="start">
+                    <ion-icon name="clipboard-outline"></ion-icon>
+                    <span>Practice</span>
+                </a>
+                <a href="#" class="nav-item" data-view="progress">
+                    <ion-icon name="trending-up-outline"></ion-icon>
+                    <span>Progress</span>
+                </a>
+                <a href="#" class="nav-item" data-view="profile">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <span>Profile</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
