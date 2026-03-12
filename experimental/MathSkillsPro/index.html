@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Skills Pro</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <div class="logo-box">
+                    <i class="fa-solid fa-infinity"></i>
+                </div>
+                <h1>Math Skills<span class="highlight">Pro</span></h1>
+            </div>
+            <p class="subtitle">Master your mathematics beautifully.</p>
+        </header>
+
+        <main>
+            <section class="controls-card glass-panel">
+                <div class="control-group">
+                    <label for="set-select"><i class="fa-solid fa-layer-group"></i> Question Set</label>
+                    <div class="select-wrapper">
+                        <select id="set-select">
+                            <option value="">Choose a set...</option>
+                            <!-- Options generated dynamically -->
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-icon"></i>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="category-select"><i class="fa-solid fa-tags"></i> Category</label>
+                    <div class="select-wrapper">
+                        <select id="category-select" disabled>
+                            <option value="">Select a set first</option>
+                            <!-- Options generated dynamically -->
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-icon"></i>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="load-btn" class="btn btn-primary" disabled>
+                        <i class="fa-solid fa-rocket"></i> Load Questions
+                    </button>
+                    <button id="random-btn" class="btn btn-secondary">
+                        <i class="fa-solid fa-dice"></i> Pick Random
+                    </button>
+                </div>
+            </section>
+
+            <section class="results-area">
+                <div id="loading-spinner" class="spinner-container hidden">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div id="results-header" class="results-header hidden">
+                    <h2 id="current-selection-title">Set 1 - Mental Strategies</h2>
+                    <span class="badge" id="question-count-badge">10 questions</span>
+                </div>
+
+                <div id="questions-list" class="questions-list">
+                    <!-- Questions injected here -->
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3>Ready to practice?</h3>
+                        <p>Select a question set or try a random challenge to begin.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Made for learning.</p>
+        </footer>
+    </div>
+
+    <!-- Data and Main Logic -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
