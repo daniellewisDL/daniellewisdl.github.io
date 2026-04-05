@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artemis II Orbital HUD</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --hud-cyan: #00f3ff;
+            --hud-magenta: #ff00ba;
+            --hud-bg: rgba(4, 8, 15, 0.85);
+            --hud-border: rgba(0, 243, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #0a0e1c 0%, #010205 100%);
+            color: var(--hud-cyan);
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Telemetry HUD */
+        #top-hud {
+            flex: 0 0 auto;
+            background: var(--hud-bg);
+            border-bottom: 1px solid var(--hud-border);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .hud-metric {
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .hud-label {
+            font-size: 0.75em;
+            color: #7b9eb0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .hud-value {
+            font-size: 1.1em;
+            text-shadow: 0 0 5px var(--hud-cyan);
+        }
+
+        .hud-value.alert {
+            color: var(--hud-magenta);
+            text-shadow: 0 0 5px var(--hud-magenta);
+        }
+
+        /* Middle Canvas Area */
+        #canvas-container {
+            flex: 1 1 auto;
+            position: relative;
+            width: 100%;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Bottom Controls */
+        #bottom-controls {
+            flex: 0 0 auto;
+            background: var(--hud-bg);
+            border-top: 1px solid var(--hud-border);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            max-width: 600px;
+            appearance: none;
+            background: rgba(0, 243, 255, 0.2);
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--hud-cyan);
+            box-shadow: 0 0 10px var(--hud-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        button {
+            background: transparent;
+            color: var(--hud-cyan);
+            border: 1px solid var(--hud-cyan);
+            padding: 8px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.1);
+        }
+
+        button:hover {
+            background: var(--hud-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--hud-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="top-hud">
+        <div class="hud-metric">
+            <div class="hud-label">Launch (T_0)</div>
+            <div class="hud-value" id="t0Display">--</div>
+        </div>
+        <div class="hud-metric">
+            <div class="hud-label">Mission Clock (T)</div>
+            <div class="hud-value alert" id="tDisplay">--</div>
+        </div>
+        <div class="hud-metric">
+            <div class="hud-label">Earth Distance</div>
+            <div class="hud-value" id="earthDistDisplay">--</div>
+        </div>
+        <div class="hud-metric">
+            <div class="hud-label">Moon Distance</div>
+            <div class="hud-value" id="moonDistDisplay">--</div>
+        </div>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="spaceCanvas"></canvas>
+    </div>
+
+    <div id="bottom-controls">
+        <div class="hud-label">TIMELINE OVERRIDE</div>
+        <input type="range" id="timeSlider" min="0" max="10" step="0.01" value="0">
+        <button id="liveBtn">Sync Telemetry</button>
+    </div>
+
+    <script>
+        const canvasContainer = document.getElementById('canvas-container');
+        const canvas = document.getElementById('spaceCanvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('timeSlider');
+        const liveBtn = document.getElementById('liveBtn');
+        
+        const t0Display = document.getElementById('t0Display');
+        const tDisplay = document.getElementById('tDisplay');
+        const earthDistDisplay = document.getElementById('earthDistDisplay');
+        const moonDistDisplay = document.getElementById('moonDistDisplay');
+
+        const EARTH_RADIUS = 6371;
+        const MOON_RADIUS = 1737;
+        const DISTANCE_TO_MOON = 384400;
+
+        const t0Date = new Date('2026-04-01T22:35:12Z');
+        const t0 = t0Date.getTime();
+        t0Display.innerText = t0Date.toLocaleString('en-US', {timeZone: 'UTC', timeZoneName: 'short'});
+
+        let isLive = true;
+
+        // Generate static starfield
+        const stars = Array.from({length: 150}, () => ({
+            x: Math.random(),
+            y: Math.random(),
+            size: Math.random() * 1.5,
+            opacity: Math.random()
+        }));
+
+        function resizeCanvas() {
+            canvas.width = canvasContainer.clientWidth;
+            canvas.height = canvasContainer.clientHeight;
+            draw();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function getLiveDays() {
+            const now = Date.now();
+            return Math.max(0, (now - t0) / (1000 * 60 * 60 * 24));
+        }
+
+        const formatDist = (km) => {
+            return `${Math.round(km).toLocaleString()} KM`;
+        };
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Stars
+            stars.forEach(star => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.beginPath();
+                ctx.arc(star.x * canvas.width, star.y * canvas.height, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Adjusted margin relative to canvas size to prevent clipping
+            const margin = Math.min(canvas.height * 0.15, 80); 
+            const availableHeight = canvas.height - (margin * 2);
+            const scale = availableHeight / DISTANCE_TO_MOON;
+
+            const centerX = canvas.width / 2;
+            const earthY = canvas.height - margin;
+            const moonY = margin;
+
+            // Neon Glow Helper
+            const setGlow = (color, blur) => {
+                ctx.shadowColor = color;
+                ctx.shadowBlur = blur;
+            };
+
+            // Draw Earth
+            ctx.beginPath();
+            ctx.arc(centerX, earthY, EARTH_RADIUS * scale, 0, Math.PI * 2);
+            ctx.fillStyle = '#0a1a2f';
+            ctx.fill();
+            setGlow('#00f3ff', 20);
+            ctx.strokeStyle = '#00f3ff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#00f3ff';
+            ctx.font = '14px "Share Tech Mono"';
+            ctx.textAlign = 'center';
+            setGlow('transparent', 0); // reset glow for text
+            ctx.fillText("EARTH", centerX, earthY + (EARTH_RADIUS * scale) + 25);
+
+            // Draw Moon
+            ctx.beginPath();
+            ctx.arc(centerX, moonY, MOON_RADIUS * scale, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fill();
+            setGlow('#aaaaaa', 15);
+            ctx.strokeStyle = '#aaaaaa';
+            ctx.stroke();
+
+            ctx.fillStyle = '#aaaaaa';
+            setGlow('transparent', 0);
+            ctx.fillText("LUNA", centerX, moonY - (MOON_RADIUS * scale) - 15);
+
+            // Trajectory Parameters
+            const curveW = Math.min(canvas.width * 0.35, 180);
+            const rOffset = MOON_RADIUS * scale * 3.5;
+
+            // Draw Trajectory with Neon Glow
+            ctx.lineWidth = 1.5;
+            
+            // Outward bound
+            ctx.beginPath();
+            ctx.moveTo(centerX, earthY);
+            ctx.quadraticCurveTo(centerX + curveW, earthY - (availableHeight * 0.3), centerX - rOffset, moonY + rOffset);
+            setGlow('#ff00ba', 10);
+            ctx.strokeStyle = 'rgba(255, 0, 186, 0.5)';
+            ctx.stroke();
+
+            // Flyby
+            ctx.beginPath();
+            ctx.arc(centerX, moonY, rOffset * 1.414, 0.75 * Math.PI, 0.25 * Math.PI, false);
+            setGlow('#ff00ba', 10);
+            ctx.strokeStyle = 'rgba(255, 0, 186, 0.5)';
+            ctx.stroke();
+
+            // Return bound
+            ctx.beginPath();
+            ctx.moveTo(centerX + rOffset, moonY + rOffset);
+            ctx.quadraticCurveTo(centerX - curveW, earthY - (availableHeight * 0.3), centerX, earthY);
+            setGlow('#00f3ff', 10);
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.5)';
+            ctx.stroke();
+
+            // Calculate Orion
+            const progress = parseFloat(slider.value) / 10;
+            let orionX, orionY;
+
+            if (progress <= 0) {
+                orionX = centerX; orionY = earthY;
+            } else if (progress < 0.45) { 
+                const t = progress / 0.45;
+                const p0 = {x: centerX, y: earthY};
+                const p1 = {x: centerX + curveW, y: earthY - (availableHeight * 0.3)};
+                const p2 = {x: centerX - rOffset, y: moonY + rOffset};
+                orionX = Math.pow(1-t, 2)*p0.x + 2*(1-t)*t*p1.x + Math.pow(t, 2)*p2.x;
+                orionY = Math.pow(1-t, 2)*p0.y + 2*(1-t)*t*p1.y + Math.pow(t, 2)*p2.y;
+            } else if (progress < 0.55) { 
+                const t = (progress - 0.45) / 0.1;
+                const startA = 0.75 * Math.PI;
+                const endA = 2.25 * Math.PI; 
+                const currentA = startA + (t * (endA - startA));
+                const radius = rOffset * 1.414;
+                orionX = centerX + Math.cos(currentA) * radius;
+                orionY = moonY + Math.sin(currentA) * radius;
+            } else if (progress < 1) { 
+                const t = (progress - 0.55) / 0.45;
+                const p0 = {x: centerX + rOffset, y: moonY + rOffset};
+                const p1 = {x: centerX - curveW, y: earthY - (availableHeight * 0.3)};
+                const p2 = {x: centerX, y: earthY};
+                orionX = Math.pow(1-t, 2)*p0.x + 2*(1-t)*t*p1.x + Math.pow(t, 2)*p2.x;
+                orionY = Math.pow(1-t, 2)*p0.y + 2*(1-t)*t*p1.y + Math.pow(t, 2)*p2.y;
+            } else {
+                orionX = centerX; orionY = earthY;
+            }
+
+            // Draw Orion Spacecraft (Neon Dot)
+            ctx.beginPath();
+            ctx.arc(orionX, orionY, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            setGlow('#ffffff', 15);
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+
+            // Update UI Data
+            const currentT = new Date(t0 + (slider.value * 24 * 60 * 60 * 1000));
+            tDisplay.innerText = currentT.toLocaleString('en-US', {timeZone: 'UTC', timeZoneName: 'short'});
+
+            const distEarthKm = Math.max(0, Math.hypot(orionX - centerX, orionY - earthY) / scale);
+            const distMoonKm = Math.max(0, Math.hypot(orionX - centerX, orionY - moonY) / scale);
+            
+            earthDistDisplay.innerText = formatDist(distEarthKm);
+            moonDistDisplay.innerText = formatDist(distMoonKm);
+            
+            setGlow('transparent', 0); // reset at end
+        }
+
+        function updateLive() {
+            if (!isLive) return;
+            let days = getLiveDays();
+            if(days > 10) days = 10; 
+            
+            slider.value = days;
+            draw();
+            requestAnimationFrame(updateLive);
+        }
+
+        slider.addEventListener('input', () => {
+            isLive = false;
+            liveBtn.style.color = '#ff00ba';
+            liveBtn.style.borderColor = '#ff00ba';
+            draw();
+        });
+
+        liveBtn.addEventListener('click', () => {
+            isLive = true;
+            liveBtn.style.color = 'var(--hud-cyan)';
+            liveBtn.style.borderColor = 'var(--hud-cyan)';
+            updateLive();
+        });
+
+        // Delay initial draw slightly to ensure CSS flexbox has settled
+        setTimeout(() => {
+            resizeCanvas();
+            updateLive();
+        }, 50);
+    </script>
+</body>
+</html>
