@@ -18,10 +18,49 @@ const yTranslateMe = (scaleFactor*height - height)/2
 const xTranslateMe = (scaleFactor*width - width)/2
 const bottomOfPrimaryContainer = (110 + primaryContainerHeight)*scaleFactor+yTranslateMe
 
-const svgFrontPage = d3.select("#viz-div").append("svg").attr("width", width).attr("height", height).style("opacity", 1)
-svgFrontPage.attr("viewBox", `0 0 ${width} ${height}`).attr("preserveAspectRatio", "xMidYMid meet")
+function createResponsiveSvg(containerId, viewBoxWidth, viewBoxHeight) {
+    const container = d3.select(containerId);
+    container.selectAll("*").remove();
+    return container.append("svg")
+        .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .style("width", "100%")
+        .style("height", "auto")
+        .style("display", "block");
+}
 
-const masthead = svgFrontPage.append("g").attr("id", "masthead")
+const mastheadSvg = createResponsiveSvg("#masthead-container", width, 75);
+const masthead = mastheadSvg.append("g").attr("id", "masthead");
+
+const headlineSvg = createResponsiveSvg("#headline-container", 1000, 45);
+const mainHeadline = headlineSvg.append("g").attr("id", "mainHeadline").attr("transform", `translate(500, 30)`);
+
+const primaryContainerSvg = createResponsiveSvg("#primary-container", primaryContainerWidth, primaryContainerHeight);
+const primaryContainer = primaryContainerSvg.append("g").attr("id", "primaryContainer");
+
+const secondaryContainerSvg = createResponsiveSvg("#secondary-container", secondaryContainerWidth, secondaryContainerHeight);
+const secondaryContainer = secondaryContainerSvg.append("g").attr("id", "secondaryContainer");
+
+const passengerDetailContainerSvg = createResponsiveSvg("#passenger-detail-container", passengerDetailContainerWidth, passengerDetailContainerHeight);
+const passengerDetailContainer = passengerDetailContainerSvg.append("g").attr("id", "passengerDetailContainer");
+
+const temperatureContainerSvg = createResponsiveSvg("#temperature-container", passengerDetailContainerWidth, temperatureContainerHeight);
+const temperatureContainer = temperatureContainerSvg.append("g").attr("id", "temperatureContainer");
+
+const depthContainerSvg = createResponsiveSvg("#depth-container", passengerDetailContainerWidth, depthContainerHeight);
+const depthContainer = depthContainerSvg.append("g").attr("id", "depthContainer");
+
+const tertiaryContainerSvg = createResponsiveSvg("#tertiary-container", tertiaryContainerWidth, tertiaryContainerHeight);
+const tertiaryContainer = tertiaryContainerSvg.append("g").attr("id", "tertiaryContainer");
+
+const lifeboatsContainerSvg = createResponsiveSvg("#lifeboats-container", lifeboatsContainerWidth, lifeboatsContainerHeight);
+const lifeboatsContainer = lifeboatsContainerSvg.append("g").attr("id", "lifeboatsContainer");
+
+const creditsContainerSvg = createResponsiveSvg("#credits-container", width - 80, creditsContainerHeight);
+const creditsContainer = creditsContainerSvg.append("g").attr("id", "creditsContainer");
+
+const lostTitanicSvg = createResponsiveSvg("#lost-titanic-container", 350, 150);
+const lostTitanic = lostTitanicSvg.append("g").attr("id", "lostTitanic").attr("transform", "translate(5, 5)");
 
 const newspaperName = "The New York Gazette."
 const mainHero = masthead.append("g").attr("id", "mainHero").attr("transform", "translate(" + width/2 + ",44)")
@@ -55,42 +94,21 @@ dateLine.append("line").attr("x1", width-125).attr("x2", width-125).attr("y1", 5
 dateLine.append("text").attr("x", width-105).attr("y", 7).text("Elsewhere").attr("text-anchor", "middle").attr("font-size", "3pt")
 dateLine.append("text").attr("x", width-105).attr("y", 11.5).text("TWO CENTS").attr("text-anchor", "middle").attr("font-size", "3pt")
 
-const mainHeadline = masthead.append("g").attr("id", "mainHeadline").attr("transform", `translate( ${width/2-160} ,110)`)
 mainHeadline.append("text").attr("x", 0).attr("y", 0).attr("id", "mainHeadlineText").text("TITANIC SINKS AFTER HITTING ICEBERG; 1,500 SOULS LOST").attr("text-anchor", "middle").attr("font-size", "24pt").attr("font-family", "Castoro Titling").style("font-weight", "bold")
 
-const primaryContainer = svgFrontPage.append("g").attr("id", "primaryContainer").attr("transform", "translate(40,125) scale(1,1)")
 primaryContainer.append("rect").attr("class", "primaryContainerRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
-// primaryContainer.append("line").attr("class", "primaryContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", primaryContainerWidth).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
-// primaryContainer.append("line").attr("class", "primaryContainerRect").attr("x1", 0).attr("y1", primaryContainerHeight).attr("x2", primaryContainerWidth).attr("y2", primaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const secondaryContainer = svgFrontPage.append("g").attr("id", "secondaryContainer").attr("transform", "translate(40,615)")
 secondaryContainer.append("rect").attr("class", "secondaryContainerRect").attr("x", 0).attr("y", 0).attr("width", secondaryContainerWidth).attr("height", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
-// secondaryContainer.append("line").attr("class", "secondaryContainerRect").attr("x1", 0).attr("y2", 0).attr("x2", secondaryContainerWidth).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
-// secondaryContainer.append("line").attr("class", "secondaryContainerRect").attr("x1", 0).attr("y1", secondaryContainerHeight).attr("x2", secondaryContainerWidth).attr("y2", secondaryContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const passengerDetailContainer = svgFrontPage.append("g").attr("id", "passengerDetailContainer").attr("transform", `translate(${width-350},225)`)
 passengerDetailContainer.append("rect").attr("class", "passengerDetailContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
-// passengerDetailContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", 0).attr("y2", 0).attr("x2", 0).attr("y2", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
-// passengerDetailContainer.append("line").attr("class", "passengerDetailContainerRect").attr("x1", passengerDetailContainerWidth).attr("y2", 0).attr("x2", passengerDetailContainerWidth).attr("y2", passengerDetailContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const temperatureContainer = svgFrontPage.append("g").attr("id", "temperatureContainer").attr("transform", `translate(${width-350},${615+secondaryContainerHeight+10})`)
 temperatureContainer.append("rect").attr("class", "temperatureContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
-// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", passengerDetailContainerWidth).attr("y1", 0).attr("x2", passengerDetailContainerWidth).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
-// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
-// temperatureContainer.append("line").attr("class", "temperatureContainerRect").attr("x1", 10).attr("y1", temperatureContainerHeight).attr("x2", passengerDetailContainerWidth-10).attr("y2", temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const depthContainer = svgFrontPage.append("g").attr("id", "depthContainer").attr("transform", `translate(${width-350},${615+secondaryContainerHeight+10+temperatureContainerHeight+10})`)
-// depthContainer.append("line").attr("class", "depthContainerRect").attr("x1", passengerDetailContainerWidth).attr("y1", 0).attr("x2", passengerDetailContainerWidth).attr("y2", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
 depthContainer.append("rect").attr("class", "depthContainerRect").attr("x", 0).attr("y", 0).attr("width", passengerDetailContainerWidth).attr("height", depthContainerHeight).attr("stroke", "black").attr("fill", "none")
 
-const tertiaryContainer = svgFrontPage.append("g").attr("id", "tertiaryContainer").attr("transform", `translate(40,${615+secondaryContainerHeight+lifeboatsContainerHeight+10+10})`)
 tertiaryContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", tertiaryContainerWidth).attr("height", tertiaryContainerHeight).attr("stroke", "black").attr("fill", "none")
-// tertiaryContainer.append("line").attr("class", "tertiaryContainerRect").attr("x1", 10).attr("y1", 0).attr("x2", tertiaryContainerWidth).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
 
-const lifeboatsContainer = svgFrontPage.append("g").attr("id", "lifeboatsContainer").attr("transform", `translate(${40},${615+secondaryContainerHeight+10})`)
 lifeboatsContainer.append("rect").attr("class", "lifeboatsContainerrRect").attr("x", 0).attr("y", 0).attr("width", primaryContainerWidth).attr("height", lifeboatsContainerHeight).attr("stroke", "black").attr("fill", "none")
-// lifeboatsContainer.append("line").attr("class", "lifeboatsContainerRect").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", depthContainerHeight+10+temperatureContainerHeight).attr("stroke", "black").attr("fill", "none")
-// lifeboatsContainer.append("line").attr("class", "lifeboatsContainerRect").attr("x1", lifeboatsContainerWidth).attr("y1", 0).attr("x2", lifeboatsContainerWidth).attr("y2", temperatureContainerHeight+10+depthContainerHeight).attr("stroke", "black").attr("fill", "none")
 
 const creditsGap = 220
 const creditsStart0 = 160
@@ -100,10 +118,7 @@ const creditsStart3 = creditsStart2+215
 const creditsStart4 = creditsStart3+205
 const creditsStartY = 20
 const creditsGapY = 15
-const creditsContainer = svgFrontPage.append("g").attr("id", "creditsContainer").attr("transform", `translate(${40},${615+secondaryContainerHeight+10+temperatureContainerHeight+10+depthContainerHeight+10})`)
 creditsContainer.append("rect").attr("x", 0).attr("y", 0).attr("width", width-80).attr("height", creditsContainerHeight).attr("stroke", "black").attr("fill", "none")
-// creditsContainer.append("line").attr("x1", 0).attr("y1", 0).attr("x2", width-80).attr("y2", 0).attr("stroke", "black").attr("fill", "none")
-// creditsContainer.append("line").attr("x1", 0).attr("y1", creditsContainerHeight).attr("x2", width-80).attr("y2", creditsContainerHeight).attr("stroke", "black").attr("fill", "none")
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY).text("Sources of data").attr("font-size", "8pt").attr("font-weight", "bold")
 creditsContainer.append("text").attr("x", 15).attr("y", creditsStartY+creditsGapY*1).text("and inspiration:").attr("font-size", "8pt").attr("font-weight", "bold")
 
@@ -162,7 +177,6 @@ creditsContainer.append("a").attr("href", "https://www.thehistorypress.co.uk/tit
 creditsContainer.append("a").attr("href", "https://www.youtube.com/watch?v=HLrBUwNSEo0").attr("target", "_blank")
     .append("text").attr("x", creditsStart4).attr("y", creditsStartY+creditsGapY*4).text("Jared Owen Animations").attr("font-size", "8pt").attr("font-weight", "bold").style("text-decoration", "underline")
 
-
 const lostTitanicImageList = [
     "Launching_of_Titanic.jpg",
     "lost-titanic.jpg",
@@ -184,13 +198,10 @@ const lostTitanicTextList = [
    "Recovered lifeboats on the Carpathia the next morning.",
   ]
 
-const lostTitanic = svgFrontPage.append("g").attr("id", "lostTitanic").attr("transform", `translate(${width-350+15},90) scale(.95,.95)`)
 const lostTitanicImage = lostTitanic.append("image").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("xlink:href", "./src/titanicImages/" + lostTitanicImageList[0]).style("opacity", 0.6).style("filter", "sepia(100%) brightness(80%)")
 lostTitanic.append("rect").attr("x", 0).attr("y", 0).attr("width", 185).attr("height", 120).attr("stroke", "black").style("stroke-width", 1).attr("fill", "none")
 const lostTitanicText = lostTitanic.append("text").attr("x", 92.5).attr("y", 127).text(lostTitanicTextList[0]).attr("text-anchor", "middle").attr("font-size", "5pt").attr("font-weight", "bold").style("font-family", "'Castoro', serif")
 lostTitanic.append("line").attr("x1", 0).attr("y1", 130).attr("x2", 185).attr("y2", 130).attr("stroke", "black").style("stroke-width", 0.5)
-
-
 
 const firstLeftHeadlines = lostTitanic.append("g").attr("transform", "translate(250,15) scale (1.5,1.8)")
 firstLeftHeadlines.append("line").attr("x1", -10).attr("x2", 10).attr("y1", -8).attr("y2", -8).attr("stroke", "black").style("stroke-width", 0.5)

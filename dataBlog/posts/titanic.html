@@ -12,7 +12,8 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Castoro+Titling&family=Castoro:ital@0;1&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Six+Caps&display=swap" rel="stylesheet"><style>
+    <link href="https://fonts.googleapis.com/css2?family=Castoro+Titling&family=Castoro:ital@0;1&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Six+Caps&display=swap" rel="stylesheet">
+    <style>
         /* 
             font-family: 'Castoro', serif;
             font-family: 'Castoro Titling', cursive;
@@ -31,34 +32,153 @@
             border: 0;
             margin: 0%;
             overflow-x: hidden;
+            display: flex;
+            justify-content: center;
         }
-        #viz-div {
-            margin: 0 auto;
-            width: 100%;
-            height: 100%;
-            /* border: 1px solid black; */
-        }
-        svg {
+        
+        .newspaper-wrapper {
             background-image: url("./src/bg003.jpg");
-            /* https://www.pexels.com/photo/empty-brown-canvas-235985/ */
             background-size: cover;
             background-repeat: repeat;
             filter: sepia(0.7);
             font-family: "Castoro Titling", Times, serif;
             width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 2px solid black;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        svg {
+            background: transparent;
+            font-family: "Castoro Titling", Times, serif;
+            width: 100%;
             height: auto;
         }
 
+        .newspaper-grid-section-1,
+        .newspaper-grid-section-3 {
+            display: grid;
+            grid-template-columns: 1000px 310px;
+            gap: 15px 30px;
+            margin-top: 15px;
+        }
+
+        .col-left {
+            width: 1000px;
+        }
+
+        .col-right {
+            width: 310px;
+        }
+
+        .newspaper-grid-section-2,
+        .newspaper-grid-section-4 {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .card {
+            border: 0px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        /* Search input & clear button styles */
+        #searchBoxActual {
+            border: 1px solid black;
+            background: rgba(255, 255, 255, 0.4);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            padding: 2px 5px;
+            width: 100%;
+            outline: none;
+        }
+        #searchBoxActual:focus {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        #clearSearchButtonActual {
+            border: 1px solid black;
+            background: transparent;
+            font-family: 'Roboto', sans-serif;
+            font-size: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 2px 6px;
+            transition: all 0.2s ease;
+        }
+        #clearSearchButtonActual:hover {
+            background: black;
+            color: rgb(202, 193, 153);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1380px) {
+            .newspaper-grid-section-1,
+            .newspaper-grid-section-3 {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .col-left,
+            .col-right {
+                width: 100%;
+            }
+            .newspaper-wrapper {
+                padding: 10px;
+                border: none;
+            }
+        }
     </style>
     <title>Titanic</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
-    <!-- <script src="../d3/d3.min.js"></script>
-    <script src="../d3/topojson.min.js"></script> -->
 </head>
 
 <body>
-    <div id="viz-div" ></div>
+    <div id="newspaper-wrapper" class="newspaper-wrapper">
+        <header class="newspaper-header">
+            <div id="masthead-container" class="card"></div>
+        </header>
+        
+        <main class="newspaper-grid">
+            <!-- Row 1: Headline, Passenger Viz, Image, Detail Card -->
+            <div class="newspaper-grid-section-1">
+                <div class="col-left">
+                    <div id="headline-container" class="card"></div>
+                    <div id="primary-container" class="card"></div>
+                </div>
+                <div class="col-right">
+                    <div id="lost-titanic-container" class="card"></div>
+                    <div id="passenger-detail-container" class="card"></div>
+                </div>
+            </div>
+
+            <!-- Row 2: Passenger Classes (Full Width) -->
+            <div class="newspaper-grid-section-2">
+                <div id="secondary-container" class="card"></div>
+            </div>
+
+            <!-- Row 3: Lifeboats, Powering, Key Details, Depth -->
+            <div class="newspaper-grid-section-3">
+                <div class="col-left">
+                    <div id="lifeboats-container" class="card"></div>
+                    <div id="tertiary-container" class="card"></div>
+                </div>
+                <div class="col-right">
+                    <div id="temperature-container" class="card"></div>
+                    <div id="depth-container" class="card"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="newspaper-grid-section-4">
+            <div id="credits-container" class="card"></div>
+        </footer>
+    </div>
+    
     <script src="./js/titanic.js"></script>
 </body>
 
