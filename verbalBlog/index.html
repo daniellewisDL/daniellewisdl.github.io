@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <!-- Google tag (gtag.js) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
@@ -10,175 +10,113 @@
 
       gtag('config', 'G-PNQX1JJWVB'); -->
     </script>
-    
-    <title>daniellewisDL</title>
+
+    <title>Blog — daniellewisDL</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="./src/favicon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="description" content="A weblog on various topics by Daniel Lewis.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" href="../src/favicon.png">
+
+    <!-- Set theme before paint to avoid flash of wrong theme -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          document.documentElement.setAttribute("data-theme", saved || (prefersLight ? "light" : "dark"));
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://use.fontawesome.com/7e37785e6e.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js" defer></script>
+    <script src="../js/site.js" defer></script>
   </head>
 
+  <body>
 
-  <body style="background-color: rgb(255, 255, 255);">
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a class="brand" href="../index.html" aria-label="daniellewisDL home">dl</a>
+        <div class="nav-actions">
+          <a class="icon-btn" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          </a>
+          <a class="icon-btn" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank" aria-label="Twitter / X">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+          </a>
+          <a class="icon-btn" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.92 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
+          </a>
+          <button class="icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
+            <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>
+            <svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-      <header style="min-height: 250px;">
+    <header class="hero">
+      <div id="hero-canvas" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h1 class="page-title">Blog</h1>
+        <p class="lead">A weblog</p>
+      </div>
+      <svg class="scroll-cue" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </header>
 
-        <nav class="navbar navbar-expand" style="z-index: 20;">
-          <div class="container-fluid">
-            <a class="navbar-brand nav-link" href="../index.html"><strong>DL</strong></a>
-            <!-- <ul class="navbar-nav me-auto">
-              <li class="nav-item"><a class="nav-link" href="#sections">sections</a></li>
-              <li class="nav-item active"><a class="nav-link" href="#about">about</a></li>
-            </ul> -->
-            <ul class="navbar-nav d-flex flex-row">
-              <li class="nav-item me-3"><a class="nav-link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-              <li class="nav-item me-3"><a class="nav-link" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank"><i class="fa fa-twitter"></i></a></li>
-              <li class="nav-item me-3"><a class="nav-link" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank"><i class="fa fa-github"></i></a></li>
-            </ul>
+    <main>
+      <div class="container">
+        <section class="section" id="latestPosts">
+          <div class="section-head">
+            <h2>Posts</h2>
+            <span class="tag">writing</span>
           </div>
-        </nav>
+          <div class="post-list" id="sections"></div>
+        </section>
+      </div>
+    </main>
 
-        <div id="banner" class="align-items-center justify-content-center" style="height: 100%; z-index: 19;">
-          <div class="container d-flex text-center align-items-center" style="height: 100%;">
-            <div class="w-100 mt-2 mb-5" style="height: 100%;">
-              <h1 class="display-1">Blog</h1>
-              <p class="lead mb-0">A weblog</p>
-            </div>
+    <footer>
+      <div class="container footer-inner">
+        <div class="footer-social">
+          <a class="icon-btn" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" rel="nofollow" target="_blank" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          </a>
+          <a class="icon-btn" href="https://twitter.com/daniellewisdl" rel="nofollow" target="_blank" aria-label="Twitter / X">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+          </a>
+          <a class="icon-btn" href="https://github.com/daniellewisDL" rel="nofollow" target="_blank" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.92 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
+          </a>
+        </div>
+        <div class="footer-note">
+          Built with VSCode by <a href="#">Daniel Lewis</a>, 2019&ndash;2024
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const sectionData = [
+        { link: "./posts/post001.html", title: "Going Vegan", description: "Better for you. Better for the planet. Better for the animals." },
+      ];
+
+      const cardBoilerplate = (s) => `
+        <a href="${s.link}" class="post-item">
+          <div class="meta">
+            <p class="post-title">${s.title}
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </p>
+            <p class="post-desc">${s.description}</p>
           </div>
-        </div>
+        </a>`;
 
-      </header>
+      document.getElementById("sections").innerHTML = sectionData.map(cardBoilerplate).join("");
+    </script>
 
-      <main class="my-5">
-
-        <div class="container d-flex justify-content-center" id="latestPosts" style="max-width: 1600px;">
-          <section>
-            <!-- <h4 class="display-6 mt-2 mb-2">Sections</h4> -->
-            <div class="row w-100" id="sections"></div>
-          </section>
-        </div>
-
-        <!-- <div class="container d-flex justify-content-center" id="about" style="margin-top: 60px; max-width: 1600px;">
-          <section>
-            <h4 class="display-6 mb-2">About</h4>
-            <div class="row">
-              <div class="col-12 d-flex justify-content-center">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-text">I'm Dan. This is my verbal weblog.</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </section>
-        </div> -->
-  
-      </main>
-
-      <footer class="bg-light text-lg-start">
-
-        <hr>
-        <div class="text-center align-items-center" style="background-color: rgb(255, 255, 255);">
-
-          <a href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" class="btn" role="button" rel="nofollow" target="_blank">
-            <i class="fa fa-linkedin"></i>
-          </a>
-          <a href="https://twitter.com/daniellewisdl" class="btn" role="button" rel="nofollow" target="_blank">
-            <i class="fa fa-twitter"></i>
-          </a>
-          <a href="https://github.com/daniellewisDL" class="btn" role="button" rel="nofollow" target="_blank">
-            <i class="fa fa-github"></i>
-          </a>
-
-        </div>
-
-        <div class="text-center p-3 text-dark" style="background-color: rgb(255, 255, 255);">
-          Built with VSCode by 
-          <a class="text-dark" href="#">Daniel Lewis</a>, 2019-2024
-        </div>
-
-      </footer>
-
-      <script>
-
-        const sectionData = [
-            {link: "./posts/post001.html", title: "Going Vegan", description: "Better for you. Better for the planet. Better for the animals."},
-            // {link: "./stampsBlog/index.html", thumbnail: "./src/stamps.png", title: "Stamps", description: "A tour through some philatelic delights."},
-            // {link: "./dataBlog/index.html", thumbnail: "./src/data.png", title: "Data Insights", description: "A collection of data visualisations."},
-            // {link: "./verbalBlog/index.html", thumbnail: "./src/verbal.png", title: "Verbal Blog", description: "A verbal blog on various topics."},
-            
-            ]
-
-        const cardBoilerplate = (section) => {
-            return `
-              <div class="row w-100">
-              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt-2 mb-2 mx-auto d-flex justify-content-center">
-                <a href="${section.link}" class="myCardLink">
-                  <div class="card" style="min-width: 300px">
-                    <div class="col-12">
-                      <div class="card-body">
-                        <div class="my-card-header">
-                          <p class="card-title">${section.title}</p>
-                          <p class="text-muted" style="font-size: xx-small;">${section.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              </div> 
-            `
-        }
-
-        sectionData.forEach(section => {
-            document.getElementById('sections').innerHTML += cardBoilerplate(section)
-        })
-
-      </script>
-
-      <script>
-        let canvas
-
-        function windowResized() {
-            resizeCanvas(windowWidth, 250);
-        }
-
-        function setup() {
-            canvas = createCanvas(windowWidth, 250);
-            canvas.position(0,0);
-            canvas.style('z-index', '0');
-            noFill()
-        }
-          
-        function draw() {
-            background(255)
-
-            stroke(255,0,0,40)
-            strokeWeight(0.5)
-            for (let i = 0; i < windowWidth; i+=10) {
-                line(i, 0, i, 250)
-            }
-            for (let i = 0; i < 250; i+=10) {
-                line(0, i, windowWidth, i)
-            }
-
-            strokeWeight(1)
-            stroke(0,0,0,40)
-            line(0, 250, windowWidth, 250)
-            line(0,mouseY, windowWidth, mouseY)
-            line(mouseX, 0, mouseX, 250)
-            circle(mouseX, mouseY, 10)
-        }
-
-
-      </script>
-
-    </body>
-
+  </body>
 </html>
