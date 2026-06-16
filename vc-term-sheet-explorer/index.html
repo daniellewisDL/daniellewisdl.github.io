@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VC Term Sheet Explorer 2026 · HSBC Innovation Banking data</title>
+<meta name="description" content="An interactive D3.js data-visualisation explorer of the HSBC Innovation Banking Venture Capital Term Sheet Guide 2026 — 711 signed UK term sheets, 50,000 data points." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="logo">◆ Term Sheet Lab</span>
+      <h1>VC Term Sheet Explorer</h1>
+      <span class="sub">HSBC Innovation Banking · Guide 2026 · Vol 1</span>
+    </div>
+    <nav class="nav" id="nav">
+      <span class="group-label">The market</span>
+      <a data-target="overview"><span class="dot"></span>Overview</a>
+      <a data-target="market"><span class="dot"></span>UK & global market</a>
+      <a data-target="valuations"><span class="dot"></span>Valuations &amp; ticket size</a>
+      <a data-target="stages"><span class="dot"></span>Stage dynamics</a>
+      <span class="group-label">Who & what</span>
+      <a data-target="sectors"><span class="dot"></span>Sectors &amp; DeepTech</a>
+      <a data-target="geography"><span class="dot"></span>Investor geography</a>
+      <a data-target="investors"><span class="dot"></span>Investor types &amp; CVC</a>
+      <span class="group-label">The terms</span>
+      <a data-target="terms"><span class="dot"></span>Term trends</a>
+      <a data-target="matrix"><span class="dot"></span>Investor × term matrix</a>
+      <a data-target="esg"><span class="dot"></span>ESG &amp; diversity</a>
+      <span class="group-label">Remix</span>
+      <a data-target="remix"><span class="dot"></span>Novel views</a>
+    </nav>
+  </aside>
+
+  <!-- ============================== MAIN ============================== -->
+  <main class="main">
+
+    <!-- HERO -->
+    <header class="hero" id="overview">
+      <span class="eyebrow">711 signed term sheets · 50,000 data points</span>
+      <h2>Anatomy of a <span class="grad">UK venture deal</span>, decoded.</h2>
+      <p class="lede">Every quantitative figure from HSBC Innovation Banking's <em>Venture Capital Term Sheet Guide 2026</em> — re-built as a living, interactive explorer. Recreated, cross-referenced and remixed into views the PDF never had.</p>
+      <div class="statbar" id="statbar"></div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section class="section">
+      <div class="grid">
+        <div class="card span-7">
+          <p class="card-title">Survey coverage is compounding</p>
+          <p class="card-sub">Number of term sheets analysed each year (total vs UK-headquartered)</p>
+          <div class="chart" id="c-survey"></div>
+          <div class="legend" id="l-survey"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">The 2025 book, by stage</p>
+          <p class="card-sub">711 term sheets · share &amp; count by round</p>
+          <div class="chart" id="c-donut"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARKET -->
+    <section class="section" id="market">
+      <div class="section-head">
+        <span class="kicker">The market</span>
+        <h3>A second year of growth — and a flight to scale</h3>
+        <p>UK VC investment rebounded to £19.1bn, the 3rd strongest year on record, even as capital concentrated into fewer, larger late-stage rounds. The UK remains the world's #3 venture market.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-6">
+          <p class="card-title">UK VC investment value</p>
+          <p class="card-sub">£bn deployed per year · 2020–2025</p>
+          <div class="chart" id="c-ukvc"></div>
+        </div>
+        <div class="card span-6">
+          <p class="card-title">Where the money concentrated</p>
+          <p class="card-sub">UK VC value by stage (£bn) — the late-stage wedge is widening</p>
+          <div class="chart" id="c-concentration"></div>
+          <div class="legend" id="l-concentration"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">UK holds the #3 venture market globally</p>
+          <p class="card-sub">Top-10 countries by VC investment, 2025 (£bn) · bar colour = YoY change</p>
+          <div class="chart" id="c-global"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">Elevated dry powder</p>
+          <p class="card-sub">Uncalled VC capital (£bn) · global vs European</p>
+          <div class="chart" id="c-powder"></div>
+          <div class="legend" id="l-powder"></div>
+        </div>
+        <div class="card span-12">
+          <p class="card-title">Public exits subdued; private M&amp;A carries liquidity</p>
+          <p class="card-sub">UK VC-backed exit deal counts by half-year</p>
+          <div class="chart" id="c-exits"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUATIONS -->
+    <section class="section" id="valuations">
+      <div class="section-head">
+        <span class="kicker">Valuations &amp; ticket size</span>
+        <h3>What a round is worth in 2026</h3>
+        <p>Median post-money valuations and average cheque sizes by stage, 2021–2025. Series C+ valuations snapped back +35% in 2025 as investors competed for high-quality late-stage assets.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-8">
+          <p class="card-title">Median post-money valuation by stage</p>
+          <div class="controls" id="ctl-postmoney"></div>
+          <div class="chart" id="c-postmoney"></div>
+        </div>
+        <div class="card span-4">
+          <p class="card-title">2025 momentum</p>
+          <p class="card-sub">YoY change in median post-money</p>
+          <div class="chart" id="c-momentum"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">Pre-money valuation distribution by stage</p>
+          <p class="card-sub">Where each round's pre-money valuation lands (% of stage)</p>
+          <div class="chart" id="c-bands"></div>
+          <div class="legend" id="l-bands"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">The Series A barbell</p>
+          <p class="card-sub">Share of Series A &gt;£50m pre-money, &amp; their average valuation</p>
+          <div class="chart" id="c-bigA"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGES -->
+    <section class="section" id="stages">
+      <div class="section-head">
+        <span class="kicker">Stage dynamics</span>
+        <h3>The shifting weight of the funnel</h3>
+        <p>Seed activity roughly doubled its share of volume since 2021, while Series B rebounded in 2025. Compare any term across stages between 2024 and 2025.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-7">
+          <p class="card-title">Term-sheet volume mix by stage</p>
+          <p class="card-sub">Share of each year's term sheets (%)</p>
+          <div class="chart" id="c-volmix"></div>
+          <div class="legend" id="l-volmix"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">2025 vs 2024, at a glance</p>
+          <div class="controls" id="ctl-compare"></div>
+          <div class="chart" id="c-compare"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORS -->
+    <section class="section" id="sectors">
+      <div class="section-head">
+        <span class="kicker">Sectors &amp; DeepTech</span>
+        <h3>AI's gravity, and the rise of hard things</h3>
+        <p>AI's share of term sheets nearly quadrupled to 17.4% since 2022. DeepTech now commands 35% of volume and the richest valuations in the market.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-7">
+          <p class="card-title">Top-10 sector share over time</p>
+          <p class="card-sub">% of all term sheets · hover a line to focus</p>
+          <div class="chart" id="c-sectorlines"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">DeepTech is taking over</p>
+          <p class="card-sub">DeepTech share of VC — by volume &amp; by value</p>
+          <div class="chart" id="c-deeptech"></div>
+          <div class="legend" id="l-deeptech"></div>
+        </div>
+        <div class="card span-12">
+          <p class="card-title">The valuation &amp; cheque-size landscape</p>
+          <p class="card-sub">Each sector by average post-money valuation (x), average investment size (y) and DeepTech status · 2025</p>
+          <div class="chart" id="c-sectorbubble"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GEOGRAPHY -->
+    <section class="section" id="geography">
+      <div class="section-head">
+        <span class="kicker">Investor geography</span>
+        <h3>Who leads the round, and from where</h3>
+        <p>UK leads still dominate early stage, but US investors have surged into Series B and C+ — a sign of intensifying cross-border competition for breakout companies.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-12">
+          <p class="card-title">Lead-investor HQ location by stage</p>
+          <div class="controls" id="ctl-geo"></div>
+          <div class="chart" id="c-geo"></div>
+          <div class="legend" id="l-geo"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVESTORS -->
+    <section class="section" id="investors">
+      <div class="section-head">
+        <span class="kicker">Investor types &amp; CVC</span>
+        <h3>The capital behind the term sheet</h3>
+        <p>Corporate VCs made up 9% of 2025 deals but 15% of total value — punching above their weight, with Series C+ capturing the bulk of CVC capital.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-7">
+          <p class="card-title">Investor-type participation over time</p>
+          <div class="controls" id="ctl-invtype"></div>
+          <div class="chart" id="c-invtype"></div>
+          <div class="legend" id="l-invtype"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">CVC investment by stage, 2025</p>
+          <p class="card-sub">By deal volume vs capital deployed</p>
+          <div class="chart" id="c-cvcstage"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">CVC sector rotation</p>
+          <p class="card-sub">CVC deal-volume share by sector · 2024 → 2025</p>
+          <div class="chart" id="c-cvcsector"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">Average cheque by investor type</p>
+          <p class="card-sub">2025 · bubble area = number of term sheets</p>
+          <div class="chart" id="c-invticket"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMS -->
+    <section class="section" id="terms">
+      <div class="section-head">
+        <span class="kicker">The terms</span>
+        <h3>How deal mechanics are evolving</h3>
+        <p>Track the prevalence of economic, control and other terms across five survey years, and see how each term shifts across the stage ladder.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-7">
+          <p class="card-title">Term prevalence over time</p>
+          <div class="controls" id="ctl-termts"></div>
+          <div class="chart" id="c-termts"></div>
+          <div class="legend" id="l-termts"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">Liquidation preference structure</p>
+          <p class="card-sub">Where a liquidation preference exists, by type (%)</p>
+          <div class="chart" id="c-liqtype"></div>
+          <div class="legend" id="l-liqtype"></div>
+        </div>
+        <div class="card span-12">
+          <p class="card-title">Term gradient across the stage ladder</p>
+          <p class="card-sub">% "Yes" by stage · select year · darker = more common</p>
+          <div class="controls" id="ctl-termstage"></div>
+          <div class="chart" id="c-termstage"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATRIX -->
+    <section class="section" id="matrix">
+      <div class="section-head">
+        <span class="kicker">Flagship</span>
+        <h3>The investor × term matrix</h3>
+        <p>Every term, cross-tabulated against six investor archetypes. EIS funds never take anti-dilution; angels almost always insist on non-participating prefs; CVCs lean lightest on founder control. Toggle the year and the colour mode to read it your way.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-12">
+          <div class="controls" id="ctl-matrix"></div>
+          <div class="chart" id="c-matrix"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESG -->
+    <section class="section" id="esg">
+      <div class="section-head">
+        <span class="kicker">ESG &amp; diversity</span>
+        <h3>Responsible-economy clauses, by stage</h3>
+        <p>ESG / sustainability clauses appeared in 27% of 2025 term sheets. The trend is broadening at Seed and Series A while falling back at the latest stages.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-6">
+          <p class="card-title">ESG / sustainability clause by stage</p>
+          <p class="card-sub">% of term sheets · 2022–2025</p>
+          <div class="chart" id="c-esg"></div>
+          <div class="legend" id="l-esg"></div>
+        </div>
+        <div class="card span-6">
+          <p class="card-title">Diversity (DE&amp;I) clause by stage</p>
+          <p class="card-sub">% of term sheets · 2022–2025</p>
+          <div class="chart" id="c-dei"></div>
+          <div class="legend" id="l-dei"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REMIX -->
+    <section class="section" id="remix">
+      <div class="section-head">
+        <span class="kicker">Remix</span>
+        <h3>Views the deck never drew</h3>
+        <p>Original cross-cuts built from the same numbers: a founder-friendliness index by stage, the full lifecycle of a term across the funnel, and the year-on-year drift of every term.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-5">
+          <p class="card-title">Founder-Friendliness Index</p>
+          <p class="card-sub">Composite of founder-favourable vs investor-favourable terms by stage (2025)</p>
+          <div class="chart" id="c-ffi"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">A term's journey across the funnel</p>
+          <p class="card-sub">How any term's prevalence ramps from Seed to Series C+ (2025)</p>
+          <div class="controls" id="ctl-journey"></div>
+          <div class="chart" id="c-journey"></div>
+        </div>
+        <div class="card span-12">
+          <p class="card-title">The 2024 → 2025 drift</p>
+          <p class="card-sub">Every tracked term, ranked by percentage-point shift · green = more common, red = less</p>
+          <div class="chart" id="c-drift"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">Sector momentum quadrant</p>
+          <p class="card-sub">Current share (x) vs 2024→2025 shift (y) · upper-right = scaling stars · bubble = share</p>
+          <div class="chart" id="c-quadrant"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">The valuation ladder</p>
+          <p class="card-sub">Median post-money by stage (2025) on a log scale · labels show the step-up multiple</p>
+          <div class="chart" id="c-ladder"></div>
+        </div>
+        <div class="card span-5">
+          <p class="card-title">Deals vs capital</p>
+          <p class="card-sub">Each stage's share of 2025 deal <em>volume</em> vs share of <em>capital</em> deployed</p>
+          <div class="chart" id="c-dealsvalue"></div>
+        </div>
+        <div class="card span-7">
+          <p class="card-title">Investor personalities</p>
+          <p class="card-sub">Each investor archetype traced across seven defining terms (2025, % Yes) · hover to isolate</p>
+          <div class="chart" id="c-parallel"></div>
+          <div class="legend" id="l-parallel"></div>
+        </div>
+        <div class="card span-12">
+          <p class="card-title">From capital's origin to the cap table</p>
+          <p class="card-sub">Survey year → lead-investor HQ location → round · flow width = number of term sheets (2023–2025) · hover any flow</p>
+          <div class="chart" id="c-sankey"></div>
+          <div class="legend" id="l-sankey"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p><b>Source:</b> HSBC Innovation Banking — <i>Venture Capital Term Sheet Guide 2026, Volume 1</i> (Pitchbook data as of March 2026). 711 signed term sheets, 643 UK-headquartered, ~50,000 data points across 29 leading law firms. Figures transcribed from the published deck.</p>
+      <p style="margin-top:8px">Built with D3.js. An independent visualisation — not affiliated with or endorsed by HSBC Innovation Banking.</p>
+    </footer>
+
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
