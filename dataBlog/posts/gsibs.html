@@ -91,6 +91,17 @@
     #dateLabel { right: 14px; bottom: 10px; }
     #dateLabel .ym { letter-spacing: -1px; }
     #unitNote { display: none; }   /* declutter: explanatory note hidden on small screens */
+
+    /* Compact header so controls don't eat the screen height on mobile. */
+    header { gap: 7px 12px; padding: 9px 12px; }
+    header h1 { font-size: 17px; width: 100%; margin: 0; letter-spacing: -.5px; }
+    .control { gap: 2px; }
+    .control label { font-size: 9px; }
+    .control:has(#indicator) { flex: 1 1 100%; }   /* indicator dropdown on its own full-width row */
+    #indicator { min-width: 0; width: 100%; }
+    select, button { padding: 5px 8px; font-size: 12px; }
+    input[type=range] { width: 96px; }
+    .indicator-meta { display: none; }             /* hide the long definition — the dropdown already names it */
   }
   footer { padding: 6px 22px; font-size: 10.5px; color: var(--muted); background: var(--panel); border-top: 1px solid #21262d; }
   footer a { color: var(--accent); text-decoration: none; }
