@@ -94,6 +94,9 @@
   }
   footer { padding: 6px 22px; font-size: 10.5px; color: var(--muted); background: var(--panel); border-top: 1px solid #21262d; }
   footer a { color: var(--accent); text-decoration: none; }
+  /* Clean mode (?clean=1): hide interactive controls & footer for a tidy recording frame, keep title + indicator caption. */
+  body.clean .control, body.clean footer, body.clean #unitNote { display: none; }
+  body.clean header { padding-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -1464,6 +1467,34 @@ d3.select("#speed").on("input", function() {
 
 d3.select("#play").on("click", () => { state.playing ? pause() : play(); });
 d3.select("#restart").on("click", () => reset(true));
+
+// ---------------------------------------------------------------------------
+// Optional URL presets (handy for recording / sharing a configured view):
+//   ?indicator=tpi&racers=16&speed=0.5&clean=1
+// The chart autoplays on load, so a preset link opens ready to record.
+// ---------------------------------------------------------------------------
+(function applyPresets() {
+  const p = new URLSearchParams(location.search);
+  const ind = p.get("indicator");
+  if (ind && INDICATORS.some(i => i.key === ind)) {
+    state.indicator = ind;
+    selIndicator.property("value", ind);
+  }
+  const r = Math.round(+p.get("racers"));
+  if (r >= 8 && r <= 64) {
+    state.topN = r;
+    d3.select("#count").property("value", r);
+    d3.select("#racerCount").text(r);
+  }
+  const s = +p.get("speed");
+  if (s >= 0.25 && s <= 3) {
+    state.speed = s;
+    d3.select("#speed").property("value", s);
+  }
+  if (p.get("clean") === "1" || p.get("clean") === "true") {
+    document.body.classList.add("clean");
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // Go
