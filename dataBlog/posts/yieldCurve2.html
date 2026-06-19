@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PNQX1JJWVB');
+    </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US Treasury Yield Curve &mdash; 3D</title>
+<meta name="description" content="A 3-D, interrogable surface of the US Treasury yield curve over time, 1962 to today. Built with Three.js." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --fg: #e6edf3;
+    --muted: #7d8896;
+    --accent: #58a6ff;
+    --hot: #ff7b6b;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070a; color: var(--fg); font-family: var(--sans); }
+  #app {
+    display: flex; flex-direction: column; height: 100vh;
+    max-width: 1180px; margin: 0 auto; background: var(--bg);
+    box-shadow: 0 0 0 1px #21262d, 0 0 40px rgba(0,0,0,.5);
+  }
+  header {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
+    padding: 13px 22px; background: var(--panel); border-bottom: 1px solid #21262d;
+  }
+  header h1 { font-size: 24px; margin: 0; font-weight: 700; letter-spacing: -.6px; color: #fff; }
+  header h1 small { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-top: 2px; }
+  .spacer { flex: 1; }
+  .control { display: flex; flex-direction: column; gap: 4px; }
+  .control label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .control .row { display: flex; align-items: center; gap: 6px; }
+  button {
+    background: #21262d; color: var(--fg); border: 1px solid #30363d;
+    border-radius: 6px; padding: 6px 11px; font-size: 13px; cursor: pointer; font-family: var(--sans);
+  }
+  button:hover { border-color: var(--accent); }
+  button.on { border-color: var(--accent); color: #fff; background: #1f2c3d; }
+  .seg { display: inline-flex; border: 1px solid #30363d; border-radius: 6px; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; border-right: 1px solid #30363d; }
+  .seg button:last-child { border-right: none; }
+  .seg button.on { background: #1f2c3d; color: #fff; }
+
+  #chartWrap { position: relative; flex: 1; overflow: hidden; }
+  #gl { width: 100%; height: 100%; display: block; cursor: grab; }
+  #gl:active { cursor: grabbing; }
+
+  #hint {
+    position: absolute; left: 18px; bottom: 14px; font-size: 11.5px; color: var(--muted);
+    pointer-events: none; font-family: var(--mono); line-height: 1.5;
+    text-shadow: 0 1px 6px rgba(0,0,0,.8);
+  }
+  #hint b { color: var(--fg); font-weight: 500; }
+
+  #readout {
+    position: absolute; left: 18px; top: 16px; pointer-events: none;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7; opacity: 0; transition: opacity .1s;
+    background: rgba(13,17,23,.66); border-left: 3px solid var(--accent); border-radius: 6px;
+    padding: 8px 12px; text-shadow: 0 1px 6px rgba(0,0,0,.8);
+  }
+  #readout .r-yield { font-size: 22px; font-weight: 700; color: #fff; }
+  #readout .r-meta { color: var(--muted); }
+  #readout .r-meta b { color: var(--fg); font-weight: 500; }
+
+  #loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-family: var(--mono); font-size: 13px; background: var(--bg);
+  }
+
+  footer {
+    display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
+    padding: 9px 22px 11px; background: var(--panel); border-top: 1px solid #21262d;
+    font-size: 10.5px; color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    header { gap: 7px 12px; padding: 8px 14px; }
+    header h1 { font-size: 17px; flex: 1 1 100%; }
+    header h1 small { display: none; }
+    .spacer { display: none; }
+    .control label { font-size: 9px; }
+    button { padding: 5px 9px; font-size: 12px; }
+    #readout { font-size: 12px; left: 12px; top: 12px; }
+    #readout .r-yield { font-size: 18px; }
+    #hint { left: 12px; bottom: 10px; font-size: 10px; }
+    footer { padding: 7px 14px 9px; }
+  }
+  body.clean header .control, body.clean footer, body.clean #hint { display: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>US Treasury Yield Curve &mdash; 3D<small>Time &times; maturity &times; yield, 1962 &ndash; today</small></h1>
+    <div class="spacer"></div>
+    <div class="control">
+      <label>From</label>
+      <div class="seg" id="range">
+        <button data-yr="1962">1962</button>
+        <button data-yr="1990" class="on">1990</button>
+        <button data-yr="2000">2000</button>
+        <button data-yr="2010">2010</button>
+      </div>
+    </div>
+    <div class="control">
+      <label>View</label>
+      <div class="row">
+        <button id="spin">Spin</button>
+        <button id="wire">Grid</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="chartWrap">
+    <canvas id="gl"></canvas>
+    <div id="readout"></div>
+    <div id="hint"><b>Drag</b> to rotate &middot; <b>scroll</b> to zoom &middot; <b>hover</b> the surface to read a rate</div>
+    <div id="loading">Loading 64 years of Treasury data&hellip;</div>
+  </div>
+
+  <footer>
+    <span>Source: <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" target="_blank" rel="noopener">U.S. Treasury &mdash; Daily Par Yield Curve Rates</a> (monthly samples).</span>
+    <span>Homage to Aisch &amp; Cox, NYT 2015. &middot; daniellewisDL</span>
+  </footer>
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const TENORS = [
+  { key: "US1M",  label: "1M" }, { key: "US3M",  label: "3M" }, { key: "US6M",  label: "6M" },
+  { key: "US1Y",  label: "1Y" }, { key: "US2Y",  label: "2Y" }, { key: "US3Y",  label: "3Y" },
+  { key: "US5Y",  label: "5Y" }, { key: "US7Y",  label: "7Y" }, { key: "US10Y", label: "10Y" },
+  { key: "US20Y", label: "20Y" }, { key: "US30Y", label: "30Y" },
+];
+const LABELS = TENORS.map(t => t.label);
+const M = LABELS.length;
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// World dimensions (arbitrary units).
+const SX = 150, SZ = 48, SY = 26;      // time, maturity, yield extents
+let MAXY = 16;                          // yield axis ceiling (set from data)
+
+const params = new URLSearchParams(location.search);
+if (params.get("clean") === "1") document.body.classList.add("clean");
+
+const wrap = document.getElementById("chartWrap");
+const canvas = document.getElementById("gl");
+const readout = document.getElementById("readout");
+
+// Colour ramp by yield height — deep blue (low) to luminous cyan (high), reads on dark.
+const ramp = d3.scaleSequential(d3.interpolateRgbBasis(["#0a2440","#1c5f93","#3aa0d8","#7fd4f5","#cdeeff"]));
+const fmt2 = d3.format(".2f");
+
+let renderer, scene, camera, controls;
+let world;                 // group holding all data geometry (rebuilt on range change)
+let surfaceMesh = null;    // for raycasting
+let gridLines = null, frontTube = null, sliceLines = null, marker = null;
+let yearTube = null, yearDots = null;   // the highlighted maturity curve at the hovered month
+let lastI = -1, lastJ = -1;             // cache so we only rebuild geometry when the cell changes
+let allFrames = [];        // monthly frames from CSV
+let grid = [];             // current build: [{date,yr,mo,vals[M]}]
+let T = 0;
+let showGrid = true, spinning = false;
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let hoverActive = false;
+
+// ---------- coordinate helpers ----------
+const xAt = i => (i / Math.max(1, T - 1) - 0.5) * SX;          // time -> x
+const zAt = j => (0.5 - j / (M - 1)) * SZ;                     // maturity -> z (short=front/+z)
+const yAt = v => (v / MAXY) * SY;                              // yield -> y
+
+// ---------- load ----------
+d3.csv("./data/us_treasury_yields_daily.csv").then(raw => {
+  const parse = d3.timeParse("%Y-%m-%d");
+  const daily = [];
+  for (const row of raw) {
+    const byTenor = {}; let n = 0;
+    for (const t of TENORS) {
+      const s = row[t.key];
+      if (s !== undefined && s !== "") { const v = +s; if (!Number.isNaN(v)) { byTenor[t.label] = v; n++; } }
+    }
+    if (n >= 2) daily.push({ date: parse(row.date), byTenor });
+  }
+  daily.sort((a, b) => a.date - b.date);
+  // monthly sample: last trading day in each month
+  const byMonth = new Map();
+  for (const d of daily) byMonth.set(d3.timeFormat("%Y-%m")(d.date), d);
+  allFrames = [...byMonth.values()].map(d => ({
+    date: d.date, yr: d.date.getFullYear(), mo: d.date.getMonth(), byTenor: d.byTenor,
+  }));
+  MAXY = Math.ceil(d3.max(allFrames, f => d3.max(Object.values(f.byTenor))));
+  ramp.domain([0, MAXY]);
+
+  initThree();
+  build(1990);
+  document.getElementById("loading").remove();
+  animate();
+});
+
+// ---------- build the grid for a start year, filling gaps across maturity ----------
+function buildGrid(startYear) {
+  const rows = [];
+  for (const f of allFrames) {
+    if (f.yr < startYear) continue;
+    const present = LABELS.map(lab => (lab in f.byTenor ? f.byTenor[lab] : null));
+    if (present.filter(v => v != null).length < 4) continue;
+    const vals = present.slice();
+    for (let j = 0; j < M; j++) {
+      if (vals[j] != null) continue;
+      let l = null, r = null;
+      for (let k = j - 1; k >= 0; k--) if (present[k] != null) { l = k; break; }
+      for (let k = j + 1; k < M; k++) if (present[k] != null) { r = k; break; }
+      if (l != null && r != null) { const t = (j - l) / (r - l); vals[j] = present[l] * (1 - t) + present[r] * t; }
+      else vals[j] = present[l != null ? l : r];
+    }
+    rows.push({ date: f.date, yr: f.yr, mo: f.mo, vals });
+  }
+  return rows;
+}
+
+// ---------- Three.js scene ----------
+function initThree() {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color("#0d1117");
+
+  camera = new THREE.PerspectiveCamera(42, 1, 0.1, 2000);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 60;
+  controls.maxDistance = 480;
+  controls.target.set(0, SY * 0.32, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+  const key = new THREE.DirectionalLight(0xffffff, 0.65);
+  key.position.set(-1, 2.2, 1.4);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0x9fd0ff, 0.25);
+  fill.position.set(1, 1, -1.5);
+  scene.add(fill);
+
+  world = new THREE.Group();
+  scene.add(world);
+
+  resize();
+  window.addEventListener("resize", resize);
+  new ResizeObserver(resize).observe(wrap);
+
+  canvas.addEventListener("pointermove", onPointerMove);
+  canvas.addEventListener("pointerleave", () => { hoverActive = false; hideHover(); });
+
+  document.getElementById("range").addEventListener("click", e => {
+    const b = e.target.closest("button[data-yr]"); if (!b) return;
+    document.querySelectorAll("#range button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    build(+b.dataset.yr);
+  });
+  document.getElementById("wire").addEventListener("click", e => {
+    showGrid = !showGrid; e.currentTarget.classList.toggle("on", showGrid);
+    if (gridLines) gridLines.visible = showGrid;
+  });
+  document.getElementById("wire").classList.toggle("on", showGrid);
+  document.getElementById("spin").addEventListener("click", e => {
+    spinning = !spinning; e.currentTarget.classList.toggle("on", spinning);
+    controls.autoRotate = spinning; controls.autoRotateSpeed = 0.6;
+  });
+  document.getElementById("reset").addEventListener("click", resetView);
+}
+
+function clearWorld() {
+  for (const c of [...world.children]) {
+    world.remove(c);
+    c.traverse(o => {
+      o.geometry?.dispose();
+      if (Array.isArray(o.material)) o.material.forEach(m => m.dispose()); else o.material?.dispose();
+    });
+  }
+  surfaceMesh = gridLines = frontTube = sliceLines = marker = yearTube = yearDots = null;
+  lastI = lastJ = -1;
+}
+
+function build(startYear) {
+  grid = buildGrid(startYear);
+  T = grid.length;
+  // Scale the yield (height) axis + colour ramp to the displayed range, not the whole 1962+ history.
+  const dispMax = d3.max(grid, r => d3.max(r.vals));
+  MAXY = Math.max(2, Math.ceil(dispMax / 2) * 2);
+  ramp.domain([0, MAXY]);
+  clearWorld();
+  buildSurface();
+  buildGridLines();
+  buildFrontLine();
+  buildFloorAndAxes();
+  buildLabels(startYear);
+  buildSliceHelpers();
+  resetView();
+}
+
+// Solid vertex-coloured surface.
+function buildSurface() {
+  const pos = new Float32Array(T * M * 3);
+  const col = new Float32Array(T * M * 3);
+  const c = new THREE.Color();
+  let p = 0;
+  for (let i = 0; i < T; i++) {
+    for (let j = 0; j < M; j++) {
+      const v = grid[i].vals[j];
+      pos[p] = xAt(i); pos[p + 1] = yAt(v); pos[p + 2] = zAt(j);
+      c.set(ramp(v)); col[p] = c.r; col[p + 1] = c.g; col[p + 2] = c.b;
+      p += 3;
+    }
+  }
+  const idx = [];
+  for (let i = 0; i < T - 1; i++) {
+    for (let j = 0; j < M - 1; j++) {
+      const a = i * M + j, b = a + 1, d = a + M, e = d + 1;
+      idx.push(a, d, b, b, d, e);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({
+    vertexColors: true, side: THREE.DoubleSide, roughness: 0.86, metalness: 0.0,
+    flatShading: false,
+  });
+  surfaceMesh = new THREE.Mesh(g, mat);
+  world.add(surfaceMesh);
+}
+
+// Faint wire grid: a maturity-curve every few months + every maturity ridge along time.
+function buildGridLines() {
+  const verts = [];
+  const stepRow = Math.max(1, Math.round(T / 90));   // ~90 curves max
+  for (let i = 0; i < T; i += stepRow) {
+    for (let j = 0; j < M - 1; j++) {
+      pushSeg(verts, i, j, i, j + 1);
+    }
+  }
+  for (let j = 0; j < M; j++) {
+    for (let i = 0; i < T - 1; i++) pushSeg(verts, i, j, i + 1, j);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  gridLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07 }));
+  gridLines.visible = showGrid;
+  world.add(gridLines);
+}
+function pushSeg(arr, i1, j1, i2, j2) {
+  arr.push(xAt(i1), yAt(grid[i1].vals[j1]) + 0.03, zAt(j1), xAt(i2), yAt(grid[i2].vals[j2]) + 0.03, zAt(j2));
+}
+
+// Bold dark line tracing the shortest maturity (front edge) over time — the signature short-rate path.
+function buildFrontLine() {
+  const pts = [];
+  for (let i = 0; i < T; i++) pts.push(new THREE.Vector3(xAt(i), yAt(grid[i].vals[0]) + 0.12, zAt(0)));
+  const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.2);
+  const tube = new THREE.TubeGeometry(curve, Math.max(64, T), 0.28, 8, false);
+  frontTube = new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0xeef4fa }));
+  world.add(frontTube);
+}
+
+// Floor grid at y=0 and a vertical yield axis at the back-right.
+function buildFloorAndAxes() {
+  const verts = [];
+  const x0 = xAt(0), x1 = xAt(T - 1), z0 = zAt(0), z1 = zAt(M - 1);
+  // year lines (parallel to maturity axis)
+  const years = d3.range(Math.ceil(grid[0].yr / 5) * 5, grid[T - 1].yr + 1, 5);
+  for (const yr of years) {
+    const i = nearestIndexForYear(yr); const x = xAt(i);
+    verts.push(x, 0, z0, x, 0, z1);
+  }
+  // maturity lines (parallel to time axis)
+  for (let j = 0; j < M; j++) { const z = zAt(j); verts.push(x0, 0, z, x1, 0, z); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  world.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0x4a5a6a, transparent: true, opacity: 0.45 })));
+
+  // vertical yield axis + tick lines along the floor depth at back
+  const av = [];
+  const axX = x1, axZ = z1;
+  av.push(axX, 0, axZ, axX, yAt(MAXY), axZ);
+  for (let t = 0; t <= MAXY; t += 2) { av.push(axX, yAt(t), axZ, axX + 1.2, yAt(t), axZ); }
+  const ga = new THREE.BufferGeometry();
+  ga.setAttribute("position", new THREE.Float32BufferAttribute(av, 3));
+  world.add(new THREE.LineSegments(ga, new THREE.LineBasicMaterial({ color: 0x6b7d8d })));
+}
+
+function nearestIndexForYear(yr) {
+  let best = 0, bd = Infinity;
+  for (let i = 0; i < T; i++) { const d = Math.abs(grid[i].yr + grid[i].mo / 12 - yr); if (d < bd) { bd = d; best = i; } }
+  return best;
+}
+
+// Sprite text labels for the three axes.
+function makeLabel(text, color = "#9aa7b4", px = 44) {
+  const pad = 6, cv = document.createElement("canvas");
+  const ctx = cv.getContext("2d");
+  const font = `${px}px JetBrains Mono, monospace`;
+  ctx.font = font; const w = Math.ceil(ctx.measureText(text).width) + pad * 2;
+  cv.width = w; cv.height = px + pad * 2;
+  ctx.font = font; ctx.fillStyle = color; ctx.textBaseline = "middle";
+  ctx.fillText(text, pad, cv.height / 2);
+  const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 4;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+  const s = 0.06; sp.scale.set((cv.width * s), (cv.height * s), 1);
+  sp.userData.label = true;
+  return sp;
+}
+
+function buildLabels(startYear) {
+  const x0 = xAt(0), z0 = zAt(0), z1 = zAt(M - 1), x1 = xAt(T - 1);
+  // years along front edge
+  const years = d3.range(Math.ceil(grid[0].yr / 5) * 5, grid[T - 1].yr + 1, 5);
+  for (const yr of years) {
+    const i = nearestIndexForYear(yr);
+    const sp = makeLabel("’" + String(yr).slice(2));
+    sp.position.set(xAt(i), -1.2, z0 + 3.0);
+    world.add(sp);
+  }
+  // maturities along right edge
+  for (let j = 0; j < M; j++) {
+    const sp = makeLabel(LABELS[j], "#b6c2cd");
+    sp.position.set(x1 + 4.5, -0.6, zAt(j));
+    world.add(sp);
+  }
+  // yield % along vertical axis
+  for (let t = 0; t <= MAXY; t += 2) {
+    const sp = makeLabel(t + "%", "#aebac6", 40);
+    sp.position.set(x1 + 5.5, yAt(t), z1);
+    world.add(sp);
+  }
+}
+
+// Reusable highlight: marker sphere + the hovered date's curve slice + that maturity's history.
+function buildSliceHelpers() {
+  marker = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), new THREE.MeshBasicMaterial({ color: 0xdce8f5 }));
+  marker.visible = false; world.add(marker);
+
+  // Longitudinal tracer (same maturity across time) — thin line. 2 verts/segment over (T-1) segments.
+  const histVerts = 2 * (T - 1);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(histVerts * 3), 3));
+  sliceLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0x8aa0b5, transparent: true, opacity: 0.3 }));
+  sliceLines.frustumCulled = false;   // bounds are seeded from zeros; avoid culling the line off-screen
+  sliceLines.visible = false; world.add(sliceLines);
+
+  // Year tracer (full maturity curve at the hovered month) — slim, quiet ribbon + small nodes.
+  yearTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0x5f93cf }));
+  yearTube.frustumCulled = false; yearTube.visible = false; world.add(yearTube);
+  yearDots = new THREE.Group(); yearDots.visible = false; world.add(yearDots);
+  const dotGeo = new THREE.SphereGeometry(0.3, 14, 14);
+  const dotMat = new THREE.MeshBasicMaterial({ color: 0xc3d6ea });
+  for (let j = 0; j < M; j++) yearDots.add(new THREE.Mesh(dotGeo, dotMat));
+}
+
+function resetView() {
+  controls.target.set(0, SY * 0.32, 0);
+  camera.position.set(SX * 0.52, SY * 2.7, SZ * 2.7);
+  controls.update();
+}
+
+// ---------- interaction ----------
+function onPointerMove(e) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  hoverActive = true;
+}
+
+function hideHover() {
+  readout.style.opacity = 0;
+  if (marker) marker.visible = false;
+  if (sliceLines) sliceLines.visible = false;
+  if (yearTube) yearTube.visible = false;
+  if (yearDots) yearDots.visible = false;
+  lastI = lastJ = -1;
+}
+
+function updateHover() {
+  if (!hoverActive || !surfaceMesh) return;
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObject(surfaceMesh, false)[0];
+  if (!hit) { hideHover(); return; }
+  const p = hit.point;
+  let i = Math.max(0, Math.min(T - 1, Math.round((p.x / SX + 0.5) * (T - 1))));
+  let j = Math.max(0, Math.min(M - 1, Math.round((0.5 - p.z / SZ) * (M - 1))));
+  const v = grid[i].vals[j];
+
+  marker.position.set(xAt(i), yAt(v) + 0.25, zAt(j)); marker.visible = true;
+
+  if (i !== lastI) updateYearTracer(i);  // year curve depends only on the month
+  if (j !== lastJ) updateHistory(j);      // longitudinal line depends only on the maturity
+  lastI = i; lastJ = j;
+
+  readout.innerHTML =
+    `<div class="r-yield">${fmt2(v)}%</div>` +
+    `<div class="r-meta"><b>${LABELS[j]}</b> maturity</div>` +
+    `<div class="r-meta">${MONTHS[grid[i].mo]} <b>${grid[i].yr}</b></div>`;
+  readout.style.opacity = 1;
+}
+
+// The prominent highlight: a thick bright-blue tube through the month's maturity curve, with a node on each point.
+function updateYearTracer(i) {
+  const pts = [];
+  for (let j = 0; j < M; j++) pts.push(new THREE.Vector3(xAt(i), yAt(grid[i].vals[j]) + 0.22, zAt(j)));
+  const curve = new THREE.CatmullRomCurve3(pts);
+  yearTube.geometry.dispose();
+  yearTube.geometry = new THREE.TubeGeometry(curve, (M - 1) * 10, 0.2, 10, false);
+  yearTube.visible = true;
+  const dots = yearDots.children;
+  for (let j = 0; j < M; j++) dots[j].position.copy(pts[j]);
+  yearDots.visible = true;
+}
+
+function updateHistory(j) {
+  const a = sliceLines.geometry.attributes.position;
+  let p = 0;
+  for (let k = 0; k < T - 1; k++) {
+    a.array[p++] = xAt(k);     a.array[p++] = yAt(grid[k].vals[j]) + 0.1;     a.array[p++] = zAt(j);
+    a.array[p++] = xAt(k + 1); a.array[p++] = yAt(grid[k + 1].vals[j]) + 0.1; a.array[p++] = zAt(j);
+  }
+  a.needsUpdate = true;
+  sliceLines.geometry.setDrawRange(0, 2 * (T - 1));
+  sliceLines.visible = true;
+}
+
+// ---------- loop ----------
+function resize() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  if (!w || !h) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+function animate() {
+  requestAnimationFrame(animate);
+  updateHover();
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// Optional debug hook (?debug=1) for inspecting the scene from the console.
+if (params.get("debug") === "1") {
+  window.__yc = {
+    THREE, raycaster,
+    get scene() { return scene; }, get camera() { return camera; },
+    get surface() { return surfaceMesh; }, get world() { return world; },
+    get grid() { return grid; }, get T() { return T; }, get controls() { return controls; },
+  };
+}
+</script>
+</body>
+</html>
