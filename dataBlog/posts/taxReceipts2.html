@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>UK Tax Receipts — explorer</title>
-<meta name="description" content="An interactive treemap of every UK tax, by receipts and share of GDP." />
+<title>UK Tax Receipts — sunburst</title>
+<meta name="description" content="An interactive zoomable sunburst of every UK tax, by receipts and share of GDP." />
 <link rel="icon" type="image/png" href="../../src/favicon.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,35 +41,35 @@
   h1 { font-size: clamp(22px, 4.4vw, 32px); margin: 12px 0 4px; letter-spacing: -.5px; font-weight: 700; }
   h1 .amt { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }
   h1 .yr { font-family: var(--font-mono); font-size: .42em; font-weight: 700; vertical-align: middle; color: var(--accent); border: 1px solid var(--border-strong); border-radius: 999px; padding: .28em .7em; margin-left: .35em; white-space: nowrap; letter-spacing: .3px; }
-  .sub { color: var(--muted); font-size: 14px; margin: 0; max-width: 60ch; line-height: 1.5; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; max-width: 62ch; line-height: 1.5; }
 
   .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; padding: 14px 22px 6px; }
-  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
-  .seg button { font-family: var(--font-mono); font-size: 12px; letter-spacing: .3px; color: var(--muted); background: transparent; border: 0; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all .15s ease; }
-  .seg button.on { color: var(--bg); background: var(--accent); font-weight: 700; }
-  .seg button:not(.on):hover { color: var(--text); }
-  .seg-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-right: -8px; }
   .ghost-btn { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: all .15s ease; }
   .ghost-btn:hover:not(:disabled) { color: var(--text); border-color: var(--border-strong); }
   .ghost-btn:disabled { opacity: .4; cursor: default; }
+  .seg-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-right: -8px; }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+  .seg button { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: transparent; border: 0; padding: 6px 13px; border-radius: 6px; cursor: pointer; transition: all .15s ease; }
+  .seg button.on { color: var(--bg); background: var(--accent); font-weight: 700; }
+  .seg button:not(.on):hover { color: var(--text); }
 
   #crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 4px 22px 12px; font-family: var(--font-mono); font-size: 12.5px; min-height: 26px; }
   #crumbs .crumb { color: var(--accent); cursor: pointer; padding: 2px 4px; border-radius: 4px; }
-  #crumbs .crumb:hover { background: var(--accent-soft, rgba(34,211,238,.14)); }
+  #crumbs .crumb:hover { background: rgba(34,211,238,.14); }
   #crumbs .crumb.current { color: var(--text); cursor: default; }
   #crumbs .sep { color: var(--muted); opacity: .6; }
 
-  #chartWrap { position: relative; flex: 1; padding: 0 16px 8px; min-height: 0; }
-  #chart { width: 100%; display: block; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
-  .cell { cursor: pointer; }
-  .cell rect.fill { transition: filter .12s ease; }
-  .cell.leaf { cursor: pointer; }            /* leaf / outside click climbs back up */
-  .cell:hover rect.fill { filter: brightness(1.14); }
-  .shadow rect { fill: none; }
-  .cell text { pointer-events: none; font-family: var(--font-sans); }
-  .cell .nm { font-weight: 600; }
-  .cell .vl { font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
-  .cell .kids { font-family: var(--font-mono); opacity: .7; }
+  #chartWrap { position: relative; flex: 1; padding: 0 16px 12px; min-height: 0; display: flex; justify-content: center; }
+  #chart { width: 100%; max-width: 680px; display: block; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+  #chart text { -webkit-user-select: none; user-select: none; }
+  .arc { stroke: #0a0e14; stroke-width: 1px; cursor: pointer; transition: filter .12s ease; }
+  .arc:hover { filter: brightness(1.14); }
+  .arc.root { cursor: default; }
+  .lbl { font-family: var(--font-sans); font-weight: 600; pointer-events: none; transition: opacity .3s ease; }
+  .centerText { pointer-events: none; }
+  .centerText .ct-name { font-weight: 700; }
+  .centerText .ct-val { font-family: var(--font-mono); fill: var(--accent); }
+  .centerText .ct-hint { font-family: var(--font-mono); fill: var(--muted); }
 
   #tooltip {
     position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s ease; z-index: 20;
@@ -94,17 +94,10 @@
     h1 { font-size: 22px; line-height: 1.2; }
     h1 .yr { font-size: .5em; display: inline-block; margin-top: 4px; }
     .sub { font-size: 13px; }
-    .toolbar { padding: 10px 16px 4px; gap: 10px 12px; }
-    .seg { flex: 1 1 auto; }
-    .seg button { flex: 1 1 0; text-align: center; }     /* metric pills share the row evenly */
-    #reset { flex: 1 1 100%; text-align: center; }        /* reset on its own full-width row */
+    .toolbar { padding: 10px 16px 4px; }
     #crumbs { padding: 2px 16px 10px; font-size: 11.5px; }
-    #chartWrap { padding: 0 10px 8px; }
-    .cell .nm { font-size: 12px !important; }              /* keep names legible on small cells */
+    #chartWrap { padding: 0 10px 10px; }
     footer { padding: 14px 16px 28px; }
-  }
-  @media (hover: none) {
-    #tooltip { display: none; }                            /* touch devices drill instead of hover */
   }
 </style>
 </head>
@@ -113,10 +106,15 @@
   <header>
     <a class="back-link" href="../index.html">&larr; back to posts</a>
     <h1>Where the UK&rsquo;s <span class="amt">&pound;955bn</span> of tax comes from <span class="yr">2025&ndash;26</span></h1>
-    <p class="sub">Every UK tax in the <b>2025&ndash;26</b> tax year, grouped by what it falls on. Area is proportional to receipts &mdash; <b>tap any block to drill in</b>, tap outside it (or the breadcrumb) to climb back out, and hover for detail.</p>
+    <p class="sub">Every UK tax in the <b>2025&ndash;26</b> tax year, as nested rings. <b>Click a segment to zoom in</b>; click the centre, the outside, or Reset to zoom out, and hover for detail. Switch <b>Who pays</b> to regroup every tax by whether it falls on individuals or companies.</p>
   </header>
 
   <div class="toolbar">
+    <span class="seg-label">Group by</span>
+    <div class="seg" id="mode">
+      <button data-mode="cat" class="on">Type of tax</button>
+      <button data-mode="payer">Who pays</button>
+    </div>
     <button id="reset" class="ghost-btn" disabled>&#10548;&ensp;Reset to top</button>
   </div>
 
@@ -130,8 +128,9 @@
   <footer>
     Data: UK tax receipts for the <b>2025&ndash;26</b> year, compiled by <a href="https://taxpolicy.org.uk/" target="_blank" rel="noopener">Tax Policy Associates</a>
     (<a href="https://github.com/DanNeidle/shape_of_tax_system_2026/" target="_blank" rel="noopener">source dataset</a>), in &pound; millions.
-    Categories group taxes by economic incidence rather than collecting body. A few series are modelled splits (income tax by source, gaming &amp; stamp sub-totals);
-    petroleum revenue tax is a net repayment and shows as zero area. &middot; Built with D3 by <a href="https://github.com/daniellewisDL" target="_blank" rel="noopener">Daniel Lewis</a>.
+    Rings are sized by receipts; categories group taxes by economic incidence rather than collecting body. A few series are modelled splits (income tax by source, gaming &amp; stamp sub-totals);
+    petroleum revenue tax is a net repayment and shows as zero area. The <b>Who pays</b> view is an inferred attribution of each tax to the party that ultimately bears it &mdash; consumption taxes to individuals, profit/employer/business levies to companies &mdash; and is a simplification (many taxes fall partly on both).
+    &middot; Built with D3 by <a href="https://github.com/daniellewisDL" target="_blank" rel="noopener">Daniel Lewis</a>.
   </footer>
 </div>
 
@@ -267,7 +266,6 @@ const TAX = {
   ]
 };
 
-/* ---- category palette (one hue per top-level group) ---- */
 const CAT_COLORS = {
   "Employment taxes":     "#2bb7c2",
   "Goods/services":       "#f2742c",
@@ -279,241 +277,264 @@ const CAT_COLORS = {
 };
 const ROOT_COLOR = "#22d3ee";
 
-let metric = "bn";                                  // "bn" | "gdp"
-const valueOf = d => metric === "bn" ? d.amount_m / 1000 : d.gdp_pct;
-const sizeOf  = d => Math.max(0, valueOf(d));        // treemap area must be non-negative
-
 const fmt = {
   bn:  v => v >= 100 ? "£" + v.toFixed(0) + "bn" : v >= 1 ? "£" + v.toFixed(1) + "bn" : "£" + Math.round(v * 1000) + "m",
-  gdp: v => v.toFixed(v < 1 ? 2 : 1) + "% of GDP",
-  cur: v => metric === "bn" ? fmt.bn(v) : fmt.gdp(v)
+  pct: v => v.toFixed(v < 1 ? 2 : 1) + "%"
 };
+
+/* ---- who bears each tax: inferred split of every leaf into individuals vs companies ----
+   Attribution is by who ultimately bears the cost (a simplification): consumption taxes
+   (VAT, fuel, alcohol, tobacco, APD, IPT, vehicle, gambling) → individuals; profit taxes,
+   employer payroll levies, business property and environmental/production levies → companies. */
+const PAYER = {
+  // Employment
+  "Income tax on work": "ind", "Employer NICs": "co", "Employee NICs": "ind",
+  "Self-employed NICs": "ind", "Other NICs": "ind", "Apprenticeship levy": "co",
+  // Goods/services (consumption — borne by individuals; a few producer levies → companies)
+  "VAT": "ind", "Insurance premium tax": "ind", "Air passenger duty": "ind", "Fuel duties": "ind",
+  "Beer and cider": "ind", "Wine": "ind", "Spirits": "ind", "Vehicle excise duty": "ind",
+  "Tobacco duties": "ind", "Customs duties": "co",
+  "Remote gaming duty": "ind", "Lottery duty": "ind", "General betting duty": "ind",
+  "Machine games duty": "ind", "Gaming duty": "ind", "Bingo duty": "ind", "Pool betting duty": "ind",
+  "Soft drinks levy": "co", "Lorry road levy": "co", "Gaming levy": "co",
+  // Business
+  "Onshore CT": "co", "Offshore CT": "co", "Digital services tax": "co", "Bank levy": "co",
+  "Bank surcharge": "co", "Diverted profits": "co", "Property developer tax": "co",
+  "Energy profits levy": "co", "Electricity generator levy": "co", "Petroleum revenue tax": "co",
+  // Property
+  "Council tax": "ind", "Business rates": "co", "NI domestic rates": "ind", "NI business rates": "co",
+  "Residential SDLT": "ind", "Additional dwellings": "ind", "Non-resident SDLT": "ind",
+  "Non-residential SDLT": "co", "ATED": "co", "LBTT (Scotland)": "ind", "LTT (Wales)": "ind",
+  // Wealth
+  "Dividend income tax": "ind", "Savings income tax": "ind", "Rent income tax": "ind",
+  "Capital gains tax": "ind", "Inheritance tax": "ind", "SDRT": "ind", "Stamp duty (1891)": "ind",
+  // Environment & energy (levied on suppliers/producers → companies)
+  "Renewables obligation": "co", "Contracts for difference": "co", "Warm home discount": "co",
+  "Emissions trading": "co", "Climate change levy": "co", "Landfill tax": "co",
+  "Aggregates levy": "co", "Plastic packaging tax": "co", "Scottish landfill tax": "co", "Welsh landfill tax": "co",
+  // Other
+  "Licence fee": "ind", "Immigration health surcharge": "ind", "Visa fees": "ind", "Lottery payments": "ind",
+  "Levy-funded bodies": "co", "Bank of England levy": "co", "Passport fees": "ind",
+  "Other taxes n.e.s.": "co", "British Transport Police": "co", "DVLA registration fees": "ind",
+  "Lighthouse dues": "co", "ATOL": "co", "Consumer credit fees": "co", "Immigration skills charge": "co",
+  "Land Registry": "ind", "Community infrastructure levy": "co", "Companies House": "co",
+  "Economic crime levy": "co", "Horserace betting levy": "co", "Pension protection levy": "co"
+};
+
+// clone the tree keeping only one payer's leaves, pruning empty branches and re-aggregating amounts
+function filterByPayer(node, payer) {
+  if (!node.children) return PAYER[node.name] === payer ? { name: node.name, amount_m: node.amount_m, gdp_pct: node.gdp_pct, note: node.note } : null;
+  const kids = node.children.map(c => filterByPayer(c, payer)).filter(Boolean);
+  if (!kids.length) return null;
+  return { name: node.name, amount_m: kids.reduce((s, k) => s + k.amount_m, 0), gdp_pct: kids.reduce((s, k) => s + (k.gdp_pct || 0), 0), children: kids };
+}
+function payerGroup(label, payer) { const f = filterByPayer(TAX, payer); return { name: label, amount_m: f.amount_m, gdp_pct: f.gdp_pct, children: f.children }; }
+const IND = payerGroup("Individuals", "ind"), CO = payerGroup("Companies", "co");
+const TAX_BY_PAYER = { name: "All taxes", amount_m: IND.amount_m + CO.amount_m, gdp_pct: IND.gdp_pct + CO.gdp_pct, children: [IND, CO] };
+
+const PAYER_COLOR = { "Individuals": "#28b8c6", "Companies": "#ec7d33" };
+function nodeColor(node) {
+  const names = node.ancestors().map(n => n.data.name);
+  const cat = names.find(n => CAT_COLORS[n]);            // category colour wins (kept across both views)
+  if (cat) return CAT_COLORS[cat];
+  const p = names.find(n => PAYER_COLOR[n]);             // the Individuals / Companies inner ring
+  if (p) return PAYER_COLOR[p];
+  return ROOT_COLOR;
+}
+function inkOn(fill) { const c = d3.color(fill); const L = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b; return L > 150 ? "#0a0e14" : "#f3f7fb"; }
 
 const svg = d3.select("#chart");
 const tooltip = d3.select("#tooltip");
 const wrap = document.getElementById("chartWrap");
+const total = TAX.amount_m;
 
-let current = TAX;          // data node currently zoomed to
-const total = TAX.amount_m; // for "share of all taxes"
+let root, MAXD, focus, W = 0, radius = 0;
+let pathSel, guideSel, labelSel, centerText;
 
-/* parent + category lookups keyed by the raw data objects (survive re-layout) */
-const parentOf = new Map();
-const catOf = new Map();
-(function walk(node, parent, cat) {
-  parentOf.set(node, parent);
-  const here = CAT_COLORS[node.name] ? node.name : cat;
-  catOf.set(node, here);
-  (node.children || []).forEach(c => walk(c, node, here));
-})(TAX, null, null);
+const x = d3.scaleLinear().domain([0, 1]).range([0, 2 * Math.PI]);
+const y = d3.scaleLinear().domain([0, 1]).range([0, 1]);   // range set in measure()
+const HOLE = () => radius * 0.17;
 
-const catColor    = d => CAT_COLORS[catOf.get(d)] || ROOT_COLOR;
-const isDescendant = (a, b) => { let n = parentOf.get(a); while (n) { if (n === b) return true; n = parentOf.get(n); } return false; };
-const childToward  = (from, target) => { let n = target; while (n && parentOf.get(n) !== from) n = parentOf.get(n); return n; };
-const ancestry     = d => { const a = []; let n = d; while (n) { a.unshift(n.name); n = parentOf.get(n); } return a; };
+const arc = d3.arc()
+  .startAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x0))))
+  .endAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x1))))
+  .padAngle(d => Math.min((x(d.x1) - x(d.x0)) / 2, 0.004))
+  .innerRadius(d => Math.max(0, y(d.y0)))
+  .outerRadius(d => Math.max(0, y(d.y1) - 1));
 
-/* shade a base hue lighter/darker across siblings by rank so equal-hue cells stay readable */
-function cellFill(node) {
-  const base = d3.color(catColor(node.data));
-  const sibs = node.parent ? node.parent.children : [node];
-  const max = d3.max(sibs, s => s.value) || 1;
-  const t = Math.sqrt((node.value || 0) / max);     // 0..1, bigger = brighter
-  return d3.interpolateRgb(base.copy({ opacity: 1 }).darker(0.9), base.brighter(0.7))(0.25 + 0.75 * t);
-}
-function inkOn(fill) {
-  const c = d3.color(fill); const L = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
-  return L > 150 ? "#0a0e14" : "#f3f7fb";
+function arcFill(d) {
+  if (d.depth === 0) return "var(--surface-2)";
+  const base = d3.color(nodeColor(d));
+  const t = MAXD > 1 ? (d.depth - 1) / (MAXD - 1) : 0;
+  return d3.interpolateRgb(base.copy().darker(0.7), base.copy().brighter(0.95))(t);
 }
 
-const DUR = 640, EASE = d3.easeCubicInOut;
-let W = 0, H = 0, busy = false, CID = 0;
+const bg = svg.append("rect").attr("class", "bg").attr("fill", "transparent").on("click", goUp);
+const g = svg.append("g");
 
-const stage = svg.append("g").attr("class", "stage");
-const bg = stage.append("rect").attr("class", "bg").attr("fill", "transparent").on("click", goUp);
-let currentView = null;     // the live <g class="view"> showing children of `current`
+// (re)build the whole sunburst for a given data root — called on first load and on each toggle
+function loadData(dataRoot) {
+  root = d3.hierarchy(dataRoot).sum(d => d.children ? 0 : Math.max(0, d.amount_m)).sort((a, b) => b.value - a.value);
+  MAXD = d3.max(root.descendants(), d => d.depth);
+  d3.partition()(root);
+  focus = root;
+  x.domain([0, 1]); y.domain([0, 1]);
+  g.selectAll("*").remove();
+
+  pathSel = g.selectAll("path.arc").data(root.descendants()).join("path")
+    .attr("class", d => "arc" + (d.depth === 0 ? " root" : ""))
+    .attr("fill", arcFill)
+    .each(function (d) { d.__ink = d.depth ? inkOn(arcFill(d)) : "var(--text)"; })
+    .on("mousemove", showTip).on("mouseleave", hideTip)
+    .on("click", (e, d) => { e.stopPropagation(); clicked(d); });
+
+  const labelData = root.descendants().filter(d => d.depth >= 1);
+  labelData.forEach((d, i) => { d.__lid = "lp" + i; });
+  guideSel = g.append("g").attr("class", "guides").attr("fill", "none").attr("stroke", "none").attr("pointer-events", "none")
+    .selectAll("path").data(labelData).join("path").attr("id", d => d.__lid);
+  labelSel = g.append("g").attr("class", "labels").attr("pointer-events", "none")
+    .selectAll("text").data(labelData).join("text")
+      .attr("class", "lbl").attr("text-anchor", "middle").attr("dy", "0.32em").attr("fill", d => d.__ink);
+  labelSel.append("textPath").attr("href", d => "#" + d.__lid).attr("xlink:href", d => "#" + d.__lid)
+    .attr("startOffset", "50%").text(d => d.data.name);
+
+  centerText = g.append("text").attr("class", "centerText").attr("text-anchor", "middle");
+  measure();
+  zoomTo(root, false);
+}
 
 function measure() {
-  W = Math.max(280, wrap.clientWidth);
-  // taller, near-square on phones (portrait reads better); wider & shorter on desktop
-  H = W < 560 ? Math.max(420, Math.min(640, Math.round(W * 1.18)))
-              : Math.max(360, Math.min(700, Math.round(W * 0.58)));
-  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H);
-  bg.attr("width", W).attr("height", H);
+  const w = Math.max(280, wrap.clientWidth);
+  W = Math.max(280, Math.min(w, 680, Math.round(window.innerHeight * 0.74)));
+  radius = W / 2 - 2;
+  svg.attr("viewBox", `0 0 ${W} ${W}`).attr("height", W);
+  bg.attr("x", 0).attr("y", 0).attr("width", W).attr("height", W);
+  g.attr("transform", `translate(${W / 2},${W / 2})`);
 }
 
-function layout(node) {
-  const root = d3.hierarchy(node, d => d.children)
-    .sum(d => d.children ? 0 : sizeOf(d))
-    .sort((a, b) => b.value - a.value);
-  d3.treemap().size([W, H]).paddingInner(4).paddingOuter(16).round(true)(root);
-  return root;   // depth-1 = cells, depth-2 = shadow outlines; the outer pad is the click-to-go-up frame
+function labelSize(d) {
+  const band = Math.max(0, y(d.y1)) - Math.max(0, y(d.y0));
+  return Math.max(8.5, Math.min(11.5, band / 3.4));
 }
-
-function clip(s, w) { const max = Math.floor((w - 14) / 8); return s.length > max ? s.slice(0, max - 1) + "…" : s; }
-
-function drawLabel(t, d) {
-  const w = d.x1 - d.x0, h = d.y1 - d.y0;
-  t.attr("transform", null).attr("fill", inkOn(d.__fill));   // no transform → clip rect aligns to the cell
-  t.selectAll("*").remove();
-  if (w < 46 || h < 26) { t.style("display", "none"); return; }
-  t.style("display", null);
-  const lines = Math.floor((h - 10) / 15);
-  t.append("tspan").attr("class", "nm").attr("x", 10).attr("y", 20)
-    .attr("font-size", Math.min(15, Math.max(11, w / 11))).text(clip(d.data.name, w));
-  if (lines >= 2 && w >= 58)
-    t.append("tspan").attr("class", "vl").attr("x", 10).attr("y", 38).attr("font-size", 12).attr("opacity", .92).text(fmt.cur(d.value));
-  if (lines >= 3 && d.children && w >= 104)
-    t.append("tspan").attr("class", "kids").attr("x", 10).attr("y", 55).attr("font-size", 10.5).text(d.children.length + " sub-taxes ›");
+const clampAngle = a => Math.max(0, Math.min(2 * Math.PI, a));
+// an arc along the middle of the segment for the text to follow (flipped on the lower half so it stays upright)
+function labelArcPath(d) {
+  const half = Math.PI / 2;
+  let a0 = clampAngle(x(d.x0)) - half, a1 = clampAngle(x(d.x1)) - half;
+  const r = Math.max(0, (Math.max(0, y(d.y0)) + Math.max(0, y(d.y1))) / 2);
+  const invert = (a0 + a1) / 2 > 0 && (a0 + a1) / 2 < Math.PI;   // segment is on the lower half
+  if (invert) { const t = a0; a0 = a1; a1 = t; }
+  const p = d3.path();
+  p.arc(0, 0, r, a0, a1, invert);
+  return p.toString();
 }
-
-/* draw / update one level of cells (+ faint outlines of the level below) into `view` */
-function paint(view, root, animate) {
-  const cells = root.children || [];
-  const rects = new Map();
-  cells.forEach(c => rects.set(c.data, { x: c.x0, y: c.y0, w: c.x1 - c.x0, h: c.y1 - c.y0 }));
-  view.node().__rects = rects;
-
-  const join = view.selectAll("g.cell").data(cells, d => ancestry(d.data).join("/"));
-  join.exit().remove();
-
-  const enter = join.enter().append("g")
-    .attr("transform", d => `translate(${d.x0},${d.y0})`)
-    .on("mousemove", showTip).on("mouseleave", hideTip)
-    .on("click", (e, d) => { e.stopPropagation(); d.children ? zoomTo(d.data) : goUp(); });
-  enter.each(function (d) { d.__cid = "tlc" + (CID++); });
-  enter.append("clipPath").attr("class", "lclip").attr("id", d => d.__cid).append("rect");
-  enter.append("rect").attr("class", "fill").attr("rx", 3);
-  enter.append("g").attr("class", "shadow");
-  enter.append("text").attr("class", "label").attr("clip-path", d => `url(#${d.__cid})`);
-
-  const merged = enter.merge(join).attr("class", d => "cell" + (d.children ? "" : " leaf"));
-  merged.each(d => { d.__fill = cellFill(d); });
-
-  (animate ? merged.transition().duration(DUR).ease(EASE) : merged)
-    .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-  const rectSel = merged.select("rect.fill").attr("rx", 3);
-  (animate ? rectSel.transition().duration(DUR).ease(EASE) : rectSel)
-    .attr("width", d => Math.max(0, d.x1 - d.x0))
-    .attr("height", d => Math.max(0, d.y1 - d.y0))
-    .attr("fill", d => d.__fill);
-
-  // "shadow lines": outline each grandchild so the next level down is previewed
-  merged.select("g.shadow").each(function (d) {
-    const kids = d.children || [];
-    const gj = d3.select(this).selectAll("rect").data(kids, gc => gc.data.name);
-    gj.exit().remove();
-    const ge = gj.enter().append("rect")
-      .attr("fill", "none").attr("stroke-width", 1).attr("rx", 2)
-      .attr("vector-effect", "non-scaling-stroke").attr("pointer-events", "none")
-      .attr("x", gc => gc.x0 - d.x0).attr("y", gc => gc.y0 - d.y0)
-      .attr("width", gc => Math.max(0, gc.x1 - gc.x0)).attr("height", gc => Math.max(0, gc.y1 - gc.y0));
-    const gm = ge.merge(gj)
-      .attr("stroke", inkOn(d.__fill)).attr("stroke-opacity", 0.28)
-      .attr("display", gc => (gc.x1 - gc.x0 > 6 && gc.y1 - gc.y0 > 6) ? null : "none");
-    (animate ? gm.transition().duration(DUR).ease(EASE) : gm)
-      .attr("x", gc => gc.x0 - d.x0).attr("y", gc => gc.y0 - d.y0)
-      .attr("width", gc => Math.max(0, gc.x1 - gc.x0)).attr("height", gc => Math.max(0, gc.y1 - gc.y0));
-  });
-
-  merged.select("text.label").each(function (d) {
-    d3.select(this.parentNode).select("clipPath.lclip rect")
-      .attr("x", 0).attr("y", 0)
-      .attr("width", Math.max(0, d.x1 - d.x0)).attr("height", Math.max(0, d.y1 - d.y0));
-    drawLabel(d3.select(this), d);
+// lay the curved labels along their arcs and hide any that don't fit (vasturiano's approach)
+function refreshLabels() {
+  guideSel.attr("d", labelArcPath);
+  labelSel.attr("font-size", labelSize);
+  labelSel.each(function (d) {
+    const dAng = clampAngle(x(d.x1)) - clampAngle(x(d.x0));       // clamped, so out-of-focus segments read 0
+    const r = (Math.max(0, y(d.y0)) + Math.max(0, y(d.y1))) / 2;
+    const arcLen = dAng * r;                                      // available length along the arc
+    const band = Math.max(0, y(d.y1)) - Math.max(0, y(d.y0));
+    const fits = band > 10 && y(d.y1) > HOLE() + 1 && y(d.y0) < radius
+              && dAng > 0.02 && arcLen > this.getComputedTextLength() + 4;
+    d3.select(this).attr("opacity", fits ? 1 : 0);
   });
 }
 
-function newView(node) {
-  const g = stage.append("g").attr("class", "view");
-  paint(g, layout(node), false);
-  return g;
+function updateCenter(p) {
+  centerText.selectAll("*").remove();
+  const nm = p === root ? "All taxes" : p.data.name;
+  centerText.append("tspan").attr("class", "ct-name").attr("x", 0).attr("y", -8)
+    .attr("font-size", 14).attr("fill", "var(--text)").text(nm.length > 18 ? nm.slice(0, 17) + "…" : nm);
+  centerText.append("tspan").attr("class", "ct-val").attr("x", 0).attr("y", 12)
+    .attr("font-size", 13).text(fmt.bn(p.data.amount_m / 1000));
+  if (p !== root)
+    centerText.append("tspan").attr("class", "ct-hint").attr("x", 0).attr("y", 30)
+      .attr("font-size", 10).text("click to zoom out ›");
 }
 
-function hardRender() {            // instant rebuild (resize)
-  busy = false;
-  measure();
-  stage.selectAll("g.view").interrupt().remove();
-  currentView = newView(current);
+function zoomTo(p, animate) {
+  focus = p;
+  const xd = [p.x0, p.x1], yd = [p.y0, 1], yr = [p.y0 ? HOLE() : 0, radius];
+  if (animate) {
+    labelSel.attr("opacity", 0);                  // hide labels while the rings spin
+    const t = g.transition().duration(740).ease(d3.easeCubicInOut).tween("scale", () => {
+      const ix = d3.interpolate(x.domain(), xd), iy = d3.interpolate(y.domain(), yd), ir = d3.interpolate(y.range(), yr);
+      return tt => { x.domain(ix(tt)); y.domain(iy(tt)).range(ir(tt)); };
+    });
+    pathSel.transition(t).attrTween("d", d => () => arc(d) || "");
+    // fallback: guarantee the final state even if the timer is throttled (e.g. hidden tab)
+    setTimeout(() => {
+      g.interrupt(); pathSel.interrupt();
+      x.domain(xd); y.domain(yd).range(yr);
+      pathSel.attr("d", d => arc(d) || "");
+      refreshLabels();
+    }, 780);
+  } else {
+    x.domain(xd); y.domain(yd).range(yr);
+    pathSel.attr("d", d => arc(d) || "");
+    refreshLabels();
+  }
+  updateCenter(p);
   renderCrumbs();
+  document.getElementById("reset").disabled = (p === root);
 }
 
-/* animated zoom from `current` to `target` (an ancestor or descendant) */
-function zoomTo(target) {
-  if (busy || target === current || !currentView) return;
-  measure();
+function clicked(d) {
+  // clicking the focused (innermost) ring climbs out; clicking the root disc does nothing
+  if (d.depth === 0) { goUp(); return; }
+  const target = (d === focus && d.parent) ? d.parent : d;
   hideTip();
-  stage.selectAll("g.view").filter(function () { return this !== currentView.node(); }).interrupt().remove();
-  const into = isDescendant(target, current);   // true = drilling in
-  const oldView = currentView, oldNode = current;
-  current = target;
-  const nv = newView(current).style("opacity", 0);
-  currentView = nv;
-  renderCrumbs();
-
-  // r = the screen rectangle that the focused branch occupies in the relevant view
-  const r = into ? oldView.node().__rects.get(childToward(oldNode, target))
-                 : nv.node().__rects.get(childToward(target, oldNode));
-  if (!r) { oldView.remove(); nv.style("opacity", 1); return; }
-
-  busy = true;
-  const sx = W / r.w, sy = H / r.h;
-  const zoomTf = `translate(${-r.x * sx},${-r.y * sy}) scale(${sx},${sy})`;
-  const tuckTf = `translate(${r.x},${r.y}) scale(${r.w / W},${r.h / H})`;
-  // into: new view grows out of r, old view zooms so r fills frame.
-  // out:  new view starts zoomed (r filling frame) and settles, old view tucks into r.
-  nv.attr("transform", into ? tuckTf : zoomTf);
-  const t = d3.transition().duration(DUR).ease(EASE);
-  oldView.transition(t).attr("transform", into ? zoomTf : tuckTf).style("opacity", 0)
-    .on("end interrupt cancel", function () { d3.select(this).remove(); });
-  nv.transition(t).attr("transform", "translate(0,0) scale(1,1)").style("opacity", 1);
-  t.on("end interrupt cancel", () => { busy = false; });
-  // fallback: guarantee cleanup even if the timer is throttled (e.g. hidden tab)
-  setTimeout(() => { oldView.remove(); nv.attr("transform", null); busy = false; }, DUR + 140);
+  zoomTo(target, true);
 }
-
-function goUp() { if (current !== TAX) { const p = parentOf.get(current); if (p) zoomTo(p); } }
+function goUp() { if (focus !== root && focus.parent) { hideTip(); zoomTo(focus.parent, true); } }
 
 function renderCrumbs() {
-  const chain = []; let n = current; while (n) { chain.unshift(n); n = parentOf.get(n); }
+  const chain = focus.ancestors().reverse();
   const nav = d3.select("#crumbs"); nav.selectAll("*").remove();
   chain.forEach((node, i) => {
     if (i) nav.append("span").attr("class", "sep").text("  ›  ");
-    nav.append("span").attr("class", "crumb" + (node === current ? " current" : ""))
-      .text(node === TAX ? "All taxes" : node.name)
-      .on("click", () => { if (node !== current) zoomTo(node); });
+    nav.append("span").attr("class", "crumb" + (node === focus ? " current" : ""))
+      .text(node === root ? "All taxes" : node.data.name)
+      .on("click", () => { if (node !== focus) { hideTip(); zoomTo(node, true); } });
   });
-  const reset = document.getElementById("reset");
-  if (reset) reset.disabled = (current === TAX);
 }
 
 function showTip(event, d) {
+  if (d.depth === 0) return;
   const share = total ? (d.data.amount_m / total) * 100 : 0;
-  const trail = ancestry(d.data).slice(0, -1);
+  const trail = d.ancestors().slice(1).reverse().map(n => n.data.name);
   let html = `<div class="tt-path">${trail.length ? trail.join("  ›  ") : "&nbsp;"}</div>`;
   html += `<div class="tt-name">${d.data.name}</div>`;
   html += `<div class="tt-row"><span>Amount</span><b>${fmt.bn(d.data.amount_m / 1000)}</b></div>`;
   html += `<div class="tt-row"><span>Share of GDP</span><b>${d.data.gdp_pct.toFixed(2)}%</b></div>`;
   html += `<div class="tt-row"><span>Tax take</span><b>${share.toFixed(share < 1 ? 2 : 1)}%</b></div>`;
   if (d.data.note) html += `<div class="tt-note">${d.data.note}</div>`;
-  html += d.children ? `<div class="tt-hint">click to open ${d.children.length} sub-taxes ›</div>`
-                     : `<div class="tt-hint">click anywhere to step back up ›</div>`;
+  html += d.children ? `<div class="tt-hint">click to zoom into ${d.children.length} sub-taxes ›</div>`
+                     : `<div class="tt-hint">click the centre to zoom out ›</div>`;
   tooltip.html(html).style("opacity", 1);
-
   const pad = 14, tw = tooltip.node().offsetWidth, th = tooltip.node().offsetHeight;
-  let x = event.clientX + pad, y = event.clientY + pad;
-  if (x + tw > window.innerWidth)  x = event.clientX - tw - pad;
-  if (y + th > window.innerHeight) y = event.clientY - th - pad;
-  tooltip.style("left", x + "px").style("top", y + "px");
+  let px = event.clientX + pad, py = event.clientY + pad;
+  if (px + tw > window.innerWidth)  px = event.clientX - tw - pad;
+  if (py + th > window.innerHeight) py = event.clientY - th - pad;
+  tooltip.style("left", px + "px").style("top", py + "px");
 }
 function hideTip() { tooltip.style("opacity", 0); }
 
-document.getElementById("reset").addEventListener("click", () => zoomTo(TAX));
+document.getElementById("reset").addEventListener("click", () => { if (focus !== root) { hideTip(); zoomTo(root, true); } });
+document.querySelectorAll("#mode button").forEach(b => b.addEventListener("click", () => {
+  if (b.classList.contains("on")) return;
+  document.querySelectorAll("#mode button").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  hideTip();
+  loadData(b.dataset.mode === "payer" ? TAX_BY_PAYER : TAX);
+}));
 document.addEventListener("keydown", e => { if (e.key === "Escape") goUp(); });
-window.addEventListener("resize", () => { hideTip(); hardRender(); });
+window.addEventListener("resize", () => { hideTip(); measure(); zoomTo(focus, false); });
 
-measure();
-currentView = newView(current);
-renderCrumbs();
+loadData(TAX);
 </script>
 </body>
 </html>
