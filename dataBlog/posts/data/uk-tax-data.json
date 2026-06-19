@@ -1,0 +1,250 @@
+{
+  "label": "All taxes",
+  "total_bn": 955,
+  "gdp_pct": 32.5,
+  "unit": "amount_m is GBP millions; gdp_pct is share of GDP",
+  "categories": [
+    {
+      "name": "Employment taxes",
+      "amount_m": 443582,
+      "gdp_pct": 15.11856936265964,
+      "children": [
+        {
+          "name": "Income tax on work",
+          "amount_m": 268045,
+          "gdp_pct": 9.135756015379576,
+          "note": "Income tax net of separately shown dividends, savings interest and rents."
+        },
+        {
+          "name": "NICs",
+          "amount_m": 171402.0,
+          "gdp_pct": 5.841880477338097,
+          "children": [
+            { "name": "Employer NICs", "amount_m": 115446.805, "gdp_pct": 3.934764100188785 },
+            {
+              "name": "Employee NICs",
+              "amount_m": 50747.206,
+              "gdp_pct": 1.7296129100643793,
+              "note": "Includes statutory recoveries netted against employee NICs."
+            },
+            { "name": "Self-employed NICs", "amount_m": 2797.578, "gdp_pct": 0.09534962428694273 },
+            { "name": "Other NICs", "amount_m": 2410.411, "gdp_pct": 0.08215384279798951 }
+          ]
+        },
+        { "name": "Apprenticeship levy", "amount_m": 4135, "gdp_pct": 0.14093286994196702 }
+      ]
+    },
+    {
+      "name": "Goods/services",
+      "amount_m": 219061,
+      "gdp_pct": 7.466238312541049,
+      "children": [
+        {
+          "name": "VAT",
+          "amount_m": 143856,
+          "gdp_pct": 4.903032391383702,
+          "note": "VAT receipts net of refunds."
+        },
+        { "name": "Insurance premium tax", "amount_m": 8940, "gdp_pct": 0.30470129559399883 },
+        { "name": "Air passenger duty", "amount_m": 4131, "gdp_pct": 0.140796538266086 },
+        { "name": "Fuel duties", "amount_m": 24359, "gdp_pct": 0.8302258231962212 },
+        {
+          "name": "Alcohol duties",
+          "amount_m": 12545,
+          "gdp_pct": 0.4275702184817355,
+          "children": [
+            { "name": "Beer and cider", "amount_m": 3746, "gdp_pct": 0.12767461446254136 },
+            { "name": "Wine", "amount_m": 4686, "gdp_pct": 0.15971255829457254 },
+            { "name": "Spirits", "amount_m": 4113, "gdp_pct": 0.14018304572462162 }
+          ]
+        },
+        { "name": "Vehicle excise duty", "amount_m": 8205, "gdp_pct": 0.27965035015086803 },
+        { "name": "Tobacco duties", "amount_m": 7909, "gdp_pct": 0.26956180613567526 },
+        { "name": "Customs duties", "amount_m": 4870, "gdp_pct": 0.1659838153850978 },
+        {
+          "name": "Gaming duties",
+          "amount_m": 3646,
+          "gdp_pct": 0.12426632256551674,
+          "children": [
+            { "name": "Remote gaming duty", "amount_m": 1172.6163546362104, "gdp_pct": 0.03996618819825115 },
+            { "name": "Lottery duty", "amount_m": 939.7063134315976, "gdp_pct": 0.03202793413651769 },
+            { "name": "General betting duty", "amount_m": 719.9037637233483, "gdp_pct": 0.02453642164535797 },
+            { "name": "Machine games duty", "amount_m": 614.0355631757972, "gdp_pct": 0.02092812434457003 },
+            { "name": "Gaming duty", "amount_m": 166.36431514615194, "gdp_pct": 0.005670181472666758 },
+            { "name": "Bingo duty", "amount_m": 25.206714416083628, "gdp_pct": 0.0008591184049495088 },
+            { "name": "Pool betting duty", "amount_m": 8.16697547081094, "gdp_pct": 0.00027835436320363554 }
+          ]
+        },
+        { "name": "Soft drinks levy", "amount_m": 330, "gdp_pct": 0.011247363260181165 },
+        { "name": "Lorry road levy", "amount_m": 157, "gdp_pct": 0.005351018278328614 },
+        { "name": "Gaming levy", "amount_m": 113, "gdp_pct": 0.0038513698436377928 }
+      ]
+    },
+    {
+      "name": "Business",
+      "amount_m": 99521,
+      "gdp_pct": 3.3919661788378477,
+      "children": [
+        {
+          "name": "Corporation tax",
+          "amount_m": 93238,
+          "gdp_pct": 3.177823198947792,
+          "children": [
+            { "name": "Onshore CT", "amount_m": 91005, "gdp_pct": 3.101716040887233 },
+            { "name": "Offshore CT", "amount_m": 2233, "gdp_pct": 0.07610715806055922 }
+          ]
+        },
+        { "name": "Digital services tax", "amount_m": 874, "gdp_pct": 0.02978847117999496 },
+        {
+          "name": "Bank taxes",
+          "amount_m": 2304,
+          "gdp_pct": 0.07852704530744667,
+          "children": [
+            { "name": "Bank levy", "amount_m": 1329, "gdp_pct": 0.04529619931145687 },
+            { "name": "Bank surcharge", "amount_m": 975, "gdp_pct": 0.033230845995989806 }
+          ]
+        },
+        { "name": "Diverted profits", "amount_m": 105, "gdp_pct": 0.003578706491875825 },
+        { "name": "Property developer tax", "amount_m": 102, "gdp_pct": 0.003476457734965087 },
+        { "name": "Energy profits levy", "amount_m": 2499, "gdp_pct": 0.08517321450664464 },
+        { "name": "Electricity generator levy", "amount_m": 749, "gdp_pct": 0.025528106308714216 },
+        {
+          "name": "Petroleum revenue tax",
+          "amount_m": -350,
+          "gdp_pct": -0.011929021639586083,
+          "note": "Net repayments reduce receipts."
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "amount_m": 95568,
+      "gdp_pct": 3.2572364001484653,
+      "children": [
+        {
+          "name": "Property annual taxes",
+          "amount_m": 79473,
+          "gdp_pct": 2.7086718193223565,
+          "children": [
+            { "name": "Council tax", "amount_m": 47417, "gdp_pct": 1.6161097688121524 },
+            { "name": "Business rates", "amount_m": 32056, "gdp_pct": 1.0925620505102043 }
+          ]
+        },
+        { "name": "NI domestic rates", "amount_m": 485.312, "gdp_pct": 0.016540849571288003 },
+        { "name": "NI business rates", "amount_m": 382.334, "gdp_pct": 0.013031058741570017 },
+        {
+          "name": "Property transaction taxes",
+          "amount_m": 15227,
+          "gdp_pct": 0.5189806071599351,
+          "children": [
+            {
+              "name": "SDLT",
+              "amount_m": 13885,
+              "gdp_pct": 0.47324132990186507,
+              "children": [
+                { "name": "Residential SDLT", "amount_m": 7895, "gdp_pct": 0.2690846452700918 },
+                { "name": "Additional dwellings", "amount_m": 2290, "gdp_pct": 0.07804988444186323 },
+                { "name": "Non-resident SDLT", "amount_m": 195, "gdp_pct": 0.0066461691991979615 },
+                { "name": "Non-residential SDLT", "amount_m": 3505, "gdp_pct": 0.11946063099071205 }
+              ]
+            },
+            { "name": "ATED", "amount_m": 133.617, "gdp_pct": 0.004554057384047353 },
+            { "name": "LBTT (Scotland)", "amount_m": 899.162, "gdp_pct": 0.030646065587124294 },
+            { "name": "LTT (Wales)", "amount_m": 340.612, "gdp_pct": 0.011609051196293414 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Wealth",
+      "amount_m": 64154,
+      "gdp_pct": 2.186555583617159,
+      "children": [
+        {
+          "name": "Income tax",
+          "amount_m": 37860,
+          "gdp_pct": 1.2903793122135119,
+          "children": [
+            { "name": "Dividend income tax", "amount_m": 18120, "gdp_pct": 0.6175824917408567 },
+            { "name": "Savings income tax", "amount_m": 10540, "gdp_pct": 0.35923396594639234 },
+            {
+              "name": "Rent income tax",
+              "amount_m": 9200,
+              "gdp_pct": 0.31356285452626276,
+              "note": "Estimated from HMRC SPI property-income distribution; property income is otherwise included within non-savings income tax."
+            }
+          ]
+        },
+        { "name": "Capital gains tax", "amount_m": 13686, "gdp_pct": 0.4664588290267861 },
+        { "name": "Inheritance tax", "amount_m": 8286, "gdp_pct": 0.28241106658745796 },
+        {
+          "name": "Stamp taxes on shares",
+          "amount_m": 4322,
+          "gdp_pct": 0.147306375789403,
+          "children": [
+            { "name": "SDRT", "amount_m": 3051.412037037037, "gdp_pct": 0.10400102920316648 },
+            { "name": "Stamp duty (1891)", "amount_m": 1270.587962962963, "gdp_pct": 0.04330534658623654 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Environment & energy",
+      "amount_m": 16971,
+      "gdp_pct": 0.5784212178440441,
+      "children": [
+        {
+          "name": "Environmental levies",
+          "amount_m": 10517,
+          "gdp_pct": 0.3584500588100767,
+          "children": [
+            { "name": "Renewables obligation", "amount_m": 7766.928956566494, "gdp_pct": 0.26471961027431273 },
+            { "name": "Contracts for difference", "amount_m": 2267.47474803, "gdp_pct": 0.07728215810418534 },
+            { "name": "Warm home discount", "amount_m": 482.59629540350625, "gdp_pct": 0.016448290431578583 }
+          ]
+        },
+        { "name": "Emissions trading", "amount_m": 3406, "gdp_pct": 0.1160864220126577 },
+        { "name": "Climate change levy", "amount_m": 1842, "gdp_pct": 0.06278073674319304 },
+        { "name": "Landfill tax", "amount_m": 497.241, "gdp_pct": 0.016947424711684065 },
+        { "name": "Aggregates levy", "amount_m": 363, "gdp_pct": 0.012372099586199281 },
+        { "name": "Plastic packaging tax", "amount_m": 255, "gdp_pct": 0.008691144337412717 },
+        { "name": "Scottish landfill tax", "amount_m": 56.621, "gdp_pct": 0.001929808955014296 },
+        { "name": "Welsh landfill tax", "amount_m": 34.138, "gdp_pct": 0.0011635226878062561 }
+      ]
+    },
+    {
+      "name": "Other",
+      "amount_m": 15559,
+      "gdp_pct": 0.5302961362580568,
+      "children": [
+        { "name": "Licence fee", "amount_m": 3819, "gdp_pct": 0.1301626675473693 },
+        { "name": "Immigration health surcharge", "amount_m": 2421, "gdp_pct": 0.08251474682696545 },
+        { "name": "Visa fees", "amount_m": 2359, "gdp_pct": 0.0804016058508102 },
+        { "name": "Lottery payments", "amount_m": 1713, "gdp_pct": 0.05838404019603132 },
+        { "name": "Levy-funded bodies", "amount_m": 960.764, "gdp_pct": 0.032745641561529384 },
+        { "name": "Bank of England levy", "amount_m": 733, "gdp_pct": 0.024982779605190283 },
+        { "name": "Passport fees", "amount_m": 646, "gdp_pct": 0.022017565654778883 },
+        {
+          "name": "Other small taxes",
+          "amount_m": 586.202,
+          "gdp_pct": 0.019979475266196117,
+          "children": [
+            { "name": "Other taxes n.e.s.", "amount_m": 148.202, "gdp_pct": 0.0050511567572283905 },
+            { "name": "British Transport Police", "amount_m": 145, "gdp_pct": 0.0049420232506856634 },
+            { "name": "DVLA registration fees", "amount_m": 124, "gdp_pct": 0.004226281952310498 },
+            { "name": "Lighthouse dues", "amount_m": 89, "gdp_pct": 0.00303337978835189 },
+            { "name": "ATOL", "amount_m": 80, "gdp_pct": 0.002726633517619676 }
+          ]
+        },
+        { "name": "Consumer credit fees", "amount_m": 525.846, "gdp_pct": 0.017922366608827952 },
+        { "name": "Immigration skills charge", "amount_m": 518, "gdp_pct": 0.0176549520265874 },
+        { "name": "Land Registry", "amount_m": 399, "gdp_pct": 0.013599084669128136 },
+        { "name": "Community infrastructure levy", "amount_m": 350, "gdp_pct": 0.011929021639586083 },
+        { "name": "Companies House", "amount_m": 217, "gdp_pct": 0.007395993416543372 },
+        { "name": "Economic crime levy", "amount_m": 124.482, "gdp_pct": 0.004242709919254157 },
+        { "name": "Horserace betting levy", "amount_m": 113, "gdp_pct": 0.0038513698436377928 },
+        { "name": "Pension protection levy", "amount_m": 74.062, "gdp_pct": 0.002524249144774356 }
+      ]
+    }
+  ]
+}

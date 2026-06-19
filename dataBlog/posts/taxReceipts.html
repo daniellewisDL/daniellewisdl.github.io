@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UK Tax Receipts — explorer</title>
+<meta name="description" content="An interactive treemap of every UK tax, by receipts and share of GDP." />
+<link rel="icon" type="image/png" href="../../src/favicon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<style>
+  :root {
+    --bg:            #0a0e14;
+    --surface:       #121821;
+    --surface-2:     #161d28;
+    --border:        rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text:          #e6edf3;
+    --muted:         #8b949e;
+    --accent:        #22d3ee;
+    --accent-2:      #a78bfa;
+    --font-sans:     "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono:     "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body {
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(34, 211, 238, 0.10), transparent 60%),
+      radial-gradient(900px 500px at 0% 0%, rgba(167, 139, 250, 0.08), transparent 55%);
+    background-attachment: fixed;
+  }
+  #app { display: flex; flex-direction: column; min-height: 100vh; max-width: 1040px; margin: 0 auto; }
+
+  header { padding: 22px 22px 12px; }
+  .back-link { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-decoration: none; display: inline-flex; gap: .4rem; align-items: center; transition: gap .15s ease, color .15s ease; }
+  .back-link:hover { color: var(--accent); gap: .7rem; }
+  h1 { font-size: clamp(22px, 4.4vw, 32px); margin: 12px 0 4px; letter-spacing: -.5px; font-weight: 700; }
+  h1 .amt { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }
+  h1 .yr { font-family: var(--font-mono); font-size: .42em; font-weight: 700; vertical-align: middle; color: var(--accent); border: 1px solid var(--border-strong); border-radius: 999px; padding: .28em .7em; margin-left: .35em; white-space: nowrap; letter-spacing: .3px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; max-width: 60ch; line-height: 1.5; }
+
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; padding: 14px 22px 6px; }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+  .seg button { font-family: var(--font-mono); font-size: 12px; letter-spacing: .3px; color: var(--muted); background: transparent; border: 0; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all .15s ease; }
+  .seg button.on { color: var(--bg); background: var(--accent); font-weight: 700; }
+  .seg button:not(.on):hover { color: var(--text); }
+  .seg-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-right: -8px; }
+  .ghost-btn { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: all .15s ease; }
+  .ghost-btn:hover:not(:disabled) { color: var(--text); border-color: var(--border-strong); }
+  .ghost-btn:disabled { opacity: .4; cursor: default; }
+
+  #crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 4px 22px 12px; font-family: var(--font-mono); font-size: 12.5px; min-height: 26px; }
+  #crumbs .crumb { color: var(--accent); cursor: pointer; padding: 2px 4px; border-radius: 4px; }
+  #crumbs .crumb:hover { background: var(--accent-soft, rgba(34,211,238,.14)); }
+  #crumbs .crumb.current { color: var(--text); cursor: default; }
+  #crumbs .sep { color: var(--muted); opacity: .6; }
+
+  #chartWrap { position: relative; flex: 1; padding: 0 16px 8px; min-height: 0; }
+  #chart { width: 100%; display: block; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+  .cell { cursor: pointer; }
+  .cell rect.fill { transition: filter .12s ease; }
+  .cell.leaf { cursor: pointer; }            /* leaf / outside click climbs back up */
+  .cell:hover rect.fill { filter: brightness(1.14); }
+  .shadow rect { fill: none; }
+  .cell text { pointer-events: none; font-family: var(--font-sans); }
+  .cell .nm { font-weight: 600; }
+  .cell .vl { font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+  .cell .kids { font-family: var(--font-mono); opacity: .7; }
+
+  #tooltip {
+    position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s ease; z-index: 20;
+    background: var(--surface-2); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 10px 12px; min-width: 180px; max-width: 280px;
+    box-shadow: 0 10px 34px rgba(0,0,0,.5); font-size: 12.5px; line-height: 1.4;
+  }
+  #tooltip .tt-path { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 5px; word-break: break-word; }
+  #tooltip .tt-name { font-weight: 700; font-size: 14px; margin-bottom: 7px; }
+  #tooltip .tt-row { display: flex; justify-content: space-between; gap: 16px; }
+  #tooltip .tt-row span { color: var(--muted); }
+  #tooltip .tt-row b { font-variant-numeric: tabular-nums; font-weight: 600; }
+  #tooltip .tt-note { margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11.5px; font-style: italic; }
+  #tooltip .tt-hint { margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); color: var(--accent); font-size: 11px; font-family: var(--font-mono); }
+
+  footer { padding: 14px 22px 26px; font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 16px 8px; }
+    h1 { font-size: 22px; line-height: 1.2; }
+    h1 .yr { font-size: .5em; display: inline-block; margin-top: 4px; }
+    .sub { font-size: 13px; }
+    .toolbar { padding: 10px 16px 4px; gap: 10px 12px; }
+    .seg { flex: 1 1 auto; }
+    .seg button { flex: 1 1 0; text-align: center; }     /* metric pills share the row evenly */
+    #reset { flex: 1 1 100%; text-align: center; }        /* reset on its own full-width row */
+    #crumbs { padding: 2px 16px 10px; font-size: 11.5px; }
+    #chartWrap { padding: 0 10px 8px; }
+    .cell .nm { font-size: 12px !important; }              /* keep names legible on small cells */
+    footer { padding: 14px 16px 28px; }
+  }
+  @media (hover: none) {
+    #tooltip { display: none; }                            /* touch devices drill instead of hover */
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <a class="back-link" href="../index.html">&larr; back to posts</a>
+    <h1>Where the UK&rsquo;s <span class="amt">&pound;955bn</span> of tax comes from <span class="yr">2025&ndash;26</span></h1>
+    <p class="sub">Every UK tax in the <b>2025&ndash;26</b> tax year, grouped by what it falls on. Area is proportional to receipts &mdash; <b>tap any block to drill in</b>, tap outside it (or the breadcrumb) to climb back out, and hover for detail.</p>
+  </header>
+
+  <div class="toolbar">
+    <span class="seg-label">Size by</span>
+    <div class="seg" id="metric">
+      <button data-metric="bn" class="on">&pound; billions</button>
+      <button data-metric="gdp">% of GDP</button>
+    </div>
+    <button id="reset" class="ghost-btn" disabled>&#10548;&ensp;Reset to top</button>
+  </div>
+
+  <nav id="crumbs"></nav>
+
+  <div id="chartWrap">
+    <svg id="chart"></svg>
+    <div id="tooltip"></div>
+  </div>
+
+  <footer>
+    Data: UK tax receipts for the <b>2025&ndash;26</b> year, compiled by <a href="https://taxpolicy.org.uk/" target="_blank" rel="noopener">Tax Policy Associates</a>
+    (<a href="https://github.com/DanNeidle/shape_of_tax_system_2026/" target="_blank" rel="noopener">source dataset</a>), in &pound; millions.
+    Categories group taxes by economic incidence rather than collecting body. A few series are modelled splits (income tax by source, gaming &amp; stamp sub-totals);
+    petroleum revenue tax is a net repayment and shows as zero area. &middot; Built with D3 by <a href="https://github.com/daniellewisDL" target="_blank" rel="noopener">Daniel Lewis</a>.
+  </footer>
+</div>
+
+<script>
+/* ----------------------------------------------------------------------
+   UK tax data — clean hierarchy (amount_m = £m receipts, gdp_pct = % GDP)
+   ---------------------------------------------------------------------- */
+const TAX = {
+  "name": "All taxes", "amount_m": 955000, "gdp_pct": 32.5,
+  "children": [
+    { "name": "Employment taxes", "amount_m": 443582, "gdp_pct": 15.1186, "children": [
+      { "name": "Income tax on work", "amount_m": 268045, "gdp_pct": 9.1358, "note": "Income tax net of separately shown dividends, savings interest and rents." },
+      { "name": "NICs", "amount_m": 171402, "gdp_pct": 5.8419, "children": [
+        { "name": "Employer NICs", "amount_m": 115446.805, "gdp_pct": 3.9348 },
+        { "name": "Employee NICs", "amount_m": 50747.206, "gdp_pct": 1.7296, "note": "Includes statutory recoveries netted against employee NICs." },
+        { "name": "Self-employed NICs", "amount_m": 2797.578, "gdp_pct": 0.0953 },
+        { "name": "Other NICs", "amount_m": 2410.411, "gdp_pct": 0.0822 }
+      ]},
+      { "name": "Apprenticeship levy", "amount_m": 4135, "gdp_pct": 0.1409 }
+    ]},
+    { "name": "Goods/services", "amount_m": 219061, "gdp_pct": 7.4662, "children": [
+      { "name": "VAT", "amount_m": 143856, "gdp_pct": 4.9030, "note": "VAT receipts net of refunds." },
+      { "name": "Insurance premium tax", "amount_m": 8940, "gdp_pct": 0.3047 },
+      { "name": "Air passenger duty", "amount_m": 4131, "gdp_pct": 0.1408 },
+      { "name": "Fuel duties", "amount_m": 24359, "gdp_pct": 0.8302 },
+      { "name": "Alcohol duties", "amount_m": 12545, "gdp_pct": 0.4276, "children": [
+        { "name": "Beer and cider", "amount_m": 3746, "gdp_pct": 0.1277 },
+        { "name": "Wine", "amount_m": 4686, "gdp_pct": 0.1597 },
+        { "name": "Spirits", "amount_m": 4113, "gdp_pct": 0.1402 }
+      ]},
+      { "name": "Vehicle excise duty", "amount_m": 8205, "gdp_pct": 0.2797 },
+      { "name": "Tobacco duties", "amount_m": 7909, "gdp_pct": 0.2696 },
+      { "name": "Customs duties", "amount_m": 4870, "gdp_pct": 0.1660 },
+      { "name": "Gaming duties", "amount_m": 3646, "gdp_pct": 0.1243, "children": [
+        { "name": "Remote gaming duty", "amount_m": 1172.616, "gdp_pct": 0.0400 },
+        { "name": "Lottery duty", "amount_m": 939.706, "gdp_pct": 0.0320 },
+        { "name": "General betting duty", "amount_m": 719.904, "gdp_pct": 0.0245 },
+        { "name": "Machine games duty", "amount_m": 614.036, "gdp_pct": 0.0209 },
+        { "name": "Gaming duty", "amount_m": 166.364, "gdp_pct": 0.0057 },
+        { "name": "Bingo duty", "amount_m": 25.207, "gdp_pct": 0.0009 },
+        { "name": "Pool betting duty", "amount_m": 8.167, "gdp_pct": 0.0003 }
+      ]},
+      { "name": "Soft drinks levy", "amount_m": 330, "gdp_pct": 0.0112 },
+      { "name": "Lorry road levy", "amount_m": 157, "gdp_pct": 0.0054 },
+      { "name": "Gaming levy", "amount_m": 113, "gdp_pct": 0.0039 }
+    ]},
+    { "name": "Business", "amount_m": 99521, "gdp_pct": 3.3920, "children": [
+      { "name": "Corporation tax", "amount_m": 93238, "gdp_pct": 3.1778, "children": [
+        { "name": "Onshore CT", "amount_m": 91005, "gdp_pct": 3.1017 },
+        { "name": "Offshore CT", "amount_m": 2233, "gdp_pct": 0.0761 }
+      ]},
+      { "name": "Digital services tax", "amount_m": 874, "gdp_pct": 0.0298 },
+      { "name": "Bank taxes", "amount_m": 2304, "gdp_pct": 0.0785, "children": [
+        { "name": "Bank levy", "amount_m": 1329, "gdp_pct": 0.0453 },
+        { "name": "Bank surcharge", "amount_m": 975, "gdp_pct": 0.0332 }
+      ]},
+      { "name": "Diverted profits", "amount_m": 105, "gdp_pct": 0.0036 },
+      { "name": "Property developer tax", "amount_m": 102, "gdp_pct": 0.0035 },
+      { "name": "Energy profits levy", "amount_m": 2499, "gdp_pct": 0.0852 },
+      { "name": "Electricity generator levy", "amount_m": 749, "gdp_pct": 0.0255 },
+      { "name": "Petroleum revenue tax", "amount_m": -350, "gdp_pct": -0.0119, "note": "Net repayments reduce receipts — shown as zero area." }
+    ]},
+    { "name": "Property", "amount_m": 95568, "gdp_pct": 3.2572, "children": [
+      { "name": "Property annual taxes", "amount_m": 79473, "gdp_pct": 2.7087, "children": [
+        { "name": "Council tax", "amount_m": 47417, "gdp_pct": 1.6161 },
+        { "name": "Business rates", "amount_m": 32056, "gdp_pct": 1.0926 }
+      ]},
+      { "name": "NI domestic rates", "amount_m": 485.312, "gdp_pct": 0.0165 },
+      { "name": "NI business rates", "amount_m": 382.334, "gdp_pct": 0.0130 },
+      { "name": "Property transaction taxes", "amount_m": 15227, "gdp_pct": 0.5190, "children": [
+        { "name": "SDLT", "amount_m": 13885, "gdp_pct": 0.4732, "children": [
+          { "name": "Residential SDLT", "amount_m": 7895, "gdp_pct": 0.2691 },
+          { "name": "Additional dwellings", "amount_m": 2290, "gdp_pct": 0.0780 },
+          { "name": "Non-resident SDLT", "amount_m": 195, "gdp_pct": 0.0066 },
+          { "name": "Non-residential SDLT", "amount_m": 3505, "gdp_pct": 0.1195 }
+        ]},
+        { "name": "ATED", "amount_m": 133.617, "gdp_pct": 0.0046 },
+        { "name": "LBTT (Scotland)", "amount_m": 899.162, "gdp_pct": 0.0306 },
+        { "name": "LTT (Wales)", "amount_m": 340.612, "gdp_pct": 0.0116 }
+      ]}
+    ]},
+    { "name": "Wealth", "amount_m": 64154, "gdp_pct": 2.1866, "children": [
+      { "name": "Income tax (investment)", "amount_m": 37860, "gdp_pct": 1.2904, "children": [
+        { "name": "Dividend income tax", "amount_m": 18120, "gdp_pct": 0.6176 },
+        { "name": "Savings income tax", "amount_m": 10540, "gdp_pct": 0.3592 },
+        { "name": "Rent income tax", "amount_m": 9200, "gdp_pct": 0.3136, "note": "Estimated from HMRC SPI property-income distribution; otherwise sits within non-savings income tax." }
+      ]},
+      { "name": "Capital gains tax", "amount_m": 13686, "gdp_pct": 0.4665 },
+      { "name": "Inheritance tax", "amount_m": 8286, "gdp_pct": 0.2824 },
+      { "name": "Stamp taxes on shares", "amount_m": 4322, "gdp_pct": 0.1473, "children": [
+        { "name": "SDRT", "amount_m": 3051.412, "gdp_pct": 0.1040 },
+        { "name": "Stamp duty (1891)", "amount_m": 1270.588, "gdp_pct": 0.0433 }
+      ]}
+    ]},
+    { "name": "Environment & energy", "amount_m": 16971, "gdp_pct": 0.5784, "children": [
+      { "name": "Environmental levies", "amount_m": 10517, "gdp_pct": 0.3585, "children": [
+        { "name": "Renewables obligation", "amount_m": 7766.929, "gdp_pct": 0.2647 },
+        { "name": "Contracts for difference", "amount_m": 2267.475, "gdp_pct": 0.0773 },
+        { "name": "Warm home discount", "amount_m": 482.596, "gdp_pct": 0.0164 }
+      ]},
+      { "name": "Emissions trading", "amount_m": 3406, "gdp_pct": 0.1161 },
+      { "name": "Climate change levy", "amount_m": 1842, "gdp_pct": 0.0628 },
+      { "name": "Landfill tax", "amount_m": 497.241, "gdp_pct": 0.0169 },
+      { "name": "Aggregates levy", "amount_m": 363, "gdp_pct": 0.0124 },
+      { "name": "Plastic packaging tax", "amount_m": 255, "gdp_pct": 0.0087 },
+      { "name": "Scottish landfill tax", "amount_m": 56.621, "gdp_pct": 0.0019 },
+      { "name": "Welsh landfill tax", "amount_m": 34.138, "gdp_pct": 0.0012 }
+    ]},
+    { "name": "Other", "amount_m": 15559, "gdp_pct": 0.5303, "children": [
+      { "name": "Licence fee", "amount_m": 3819, "gdp_pct": 0.1302 },
+      { "name": "Immigration health surcharge", "amount_m": 2421, "gdp_pct": 0.0825 },
+      { "name": "Visa fees", "amount_m": 2359, "gdp_pct": 0.0804 },
+      { "name": "Lottery payments", "amount_m": 1713, "gdp_pct": 0.0584 },
+      { "name": "Levy-funded bodies", "amount_m": 960.764, "gdp_pct": 0.0327 },
+      { "name": "Bank of England levy", "amount_m": 733, "gdp_pct": 0.0250 },
+      { "name": "Passport fees", "amount_m": 646, "gdp_pct": 0.0220 },
+      { "name": "Other small taxes", "amount_m": 586.202, "gdp_pct": 0.0200, "children": [
+        { "name": "Other taxes n.e.s.", "amount_m": 148.202, "gdp_pct": 0.0051 },
+        { "name": "British Transport Police", "amount_m": 145, "gdp_pct": 0.0049 },
+        { "name": "DVLA registration fees", "amount_m": 124, "gdp_pct": 0.0042 },
+        { "name": "Lighthouse dues", "amount_m": 89, "gdp_pct": 0.0030 },
+        { "name": "ATOL", "amount_m": 80, "gdp_pct": 0.0027 }
+      ]},
+      { "name": "Consumer credit fees", "amount_m": 525.846, "gdp_pct": 0.0179 },
+      { "name": "Immigration skills charge", "amount_m": 518, "gdp_pct": 0.0177 },
+      { "name": "Land Registry", "amount_m": 399, "gdp_pct": 0.0136 },
+      { "name": "Community infrastructure levy", "amount_m": 350, "gdp_pct": 0.0119 },
+      { "name": "Companies House", "amount_m": 217, "gdp_pct": 0.0074 },
+      { "name": "Economic crime levy", "amount_m": 124.482, "gdp_pct": 0.0042 },
+      { "name": "Horserace betting levy", "amount_m": 113, "gdp_pct": 0.0039 },
+      { "name": "Pension protection levy", "amount_m": 74.062, "gdp_pct": 0.0025 }
+    ]}
+  ]
+};
+
+/* ---- category palette (one hue per top-level group) ---- */
+const CAT_COLORS = {
+  "Employment taxes":     "#2bb7c2",
+  "Goods/services":       "#f2742c",
+  "Business":             "#4c7bd9",
+  "Property":             "#f5b72e",
+  "Wealth":               "#a06cf0",
+  "Environment & energy": "#46b36b",
+  "Other":                "#5aa9e6"
+};
+const ROOT_COLOR = "#22d3ee";
+
+let metric = "bn";                                  // "bn" | "gdp"
+const valueOf = d => metric === "bn" ? d.amount_m / 1000 : d.gdp_pct;
+const sizeOf  = d => Math.max(0, valueOf(d));        // treemap area must be non-negative
+
+const fmt = {
+  bn:  v => v >= 100 ? "£" + v.toFixed(0) + "bn" : v >= 1 ? "£" + v.toFixed(1) + "bn" : "£" + Math.round(v * 1000) + "m",
+  gdp: v => v.toFixed(v < 1 ? 2 : 1) + "% of GDP",
+  cur: v => metric === "bn" ? fmt.bn(v) : fmt.gdp(v)
+};
+
+const svg = d3.select("#chart");
+const tooltip = d3.select("#tooltip");
+const wrap = document.getElementById("chartWrap");
+
+let current = TAX;          // data node currently zoomed to
+const total = TAX.amount_m; // for "share of all taxes"
+
+/* parent + category lookups keyed by the raw data objects (survive re-layout) */
+const parentOf = new Map();
+const catOf = new Map();
+(function walk(node, parent, cat) {
+  parentOf.set(node, parent);
+  const here = CAT_COLORS[node.name] ? node.name : cat;
+  catOf.set(node, here);
+  (node.children || []).forEach(c => walk(c, node, here));
+})(TAX, null, null);
+
+const catColor    = d => CAT_COLORS[catOf.get(d)] || ROOT_COLOR;
+const isDescendant = (a, b) => { let n = parentOf.get(a); while (n) { if (n === b) return true; n = parentOf.get(n); } return false; };
+const childToward  = (from, target) => { let n = target; while (n && parentOf.get(n) !== from) n = parentOf.get(n); return n; };
+const ancestry     = d => { const a = []; let n = d; while (n) { a.unshift(n.name); n = parentOf.get(n); } return a; };
+
+/* shade a base hue lighter/darker across siblings by rank so equal-hue cells stay readable */
+function cellFill(node) {
+  const base = d3.color(catColor(node.data));
+  const sibs = node.parent ? node.parent.children : [node];
+  const max = d3.max(sibs, s => s.value) || 1;
+  const t = Math.sqrt((node.value || 0) / max);     // 0..1, bigger = brighter
+  return d3.interpolateRgb(base.copy({ opacity: 1 }).darker(0.9), base.brighter(0.7))(0.25 + 0.75 * t);
+}
+function inkOn(fill) {
+  const c = d3.color(fill); const L = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+  return L > 150 ? "#0a0e14" : "#f3f7fb";
+}
+
+const DUR = 640, EASE = d3.easeCubicInOut;
+let W = 0, H = 0, busy = false, CID = 0;
+
+const stage = svg.append("g").attr("class", "stage");
+const bg = stage.append("rect").attr("class", "bg").attr("fill", "transparent").on("click", goUp);
+let currentView = null;     // the live <g class="view"> showing children of `current`
+
+function measure() {
+  W = Math.max(280, wrap.clientWidth);
+  // taller, near-square on phones (portrait reads better); wider & shorter on desktop
+  H = W < 560 ? Math.max(420, Math.min(640, Math.round(W * 1.18)))
+              : Math.max(360, Math.min(700, Math.round(W * 0.58)));
+  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H);
+  bg.attr("width", W).attr("height", H);
+}
+
+function layout(node) {
+  const root = d3.hierarchy(node, d => d.children)
+    .sum(d => d.children ? 0 : sizeOf(d))
+    .sort((a, b) => b.value - a.value);
+  d3.treemap().size([W, H]).paddingInner(4).paddingOuter(16).round(true)(root);
+  return root;   // depth-1 = cells, depth-2 = shadow outlines; the outer pad is the click-to-go-up frame
+}
+
+function clip(s, w) { const max = Math.floor((w - 14) / 8); return s.length > max ? s.slice(0, max - 1) + "…" : s; }
+
+function drawLabel(t, d) {
+  const w = d.x1 - d.x0, h = d.y1 - d.y0;
+  t.attr("transform", null).attr("fill", inkOn(d.__fill));   // no transform → clip rect aligns to the cell
+  t.selectAll("*").remove();
+  if (w < 46 || h < 26) { t.style("display", "none"); return; }
+  t.style("display", null);
+  const lines = Math.floor((h - 10) / 15);
+  t.append("tspan").attr("class", "nm").attr("x", 10).attr("y", 20)
+    .attr("font-size", Math.min(15, Math.max(11, w / 11))).text(clip(d.data.name, w));
+  if (lines >= 2 && w >= 58)
+    t.append("tspan").attr("class", "vl").attr("x", 10).attr("y", 38).attr("font-size", 12).attr("opacity", .92).text(fmt.cur(d.value));
+  if (lines >= 3 && d.children && w >= 104)
+    t.append("tspan").attr("class", "kids").attr("x", 10).attr("y", 55).attr("font-size", 10.5).text(d.children.length + " sub-taxes ›");
+}
+
+/* draw / update one level of cells (+ faint outlines of the level below) into `view` */
+function paint(view, root, animate) {
+  const cells = root.children || [];
+  const rects = new Map();
+  cells.forEach(c => rects.set(c.data, { x: c.x0, y: c.y0, w: c.x1 - c.x0, h: c.y1 - c.y0 }));
+  view.node().__rects = rects;
+
+  const join = view.selectAll("g.cell").data(cells, d => ancestry(d.data).join("/"));
+  join.exit().remove();
+
+  const enter = join.enter().append("g")
+    .attr("transform", d => `translate(${d.x0},${d.y0})`)
+    .on("mousemove", showTip).on("mouseleave", hideTip)
+    .on("click", (e, d) => { e.stopPropagation(); d.children ? zoomTo(d.data) : goUp(); });
+  enter.each(function (d) { d.__cid = "tlc" + (CID++); });
+  enter.append("clipPath").attr("class", "lclip").attr("id", d => d.__cid).append("rect");
+  enter.append("rect").attr("class", "fill").attr("rx", 3);
+  enter.append("g").attr("class", "shadow");
+  enter.append("text").attr("class", "label").attr("clip-path", d => `url(#${d.__cid})`);
+
+  const merged = enter.merge(join).attr("class", d => "cell" + (d.children ? "" : " leaf"));
+  merged.each(d => { d.__fill = cellFill(d); });
+
+  (animate ? merged.transition().duration(DUR).ease(EASE) : merged)
+    .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+  const rectSel = merged.select("rect.fill").attr("rx", 3);
+  (animate ? rectSel.transition().duration(DUR).ease(EASE) : rectSel)
+    .attr("width", d => Math.max(0, d.x1 - d.x0))
+    .attr("height", d => Math.max(0, d.y1 - d.y0))
+    .attr("fill", d => d.__fill);
+
+  // "shadow lines": outline each grandchild so the next level down is previewed
+  merged.select("g.shadow").each(function (d) {
+    const kids = d.children || [];
+    const gj = d3.select(this).selectAll("rect").data(kids, gc => gc.data.name);
+    gj.exit().remove();
+    const ge = gj.enter().append("rect")
+      .attr("fill", "none").attr("stroke-width", 1).attr("rx", 2)
+      .attr("vector-effect", "non-scaling-stroke").attr("pointer-events", "none")
+      .attr("x", gc => gc.x0 - d.x0).attr("y", gc => gc.y0 - d.y0)
+      .attr("width", gc => Math.max(0, gc.x1 - gc.x0)).attr("height", gc => Math.max(0, gc.y1 - gc.y0));
+    const gm = ge.merge(gj)
+      .attr("stroke", inkOn(d.__fill)).attr("stroke-opacity", 0.28)
+      .attr("display", gc => (gc.x1 - gc.x0 > 6 && gc.y1 - gc.y0 > 6) ? null : "none");
+    (animate ? gm.transition().duration(DUR).ease(EASE) : gm)
+      .attr("x", gc => gc.x0 - d.x0).attr("y", gc => gc.y0 - d.y0)
+      .attr("width", gc => Math.max(0, gc.x1 - gc.x0)).attr("height", gc => Math.max(0, gc.y1 - gc.y0));
+  });
+
+  merged.select("text.label").each(function (d) {
+    d3.select(this.parentNode).select("clipPath.lclip rect")
+      .attr("x", 0).attr("y", 0)
+      .attr("width", Math.max(0, d.x1 - d.x0)).attr("height", Math.max(0, d.y1 - d.y0));
+    drawLabel(d3.select(this), d);
+  });
+}
+
+function newView(node) {
+  const g = stage.append("g").attr("class", "view");
+  paint(g, layout(node), false);
+  return g;
+}
+
+function hardRender() {            // instant rebuild (resize)
+  busy = false;
+  measure();
+  stage.selectAll("g.view").interrupt().remove();
+  currentView = newView(current);
+  renderCrumbs();
+}
+
+/* animated zoom from `current` to `target` (an ancestor or descendant) */
+function zoomTo(target) {
+  if (busy || target === current || !currentView) return;
+  measure();
+  hideTip();
+  stage.selectAll("g.view").filter(function () { return this !== currentView.node(); }).interrupt().remove();
+  const into = isDescendant(target, current);   // true = drilling in
+  const oldView = currentView, oldNode = current;
+  current = target;
+  const nv = newView(current).style("opacity", 0);
+  currentView = nv;
+  renderCrumbs();
+
+  // r = the screen rectangle that the focused branch occupies in the relevant view
+  const r = into ? oldView.node().__rects.get(childToward(oldNode, target))
+                 : nv.node().__rects.get(childToward(target, oldNode));
+  if (!r) { oldView.remove(); nv.style("opacity", 1); return; }
+
+  busy = true;
+  const sx = W / r.w, sy = H / r.h;
+  const zoomTf = `translate(${-r.x * sx},${-r.y * sy}) scale(${sx},${sy})`;
+  const tuckTf = `translate(${r.x},${r.y}) scale(${r.w / W},${r.h / H})`;
+  // into: new view grows out of r, old view zooms so r fills frame.
+  // out:  new view starts zoomed (r filling frame) and settles, old view tucks into r.
+  nv.attr("transform", into ? tuckTf : zoomTf);
+  const t = d3.transition().duration(DUR).ease(EASE);
+  oldView.transition(t).attr("transform", into ? zoomTf : tuckTf).style("opacity", 0)
+    .on("end interrupt cancel", function () { d3.select(this).remove(); });
+  nv.transition(t).attr("transform", "translate(0,0) scale(1,1)").style("opacity", 1);
+  t.on("end interrupt cancel", () => { busy = false; });
+  // fallback: guarantee cleanup even if the timer is throttled (e.g. hidden tab)
+  setTimeout(() => { oldView.remove(); nv.attr("transform", null); busy = false; }, DUR + 140);
+}
+
+function goUp() { if (current !== TAX) { const p = parentOf.get(current); if (p) zoomTo(p); } }
+
+function setMetric(m) {
+  metric = m;
+  if (busy || !currentView) return;
+  measure();
+  paint(currentView, layout(current), true);   // morph cells in place
+}
+
+function renderCrumbs() {
+  const chain = []; let n = current; while (n) { chain.unshift(n); n = parentOf.get(n); }
+  const nav = d3.select("#crumbs"); nav.selectAll("*").remove();
+  chain.forEach((node, i) => {
+    if (i) nav.append("span").attr("class", "sep").text("  ›  ");
+    nav.append("span").attr("class", "crumb" + (node === current ? " current" : ""))
+      .text(node === TAX ? "All taxes" : node.name)
+      .on("click", () => { if (node !== current) zoomTo(node); });
+  });
+  const reset = document.getElementById("reset");
+  if (reset) reset.disabled = (current === TAX);
+}
+
+function showTip(event, d) {
+  const share = total ? (d.data.amount_m / total) * 100 : 0;
+  const ofParent = d.parent && d.parent.value ? (d.value / d.parent.value) * 100 : 0;
+  const trail = ancestry(d.data).slice(0, -1);
+  let html = `<div class="tt-path">${trail.length ? trail.join("  ›  ") : "&nbsp;"}</div>`;
+  html += `<div class="tt-name">${d.data.name}</div>`;
+  html += `<div class="tt-row"><span>Receipts</span><b>${fmt.bn(d.data.amount_m / 1000)}</b></div>`;
+  html += `<div class="tt-row"><span>Share of GDP</span><b>${d.data.gdp_pct.toFixed(2)}%</b></div>`;
+  html += `<div class="tt-row"><span>Of all taxes</span><b>${share.toFixed(share < 1 ? 2 : 1)}%</b></div>`;
+  if (d.parent && d.parent.data !== TAX) html += `<div class="tt-row"><span>Of ${d.parent.data.name}</span><b>${ofParent.toFixed(0)}%</b></div>`;
+  if (d.data.note) html += `<div class="tt-note">${d.data.note}</div>`;
+  html += d.children ? `<div class="tt-hint">click to open ${d.children.length} sub-taxes ›</div>`
+                     : `<div class="tt-hint">click anywhere to step back up ›</div>`;
+  tooltip.html(html).style("opacity", 1);
+
+  const pad = 14, tw = tooltip.node().offsetWidth, th = tooltip.node().offsetHeight;
+  let x = event.clientX + pad, y = event.clientY + pad;
+  if (x + tw > window.innerWidth)  x = event.clientX - tw - pad;
+  if (y + th > window.innerHeight) y = event.clientY - th - pad;
+  tooltip.style("left", x + "px").style("top", y + "px");
+}
+function hideTip() { tooltip.style("opacity", 0); }
+
+document.querySelectorAll("#metric button").forEach(b =>
+  b.addEventListener("click", () => {
+    if (b.classList.contains("on")) return;
+    document.querySelectorAll("#metric button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    setMetric(b.dataset.metric);
+  })
+);
+document.getElementById("reset").addEventListener("click", () => zoomTo(TAX));
+document.addEventListener("keydown", e => { if (e.key === "Escape") goUp(); });
+window.addEventListener("resize", () => { hideTip(); hardRender(); });
+
+measure();
+currentView = newView(current);
+renderCrumbs();
+</script>
+</body>
+</html>
