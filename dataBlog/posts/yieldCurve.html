@@ -1,16 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {background-color: #1c1f28; margin: 0; padding: 0; border: none; overflow: hidden; font-family: monospace;}
-    </style>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <title>yieldCurve</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PNQX1JJWVB');
+    </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US Treasury Yield Curve</title>
+<meta name="description" content="An interactive history of the US Treasury yield curve, 1962 to today." />
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --fg: #e6edf3;
+    --muted: #7d8896;
+    --accent: #58a6ff;
+    --hot: #ff7b6b;
+    --grid: rgba(255,255,255,0.06);
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Turbo colour ramp — mirrors d3.interpolateTurbo so the scrubber track reads as a timeline. */
+    --turbo: linear-gradient(90deg,#30123b,#4146ab,#4675ed,#39a2fc,#1bcfd4,#24eca6,#61fc6c,#a4fc3c,#d2e935,#f6c63a,#fd9a2c,#f4641d,#d63d07,#a31901,#7a0403);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%;
+    background: #05070a; color: var(--fg);
+    font-family: var(--sans);
+  }
+  #app {
+    display: flex; flex-direction: column; height: 100vh;
+    max-width: 1100px; margin: 0 auto; background: var(--bg);
+    box-shadow: 0 0 0 1px #21262d, 0 0 40px rgba(0,0,0,.5);
+  }
+  header {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px;
+    padding: 14px 22px; background: var(--panel); border-bottom: 1px solid #21262d;
+  }
+  header h1 { font-size: 26px; margin: 0; font-weight: 700; letter-spacing: -.6px; color: #fff; }
+  header h1 small { display:block; font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-top: 2px; }
+  .spacer { flex: 1; }
+  .control { display: flex; flex-direction: column; gap: 4px; }
+  .control label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .control .row { display: flex; align-items: center; gap: 8px; }
+  button {
+    background: #21262d; color: var(--fg); border: 1px solid #30363d;
+    border-radius: 6px; padding: 6px 11px; font-size: 13px; cursor: pointer;
+    font-family: var(--sans);
+  }
+  button:hover { border-color: var(--accent); }
+  input[type=range] { width: 150px; accent-color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    background: #1b212a; border: 1px solid #30363d; color: var(--muted);
+    border-radius: 999px; padding: 4px 11px; font-size: 12px; cursor: pointer;
+    font-family: var(--sans); white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--fg); }
+  .chip b { color: var(--fg); font-weight: 600; }
+
+  #chartWrap { position: relative; flex: 1; overflow: hidden; }
+  svg { width: 100%; height: 100%; display: block; }
+  .tick text { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+  .tick line { stroke: var(--grid); }
+  .domain { display: none; }
+  .axis-title { fill: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* Big date read-out, bottom-right, like a ticker. */
+  #dateLabel {
+    position: absolute; right: 34px; bottom: 70px; text-align: right;
+    pointer-events: none; line-height: .9;
+    text-shadow: 0 2px 18px rgba(0,0,0,.85), 0 0 6px rgba(13,17,23,.9);
+  }
+  #dateLabel .yr { font-size: clamp(46px, 10vw, 104px); font-weight: 700; font-family: var(--mono); letter-spacing: -3px; }
+  #dateLabel .mo { font-size: clamp(13px, 2.6vw, 18px); color: var(--muted); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Live metrics, top-left over the chart. */
+  #metrics {
+    position: absolute; left: 24px; top: 18px; pointer-events: none;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.7;
+  }
+  #metrics .m { color: var(--muted); }
+  #metrics .m b { color: var(--fg); font-weight: 500; min-width: 52px; display: inline-block; }
+  #metrics .spread { margin-top: 4px; font-weight: 600; }
+  #metrics .spread.inv { color: var(--hot); }
+  #metrics .spread.norm { color: #5ad19a; }
+
+  #tooltip {
+    position: absolute; left: 0; top: 0; pointer-events: none; opacity: 0;
+    transition: opacity .12s ease; z-index: 10;
+    background: rgba(22,27,34,.97); border: 1px solid #30363d; border-left: 3px solid var(--accent);
+    border-radius: 7px; padding: 8px 11px; font-size: 12px; line-height: 1.4;
+    font-family: var(--mono); white-space: nowrap;
+  }
+  #tooltip .tt-t { font-weight: 700; color: #fff; margin-bottom: 2px; font-size: 13px; }
+  #tooltip .tt-v { color: var(--accent); font-weight: 600; }
+
+  footer {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 10px 22px 12px; background: var(--panel); border-top: 1px solid #21262d;
+  }
+  .timeline { display: flex; align-items: center; gap: 12px; }
+  .timeline input[type=range] {
+    flex: 1; -webkit-appearance: none; appearance: none; height: 8px; border-radius: 5px;
+    background: var(--turbo); outline: none; cursor: pointer;
+  }
+  .timeline input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; border: 2px solid #0d1117; box-shadow: 0 0 0 1px rgba(255,255,255,.5);
+  }
+  .timeline input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 2px solid #0d1117;
+  }
+  .timeline button { padding: 6px 10px; min-width: 40px; }
+  .src { font-size: 10.5px; color: var(--muted); }
+  .src a { color: var(--accent); text-decoration: none; }
+  .legend-note { font-size: 10.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .legend-swatch { width: 90px; height: 8px; border-radius: 4px; background: var(--turbo); display: inline-block; }
+
+  @media (max-width: 640px) {
+    /* Keep header + footer compact so the chart owns the vertical space. */
+    header { gap: 6px 12px; padding: 8px 14px; }
+    header h1 { font-size: 18px; flex: 1 1 100%; }   /* title on its own row */
+    header h1 small { display: none; }
+    .spacer { display: none; }
+    .control { flex: 1 1 100%; }
+    .control label { display: none; }                /* "Jump to" label is redundant on mobile */
+    button { padding: 5px 9px; font-size: 12px; }
+    #metrics { left: 14px; top: 12px; font-size: 11px; line-height: 1.6; }
+    #dateLabel { right: 16px; bottom: 58px; }
+    #dateLabel .yr { letter-spacing: -2px; }
+    /* Chips as a single horizontally-scrollable strip instead of wrapping to 2-3 rows. */
+    .chips { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; gap: 6px; padding-bottom: 2px;
+             scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { padding: 4px 10px; font-size: 11.5px; }
+    footer { gap: 6px; padding: 8px 14px 9px; }
+    .legend-note { display: none; }                  /* explanatory note dropped to save height */
+    .src { font-size: 10px; }
+  }
+
+  /* Clean mode (?clean=1): strip controls for a tidy recording frame. */
+  body.clean header .control, body.clean header .chips, body.clean footer .timeline, body.clean .legend-note { display: none; }
+  body.clean footer { padding-bottom: 8px; }
+</style>
 </head>
 <body>
-    <div id="viz"></div>
-    <script type="module" src="./js/yieldCurve.js"></script>
+<div id="app">
+  <header>
+    <h1>US Treasury Yield Curve<small>Daily par yields, 1962 &ndash; today</small></h1>
+    <div class="spacer"></div>
+    <div class="control">
+      <label>Jump to</label>
+      <div class="chips" id="chips"></div>
+    </div>
+  </header>
+
+  <div id="chartWrap">
+    <svg id="chart"></svg>
+    <div id="metrics"></div>
+    <div id="dateLabel"><div class="yr">&nbsp;</div><div class="mo">&nbsp;</div></div>
+    <div id="tooltip"></div>
+  </div>
+
+  <footer>
+    <div class="timeline">
+      <button id="play" title="Play / pause (space)">&#9654;</button>
+      <input type="range" id="scrub" min="0" max="0" step="1" value="0" />
+      <button id="speed" title="Cycle speed">1&times;</button>
+    </div>
+    <div class="legend-note">
+      <span class="legend-swatch"></span>
+      <span>Each faint line is one month&rsquo;s curve, coloured by date (1962 &rarr; 2026). The bright line is the selected month.</span>
+    </div>
+    <div class="src">
+      Source: <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" target="_blank" rel="noopener">U.S. Department of the Treasury &mdash; Daily Treasury Par Yield Curve Rates</a>.
+      Monthly samples (last trading day). &middot; daniellewisDL
+    </div>
+  </footer>
+</div>
+
+<script type="module">
+const TENORS = [
+  { key: "US1M",  label: "1M",  years: 1/12 },
+  { key: "US3M",  label: "3M",  years: 0.25 },
+  { key: "US6M",  label: "6M",  years: 0.5 },
+  { key: "US1Y",  label: "1Y",  years: 1 },
+  { key: "US2Y",  label: "2Y",  years: 2 },
+  { key: "US3Y",  label: "3Y",  years: 3 },
+  { key: "US5Y",  label: "5Y",  years: 5 },
+  { key: "US7Y",  label: "7Y",  years: 7 },
+  { key: "US10Y", label: "10Y", years: 10 },
+  { key: "US20Y", label: "20Y", years: 20 },
+  { key: "US30Y", label: "30Y", years: 30 },
+];
+const LABELS = TENORS.map(t => t.label);
+const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const params = new URLSearchParams(location.search);
+if (params.get("clean") === "1") document.body.classList.add("clean");
+
+const svg = d3.select("#chart");
+const wrap = document.getElementById("chartWrap");
+const tooltip = d3.select("#tooltip");
+const scrub = document.getElementById("scrub");
+const playBtn = document.getElementById("play");
+const speedBtn = document.getElementById("speed");
+
+const fmtPct = d3.format(".2f");
+const parseDate = d3.timeParse("%Y-%m-%d");
+
+let frames = [];        // [{date, ym, yr, mo, pts:[{label, years, v}], byTenor:{label:v}}]
+let colorByDate;        // sequential turbo over date extent
+let x, y, line;
+let ghostG, activeG, axisG, gridG;
+let current = 0;
+let playing = true;
+const SPEEDS = [1, 2, 4, 0.5];
+let speedIx = 0;
+
+d3.csv("./data/us_treasury_yields_daily.csv").then(raw => {
+  // Parse each daily row into present tenor points; keep only rows with >=2 points.
+  const daily = [];
+  for (const row of raw) {
+    const pts = [];
+    for (const t of TENORS) {
+      const s = row[t.key];
+      if (s !== undefined && s !== "") {
+        const v = +s;
+        if (!Number.isNaN(v)) pts.push({ label: t.label, years: t.years, v });
+      }
+    }
+    if (pts.length >= 2) daily.push({ date: parseDate(row.date), pts });
+  }
+  daily.sort((a, b) => a.date - b.date);
+
+  // Sample to monthly: last trading day present in each calendar month.
+  const byMonth = new Map();
+  for (const d of daily) {
+    const ym = d3.timeFormat("%Y-%m")(d.date);
+    byMonth.set(ym, d); // later dates overwrite -> last of month wins
+  }
+  frames = [...byMonth.values()].map(d => {
+    const byTenor = {};
+    for (const p of d.pts) byTenor[p.label] = p.v;
+    return {
+      date: d.date,
+      ym: d3.timeFormat("%Y-%m")(d.date),
+      yr: d.date.getFullYear(),
+      mo: d.date.getMonth(),
+      pts: d.pts,
+      byTenor,
+    };
+  });
+
+  const maxYield = d3.max(frames, f => d3.max(f.pts, p => p.v));
+  colorByDate = d3.scaleSequential(d3.interpolateTurbo)
+    .domain([frames[0].date, frames[frames.length - 1].date]);
+
+  // Scales (x is categorical by tenor; y is the full 0..max range so the Volcker spike shows).
+  x = d3.scalePoint().domain(LABELS).padding(0.5);
+  y = d3.scaleLinear().domain([0, Math.ceil(maxYield)]).nice();
+  line = d3.line()
+    .defined(d => d.v != null)
+    .x(d => x(d.label))
+    .y(d => y(d.v))
+    .curve(d3.curveMonotoneX);
+
+  gridG = svg.append("g").attr("class", "grid");
+  ghostG = svg.append("g").attr("class", "ghosts");
+  axisG = svg.append("g").attr("class", "axes");
+  activeG = svg.append("g").attr("class", "active");
+
+  scrub.max = frames.length - 1;
+  current = frames.length - 1; // start on the latest curve
+
+  buildChips();
+  layout();
+  update(current);
+
+  const relayout = debounce(() => { layout(); update(current); }, 120);
+  new ResizeObserver(relayout).observe(wrap);
+  window.addEventListener("resize", relayout); // fallback: some engines don't fire RO on viewport changes
+  startTimer();
+});
+
+// --- Static layout: scales, axes, gridlines, ghost curves -------------------
+function layout() {
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const m = { top: 26, right: 26, bottom: 40, left: 50 };
+  const iw = Math.max(10, W - m.left - m.right);
+  const ih = Math.max(10, H - m.top - m.bottom);
+
+  svg.attr("viewBox", null).attr("width", W).attr("height", H);
+  x.range([m.left, m.left + iw]);
+  y.range([m.top + ih, m.top]);
+
+  // Gridlines + y axis
+  gridG.selectAll("*").remove();
+  const yTicks = y.ticks(8);
+  gridG.selectAll("line").data(yTicks).join("line")
+    .attr("x1", m.left).attr("x2", m.left + iw)
+    .attr("y1", d => y(d)).attr("y2", d => y(d))
+    .attr("stroke", "var(--grid)");
+
+  axisG.selectAll("*").remove();
+  const yAxis = d3.axisLeft(y).tickValues(yTicks).tickFormat(d => d + "%").tickSize(0);
+  axisG.append("g").attr("class", "y-axis").attr("transform", `translate(${m.left},0)`)
+    .call(yAxis).call(g => g.select(".domain").remove())
+    .call(g => g.selectAll(".tick text").attr("x", -8));
+
+  const xAxis = d3.axisBottom(x).tickSize(0);
+  axisG.append("g").attr("class", "x-axis").attr("transform", `translate(0,${m.top + ih})`)
+    .call(xAxis).call(g => g.select(".domain").remove())
+    .call(g => g.selectAll(".tick text").attr("y", 12));
+
+  axisG.append("text").attr("class", "axis-title")
+    .attr("x", m.left + iw).attr("y", m.top + ih + 34).attr("text-anchor", "end")
+    .text("maturity");
+
+  // Ghost curves: every month, coloured by date.
+  ghostG.selectAll("path").data(frames).join("path")
+    .attr("fill", "none")
+    .attr("stroke", f => colorByDate(f.date))
+    .attr("stroke-width", 1)
+    .attr("stroke-opacity", 0.10)
+    .attr("d", f => line(fullSeries(f)));
+}
+
+// Expand a frame to all tenors (null where missing) so line.defined() bridges gaps.
+function fullSeries(f) {
+  return LABELS.map(label => ({ label, v: f.byTenor[label] ?? null }));
+}
+
+// --- Per-frame update: active curve, points, metrics, ticker -----------------
+function update(i) {
+  current = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[current];
+  scrub.value = current;
+
+  const col = colorByDate(f.date);
+  const series = fullSeries(f);
+
+  // Active curve: white halo under a date-coloured line.
+  let halo = activeG.select("path.halo");
+  if (halo.empty()) halo = activeG.append("path").attr("class", "halo").attr("fill", "none")
+    .attr("stroke", "#fff").attr("stroke-opacity", 0.22).attr("stroke-width", 6)
+    .attr("stroke-linecap", "round").attr("stroke-linejoin", "round");
+  let main = activeG.select("path.main");
+  if (main.empty()) main = activeG.append("path").attr("class", "main").attr("fill", "none")
+    .attr("stroke-width", 3).attr("stroke-linecap", "round").attr("stroke-linejoin", "round");
+  halo.attr("d", line(series));
+  main.attr("d", line(series)).attr("stroke", col);
+
+  // Points at each present tenor.
+  const dots = activeG.selectAll("circle").data(f.pts, d => d.label);
+  dots.join(
+    enter => enter.append("circle").attr("r", 4).attr("stroke", "#0d1117").attr("stroke-width", 1.5),
+    upd => upd, exit => exit.remove()
+  )
+    .attr("cx", d => x(d.label)).attr("cy", d => y(d.v)).attr("fill", col)
+    .on("mouseenter", (e, d) => {
+      tooltip.html(`<div class="tt-t">${d.label}</div><div><span class="tt-v">${fmtPct(d.v)}%</span></div>`)
+        .style("opacity", 1);
+      moveTip(e);
+    })
+    .on("mousemove", moveTip)
+    .on("mouseleave", () => tooltip.style("opacity", 0));
+
+  // Ticker + metrics
+  d3.select("#dateLabel .yr").text(f.yr);
+  d3.select("#dateLabel .mo").text(MONTH_NAMES[f.mo]);
+
+  const g = k => f.byTenor[k];
+  const rows = [["3M","3M"],["2Y","2Y"],["10Y","10Y"],["30Y","30Y"]]
+    .map(([lab, key]) => g(key) == null ? "" :
+      `<div class="m"><b>${lab}</b>${fmtPct(g(key))}%</div>`).join("");
+  let spreadHtml = "";
+  if (g("10Y") != null && g("2Y") != null) {
+    const sp = g("10Y") - g("2Y");
+    const cls = sp < 0 ? "inv" : "norm";
+    const word = sp < 0 ? "inverted" : "upward";
+    spreadHtml = `<div class="spread ${cls}">10Y&minus;2Y ${sp >= 0 ? "+" : ""}${fmtPct(sp)}% &middot; ${word}</div>`;
+  }
+  document.getElementById("metrics").innerHTML = rows + spreadHtml;
+}
+
+function moveTip(e) {
+  const r = wrap.getBoundingClientRect();
+  let lx = e.clientX - r.left + 14, ty = e.clientY - r.top - 10;
+  const tw = tooltip.node().offsetWidth;
+  if (lx + tw > r.width) lx = e.clientX - r.left - tw - 14;
+  tooltip.style("left", lx + "px").style("top", ty + "px");
+}
+
+// --- Quick-jump chips for notable regimes ------------------------------------
+function buildChips() {
+  const presets = [
+    { ym: "1981-09", label: "Volcker peak <b>’81</b>" },
+    { ym: "2000-11", label: "Dot-com <b>’00</b>" },
+    { ym: "2008-12", label: "GFC <b>’08</b>" },
+    { ym: "2020-04", label: "COVID ZIRP <b>’20</b>" },
+    { ym: "2023-07", label: "Deep inversion <b>’23</b>" },
+    { ym: frames[frames.length - 1].ym, label: "Latest" },
+  ];
+  const sel = d3.select("#chips");
+  for (const p of presets) {
+    const ix = nearestFrame(p.ym);
+    if (ix < 0) continue;
+    sel.append("button").attr("class", "chip").html(p.label)
+      .on("click", () => { pause(); update(ix); });
+  }
+}
+function nearestFrame(ym) {
+  let best = -1, bestD = Infinity;
+  const target = new Date(ym + "-15");
+  for (let i = 0; i < frames.length; i++) {
+    const d = Math.abs(frames[i].date - target);
+    if (d < bestD) { bestD = d; best = i; }
+  }
+  return best;
+}
+
+// --- Playback ----------------------------------------------------------------
+let lastT = 0, acc = 0;
+function startTimer() {
+  d3.timer(elapsed => {
+    const dt = elapsed - lastT; lastT = elapsed;
+    if (!playing) return;
+    acc += dt * SPEEDS[speedIx];
+    const stepMs = 90;            // ms per month at 1x
+    while (acc >= stepMs) {
+      acc -= stepMs;
+      let next = current + 1;
+      if (next >= frames.length) next = 0;
+      update(next);
+    }
+  });
+}
+function pause() { playing = false; playBtn.innerHTML = "&#9654;"; }
+function play() { playing = true; playBtn.innerHTML = "&#10073;&#10073;"; }
+playBtn.onclick = () => playing ? pause() : play();
+speedBtn.onclick = () => { speedIx = (speedIx + 1) % SPEEDS.length; speedBtn.textContent = SPEEDS[speedIx] + "×"; };
+scrub.addEventListener("input", () => { pause(); update(+scrub.value); });
+play(); // reflect initial playing state on the button
+
+window.addEventListener("keydown", e => {
+  if (e.key === " ") { e.preventDefault(); playing ? pause() : play(); }
+  else if (e.key === "ArrowRight") { pause(); update(current + 1); }
+  else if (e.key === "ArrowLeft") { pause(); update(current - 1); }
+});
+
+function debounce(fn, ms) {
+  let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+}
+</script>
 </body>
 </html>
