@@ -1,0 +1,670 @@
+{
+  "label": "All taxes",
+  "total_bn": 955,
+  "gdp_pct": 32.5,
+  "tax_take_pct": 100,
+  "unit": "amount_m is GBP millions; gdp_pct is share of GDP; tax_take_pct is percentage of total tax take",
+  "categories": [
+    {
+      "name": "Employment taxes",
+      "amount_m": 443582,
+      "gdp_pct": 15.119,
+      "tax_take_pct": 46.477,
+      "children": [
+        {
+          "name": "Income tax on work",
+          "amount_m": 268045,
+          "gdp_pct": 9.1358,
+          "tax_take_pct": 28.085,
+          "note": "Income tax net of separately shown dividends, savings interest and rents."
+        },
+        {
+          "name": "NICs",
+          "amount_m": 171402.0,
+          "gdp_pct": 5.8419,
+          "tax_take_pct": 17.959,
+          "children": [
+            {
+              "name": "Employer NICs",
+              "amount_m": 115446.805,
+              "gdp_pct": 3.9348,
+              "tax_take_pct": 12.096
+            },
+            {
+              "name": "Employee NICs",
+              "amount_m": 50747.206,
+              "gdp_pct": 1.7296,
+              "tax_take_pct": 5.3171,
+              "note": "Includes statutory recoveries netted against employee NICs."
+            },
+            {
+              "name": "Self-employed NICs",
+              "amount_m": 2797.578,
+              "gdp_pct": 0.09535,
+              "tax_take_pct": 0.29312
+            },
+            {
+              "name": "Other NICs",
+              "amount_m": 2410.411,
+              "gdp_pct": 0.082154,
+              "tax_take_pct": 0.25255
+            }
+          ]
+        },
+        {
+          "name": "Apprenticeship levy",
+          "amount_m": 4135,
+          "gdp_pct": 0.14093,
+          "tax_take_pct": 0.43325
+        }
+      ]
+    },
+    {
+      "name": "Goods/services",
+      "amount_m": 219061,
+      "gdp_pct": 7.4662,
+      "tax_take_pct": 22.952,
+      "children": [
+        {
+          "name": "VAT",
+          "amount_m": 143856,
+          "gdp_pct": 4.903,
+          "tax_take_pct": 15.073,
+          "note": "VAT receipts net of refunds."
+        },
+        {
+          "name": "Insurance premium tax",
+          "amount_m": 8940,
+          "gdp_pct": 0.3047,
+          "tax_take_pct": 0.9367
+        },
+        {
+          "name": "Air passenger duty",
+          "amount_m": 4131,
+          "gdp_pct": 0.1408,
+          "tax_take_pct": 0.43283
+        },
+        {
+          "name": "Fuel duties",
+          "amount_m": 24359,
+          "gdp_pct": 0.83023,
+          "tax_take_pct": 2.5522
+        },
+        {
+          "name": "Alcohol duties",
+          "amount_m": 12545,
+          "gdp_pct": 0.42757,
+          "tax_take_pct": 1.3144,
+          "children": [
+            {
+              "name": "Beer and cider",
+              "amount_m": 3746,
+              "gdp_pct": 0.12767,
+              "tax_take_pct": 0.39249
+            },
+            {
+              "name": "Wine",
+              "amount_m": 4686,
+              "gdp_pct": 0.15971,
+              "tax_take_pct": 0.49098
+            },
+            {
+              "name": "Spirits",
+              "amount_m": 4113,
+              "gdp_pct": 0.14018,
+              "tax_take_pct": 0.43094
+            }
+          ]
+        },
+        {
+          "name": "Vehicle excise duty",
+          "amount_m": 8205,
+          "gdp_pct": 0.27965,
+          "tax_take_pct": 0.85969
+        },
+        {
+          "name": "Tobacco duties",
+          "amount_m": 7909,
+          "gdp_pct": 0.26956,
+          "tax_take_pct": 0.82867
+        },
+        {
+          "name": "Customs duties",
+          "amount_m": 4870,
+          "gdp_pct": 0.16598,
+          "tax_take_pct": 0.51026
+        },
+        {
+          "name": "Gaming duties",
+          "amount_m": 3646,
+          "gdp_pct": 0.12427,
+          "tax_take_pct": 0.38201,
+          "children": [
+            {
+              "name": "Remote gaming duty",
+              "amount_m": 1172.6163546362104,
+              "gdp_pct": 0.039966,
+              "tax_take_pct": 0.12286
+            },
+            {
+              "name": "Lottery duty",
+              "amount_m": 939.7063134315976,
+              "gdp_pct": 0.032028,
+              "tax_take_pct": 0.098459
+            },
+            {
+              "name": "General betting duty",
+              "amount_m": 719.9037637233483,
+              "gdp_pct": 0.024536,
+              "tax_take_pct": 0.075429
+            },
+            {
+              "name": "Machine games duty",
+              "amount_m": 614.0355631757972,
+              "gdp_pct": 0.020928,
+              "tax_take_pct": 0.064336
+            },
+            {
+              "name": "Gaming duty",
+              "amount_m": 166.36431514615194,
+              "gdp_pct": 0.0056702,
+              "tax_take_pct": 0.017431
+            },
+            {
+              "name": "Bingo duty",
+              "amount_m": 25.206714416083628,
+              "gdp_pct": 0.00085912,
+              "tax_take_pct": 0.0026411
+            },
+            {
+              "name": "Pool betting duty",
+              "amount_m": 8.16697547081094,
+              "gdp_pct": 0.00027835,
+              "tax_take_pct": 0.0008557
+            }
+          ]
+        },
+        {
+          "name": "Soft drinks levy",
+          "amount_m": 330,
+          "gdp_pct": 0.011247,
+          "tax_take_pct": 0.034576
+        },
+        {
+          "name": "Lorry road levy",
+          "amount_m": 157,
+          "gdp_pct": 0.005351,
+          "tax_take_pct": 0.01645
+        },
+        {
+          "name": "Gaming levy",
+          "amount_m": 113,
+          "gdp_pct": 0.0038514,
+          "tax_take_pct": 0.01184
+        }
+      ]
+    },
+    {
+      "name": "Business",
+      "amount_m": 99521,
+      "gdp_pct": 3.392,
+      "tax_take_pct": 10.427,
+      "children": [
+        {
+          "name": "Corporation tax",
+          "amount_m": 93238,
+          "gdp_pct": 3.1778,
+          "tax_take_pct": 9.7691,
+          "children": [
+            {
+              "name": "Onshore CT",
+              "amount_m": 91005,
+              "gdp_pct": 3.1017,
+              "tax_take_pct": 9.5352
+            },
+            {
+              "name": "Offshore CT",
+              "amount_m": 2233,
+              "gdp_pct": 0.076107,
+              "tax_take_pct": 0.23397
+            }
+          ]
+        },
+        {
+          "name": "Digital services tax",
+          "amount_m": 874,
+          "gdp_pct": 0.029788,
+          "tax_take_pct": 0.091574
+        },
+        {
+          "name": "Bank taxes",
+          "amount_m": 2304,
+          "gdp_pct": 0.078527,
+          "tax_take_pct": 0.2414,
+          "children": [
+            {
+              "name": "Bank levy",
+              "amount_m": 1329,
+              "gdp_pct": 0.045296,
+              "tax_take_pct": 0.13925
+            },
+            {
+              "name": "Bank surcharge",
+              "amount_m": 975,
+              "gdp_pct": 0.033231,
+              "tax_take_pct": 0.10216
+            }
+          ]
+        },
+        {
+          "name": "Diverted profits",
+          "amount_m": 105,
+          "gdp_pct": 0.0035787,
+          "tax_take_pct": 0.011001
+        },
+        {
+          "name": "Property developer tax",
+          "amount_m": 102,
+          "gdp_pct": 0.0034765,
+          "tax_take_pct": 0.010687
+        },
+        {
+          "name": "Energy profits levy",
+          "amount_m": 2499,
+          "gdp_pct": 0.085173,
+          "tax_take_pct": 0.26184
+        },
+        {
+          "name": "Electricity generator levy",
+          "amount_m": 749,
+          "gdp_pct": 0.025528,
+          "tax_take_pct": 0.078477
+        },
+        {
+          "name": "Petroleum revenue tax",
+          "amount_m": -350,
+          "gdp_pct": -0.011929,
+          "tax_take_pct": -0.036672,
+          "note": "Net repayments reduce receipts."
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "amount_m": 95568,
+      "gdp_pct": 3.2572,
+      "tax_take_pct": 10.013,
+      "children": [
+        {
+          "name": "Property annual taxes",
+          "amount_m": 79473,
+          "gdp_pct": 2.7087,
+          "tax_take_pct": 8.3269,
+          "children": [
+            {
+              "name": "Council tax",
+              "amount_m": 47417,
+              "gdp_pct": 1.6161,
+              "tax_take_pct": 4.9682
+            },
+            {
+              "name": "Business rates",
+              "amount_m": 32056,
+              "gdp_pct": 1.0926,
+              "tax_take_pct": 3.3587
+            }
+          ]
+        },
+        {
+          "name": "NI domestic rates",
+          "amount_m": 485.312,
+          "gdp_pct": 0.016541,
+          "tax_take_pct": 0.050849
+        },
+        {
+          "name": "NI business rates",
+          "amount_m": 382.334,
+          "gdp_pct": 0.013031,
+          "tax_take_pct": 0.040059
+        },
+        {
+          "name": "Property transaction taxes",
+          "amount_m": 15227,
+          "gdp_pct": 0.51898,
+          "tax_take_pct": 1.5954,
+          "children": [
+            {
+              "name": "SDLT",
+              "amount_m": 13885,
+              "gdp_pct": 0.47324,
+              "tax_take_pct": 1.4548,
+              "children": [
+                {
+                  "name": "Residential SDLT",
+                  "amount_m": 7895,
+                  "gdp_pct": 0.26908,
+                  "tax_take_pct": 0.82721
+                },
+                {
+                  "name": "Additional dwellings",
+                  "amount_m": 2290,
+                  "gdp_pct": 0.07805,
+                  "tax_take_pct": 0.23994
+                },
+                {
+                  "name": "Non-resident SDLT",
+                  "amount_m": 195,
+                  "gdp_pct": 0.0066462,
+                  "tax_take_pct": 0.020431
+                },
+                {
+                  "name": "Non-residential SDLT",
+                  "amount_m": 3505,
+                  "gdp_pct": 0.11946,
+                  "tax_take_pct": 0.36724
+                }
+              ]
+            },
+            {
+              "name": "ATED",
+              "amount_m": 133.617,
+              "gdp_pct": 0.0045541,
+              "tax_take_pct": 0.014001
+            },
+            {
+              "name": "LBTT (Scotland)",
+              "amount_m": 899.162,
+              "gdp_pct": 0.030646,
+              "tax_take_pct": 0.094211
+            },
+            {
+              "name": "LTT (Wales)",
+              "amount_m": 340.612,
+              "gdp_pct": 0.011609,
+              "tax_take_pct": 0.035688
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Wealth",
+      "amount_m": 64154,
+      "gdp_pct": 2.1866,
+      "tax_take_pct": 6.7218,
+      "children": [
+        {
+          "name": "Income tax",
+          "amount_m": 37860,
+          "gdp_pct": 1.2904,
+          "tax_take_pct": 3.9668,
+          "children": [
+            {
+              "name": "Dividend income tax",
+              "amount_m": 18120,
+              "gdp_pct": 0.61758,
+              "tax_take_pct": 1.8985
+            },
+            {
+              "name": "Savings income tax",
+              "amount_m": 10540,
+              "gdp_pct": 0.35923,
+              "tax_take_pct": 1.1043
+            },
+            {
+              "name": "Rent income tax",
+              "amount_m": 9200,
+              "gdp_pct": 0.31356,
+              "tax_take_pct": 0.96394,
+              "note": "Estimated from HMRC SPI property-income distribution; property income is otherwise included within non-savings income tax."
+            }
+          ]
+        },
+        {
+          "name": "Capital gains tax",
+          "amount_m": 13686,
+          "gdp_pct": 0.46646,
+          "tax_take_pct": 1.434
+        },
+        {
+          "name": "Inheritance tax",
+          "amount_m": 8286,
+          "gdp_pct": 0.28241,
+          "tax_take_pct": 0.86817
+        },
+        {
+          "name": "Stamp taxes on shares",
+          "amount_m": 4322,
+          "gdp_pct": 0.14731,
+          "tax_take_pct": 0.45284,
+          "children": [
+            {
+              "name": "SDRT",
+              "amount_m": 3051.412037037037,
+              "gdp_pct": 0.104,
+              "tax_take_pct": 0.31972
+            },
+            {
+              "name": "Stamp duty (1891)",
+              "amount_m": 1270.587962962963,
+              "gdp_pct": 0.043305,
+              "tax_take_pct": 0.13313
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Environment & energy",
+      "amount_m": 16971,
+      "gdp_pct": 0.57842,
+      "tax_take_pct": 1.7782,
+      "children": [
+        {
+          "name": "Environmental levies",
+          "amount_m": 10517,
+          "gdp_pct": 0.35845,
+          "tax_take_pct": 1.1019,
+          "children": [
+            {
+              "name": "Renewables obligation",
+              "amount_m": 7766.928956566494,
+              "gdp_pct": 0.26472,
+              "tax_take_pct": 0.81379
+            },
+            {
+              "name": "Contracts for difference",
+              "amount_m": 2267.47474803,
+              "gdp_pct": 0.077282,
+              "tax_take_pct": 0.23758
+            },
+            {
+              "name": "Warm home discount",
+              "amount_m": 482.59629540350625,
+              "gdp_pct": 0.016448,
+              "tax_take_pct": 0.050565
+            }
+          ]
+        },
+        {
+          "name": "Emissions trading",
+          "amount_m": 3406,
+          "gdp_pct": 0.11609,
+          "tax_take_pct": 0.35687
+        },
+        {
+          "name": "Climate change levy",
+          "amount_m": 1842,
+          "gdp_pct": 0.062781,
+          "tax_take_pct": 0.193
+        },
+        {
+          "name": "Landfill tax",
+          "amount_m": 497.241,
+          "gdp_pct": 0.016947,
+          "tax_take_pct": 0.052109
+        },
+        {
+          "name": "Aggregates levy",
+          "amount_m": 363,
+          "gdp_pct": 0.012372,
+          "tax_take_pct": 0.038034
+        },
+        {
+          "name": "Plastic packaging tax",
+          "amount_m": 255,
+          "gdp_pct": 0.0086911,
+          "tax_take_pct": 0.026718
+        },
+        {
+          "name": "Scottish landfill tax",
+          "amount_m": 56.621,
+          "gdp_pct": 0.0019298,
+          "tax_take_pct": 0.0059325
+        },
+        {
+          "name": "Welsh landfill tax",
+          "amount_m": 34.138,
+          "gdp_pct": 0.0011635,
+          "tax_take_pct": 0.0035768
+        }
+      ]
+    },
+    {
+      "name": "Other",
+      "amount_m": 15559,
+      "gdp_pct": 0.5303,
+      "tax_take_pct": 1.63,
+      "children": [
+        {
+          "name": "Licence fee",
+          "amount_m": 3819,
+          "gdp_pct": 0.13016,
+          "tax_take_pct": 0.40014
+        },
+        {
+          "name": "Immigration health surcharge",
+          "amount_m": 2421,
+          "gdp_pct": 0.082515,
+          "tax_take_pct": 0.25366
+        },
+        {
+          "name": "Visa fees",
+          "amount_m": 2359,
+          "gdp_pct": 0.080402,
+          "tax_take_pct": 0.24717
+        },
+        {
+          "name": "Lottery payments",
+          "amount_m": 1713,
+          "gdp_pct": 0.058384,
+          "tax_take_pct": 0.17948
+        },
+        {
+          "name": "Levy-funded bodies",
+          "amount_m": 960.764,
+          "gdp_pct": 0.032746,
+          "tax_take_pct": 0.10067
+        },
+        {
+          "name": "Bank of England levy",
+          "amount_m": 733,
+          "gdp_pct": 0.024983,
+          "tax_take_pct": 0.076801
+        },
+        {
+          "name": "Passport fees",
+          "amount_m": 646,
+          "gdp_pct": 0.022018,
+          "tax_take_pct": 0.067685
+        },
+        {
+          "name": "Other small taxes",
+          "amount_m": 586.202,
+          "gdp_pct": 0.019979,
+          "tax_take_pct": 0.06142,
+          "children": [
+            {
+              "name": "Other taxes n.e.s.",
+              "amount_m": 148.202,
+              "gdp_pct": 0.0050512,
+              "tax_take_pct": 0.015528
+            },
+            {
+              "name": "British Transport Police",
+              "amount_m": 145,
+              "gdp_pct": 0.004942,
+              "tax_take_pct": 0.015193
+            },
+            {
+              "name": "DVLA registration fees",
+              "amount_m": 124,
+              "gdp_pct": 0.0042263,
+              "tax_take_pct": 0.012992
+            },
+            {
+              "name": "Lighthouse dues",
+              "amount_m": 89,
+              "gdp_pct": 0.0030334,
+              "tax_take_pct": 0.0093251
+            },
+            {
+              "name": "ATOL",
+              "amount_m": 80,
+              "gdp_pct": 0.0027266,
+              "tax_take_pct": 0.0083821
+            }
+          ]
+        },
+        {
+          "name": "Consumer credit fees",
+          "amount_m": 525.846,
+          "gdp_pct": 0.017922,
+          "tax_take_pct": 0.055096
+        },
+        {
+          "name": "Immigration skills charge",
+          "amount_m": 518,
+          "gdp_pct": 0.017655,
+          "tax_take_pct": 0.054274
+        },
+        {
+          "name": "Land Registry",
+          "amount_m": 399,
+          "gdp_pct": 0.013599,
+          "tax_take_pct": 0.041806
+        },
+        {
+          "name": "Community infrastructure levy",
+          "amount_m": 350,
+          "gdp_pct": 0.011929,
+          "tax_take_pct": 0.036672
+        },
+        {
+          "name": "Companies House",
+          "amount_m": 217,
+          "gdp_pct": 0.007396,
+          "tax_take_pct": 0.022736
+        },
+        {
+          "name": "Economic crime levy",
+          "amount_m": 124.482,
+          "gdp_pct": 0.0042427,
+          "tax_take_pct": 0.013043
+        },
+        {
+          "name": "Horserace betting levy",
+          "amount_m": 113,
+          "gdp_pct": 0.0038514,
+          "tax_take_pct": 0.01184
+        },
+        {
+          "name": "Pension protection levy",
+          "amount_m": 74.062,
+          "gdp_pct": 0.0025242,
+          "tax_take_pct": 0.0077599
+        }
+      ]
+    }
+  ]
+}

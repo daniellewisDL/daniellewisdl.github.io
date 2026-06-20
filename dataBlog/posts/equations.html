@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Equations That Changed the World</title>
+<meta name="description" content="Five equations that changed the world — Pythagoras, logarithms, calculus, gravity and Black–Scholes — as interactive explorers." />
+<link rel="icon" type="image/png" href="../../src/favicon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg:            #0a0e14;
+    --surface:       #121821;
+    --surface-2:     #161d28;
+    --border:        rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text:          #e6edf3;
+    --muted:         #8b949e;
+    --accent:        #22d3ee;
+    --accent-2:      #a78bfa;
+    --hot:           #f472b6;
+    --good:          #5ad19a;
+    --font-sans:     "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono:     "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body {
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(34, 211, 238, 0.10), transparent 60%),
+      radial-gradient(900px 500px at 0% 0%, rgba(167, 139, 250, 0.08), transparent 55%);
+    background-attachment: fixed;
+  }
+  #app { display: flex; flex-direction: column; min-height: 100vh; max-width: 980px; margin: 0 auto; }
+
+  header { padding: 22px 22px 6px; }
+  .back-link { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-decoration: none; display: inline-flex; gap: .4rem; align-items: center; transition: gap .15s ease, color .15s ease; }
+  .back-link:hover { color: var(--accent); gap: .7rem; }
+  h1 { font-size: clamp(24px, 4.6vw, 36px); margin: 14px 0 6px; letter-spacing: -.6px; font-weight: 700; line-height: 1.08; }
+  h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--muted); font-size: 14.5px; margin: 0; max-width: 66ch; line-height: 1.55; }
+  .sub a { color: var(--accent); text-decoration: none; }
+  .sub a:hover { text-decoration: underline; }
+
+  /* Equation selector */
+  nav.eqnav { position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: 7px;
+    padding: 12px 22px; margin-top: 14px;
+    background: rgba(10,14,20,.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  nav.eqnav button {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+    padding: 6px 13px; cursor: pointer; transition: all .15s ease; white-space: nowrap;
+  }
+  nav.eqnav button:hover { color: var(--text); border-color: var(--border-strong); }
+  nav.eqnav button.on { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 700; }
+  nav.eqnav button .nidx { opacity: .6; margin-right: 4px; }
+  nav.eqnav button.on .nidx { opacity: .85; }
+
+  main { padding: 8px 22px 0; }
+
+  section.eq { padding: 30px 0 38px; border-bottom: 1px solid var(--border); }
+  section.eq:last-child { border-bottom: 0; }
+
+  .eq-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .eq-num { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--bg);
+    background: linear-gradient(120deg, var(--accent), var(--accent-2)); border-radius: 8px;
+    padding: 4px 10px; letter-spacing: .5px; }
+  .eq-title { font-size: clamp(20px, 3.4vw, 27px); font-weight: 700; margin: 0; letter-spacing: -.4px; }
+  .eq-author { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+
+  .eq-formula { margin: 20px 0 6px; padding: 20px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; text-align: center; }
+  .eq-formula .katex { font-size: 1.5em; color: var(--text); }
+  .eq-formula > div + div { margin-top: 12px; }
+
+  .prose { font-size: 14.5px; line-height: 1.62; color: #cdd5dd; max-width: 70ch; }
+  .prose p { margin: 14px 0; }
+  .prose a { color: var(--accent); text-decoration: none; }
+  .prose a:hover { text-decoration: underline; }
+  .prose .src-tag { color: var(--accent-2); font-weight: 600; }
+  .our-take { margin: 16px 0; padding: 13px 16px; background: var(--surface);
+    border-left: 3px solid var(--accent-2); border-radius: 0 10px 10px 0; }
+  .our-take b.lbl { display: block; font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--accent-2); margin-bottom: 5px; }
+
+  /* Explorer card */
+  .explorer { margin: 24px 0 6px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px; }
+  .explorer h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+  .explorer h3 .hint { font-family: var(--font-mono); font-weight: 400; font-size: 11.5px; color: var(--muted); margin-left: 8px; }
+  .explorer h3:not(:first-child) { margin-top: 26px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 16px 22px; margin: 14px 0 18px; align-items: flex-end; }
+  .ctrl { display: flex; flex-direction: column; gap: 5px; }
+  .ctrl-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+  .ctrl-row { display: flex; align-items: center; gap: 9px; }
+  .ctrl-row input[type=range] { width: 140px; accent-color: var(--accent); }
+  .ctrl-row input[type=number] { width: 64px; background: var(--surface-2); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 7px; padding: 6px 8px; font-family: var(--font-mono); font-size: 13px; }
+  .ctrl-val { font-family: var(--font-mono); font-size: 13px; color: var(--accent); min-width: 38px; font-weight: 600; }
+
+  .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px; padding: 3px; }
+  .seg button { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: transparent; border: 0; padding: 6px 13px; border-radius: 6px; cursor: pointer; transition: all .15s ease; }
+  .seg button.on { color: var(--bg); background: var(--accent); font-weight: 700; }
+  .seg button:not(.on):hover { color: var(--text); }
+
+  .pill-btn { font-family: var(--font-mono); font-size: 12.5px; color: var(--text); background: var(--surface-2);
+    border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 15px; cursor: pointer; transition: all .15s ease; }
+  .pill-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .radio-row { display: inline-flex; gap: 14px; font-size: 13px; color: var(--muted); }
+  .radio-row label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
+  .radio-row input { accent-color: var(--accent); }
+
+  /* charts */
+  .chart { width: 100%; height: auto; display: block; }
+  .chart .tick text { fill: var(--muted); font-size: 10.5px; font-family: var(--font-mono); }
+  .chart .tick line { stroke: var(--border); }
+  .chart .domain { display: none; }
+  .chart .axis-title { fill: var(--muted); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  .chart .grid line { stroke: var(--border); }
+  .chart-title { font-size: 12.5px; color: var(--muted); font-family: var(--font-mono); margin: 4px 0 2px; }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 620px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); margin: 4px 0 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 16px; height: 3px; border-radius: 2px; display: inline-block; }
+
+  /* readouts */
+  .readout { font-family: var(--font-mono); font-size: 13px; line-height: 1.9; color: #cdd5dd; }
+  .readout b { color: var(--accent); font-weight: 600; }
+  .stat-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+  .stat { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 9px 13px; min-width: 88px; }
+  .stat .k { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+  .stat .v { font-family: var(--font-mono); font-size: 17px; font-weight: 600; color: var(--text); margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+  table.greeks { border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; margin: 10px 0 4px; }
+  table.greeks th, table.greeks td { padding: 7px 16px; text-align: right; border-bottom: 1px solid var(--border); }
+  table.greeks th { color: var(--muted); font-weight: 500; text-transform: uppercase; font-size: 10.5px; letter-spacing: .5px; }
+  table.greeks td:first-child, table.greeks th:first-child { text-align: left; color: var(--muted); }
+  table.greeks tbody tr td:first-child { color: var(--text); }
+  table.greeks .cval { color: var(--accent); }
+  table.greeks .pval { color: var(--accent-2); }
+
+  .grav-list { list-style: none; padding: 0; margin: 8px 0; }
+  .grav-list li { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .grav-list li .body-emoji { font-size: 18px; width: 26px; text-align: center; }
+  .grav-list li .body-name { flex: 1; color: #cdd5dd; }
+  .grav-list li .body-w { font-family: var(--font-mono); font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  .pyth-fig { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; }
+  .pyth-fig svg { flex: 1 1 320px; min-width: 280px; max-width: 460px; }
+  .pyth-info { flex: 0 1 220px; }
+
+  .resources { margin-top: 22px; }
+  .resources h4 { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin: 0 0 8px; }
+  .resources ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .resources a { color: var(--accent); text-decoration: none; font-size: 13.5px; }
+  .resources a:hover { text-decoration: underline; }
+  .resources .who { color: var(--muted); }
+
+  footer { padding: 24px 22px 36px; font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 16px 4px; }
+    nav.eqnav { padding: 10px 16px; gap: 6px; }
+    main { padding: 6px 16px 0; }
+    .explorer { padding: 16px; }
+    .ctrl-row input[type=range] { width: 120px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <a class="back-link" href="../index.html">&larr; back to posts</a>
+    <h1>Five equations that <span class="grad">changed the world</span></h1>
+    <p class="sub">Interactive explorers for five of the equations from Ian Stewart&rsquo;s 2012 book
+      <a href="https://en.wikipedia.org/wiki/In_Pursuit_of_the_Unknown" target="_blank" rel="noopener"><i>In Pursuit of the Unknown</i></a>.
+      Pull the sliders and watch each one come alive. Originally a Streamlit app &mdash; rebuilt here in D3.</p>
+  </header>
+
+  <nav class="eqnav" id="eqnav"></nav>
+
+  <main id="equations"></main>
+
+  <footer>
+    Equation selection from <a href="https://en.wikipedia.org/wiki/In_Pursuit_of_the_Unknown" target="_blank" rel="noopener">Ian Stewart, <i>In Pursuit of the Unknown: 17 Equations That Changed the World</i></a> (2012).
+    Explanatory text adapted from Wikipedia. Black&ndash;Scholes prices and Greeks computed client-side with a normal-CDF approximation; all figures are illustrative, not investment advice.
+    &middot; Rebuilt from a <a href="https://github.com/daniellewisDL/equations-explorer" target="_blank" rel="noopener">Streamlit original</a> with D3 + KaTeX by <a href="https://github.com/daniellewisDL" target="_blank" rel="noopener">Daniel Lewis</a>.
+  </footer>
+</div>
+
+<script>
+/* ====================================================================
+   Equations that changed the world — interactive explorers
+   Ported from the Streamlit app (daniellewisDL/equations-explorer)
+   ==================================================================== */
+
+const tex = (el, s, display = false) => katex.render(s, el, { displayMode: display, throwOnError: false });
+
+/* --------------------------------------------------------------------
+   Equation metadata: heading, formulas, prose, resources
+   -------------------------------------------------------------------- */
+const EQ = [
+  {
+    n: 1, id: "pythagoras", title: "Pythagoras' Theorem", author: "Pythagoras, 530 BC",
+    formulas: ["a^2 + b^2 = c^2"],
+    wiki: `Pythagoras' theorem is a fundamental relation in Euclidean geometry among the three sides of a
+      right triangle. It states that the area of the square whose side is the hypotenuse equals the sum of
+      the areas of the squares on the other two sides.`,
+    ours: `It links geometry and algebra in a fundamental way. Generalisations of Pythagoras led to
+      trigonometry, our ability to survey land, navigate the seas, and measure the universe itself.`,
+    resources: [
+      { who: "3Blue1Brown", label: "All possible Pythagorean triples", href: "https://www.youtube.com/watch?v=QJYmyhnaaek" },
+      { who: "Wolfram MathWorld", label: "Pythagorean Theorem", href: "https://mathworld.wolfram.com/PythagoreanTheorem.html" },
+      { who: "Wikipedia", label: "Pythagorean triple", href: "https://en.wikipedia.org/wiki/Pythagorean_triple" },
+    ],
+  },
+  {
+    n: 2, id: "logarithms", title: "Logarithms", author: "John Napier, 1610",
+    formulas: ["\\log xy = \\log x + \\log y"],
+    wiki: `The logarithm is the inverse function to exponentiation: the logarithm of a number <i>x</i> is the
+      exponent to which a fixed base <i>b</i> must be raised to produce <i>x</i>. Since 1000 = 10&times;10&times;10,
+      the &ldquo;log base 10&rdquo; of 1000 is 3.`,
+    ours: `Enabling complex calculations quickly, centuries before computers, drove advances across
+      computer science, information theory, music, physics and engineering. NASA designed the Apollo
+      rockets with slide rules &mdash; and the astronauts carried slide rules to the Moon.`,
+    resources: [
+      { who: "Math is Fun", label: "Introduction to Logarithms", href: "https://www.mathsisfun.com/algebra/logarithms.html" },
+      { who: "NancyPi", label: "Logarithms... How?", href: "https://www.youtube.com/watch?v=Zw5t6BTQYRU" },
+      { who: "Purplemath", label: "Logarithms: the Relationship", href: "https://www.purplemath.com/modules/logs.htm" },
+    ],
+  },
+  {
+    n: 3, id: "calculus", title: "Calculus", author: "Isaac Newton, 1668",
+    formulas: ["\\frac{df}{dt} = \\lim_{h\\to 0} \\frac{f(t+h) - f(t)}{h}", "\\int_a^b f(t)\\,dt = F(b) - F(a)"],
+    wiki: `Calculus is the mathematical study of continuous change, as geometry is the study of shape.
+      John von Neumann called its development &ldquo;the greatest technical advance in exact thinking.&rdquo;`,
+    ours: `Calculus lets scientists model the real world accurately, underpinning almost every modern
+      technology &mdash; from agriculture and construction to radio, smartphones and all modern AI.
+      <b>Differentiation</b> gives the rate of change at a point; <b>integration</b>, its inverse, gives the area under a curve.`,
+    resources: [
+      { who: "3Blue1Brown", label: "The Essence of Calculus", href: "https://www.youtube.com/watch?v=WUvTyaaNkzM" },
+      { who: "Math is Fun", label: "Introduction to Calculus", href: "https://www.mathsisfun.com/calculus/index.html" },
+      { who: "Wikipedia", label: "Calculus", href: "https://en.wikipedia.org/wiki/Calculus" },
+    ],
+  },
+  {
+    n: 4, id: "gravity", title: "Law of Gravity", author: "Isaac Newton, 1687",
+    formulas: ["F = G \\frac{m_1 m_2}{d^2}"],
+    wiki: `Newton's law of universal gravitation states that every point mass attracts every other point
+      mass with a force proportional to the product of their masses and inversely proportional to the
+      square of the distance between them.`,
+    ours: `Known as the first great unification: the same force that drops an apple keeps the Moon in
+      orbit. It led to a deep understanding of the universe and enabled spaceflight, accurate surveys of
+      Earth, and satellite navigation.`,
+    resources: [
+      { who: "Khan Academy", label: "Newton's law of gravitation", href: "https://www.khanacademy.org/science/physics/centripetal-force-and-gravitation/gravity-newtonian/v/introduction-to-newton-s-law-of-gravitation" },
+      { who: "Wikipedia", label: "Gravity", href: "https://en.wikipedia.org/wiki/Gravity" },
+      { who: "Wikipedia", label: "Universal gravitation", href: "https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation" },
+    ],
+  },
+  {
+    n: 5, id: "black-scholes", title: "Black–Scholes Equation", author: "Fischer Black, Myron Scholes, 1973",
+    formulas: ["\\frac{1}{2}\\sigma^2 S^2 \\frac{\\partial^2 V}{\\partial S^2} + rS\\frac{\\partial V}{\\partial S} + \\frac{\\partial V}{\\partial t} - rV = 0"],
+    wiki: `The Black&ndash;Scholes model describes the dynamics of a financial market containing derivative
+      instruments. From its partial differential equation one can derive the Black&ndash;Scholes formula,
+      a theoretical estimate of the price of European-style options.`,
+    ours: `A commonly agreed model for valuing derivatives enabled efficient markets in these instruments,
+      which in turn allowed cheaper and better financial risk management for companies &mdash; supporting far
+      greater international trade and economic activity.`,
+    resources: [
+      { who: "Investopedia", label: "Black–Scholes Model", href: "https://www.investopedia.com/terms/b/blackscholes.asp" },
+      { who: "Columbia University", label: "The Black–Scholes Model (PDF)", href: "http://www.columbia.edu/~mh2078/FoundationsFE/BlackScholes.pdf" },
+      { who: "Wikipedia", label: "Black–Scholes model", href: "https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model" },
+    ],
+  },
+];
+
+/* --------------------------------------------------------------------
+   Build the section shells + nav
+   -------------------------------------------------------------------- */
+const main = document.getElementById("equations");
+const nav = document.getElementById("eqnav");
+
+const allBtn = document.createElement("button");
+allBtn.className = "on"; allBtn.textContent = "All";
+allBtn.onclick = () => select("all");
+nav.appendChild(allBtn);
+
+for (const e of EQ) {
+  const b = document.createElement("button");
+  b.innerHTML = `<span class="nidx">${e.n}</span>${e.title}`;
+  b.onclick = () => select(e.id);
+  b.dataset.id = e.id;
+  nav.appendChild(b);
+
+  const sec = document.createElement("section");
+  sec.className = "eq"; sec.id = "sec-" + e.id; sec.dataset.id = e.id;
+
+  const formulaHtml = e.formulas.map(() => `<div></div>`).join("");
+  sec.innerHTML = `
+    <div class="eq-head">
+      <span class="eq-num">EQ ${e.n}</span>
+      <h2 class="eq-title">${e.title}</h2>
+      <span class="eq-author">${e.author}</span>
+    </div>
+    <div class="eq-formula">${formulaHtml}</div>
+    <div class="prose">
+      <p><span class="src-tag">Wikipedia:</span> ${e.wiki}</p>
+      <div class="our-take"><b class="lbl">Our take</b>${e.ours}</div>
+    </div>
+    <div class="explorer" id="exp-${e.id}"></div>
+    <div class="resources">
+      <h4>Further resources</h4>
+      <ul>${e.resources.map(r => `<li><span class="who">${r.who} &mdash;</span> <a href="${r.href}" target="_blank" rel="noopener">${r.label}</a></li>`).join("")}</ul>
+    </div>`;
+  main.appendChild(sec);
+
+  // render formulas
+  const slots = sec.querySelectorAll(".eq-formula div");
+  e.formulas.forEach((f, i) => tex(slots[i], f, true));
+}
+
+function select(id) {
+  for (const btn of nav.querySelectorAll("button")) {
+    btn.classList.toggle("on", (id === "all" && btn === allBtn) || btn.dataset.id === id);
+  }
+  for (const sec of main.querySelectorAll("section.eq")) {
+    sec.style.display = (id === "all" || sec.dataset.id === id) ? "" : "none";
+  }
+  if (id !== "all") {
+    const sec = document.getElementById("sec-" + id);
+    window.scrollTo({ top: sec.offsetTop - 70, behavior: "smooth" });
+  }
+}
+
+/* --------------------------------------------------------------------
+   Small helpers: controls + a reusable line chart
+   -------------------------------------------------------------------- */
+function addSlider(parent, o) {
+  const wrap = document.createElement("label");
+  wrap.className = "ctrl";
+  wrap.innerHTML = `<span class="ctrl-label">${o.label}</span>
+    <span class="ctrl-row"><input type="range" min="${o.min}" max="${o.max}" step="${o.step}" value="${o.value}"><span class="ctrl-val"></span></span>`;
+  parent.appendChild(wrap);
+  const input = wrap.querySelector("input"), val = wrap.querySelector(".ctrl-val");
+  const fmt = o.format || (v => v);
+  const upd = () => { val.textContent = fmt(+input.value); };
+  upd();
+  return { get: () => +input.value, set: v => { input.value = v; upd(); },
+    on: cb => input.addEventListener("input", () => { upd(); cb(+input.value); }) };
+}
+
+function addNumber(parent, o) {
+  const wrap = document.createElement("label");
+  wrap.className = "ctrl";
+  wrap.innerHTML = `<span class="ctrl-label">${o.label}</span>
+    <span class="ctrl-row"><input type="number" min="${o.min}" max="${o.max}" step="${o.step || 1}" value="${o.value}"></span>`;
+  parent.appendChild(wrap);
+  const input = wrap.querySelector("input");
+  return { get: () => +input.value,
+    on: cb => input.addEventListener("input", () => cb(+input.value)) };
+}
+
+// Reusable line chart. o = {series:[{color,dash,pts:[[x,y]]}], xDomain,yDomain,yLog,xTitle, extras(g,x,y), width,height}
+function lineChart(host, o) {
+  host.innerHTML = "";
+  const W = o.width || 540, H = o.height || 300;
+  const m = o.margin || { top: 16, right: 16, bottom: 32, left: 44 };
+  const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+  const svg = d3.select(host).append("svg").attr("class", "chart").attr("viewBox", `0 0 ${W} ${H}`);
+
+  const flat = o.series.flatMap(s => s.pts).filter(p => p[1] != null && isFinite(p[1]));
+  const xDom = o.xDomain || d3.extent(flat, p => p[0]);
+  let yDom = o.yDomain || [d3.min(flat, p => p[1]), d3.max(flat, p => p[1])];
+  if (o.yLog && yDom[0] <= 0) yDom[0] = d3.min(flat.filter(p => p[1] > 0), p => p[1]) || 0.1;
+
+  const x = d3.scaleLinear().domain(xDom).range([m.left, m.left + iw]);
+  const y = (o.yLog ? d3.scaleLog() : d3.scaleLinear()).domain(yDom).range([m.top + ih, m.top]);
+  if (!o.yLog) y.nice();
+
+  const yTicks = y.ticks(o.yLog ? 4 : 6);
+  svg.append("g").attr("class", "grid").selectAll("line").data(yTicks).join("line")
+    .attr("x1", m.left).attr("x2", m.left + iw).attr("y1", d => y(d)).attr("y2", d => y(d));
+
+  svg.append("g").attr("transform", `translate(${m.left},0)`)
+    .call(d3.axisLeft(y).tickValues(yTicks).tickFormat(o.yFmt || (d => d)).tickSize(0))
+    .call(g => g.select(".domain").remove()).call(g => g.selectAll(".tick text").attr("x", -7));
+
+  svg.append("g").attr("transform", `translate(0,${m.top + ih})`)
+    .call(d3.axisBottom(x).ticks(o.xTicks || 7).tickFormat(o.xFmt || (d => d)).tickSize(0))
+    .call(g => g.select(".domain").remove()).call(g => g.selectAll(".tick text").attr("y", 11));
+
+  if (o.xTitle) svg.append("text").attr("class", "axis-title")
+    .attr("x", m.left + iw).attr("y", m.top + ih + 28).attr("text-anchor", "end").text(o.xTitle);
+
+  const ln = d3.line().defined(d => d[1] != null && isFinite(d[1])).x(d => x(d[0])).y(d => y(d[1])).curve(d3.curveMonotoneX);
+  for (const s of o.series) {
+    svg.append("path").attr("fill", "none").attr("stroke", s.color).attr("stroke-width", s.width || 2)
+      .attr("stroke-dasharray", s.dash || null).attr("stroke-opacity", s.opacity ?? 1).attr("d", ln(s.pts));
+  }
+  if (o.extras) o.extras(svg, x, y);
+  return { svg, x, y };
+}
+
+function legend(host, items) {
+  host.innerHTML = items.map(i =>
+    `<span><i style="background:${i.color}"></i>${i.label}</span>`).join("");
+}
+
+/* ====================================================================
+   1 — PYTHAGORAS
+   ==================================================================== */
+(function pythagoras() {
+  const root = document.getElementById("exp-pythagoras");
+  root.innerHTML = `
+    <h3>The three squares <span class="hint">drag a and b to reshape the right triangle</span></h3>
+    <div class="controls" id="p-ctrl"></div>
+    <div class="pyth-fig">
+      <div id="p-svg"></div>
+      <div class="pyth-info readout" id="p-info"></div>
+    </div>
+    <h3>Rearrangement proof <span class="hint">four identical triangles, arranged two ways</span></h3>
+    <p class="readout" style="color:#cdd5dd;font-family:var(--font-sans);font-size:13.5px;line-height:1.55">
+      Both big squares have side <i>a + b</i> and hold the same four triangles. The leftover white area must
+      therefore be equal: a single tilted square of area <i>c&sup2;</i> on the left, and two upright squares of
+      area <i>a&sup2;</i> and <i>b&sup2;</i> on the right. Hence <i>a&sup2; + b&sup2; = c&sup2;</i>.</p>
+    <div id="p-proof"></div>
+    <h3>Pythagorean triples <span class="hint">integer-sided right triangles</span></h3>
+    <p class="readout" style="color:#cdd5dd;font-family:var(--font-sans);font-size:13.5px;line-height:1.55">
+      A Pythagorean triple is three positive integers with <i>a&sup2; + b&sup2; = c&sup2;</i>, e.g. (3, 4, 5).
+      Euclid's formula turns any two integers into one.</p>
+    <button class="pill-btn" id="p-triple-btn">Generate a triple from a &amp; b</button>
+    <div class="readout" id="p-triple" style="margin-top:10px"></div>`;
+
+  const ctrl = document.getElementById("p-ctrl");
+  const aS = addSlider(ctrl, { label: "a", min: 1, max: 24, step: 1, value: 4 });
+  const bS = addSlider(ctrl, { label: "b", min: 1, max: 24, step: 1, value: 3 });
+
+  function drawTriangle(a, b) {
+    const c = Math.sqrt(a * a + b * b);
+    // math coords (y up): right angle at A=(0,0), B=(a,0), C=(0,b)
+    const sqA = [[0, 0], [a, 0], [a, -a], [0, -a]];               // square on leg a (below)
+    const sqB = [[0, 0], [0, b], [-b, b], [-b, 0]];               // square on leg b (left)
+    const sqC = [[a, 0], [a + b, a], [b, a + b], [0, b]];         // square on hypotenuse (outward)
+    const tri = [[0, 0], [a, 0], [0, b]];
+    const pts = [...sqA, ...sqB, ...sqC, ...tri];
+    const minX = Math.min(...pts.map(p => p[0])), maxX = Math.max(...pts.map(p => p[0]));
+    const minY = Math.min(...pts.map(p => p[1])), maxY = Math.max(...pts.map(p => p[1]));
+    const pad = 5;
+    const vbW = (maxX - minX) + 2 * pad, vbH = (maxY - minY) + 2 * pad;
+    const sx = px => px - minX + pad;
+    const sy = py => maxY - py + pad;                              // flip y for SVG
+    const poly = arr => arr.map(p => `${sx(p[0])},${sy(p[1])}`).join(" ");
+    const cen = arr => {
+      const cx = arr.reduce((s, p) => s + p[0], 0) / arr.length;
+      const cy = arr.reduce((s, p) => s + p[1], 0) / arr.length;
+      return [sx(cx), sy(cy)];
+    };
+    const [ax, ay] = cen(sqA), [bx, by] = cen(sqB), [cx, cy] = cen(sqC);
+    const fs = Math.max(2.4, Math.min(vbW, vbH) / 14);
+    document.getElementById("p-svg").innerHTML = `
+      <svg viewBox="0 0 ${vbW} ${vbH}" class="chart">
+        <polygon points="${poly(sqA)}" fill="rgba(34,211,238,.20)" stroke="var(--accent)" stroke-width=".4"/>
+        <polygon points="${poly(sqB)}" fill="rgba(167,139,250,.22)" stroke="var(--accent-2)" stroke-width=".4"/>
+        <polygon points="${poly(sqC)}" fill="rgba(244,114,182,.22)" stroke="var(--hot)" stroke-width=".4"/>
+        <polygon points="${poly(tri)}" fill="rgba(230,237,243,.10)" stroke="var(--text)" stroke-width=".5"/>
+        <text x="${ax}" y="${ay}" fill="var(--accent)" font-size="${fs}" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">a&#178;=${a * a}</text>
+        <text x="${bx}" y="${by}" fill="var(--accent-2)" font-size="${fs}" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">b&#178;=${b * b}</text>
+        <text x="${cx}" y="${cy}" fill="var(--hot)" font-size="${fs}" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">c&#178;=${a * a + b * b}</text>
+      </svg>`;
+    document.getElementById("p-info").innerHTML =
+      `a = <b>${a}</b> &nbsp; a&#178; = <b>${a * a}</b><br>
+       b = <b>${b}</b> &nbsp; b&#178; = <b>${b * b}</b><br>
+       c = <b>${c.toFixed(3)}</b><br>
+       a&#178; + b&#178; = <b>${a * a + b * b}</b> = c&#178;`;
+  }
+
+  function drawProof(a, b) {
+    const s = a + b, S = 250, k = S / s, P = 16, w = S + 2 * P, gap = 40;
+    const X2 = w + gap;                                            // x-offset of second square
+    const fy = v => P + (S - v * k);                               // y flip within a square (math up)
+    const fx = v => P + v * k;
+    // left: tilted c² square via 4 corner triangles
+    const L = `${P},${P} ${P + S},${P} ${P + S},${P + S} ${P},${P + S}`;
+    const inner = `${fx(a)},${fy(0)} ${fx(s)},${fy(a)} ${fx(b)},${fy(s)} ${fx(0)},${fy(b)}`;
+    // right square: a² (bottom-left) + b² (top-right) + 4 triangles filling the rest
+    const rx = v => X2 + P + v * k, ry = v => P + (S - v * k);
+    const aSq = `${rx(0)},${ry(0)} ${rx(a)},${ry(0)} ${rx(a)},${ry(a)} ${rx(0)},${ry(a)}`;
+    const bSq = `${rx(a)},${ry(a)} ${rx(s)},${ry(a)} ${rx(s)},${ry(s)} ${rx(a)},${ry(s)}`;
+    // triangles in the two leftover rectangles (each split along a diagonal)
+    const t1 = `${rx(a)},${ry(0)} ${rx(s)},${ry(0)} ${rx(a)},${ry(a)}`;
+    const t2 = `${rx(s)},${ry(0)} ${rx(s)},${ry(a)} ${rx(a)},${ry(a)}`;
+    const t3 = `${rx(0)},${ry(a)} ${rx(a)},${ry(a)} ${rx(0)},${ry(s)}`;
+    const t4 = `${rx(a)},${ry(a)} ${rx(a)},${ry(s)} ${rx(0)},${ry(s)}`;
+    const triFill = "rgba(230,237,243,.16)", triStroke = "var(--muted)";
+    const cenP = (poly, cls) => {
+      const ps = poly.split(" ").map(p => p.split(",").map(Number));
+      return [ps.reduce((s2, p) => s2 + p[0], 0) / ps.length, ps.reduce((s2, p) => s2 + p[1], 0) / ps.length];
+    };
+    const [icx, icy] = cenP(inner);
+    document.getElementById("p-proof").innerHTML = `
+      <svg viewBox="0 0 ${2 * w + gap} ${S + 2 * P}" class="chart" style="max-width:560px">
+        <polygon points="${L}" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+        <polygon points="${inner}" fill="rgba(244,114,182,.22)" stroke="var(--hot)" stroke-width="1"/>
+        <text x="${icx}" y="${icy}" fill="var(--hot)" font-size="20" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">c&#178;</text>
+        <polygon points="${aSq}" fill="rgba(34,211,238,.22)" stroke="var(--accent)" stroke-width="1"/>
+        <polygon points="${bSq}" fill="rgba(167,139,250,.22)" stroke="var(--accent-2)" stroke-width="1"/>
+        <polygon points="${t1}" fill="${triFill}" stroke="${triStroke}" stroke-width=".6"/>
+        <polygon points="${t2}" fill="${triFill}" stroke="${triStroke}" stroke-width=".6"/>
+        <polygon points="${t3}" fill="${triFill}" stroke="${triStroke}" stroke-width=".6"/>
+        <polygon points="${t4}" fill="${triFill}" stroke="${triStroke}" stroke-width=".6"/>
+        <text x="${rx(a / 2)}" y="${ry(a / 2)}" fill="var(--accent)" font-size="18" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">a&#178;</text>
+        <text x="${rx((a + s) / 2)}" y="${ry((a + s) / 2)}" fill="var(--accent-2)" font-size="18" font-family="var(--font-mono)" text-anchor="middle" dominant-baseline="central">b&#178;</text>
+      </svg>`;
+  }
+
+  // Euclid's formula: from u>v>0 produce (u²−v², 2uv, u²+v²)
+  function genTriple(a, b) {
+    let u = Math.max(a, b), v = Math.min(a, b);
+    if (u === v) u = v + 1;
+    let x = u * u - v * v, y = 2 * u * v;
+    if (x > y) [x, y] = [y, x];
+    return [x, y, u * u + v * v];
+  }
+
+  function redraw() { drawTriangle(aS.get(), bS.get()); drawProof(aS.get(), bS.get()); }
+  aS.on(redraw); bS.on(redraw); redraw();
+
+  document.getElementById("p-triple-btn").onclick = () => {
+    const [x, y, z] = genTriple(aS.get(), bS.get());
+    document.getElementById("p-triple").innerHTML =
+      `(<b>${x}</b>, <b>${y}</b>, <b>${z}</b>) &nbsp;&rarr;&nbsp; ${x}&#178; + ${y}&#178; = ${x * x} + ${y * y} = <b>${z * z}</b> = ${z}&#178;`;
+  };
+})();
+
+/* ====================================================================
+   2 — LOGARITHMS
+   ==================================================================== */
+(function logarithms() {
+  const root = document.getElementById("exp-logarithms");
+  root.innerHTML = `
+    <h3>The logarithm identity <span class="hint">multiplying is hard; adding logs is easy</span></h3>
+    <div class="controls" id="l-ctrl"></div>
+    <div class="readout" id="l-out"></div>
+    <h3>Graph of logarithms <span class="hint">every base passes through (1, 0)</span></h3>
+    <div class="legend" id="l-leg"></div>
+    <div id="l-chart"></div>
+    <h3>Why a log scale tames exponential growth</h3>
+    <p class="readout" style="color:#cdd5dd;font-family:var(--font-sans);font-size:13.5px;line-height:1.55">
+      The same curve <i>y = base<sup>x</sup></i>, drawn on a linear y-axis (left) and a logarithmic one (right).
+      On the log scale, exponential growth becomes a straight line.</p>
+    <div class="chart-grid">
+      <div><div class="chart-title">linear y-axis</div><div id="l-lin"></div></div>
+      <div><div class="chart-title">log y-axis</div><div id="l-log"></div></div>
+    </div>`;
+
+  const ctrl = document.getElementById("l-ctrl");
+  const xS = addSlider(ctrl, { label: "x", min: 1, max: 100, step: 1, value: 27 });
+  const yS = addSlider(ctrl, { label: "y", min: 1, max: 100, step: 1, value: 34 });
+  // base via segmented control
+  const baseWrap = document.createElement("label"); baseWrap.className = "ctrl";
+  baseWrap.innerHTML = `<span class="ctrl-label">base</span><span class="seg" id="l-base"></span>`;
+  ctrl.appendChild(baseWrap);
+  const bases = [["2", 2], ["e", Math.E], ["10", 10]];
+  let base = 10;
+  bases.forEach(([lab, val]) => {
+    const btn = document.createElement("button");
+    btn.textContent = lab; btn.classList.toggle("on", val === base);
+    btn.onclick = () => { base = val; baseWrap.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === btn)); redraw(); };
+    baseWrap.querySelector("#l-base").appendChild(btn);
+  });
+
+  const baseLabel = () => Math.abs(base - Math.E) < 1e-6 ? "e" : base;
+
+  function redraw() {
+    const x = xS.get(), y = yS.get();
+    const lg = v => Math.log(v) / Math.log(base);
+    document.getElementById("l-out").innerHTML =
+      `base = <b>${(+baseLabel()).toFixed ? Number(base).toFixed(3).replace(/\.?0+$/, "") : baseLabel()}</b> &nbsp;(${baseLabel()})<br>
+       log<sub>${baseLabel()}</sub>(${x}) = <b>${lg(x).toFixed(3)}</b><br>
+       log<sub>${baseLabel()}</sub>(${y}) = <b>${lg(y).toFixed(3)}</b><br>
+       log<sub>${baseLabel()}</sub>(${x} &times; ${y}) = log(${x}) + log(${y}) = <b>${lg(x * y).toFixed(3)}</b>`;
+
+    // log curves for several bases over x ∈ (0.1, 50]
+    const xs = d3.range(0.1, 50.01, 0.25);
+    const curves = [
+      { color: "#64748b", base: 0.5, label: "base ½" },
+      { color: "var(--accent)", base: 2, label: "base 2" },
+      { color: "var(--good)", base: Math.E, label: "base e" },
+      { color: "var(--accent-2)", base: 10, label: "base 10" },
+    ];
+    const series = curves.map(c => ({ color: c.color, pts: xs.map(v => [v, Math.log(v) / Math.log(c.base)]) }));
+    legend(document.getElementById("l-leg"), curves.map(c => ({ color: c.color, label: c.label })));
+    lineChart(document.getElementById("l-chart"), {
+      series, xDomain: [0, 50], yDomain: [-8, 8], xTitle: "x", height: 300,
+    });
+
+    // exponential growth y = base^x, linear vs log y
+    const ex = d3.range(0, 6.05, 0.1);
+    const epts = ex.map(v => [v, Math.pow(base, v)]);
+    lineChart(document.getElementById("l-lin"), { series: [{ color: "var(--accent)", pts: epts }], xTitle: "x", width: 360, height: 240 });
+    lineChart(document.getElementById("l-log"), { series: [{ color: "var(--accent-2)", pts: epts }], xTitle: "x", width: 360, height: 240, yLog: true, yFmt: d3.format("~s") });
+  }
+  xS.on(redraw); yS.on(redraw); redraw();
+})();
+
+/* ====================================================================
+   3 — CALCULUS
+   ==================================================================== */
+(function calculus() {
+  const root = document.getElementById("exp-calculus");
+  root.innerHTML = `
+    <h3>Build your own polynomial <span class="hint">set the coefficients</span></h3>
+    <div class="controls" id="c-ctrl"></div>
+    <div class="eq-formula" style="text-align:left;font-size:1em">
+      <div id="c-f"></div><div id="c-df"></div><div id="c-if"></div>
+    </div>
+    <div class="seg" id="c-mode" style="margin:18px 0 6px">
+      <button data-m="diff" class="on">Differentiation</button>
+      <button data-m="int">Integration</button>
+    </div>
+    <div id="c-diff">
+      <div class="controls" id="c-diff-ctrl"></div>
+      <div class="readout" id="c-diff-out"></div>
+      <div class="legend" id="c-diff-leg"></div>
+      <div id="c-diff-chart"></div>
+    </div>
+    <div id="c-int" style="display:none">
+      <div class="controls" id="c-int-ctrl"></div>
+      <div class="readout" id="c-int-out"></div>
+      <div id="c-int-chart"></div>
+    </div>`;
+
+  const ctrl = document.getElementById("c-ctrl");
+  const c3 = addNumber(ctrl, { label: "x³", min: -10, max: 10, value: 0 });
+  const c2 = addNumber(ctrl, { label: "x²", min: -10, max: 10, value: 1 });
+  const c1 = addNumber(ctrl, { label: "x¹", min: -10, max: 10, value: 0 });
+  const c0 = addNumber(ctrl, { label: "x⁰", min: -10, max: 10, value: 0 });
+
+  const dctrl = document.getElementById("c-diff-ctrl");
+  const x0S = addSlider(dctrl, { label: "x₀", min: -5, max: 5, step: 0.1, value: 2, format: v => v.toFixed(1) });
+  const hS = addSlider(dctrl, { label: "h", min: 0.05, max: 3, step: 0.05, value: 3, format: v => v.toFixed(2) });
+
+  const ictrl = document.getElementById("c-int-ctrl");
+  const aS = addSlider(ictrl, { label: "a", min: -5, max: 5, step: 0.1, value: -4, format: v => v.toFixed(1) });
+  const bS = addSlider(ictrl, { label: "b", min: -5, max: 5, step: 0.1, value: 4, format: v => v.toFixed(1) });
+  const stepsS = addSlider(ictrl, { label: "steps", min: 1, max: 32, step: 1, value: 16 });
+
+  // polynomial as fractions for nice integral display
+  const g = (n, d = 1) => { const s = d < 0 ? -1 : 1; n *= s; d *= s; const k = gcd(Math.abs(n), d) || 1; return [n / k, d / k]; };
+  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; }
+
+  // terms: [{c:[num,den], p}] high→low power; returns latex
+  function polyTex(terms) {
+    const parts = [];
+    for (const t of terms) {
+      const [n, d] = t.c; if (n === 0) continue;
+      const neg = n < 0, an = Math.abs(n);
+      let coef;
+      if (d === 1) coef = (an === 1 && t.p > 0) ? "" : String(an);
+      else coef = `\\tfrac{${an}}{${d}}`;
+      let varp = t.p === 0 ? "" : t.p === 1 ? "x" : `x^{${t.p}}`;
+      parts.push({ sign: neg ? "-" : "+", body: coef + varp || String(an) });
+    }
+    if (!parts.length) return "0";
+    return parts.map((p, i) => i === 0 ? (p.sign === "-" ? "-" : "") + p.body : ` ${p.sign} ${p.body}`).join("");
+  }
+
+  function updateFormulas() {
+    const a3 = c3.get(), a2 = c2.get(), a1 = c1.get(), a0 = c0.get();
+    tex(document.getElementById("c-f"), "f(x) = " + polyTex([{ c: g(a3), p: 3 }, { c: g(a2), p: 2 }, { c: g(a1), p: 1 }, { c: g(a0), p: 0 }]));
+    tex(document.getElementById("c-df"), "f'(x) = " + polyTex([{ c: g(3 * a3), p: 2 }, { c: g(2 * a2), p: 1 }, { c: g(a1), p: 0 }]));
+    tex(document.getElementById("c-if"), "\\int f(x)\\,dx = " + polyTex([{ c: g(a3, 4), p: 4 }, { c: g(a2, 3), p: 3 }, { c: g(a1, 2), p: 2 }, { c: g(a0), p: 1 }]) + " + c");
+  }
+
+  const fx = x => { const a3 = c3.get(), a2 = c2.get(), a1 = c1.get(), a0 = c0.get(); return a3 * x ** 3 + a2 * x ** 2 + a1 * x + a0; };
+  const dfx = x => { const a3 = c3.get(), a2 = c2.get(), a1 = c1.get(); return 3 * a3 * x ** 2 + 2 * a2 * x + a1; };
+  const Fx = x => { const a3 = c3.get(), a2 = c2.get(), a1 = c1.get(), a0 = c0.get(); return a3 / 4 * x ** 4 + a2 / 3 * x ** 3 + a1 / 2 * x ** 2 + a0 * x; };
+
+  function drawDiff() {
+    const x0 = x0S.get(), h = hS.get();
+    const xs = d3.range(-5, 8.55, 0.1);
+    const f = xs.map(x => [x, fx(x)]);
+    const m1 = dfx(x0), c1c = fx(x0) - m1 * x0;          // tangent
+    const m2 = (fx(x0 + h) - fx(x0)) / h, c2c = fx(x0) - m2 * x0;  // secant
+    const tan = xs.map(x => [x, m1 * x + c1c]);
+    const sec = xs.map(x => [x, m2 * x + c2c]);
+    const yvals = f.map(p => p[1]);
+    const yDom = [Math.min(...yvals), Math.max(...yvals)];
+    const items = [
+      { color: "var(--accent)", label: "f(x)" },
+      { color: "var(--good)", label: "tangent at x₀ (true slope)" },
+      { color: "var(--hot)", label: "secant (estimate)" },
+    ];
+    legend(document.getElementById("c-diff-leg"), items);
+    lineChart(document.getElementById("c-diff-chart"), {
+      series: [
+        { color: "var(--accent)", pts: f, width: 2.4 },
+        { color: "var(--good)", pts: tan, width: 1.6, dash: "5 4" },
+        { color: "var(--hot)", pts: sec, width: 1.6, dash: "2 4" },
+      ],
+      xDomain: [-5, 8.5], yDomain: yDom, xTitle: "x", height: 320,
+      extras: (svg, x, y) => {
+        for (const px of [x0, x0 + h]) {
+          svg.append("circle").attr("cx", x(px)).attr("cy", y(fx(px))).attr("r", 4)
+            .attr("fill", "var(--text)").attr("stroke", "var(--bg)").attr("stroke-width", 1.5);
+          svg.append("text").attr("x", x(px)).attr("y", y(fx(px)) - 9).attr("text-anchor", "middle")
+            .attr("fill", "var(--muted)").attr("font-size", 10).attr("font-family", "var(--font-mono)")
+            .text(px === x0 ? "x₀" : "x₀+h");
+        }
+      },
+    });
+    document.getElementById("c-diff-out").innerHTML =
+      `x₀ = <b>${x0.toFixed(1)}</b> &nbsp; h = <b>${h.toFixed(2)}</b> &nbsp; f(x₀) = <b>${fx(x0).toFixed(2)}</b><br>
+       true slope dy/dx = <b>${m1.toFixed(3)}</b> &nbsp; estimate = <b>${m2.toFixed(3)}</b> &nbsp;
+       (error ${(Math.abs(m1) < 1e-9 ? "—" : (100 * Math.abs((m2 - m1) / m1)).toFixed(1) + "%")})`;
+  }
+
+  function drawInt() {
+    let a = aS.get(), b = bS.get();
+    if (a > b) [a, b] = [b, a];
+    const steps = stepsS.get(), range = b - a || 1e-6;
+    const pad = range / 10;
+    const xs = d3.range(a - pad, b + pad + 0.01, range / 200);
+    const f = xs.map(x => [x, fx(x)]);
+    let approx = 0; const rects = [];
+    for (let i = 0; i < steps; i++) {
+      const w = range / steps, xm = a + w * (i + 0.5);
+      const hgt = fx(xm);
+      rects.push({ x1: a + w * i, x2: a + w * (i + 1), h: hgt });
+      approx += hgt * w;
+    }
+    const exact = Fx(b) - Fx(a);
+    const yvals = f.map(p => p[1]).concat([0]);
+    const yDom = [Math.min(...yvals), Math.max(...yvals)];
+    lineChart(document.getElementById("c-int-chart"), {
+      series: [{ color: "var(--accent)", pts: f, width: 2.4 }],
+      xDomain: [a - pad, b + pad], yDomain: yDom, xTitle: "x", height: 320,
+      extras: (svg, x, y) => {
+        const y0 = y(0);
+        for (const r of rects) {
+          svg.insert("rect", ":first-child")
+            .attr("x", x(r.x1)).attr("width", Math.max(0, x(r.x2) - x(r.x1)))
+            .attr("y", Math.min(y(r.h), y0)).attr("height", Math.abs(y(r.h) - y0))
+            .attr("fill", r.h >= 0 ? "rgba(34,211,238,.18)" : "rgba(244,114,182,.18)")
+            .attr("stroke", "rgba(34,211,238,.45)").attr("stroke-width", 0.6);
+        }
+        svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", y.range()[0]).attr("y2", y.range()[1])
+          .attr("stroke", "var(--border-strong)").attr("stroke-width", 1).attr("opacity", x(0) >= x.range()[0] && x(0) <= x.range()[1] ? 0.5 : 0);
+        for (const px of [a, b]) {
+          svg.append("line").attr("x1", x(px)).attr("x2", x(px)).attr("y1", y.range()[0]).attr("y2", y.range()[1])
+            .attr("stroke", "var(--hot)").attr("stroke-width", 1).attr("stroke-dasharray", "3 3").attr("opacity", 0.6);
+        }
+      },
+    });
+    const diff = exact === 0 ? "—" : (100 * Math.abs(1 - approx / exact)).toFixed(2) + "%";
+    document.getElementById("c-int-out").innerHTML =
+      `<div class="stat-grid">
+        <div class="stat"><div class="k">steps</div><div class="v">${steps}</div></div>
+        <div class="stat"><div class="k">bars (approx)</div><div class="v">${approx.toFixed(3)}</div></div>
+        <div class="stat"><div class="k">exact ∫</div><div class="v">${exact.toFixed(3)}</div></div>
+        <div class="stat"><div class="k">difference</div><div class="v">${diff}</div></div>
+       </div>
+       More steps &rarr; the midpoint rectangles converge on the exact area. Analytic integration is the limit as steps &rarr; &infin;.`;
+  }
+
+  let mode = "diff";
+  document.querySelectorAll("#c-mode button").forEach(btn => {
+    btn.onclick = () => {
+      mode = btn.dataset.m;
+      document.querySelectorAll("#c-mode button").forEach(b => b.classList.toggle("on", b === btn));
+      document.getElementById("c-diff").style.display = mode === "diff" ? "" : "none";
+      document.getElementById("c-int").style.display = mode === "int" ? "" : "none";
+      redraw();
+    };
+  });
+
+  function redraw() { updateFormulas(); if (mode === "diff") drawDiff(); else drawInt(); }
+  [c3, c2, c1, c0].forEach(c => c.on(redraw));
+  x0S.on(drawDiff); hS.on(drawDiff);
+  aS.on(drawInt); bS.on(drawInt); stepsS.on(drawInt);
+  redraw();
+})();
+
+/* ====================================================================
+   4 — GRAVITY
+   ==================================================================== */
+(function gravity() {
+  const root = document.getElementById("exp-gravity");
+  root.innerHTML = `
+    <h3>The gravitational constant</h3>
+    <div class="eq-formula" id="g-const" style="font-size:1em"></div>
+    <h3>How much would I weigh elsewhere? <span class="hint">enter your mass</span></h3>
+    <div class="controls" id="g-ctrl">
+      <label class="ctrl"><span class="ctrl-label">your mass</span>
+        <span class="ctrl-row"><input type="number" id="g-mass" min="0" max="500" value="70"><span class="ctrl-val" id="g-unit-lbl">kg</span></span></label>
+      <label class="ctrl"><span class="ctrl-label">units</span>
+        <span class="radio-row"><label><input type="radio" name="g-u" value="kg" checked>kg</label><label><input type="radio" name="g-u" value="lbs">lbs</label></span></label>
+    </div>
+    <ul class="grav-list" id="g-list"></ul>`;
+
+  tex(document.getElementById("g-const"), "G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}", true);
+
+  const bodies = [
+    { e: "🌍", name: "Earth", f: 1 },
+    { e: "🌑", name: "Moon", f: 0.166 },
+    { e: "🔴", name: "Mars", f: 0.377 },
+    { e: "🪐", name: "Gliese 667 Cc (super-Earth)", f: 1.6 },
+    { e: "⚫", name: "400 km from a basketball-sized black hole", f: 3600 },
+  ];
+  const massEl = document.getElementById("g-mass");
+  const unitLbl = document.getElementById("g-unit-lbl");
+
+  function unit() { return document.querySelector("input[name=g-u]:checked").value; }
+  function redraw() {
+    const m = +massEl.value || 0, u = unit();
+    unitLbl.textContent = u;
+    document.getElementById("g-list").innerHTML = bodies.map(b => {
+      const w = b.f * m;
+      const val = b.f >= 100 ? Math.round(w).toLocaleString() : (Math.round(w * 10) / 10).toLocaleString();
+      return `<li><span class="body-emoji">${b.e}</span><span class="body-name">${b.name}</span><span class="body-w">${val} ${u}</span></li>`;
+    }).join("");
+  }
+  massEl.addEventListener("input", redraw);
+  document.querySelectorAll("input[name=g-u]").forEach(r => r.addEventListener("change", () => {
+    // swap a sensible default when toggling units
+    massEl.value = unit() === "kg" ? 70 : 154;
+    redraw();
+  }));
+  redraw();
+})();
+
+/* ====================================================================
+   5 — BLACK–SCHOLES
+   ==================================================================== */
+(function blackScholes() {
+  const root = document.getElementById("exp-black-scholes");
+  root.innerHTML = `
+    <h3>European vanilla option <span class="hint">price &amp; Greeks for a call and a put</span></h3>
+    <div class="controls" id="bs-ctrl"></div>
+    <div class="readout" id="bs-summary" style="margin-bottom:6px"></div>
+    <table class="greeks" id="bs-table"></table>
+    <h3>Value vs spot price</h3>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Call</span><span><i style="background:var(--accent-2)"></i>Put</span></div>
+    <div id="bs-val"></div>
+    <h3>The Greeks vs spot price <span class="hint">sensitivities of the option value</span></h3>
+    <div class="chart-grid" id="bs-greeks"></div>`;
+
+  const ctrl = document.getElementById("bs-ctrl");
+  const T = addSlider(ctrl, { label: "maturity (yrs)", min: 0.5, max: 10, step: 0.5, value: 2, format: v => v.toFixed(1) });
+  const S = addSlider(ctrl, { label: "spot (USD)", min: 10, max: 250, step: 5, value: 100 });
+  const K = addSlider(ctrl, { label: "strike (USD)", min: 10, max: 250, step: 5, value: 100 });
+  const r = addSlider(ctrl, { label: "risk-free rate", min: -0.05, max: 0.2, step: 0.01, value: 0.03, format: v => (v * 100).toFixed(0) + "%" });
+  const sig = addSlider(ctrl, { label: "volatility", min: 0.05, max: 1, step: 0.01, value: 0.2, format: v => (v * 100).toFixed(0) + "%" });
+
+  // standard normal cdf/pdf (Abramowitz & Stegun 7.1.26)
+  function erf(x) {
+    const t = 1 / (1 + 0.3275911 * Math.abs(x));
+    const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return x >= 0 ? y : -y;
+  }
+  const N = x => 0.5 * (1 + erf(x / Math.SQRT2));
+  const phi = x => Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+
+  function bs(Tt, St, Kk, rr, vv) {
+    Tt = Math.max(Tt, 1e-6); vv = Math.max(vv, 1e-6);
+    const d1 = (Math.log(St / Kk) + (rr + 0.5 * vv * vv) * Tt) / (vv * Math.sqrt(Tt));
+    const d2 = d1 - vv * Math.sqrt(Tt);
+    const pvK = Kk * Math.exp(-rr * Tt);
+    const call = N(d1) * St - N(d2) * pvK;
+    const put = pvK - St + call;
+    const gamma = phi(d1) / (St * vv * Math.sqrt(Tt));
+    const vega = St * phi(d1) * Math.sqrt(Tt);
+    const cTheta = -(St * phi(d1) * vv) / (2 * Math.sqrt(Tt)) - rr * pvK * N(d2);
+    const pTheta = -(St * phi(d1) * vv) / (2 * Math.sqrt(Tt)) + rr * pvK * N(-d2);
+    const cRho = Kk * Tt * Math.exp(-rr * Tt) * N(d2);
+    const pRho = -Kk * Tt * Math.exp(-rr * Tt) * N(-d2);
+    return { call, put, cDelta: N(d1), pDelta: N(d1) - 1, gamma, vega, cTheta, pTheta, cRho, pRho };
+  }
+
+  const fmt = v => (Math.abs(v) >= 1000 ? v.toFixed(0) : v.toFixed(2));
+
+  function redraw() {
+    const Tt = T.get(), St = S.get(), Kk = K.get(), rr = r.get(), vv = sig.get();
+    const o = bs(Tt, St, Kk, rr, vv);
+    document.getElementById("bs-summary").innerHTML =
+      `Spot <b>${St}</b>, strike <b>${Kk}</b>, <b>${Tt.toFixed(1)}</b> yrs, rate <b>${(rr * 100).toFixed(0)}%</b>, vol <b>${(vv * 100).toFixed(0)}%</b>`;
+    const rows = [
+      ["Value (USD)", o.call, o.put], ["Delta", o.cDelta, o.pDelta], ["Gamma", o.gamma, o.gamma],
+      ["Vega", o.vega, o.vega], ["Theta", o.cTheta, o.pTheta], ["Rho", o.cRho, o.pRho],
+    ];
+    document.getElementById("bs-table").innerHTML =
+      `<thead><tr><th>Measure</th><th>Call</th><th>Put</th></tr></thead><tbody>` +
+      rows.map(([k, c, p]) => `<tr><td>${k}</td><td class="cval">${fmt(c)}</td><td class="pval">${fmt(p)}</td></tr>`).join("") +
+      `</tbody>`;
+
+    const spots = d3.range(5, 251, 5);
+    const data = spots.map(s => ({ s, ...bs(Tt, s, Kk, rr, vv) }));
+    lineChart(document.getElementById("bs-val"), {
+      series: [
+        { color: "var(--accent)", pts: data.map(d => [d.s, d.call]) },
+        { color: "var(--accent-2)", pts: data.map(d => [d.s, d.put]) },
+      ],
+      xTitle: "spot", height: 260,
+      extras: (svg, x, y) => {
+        svg.append("line").attr("x1", x(Kk)).attr("x2", x(Kk)).attr("y1", y.range()[0]).attr("y2", y.range()[1])
+          .attr("stroke", "var(--muted)").attr("stroke-dasharray", "3 3").attr("opacity", 0.5);
+      },
+    });
+
+    const greeks = [
+      { key: "Delta", c: "cDelta", p: "pDelta" }, { key: "Gamma", c: "gamma", p: "gamma" },
+      { key: "Vega", c: "vega", p: "vega" }, { key: "Theta", c: "cTheta", p: "pTheta" },
+      { key: "Rho", c: "cRho", p: "pRho" },
+    ];
+    const grid = document.getElementById("bs-greeks");
+    grid.innerHTML = greeks.map(g => `<div><div class="chart-title">${g.key}</div><div id="bsg-${g.key}"></div></div>`).join("");
+    for (const g of greeks) {
+      const same = g.c === g.p;
+      const series = [{ color: "var(--accent)", pts: data.map(d => [d.s, d[g.c]]), width: 1.8 }];
+      if (!same) series.push({ color: "var(--accent-2)", pts: data.map(d => [d.s, d[g.p]]), width: 1.8 });
+      lineChart(document.getElementById("bsg-" + g.key), { series, xTitle: "spot", width: 360, height: 200,
+        margin: { top: 10, right: 14, bottom: 28, left: 46 } });
+    }
+  }
+  [T, S, K, r, sig].forEach(c => c.on(redraw));
+  redraw();
+})();
+</script>
+</body>
+</html>
