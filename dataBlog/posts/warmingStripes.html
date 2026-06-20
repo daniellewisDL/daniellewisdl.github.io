@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNQX1JJWVB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PNQX1JJWVB');
+    </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Warming Stripes &mdash; 3D</title>
+<meta name="description" content="The famous warming stripes as a 3-D surface: 175 years of global temperature anomalies spread across the year, exposing which months warm fastest. Built with Three.js." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --fg: #e6edf3;
+    --muted: #7d8896;
+    --accent: #58a6ff;
+    --cold: #4a8fe0;
+    --hot: #ff6a4a;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070a; color: var(--fg); font-family: var(--sans); }
+  #app {
+    display: flex; flex-direction: column; height: 100vh;
+    max-width: 1180px; margin: 0 auto; background: var(--bg);
+    box-shadow: 0 0 0 1px #21262d, 0 0 40px rgba(0,0,0,.5);
+  }
+  header {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
+    padding: 13px 22px; background: var(--panel); border-bottom: 1px solid #21262d;
+  }
+  header h1 { font-size: 24px; margin: 0; font-weight: 700; letter-spacing: -.6px; color: #fff; }
+  header h1 small { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-top: 2px; }
+  .spacer { flex: 1; }
+  .control { display: flex; flex-direction: column; gap: 4px; }
+  .control label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .control .row { display: flex; align-items: center; gap: 6px; }
+  button {
+    background: #21262d; color: var(--fg); border: 1px solid #30363d;
+    border-radius: 6px; padding: 6px 11px; font-size: 13px; cursor: pointer; font-family: var(--sans);
+  }
+  button:hover { border-color: var(--accent); }
+  button.on { border-color: var(--accent); color: #fff; background: #1f2c3d; }
+  .seg { display: inline-flex; border: 1px solid #30363d; border-radius: 6px; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; border-right: 1px solid #30363d; }
+  .seg button:last-child { border-right: none; }
+  .seg button.on { background: #1f2c3d; color: #fff; }
+
+  #chartWrap { position: relative; flex: 1; overflow: hidden; }
+  #gl { width: 100%; height: 100%; display: block; cursor: grab; }
+  #gl:active { cursor: grabbing; }
+
+  #hint {
+    position: absolute; left: 18px; bottom: 14px; font-size: 11.5px; color: var(--muted);
+    pointer-events: none; font-family: var(--mono); line-height: 1.5;
+    text-shadow: 0 1px 6px rgba(0,0,0,.8);
+  }
+  #hint b { color: var(--fg); font-weight: 500; }
+
+  #readout {
+    position: absolute; left: 18px; top: 16px; pointer-events: none;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7; opacity: 0; transition: opacity .1s;
+    background: rgba(13,17,23,.66); border-left: 3px solid var(--accent); border-radius: 6px;
+    padding: 8px 12px; text-shadow: 0 1px 6px rgba(0,0,0,.8);
+  }
+  #readout .r-anom { font-size: 22px; font-weight: 700; color: #fff; }
+  #readout .r-meta { color: var(--muted); }
+  #readout .r-meta b { color: var(--fg); font-weight: 500; }
+
+  #loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-family: var(--mono); font-size: 13px; background: var(--bg);
+  }
+
+  footer {
+    display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
+    padding: 9px 22px 11px; background: var(--panel); border-top: 1px solid #21262d;
+    font-size: 10.5px; color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    header { gap: 7px 12px; padding: 8px 14px; }
+    header h1 { font-size: 17px; flex: 1 1 100%; }
+    header h1 small { display: none; }
+    .spacer { display: none; }
+    .control label { font-size: 9px; }
+    button { padding: 5px 9px; font-size: 12px; }
+    #readout { font-size: 12px; left: 12px; top: 12px; }
+    #readout .r-anom { font-size: 18px; }
+    #hint { left: 12px; bottom: 10px; font-size: 10px; }
+    footer { padding: 7px 14px 9px; }
+  }
+  body.clean header .control, body.clean footer, body.clean #hint { display: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Warming Stripes &mdash; 3D<small>Year &times; month &times; temperature anomaly, 1850 &ndash; today</small></h1>
+    <div class="spacer"></div>
+    <div class="control">
+      <label>From</label>
+      <div class="seg" id="range">
+        <button data-yr="1850" class="on">1850</button>
+        <button data-yr="1900">1900</button>
+        <button data-yr="1950">1950</button>
+        <button data-yr="1980">1980</button>
+      </div>
+    </div>
+    <div class="control">
+      <label>View</label>
+      <div class="row">
+        <button id="spin">Spin</button>
+        <button id="wire">Grid</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="chartWrap">
+    <canvas id="gl"></canvas>
+    <div id="readout"></div>
+    <div id="hint"><b>Drag</b> to rotate &middot; <b>scroll</b> to zoom &middot; <b>hover</b> to read an anomaly &middot; <span style="color:#eef4fa">white</span> = annual mean &middot; <span style="color:#ffb347">amber</span> = that month, every year</div>
+    <div id="loading">Loading 175 years of HadCRUT5 temperatures&hellip;</div>
+  </div>
+
+  <footer>
+    <span>Source: <a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/" target="_blank" rel="noopener">HadCRUT5</a> &mdash; Met Office Hadley Centre &amp; UEA CRU. Anomalies vs the 1961&ndash;1990 average.</span>
+    <span>Homage to Ed Hawkins, #ShowYourStripes. &middot; daniellewisDL</span>
+  </footer>
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+// Twelve months of the year form the "maturity" axis here.
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const LABELS = MONTHS;
+const M = LABELS.length;            // 12
+
+// World dimensions (arbitrary units).
+const SX = 150, SZ = 48, SY = 26;   // year, month, anomaly extents
+let MINY = -1, MAXY = 2;            // anomaly axis floor/ceiling (set per view)
+
+const params = new URLSearchParams(location.search);
+if (params.get("clean") === "1") document.body.classList.add("clean");
+
+const wrap = document.getElementById("chartWrap");
+const canvas = document.getElementById("gl");
+const readout = document.getElementById("readout");
+
+// Diverging warming-stripes ramp: cold = blue, baseline = pale, warm = red.
+// Domain is anchored once on the full record so a given colour always means the
+// same temperature, regardless of the year range on screen.
+const ramp = d3.scaleDiverging(t => d3.interpolateRdBu(1 - t)).clamp(true);
+const fmt2 = d3.format("+.2f");
+const fmt1 = d3.format("+.1f");
+
+let renderer, scene, camera, controls;
+let world;
+let surfaceMesh = null;
+let gridLines = null, meanTube = null, histTube = null, marker = null, zeroPlane = null;
+let yearTube = null, yearDots = null;   // the highlighted seasonal profile at the hovered year
+let lastI = -1, lastJ = -1;
+let allYears = [];          // [{yr, vals[12]}] complete calendar years
+let grid = [];              // current build (filtered by start year)
+let annualMean = [];        // mean anomaly per year in current build
+let T = 0;
+let showGrid = true, spinning = false;
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let hoverActive = false;
+
+// ---------- coordinate helpers ----------
+const xAt = i => (i / Math.max(1, T - 1) - 0.5) * SX;          // year -> x
+const zAt = j => (0.5 - j / (M - 1)) * SZ;                     // month -> z (Jan front/+z)
+const yAt = v => ((v - MINY) / (MAXY - MINY)) * SY;            // anomaly -> y (floor = MINY)
+const zCenter = zAt((M - 1) / 2);
+
+// ---------- load ----------
+d3.csv("./data/hadcrut5_global_monthly.csv").then(raw => {
+  const byYear = new Map();
+  for (const row of raw) {
+    const t = row["Time"];                  // "YYYY-MM"
+    const v = +row["Anomaly (deg C)"];
+    if (!t || Number.isNaN(v)) continue;
+    const yr = +t.slice(0, 4), mo = +t.slice(5, 7) - 1;
+    if (!byYear.has(yr)) byYear.set(yr, new Array(M).fill(null));
+    byYear.get(yr)[mo] = v;
+  }
+  // Keep only complete calendar years so the surface is a clean rectangular grid.
+  allYears = [...byYear.entries()]
+    .filter(([, vals]) => vals.every(v => v != null))
+    .map(([yr, vals]) => ({ yr, vals }))
+    .sort((a, b) => a.yr - b.yr);
+
+  // Colour domain anchored on the full record, centred on the 1961-90 baseline (0).
+  let lo = Infinity, hi = -Infinity;
+  for (const y of allYears) for (const v of y.vals) { if (v < lo) lo = v; if (v > hi) hi = v; }
+  ramp.domain([lo, 0, hi]);
+
+  initThree();
+  build(1850);
+  document.getElementById("loading").remove();
+  animate();
+});
+
+// ---------- build the grid for a start year ----------
+function buildGrid(startYear) {
+  return allYears.filter(y => y.yr >= startYear).map(y => ({ yr: y.yr, vals: y.vals }));
+}
+
+// ---------- Three.js scene ----------
+function initThree() {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color("#0d1117");
+
+  camera = new THREE.PerspectiveCamera(42, 1, 0.1, 2000);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 60;
+  controls.maxDistance = 480;
+  controls.target.set(0, SY * 0.32, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+  const key = new THREE.DirectionalLight(0xffffff, 0.65);
+  key.position.set(-1, 2.2, 1.4);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0x9fd0ff, 0.25);
+  fill.position.set(1, 1, -1.5);
+  scene.add(fill);
+
+  world = new THREE.Group();
+  scene.add(world);
+
+  resize();
+  window.addEventListener("resize", resize);
+  new ResizeObserver(resize).observe(wrap);
+
+  canvas.addEventListener("pointermove", onPointerMove);
+  canvas.addEventListener("pointerleave", () => { hoverActive = false; hideHover(); });
+
+  document.getElementById("range").addEventListener("click", e => {
+    const b = e.target.closest("button[data-yr]"); if (!b) return;
+    document.querySelectorAll("#range button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    build(+b.dataset.yr);
+  });
+  document.getElementById("wire").addEventListener("click", e => {
+    showGrid = !showGrid; e.currentTarget.classList.toggle("on", showGrid);
+    if (gridLines) gridLines.visible = showGrid;
+  });
+  document.getElementById("wire").classList.toggle("on", showGrid);
+  document.getElementById("spin").addEventListener("click", e => {
+    spinning = !spinning; e.currentTarget.classList.toggle("on", spinning);
+    controls.autoRotate = spinning; controls.autoRotateSpeed = 0.6;
+  });
+  document.getElementById("reset").addEventListener("click", resetView);
+}
+
+function clearWorld() {
+  for (const c of [...world.children]) {
+    world.remove(c);
+    c.traverse(o => {
+      o.geometry?.dispose();
+      if (Array.isArray(o.material)) o.material.forEach(m => m.dispose()); else o.material?.dispose();
+    });
+  }
+  surfaceMesh = gridLines = meanTube = histTube = marker = zeroPlane = yearTube = yearDots = null;
+  lastI = lastJ = -1;
+}
+
+function build(startYear) {
+  grid = buildGrid(startYear);
+  T = grid.length;
+  annualMean = grid.map(r => d3.mean(r.vals));
+  // Scale the height axis to the displayed range, padded a touch, with the
+  // baseline (0) always inside the range so the zero plane is meaningful.
+  let lo = d3.min(grid, r => d3.min(r.vals));
+  let hi = d3.max(grid, r => d3.max(r.vals));
+  lo = Math.min(0, Math.floor(lo / 0.25) * 0.25);
+  hi = Math.max(0.25, Math.ceil(hi / 0.25) * 0.25);
+  MINY = lo; MAXY = hi;
+  clearWorld();
+  buildSurface();
+  buildGridLines();
+  buildZeroPlane();
+  buildMeanLine();
+  buildFloorAndAxes();
+  buildLabels();
+  buildSliceHelpers();
+  resetView();
+}
+
+// Solid vertex-coloured surface.
+function buildSurface() {
+  const pos = new Float32Array(T * M * 3);
+  const col = new Float32Array(T * M * 3);
+  const c = new THREE.Color();
+  let p = 0;
+  for (let i = 0; i < T; i++) {
+    for (let j = 0; j < M; j++) {
+      const v = grid[i].vals[j];
+      pos[p] = xAt(i); pos[p + 1] = yAt(v); pos[p + 2] = zAt(j);
+      c.set(ramp(v)); col[p] = c.r; col[p + 1] = c.g; col[p + 2] = c.b;
+      p += 3;
+    }
+  }
+  const idx = [];
+  for (let i = 0; i < T - 1; i++) {
+    for (let j = 0; j < M - 1; j++) {
+      const a = i * M + j, b = a + 1, d = a + M, e = d + 1;
+      idx.push(a, d, b, b, d, e);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({
+    vertexColors: true, side: THREE.DoubleSide, roughness: 0.86, metalness: 0.0,
+    flatShading: false,
+  });
+  surfaceMesh = new THREE.Mesh(g, mat);
+  world.add(surfaceMesh);
+}
+
+// Faint wire grid: a seasonal profile every few years + every month ridge along time.
+function buildGridLines() {
+  const verts = [];
+  const stepRow = Math.max(1, Math.round(T / 90));   // ~90 year-curves max
+  for (let i = 0; i < T; i += stepRow) {
+    for (let j = 0; j < M - 1; j++) pushSeg(verts, i, j, i, j + 1);
+  }
+  for (let j = 0; j < M; j++) {
+    for (let i = 0; i < T - 1; i++) pushSeg(verts, i, j, i + 1, j);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  gridLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07 }));
+  gridLines.visible = showGrid;
+  world.add(gridLines);
+}
+function pushSeg(arr, i1, j1, i2, j2) {
+  arr.push(xAt(i1), yAt(grid[i1].vals[j1]) + 0.03, zAt(j1), xAt(i2), yAt(grid[i2].vals[j2]) + 0.03, zAt(j2));
+}
+
+// Translucent plane at the 1961-90 baseline (anomaly = 0): the line between warming and cooling.
+function buildZeroPlane() {
+  const x0 = xAt(0), x1 = xAt(T - 1), z0 = zAt(0), z1 = zAt(M - 1), y = yAt(0);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute([
+    x0, y, z0, x1, y, z0, x1, y, z1,  x0, y, z0, x1, y, z1, x0, y, z1,
+  ], 3));
+  zeroPlane = new THREE.Mesh(g, new THREE.MeshBasicMaterial({
+    color: 0xaebfce, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false,
+  }));
+  world.add(zeroPlane);
+}
+
+// Bold white line tracing the annual-mean anomaly over time — the canonical warming-stripes curve.
+function buildMeanLine() {
+  const pts = [];
+  for (let i = 0; i < T; i++) pts.push(new THREE.Vector3(xAt(i), yAt(annualMean[i]) + 0.12, zCenter));
+  const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.2);
+  const tube = new THREE.TubeGeometry(curve, Math.max(64, T), 0.3, 8, false);
+  meanTube = new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0xeef4fa }));
+  world.add(meanTube);
+}
+
+// Floor grid at y=0 (the height floor) and a vertical anomaly axis at the back-right.
+function buildFloorAndAxes() {
+  const verts = [];
+  const x0 = xAt(0), x1 = xAt(T - 1), z0 = zAt(0), z1 = zAt(M - 1);
+  const yearStep = T > 120 ? 25 : (T > 50 ? 10 : 5);
+  const years = d3.range(Math.ceil(grid[0].yr / yearStep) * yearStep, grid[T - 1].yr + 1, yearStep);
+  for (const yr of years) {
+    const i = nearestIndexForYear(yr); const x = xAt(i);
+    verts.push(x, 0, z0, x, 0, z1);
+  }
+  for (let j = 0; j < M; j++) { const z = zAt(j); verts.push(x0, 0, z, x1, 0, z); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  world.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0x4a5a6a, transparent: true, opacity: 0.45 })));
+
+  // vertical anomaly axis + tick lines at the back-right
+  const av = [];
+  const axX = x1, axZ = z1;
+  av.push(axX, 0, axZ, axX, SY, axZ);
+  for (let t = Math.ceil(MINY / 0.5) * 0.5; t <= MAXY + 1e-9; t += 0.5) {
+    av.push(axX, yAt(t), axZ, axX + 1.2, yAt(t), axZ);
+  }
+  const ga = new THREE.BufferGeometry();
+  ga.setAttribute("position", new THREE.Float32BufferAttribute(av, 3));
+  world.add(new THREE.LineSegments(ga, new THREE.LineBasicMaterial({ color: 0x6b7d8d })));
+}
+
+function nearestIndexForYear(yr) {
+  let best = 0, bd = Infinity;
+  for (let i = 0; i < T; i++) { const d = Math.abs(grid[i].yr - yr); if (d < bd) { bd = d; best = i; } }
+  return best;
+}
+
+// Sprite text labels for the three axes.
+function makeLabel(text, color = "#9aa7b4", px = 44) {
+  const pad = 6, cv = document.createElement("canvas");
+  const ctx = cv.getContext("2d");
+  const font = `${px}px JetBrains Mono, monospace`;
+  ctx.font = font; const w = Math.ceil(ctx.measureText(text).width) + pad * 2;
+  cv.width = w; cv.height = px + pad * 2;
+  ctx.font = font; ctx.fillStyle = color; ctx.textBaseline = "middle";
+  ctx.fillText(text, pad, cv.height / 2);
+  const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 4;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+  const s = 0.06; sp.scale.set((cv.width * s), (cv.height * s), 1);
+  sp.userData.label = true;
+  return sp;
+}
+
+function buildLabels() {
+  const z0 = zAt(0), z1 = zAt(M - 1), x1 = xAt(T - 1);
+  const yearStep = T > 120 ? 25 : (T > 50 ? 10 : 5);
+  const years = d3.range(Math.ceil(grid[0].yr / yearStep) * yearStep, grid[T - 1].yr + 1, yearStep);
+  for (const yr of years) {
+    const i = nearestIndexForYear(yr);
+    const sp = makeLabel(String(yr));
+    sp.position.set(xAt(i), -1.2, z0 + 3.0);
+    world.add(sp);
+  }
+  // months along right edge
+  for (let j = 0; j < M; j++) {
+    const sp = makeLabel(LABELS[j], "#b6c2cd");
+    sp.position.set(x1 + 4.5, -0.6, zAt(j));
+    world.add(sp);
+  }
+  // anomaly °C along vertical axis
+  for (let t = Math.ceil(MINY / 0.5) * 0.5; t <= MAXY + 1e-9; t += 0.5) {
+    const txt = (t === 0 ? "0" : fmt1(t)) + "°";
+    const sp = makeLabel(txt, t > 0 ? "#e3a89a" : (t < 0 ? "#9ec0e6" : "#cdd6df"), 40);
+    sp.position.set(x1 + 6.0, yAt(t), z1);
+    world.add(sp);
+  }
+}
+
+// Reusable highlight: marker sphere + the hovered year's seasonal profile + that month's history.
+function buildSliceHelpers() {
+  marker = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), new THREE.MeshBasicMaterial({ color: 0xdce8f5 }));
+  marker.visible = false; world.add(marker);
+
+  // Amber tube tracing the hovered month across every year (e.g. "every January since 1850").
+  histTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0xffb347 }));
+  histTube.frustumCulled = false; histTube.visible = false; world.add(histTube);
+
+  yearTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0x5f93cf }));
+  yearTube.frustumCulled = false; yearTube.visible = false; world.add(yearTube);
+  yearDots = new THREE.Group(); yearDots.visible = false; world.add(yearDots);
+  const dotGeo = new THREE.SphereGeometry(0.3, 14, 14);
+  const dotMat = new THREE.MeshBasicMaterial({ color: 0xc3d6ea });
+  for (let j = 0; j < M; j++) yearDots.add(new THREE.Mesh(dotGeo, dotMat));
+}
+
+function resetView() {
+  controls.target.set(0, SY * 0.32, 0);
+  camera.position.set(SX * 0.52, SY * 2.7, SZ * 2.7);
+  controls.update();
+}
+
+// ---------- interaction ----------
+function onPointerMove(e) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  hoverActive = true;
+}
+
+function hideHover() {
+  readout.style.opacity = 0;
+  if (marker) marker.visible = false;
+  if (histTube) histTube.visible = false;
+  if (yearTube) yearTube.visible = false;
+  if (yearDots) yearDots.visible = false;
+  lastI = lastJ = -1;
+}
+
+function updateHover() {
+  if (!hoverActive || !surfaceMesh) return;
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObject(surfaceMesh, false)[0];
+  if (!hit) { hideHover(); return; }
+  const p = hit.point;
+  let i = Math.max(0, Math.min(T - 1, Math.round((p.x / SX + 0.5) * (T - 1))));
+  let j = Math.max(0, Math.min(M - 1, Math.round((0.5 - p.z / SZ) * (M - 1))));
+  const v = grid[i].vals[j];
+
+  marker.position.set(xAt(i), yAt(v) + 0.25, zAt(j)); marker.visible = true;
+
+  if (i !== lastI) updateYearTracer(i);  // seasonal profile depends only on the year
+  if (j !== lastJ) updateHistory(j);      // longitudinal line depends only on the month
+  lastI = i; lastJ = j;
+
+  const col = v > 0 ? "var(--hot)" : (v < 0 ? "var(--cold)" : "#fff");
+  readout.innerHTML =
+    `<div class="r-anom" style="color:${col}">${fmt2(v)}°C</div>` +
+    `<div class="r-meta"><b>${LABELS[j]} ${grid[i].yr}</b></div>` +
+    `<div class="r-meta">vs 1961&ndash;90 average</div>`;
+  readout.style.opacity = 1;
+}
+
+// The prominent highlight: a bright tube through the year's 12-month seasonal profile, node on each month.
+function updateYearTracer(i) {
+  const pts = [];
+  for (let j = 0; j < M; j++) pts.push(new THREE.Vector3(xAt(i), yAt(grid[i].vals[j]) + 0.22, zAt(j)));
+  const curve = new THREE.CatmullRomCurve3(pts);
+  yearTube.geometry.dispose();
+  yearTube.geometry = new THREE.TubeGeometry(curve, (M - 1) * 10, 0.2, 10, false);
+  yearTube.visible = true;
+  const dots = yearDots.children;
+  for (let j = 0; j < M; j++) dots[j].position.copy(pts[j]);
+  yearDots.visible = true;
+}
+
+function updateHistory(j) {
+  const pts = [];
+  for (let k = 0; k < T; k++) pts.push(new THREE.Vector3(xAt(k), yAt(grid[k].vals[j]) + 0.18, zAt(j)));
+  const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.15);
+  histTube.geometry.dispose();
+  histTube.geometry = new THREE.TubeGeometry(curve, Math.max(64, T * 2), 0.22, 10, false);
+  histTube.visible = true;
+}
+
+// ---------- loop ----------
+function resize() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  if (!w || !h) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+function animate() {
+  requestAnimationFrame(animate);
+  updateHover();
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// Optional debug hook (?debug=1) for inspecting the scene from the console.
+if (params.get("debug") === "1") {
+  window.__ws = {
+    THREE, raycaster,
+    get scene() { return scene; }, get camera() { return camera; },
+    get surface() { return surfaceMesh; }, get world() { return world; },
+    get grid() { return grid; }, get T() { return T; }, get controls() { return controls; },
+  };
+}
+</script>
+</body>
+</html>
