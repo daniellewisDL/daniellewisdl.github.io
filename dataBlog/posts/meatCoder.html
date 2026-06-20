@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>meatCoder // Cellular Cut Compiler</title>
+<style>
+  :root{
+    --bg0:#070b14;
+    --glass: rgba(255,255,255,0.055);
+    --glass-strong: rgba(255,255,255,0.085);
+    --stroke: rgba(255,255,255,0.12);
+    --stroke-soft: rgba(255,255,255,0.07);
+    --txt:#eaf2ff; --txt-dim:#9fb2cc; --txt-faint:#62748f;
+    --teal:#5eead4; --cyan:#38bdf8; --indigo:#818cf8;
+    --meat:#ff7a8a; --meat-deep:#e0436a;
+    --amber:#fbbf24; --green:#34d399; --red:#fb7185;
+    --c-red:#e0436a; --c-white:#f3d9b0; --c-fish:#6fc7dd;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--sans);color:var(--txt);background:var(--bg0);overflow:hidden;-webkit-font-smoothing:antialiased;font-size:13px}
+
+  .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .aurora::before,.aurora::after,.blob{content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;mix-blend-mode:screen}
+  .aurora::before{width:52vw;height:52vw;left:-12vw;top:-18vw;background:radial-gradient(circle at 30% 30%,#1d6e8c,transparent 60%);animation:drift1 26s ease-in-out infinite}
+  .aurora::after{width:48vw;height:48vw;right:-14vw;bottom:-20vw;background:radial-gradient(circle at 60% 40%,#5b3a8c,transparent 60%);animation:drift2 32s ease-in-out infinite}
+  .blob{width:36vw;height:36vw;left:42vw;top:30vh;background:radial-gradient(circle at 50% 50%,#1f8a76,transparent 62%);animation:drift3 38s ease-in-out infinite}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,6vh) scale(1.15)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1.05)}50%{transform:translate(-7vw,-5vh) scale(.9)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0)}33%{transform:translate(-6vw,4vh)}66%{transform:translate(5vw,-6vh)}}
+  .grid-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.3;
+    background-image:linear-gradient(rgba(120,160,200,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,200,.05) 1px,transparent 1px);
+    background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+
+  .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:10px 14px 8px;gap:9px}
+
+  header.topbar{display:flex;align-items:center;gap:14px;flex:0 0 auto}
+  .brand{display:flex;align-items:center;gap:11px}
+  .logo{width:36px;height:36px;border-radius:10px;flex:0 0 auto;background:conic-gradient(from 200deg,#5eead4,#38bdf8,#818cf8,#ff7a8a,#5eead4);
+    box-shadow:0 0 20px rgba(94,234,212,.45),inset 0 0 10px rgba(255,255,255,.3);display:grid;place-items:center;animation:spin 14s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .logo span{font-size:17px;animation:spin 14s linear infinite reverse}
+  .brand h1{font-size:17px;font-weight:700;letter-spacing:.5px;line-height:1}
+  .brand h1 b{color:var(--teal);font-weight:800}
+  .brand .sub{font-size:9px;color:var(--txt-faint);font-family:var(--mono);letter-spacing:1.4px;text-transform:uppercase;margin-top:2px}
+  .pills{display:flex;gap:8px;margin-left:4px;flex-wrap:wrap}
+  .pill{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(12px);font-family:var(--mono);font-size:10px;letter-spacing:.4px;color:var(--txt-dim)}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .pill b{color:var(--txt);font-weight:600}
+  .top-actions{margin-left:auto;display:flex;gap:8px}
+  .btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.5px;color:var(--txt);background:var(--glass);border:1px solid var(--stroke);border-radius:10px;padding:9px 14px;cursor:pointer;backdrop-filter:blur(12px);transition:.18s;display:flex;align-items:center;gap:6px;text-transform:uppercase}
+  .btn:hover{background:var(--glass-strong);border-color:rgba(255,255,255,.25);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn.primary{background:linear-gradient(120deg,rgba(94,234,212,.22),rgba(56,189,248,.22));border-color:rgba(94,234,212,.5);color:#d7fff6;box-shadow:0 0 18px rgba(94,234,212,.2)}
+  .btn.primary:hover{box-shadow:0 0 26px rgba(94,234,212,.4)}
+
+  main{flex:1 1 auto;display:grid;grid-template-columns:362px 1fr 378px;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0}
+
+  .panel{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    box-shadow:0 12px 36px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.07);display:flex;flex-direction:column;min-height:0;position:relative;overflow:hidden}
+  .panel::before{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;background:radial-gradient(120% 80% at 50% -10%,rgba(255,255,255,.07),transparent 55%)}
+  .panel-head{flex:0 0 auto;padding:11px 14px 9px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--stroke-soft)}
+  .panel-head .ph-ico{font-size:13px}
+  .panel-head h2{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+  .panel-head .ph-tag{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--txt-faint);letter-spacing:.8px}
+  .panel-body{flex:1 1 auto;overflow-y:auto;padding:11px 13px 13px;min-height:0}
+  .panel-body::-webkit-scrollbar{width:6px}
+  .panel-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+
+  .group{margin-bottom:11px}
+  .group:last-child{margin-bottom:0}
+  .group-title{font-family:var(--mono);font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:7px;opacity:.9}
+  .group-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(94,234,212,.4),transparent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px}
+
+  .ctrl{margin-bottom:6px;min-width:0}
+  .ctrl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:6px}
+  .ctrl-label{font-size:10.5px;color:var(--txt-dim);display:flex;align-items:center;gap:5px;min-width:0;cursor:help}
+  .ctrl-label .emo{font-size:12px;flex:0 0 auto}
+  .ctrl-label .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cdot{width:6px;height:6px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 5px currentColor}
+  .era{font-family:var(--mono);font-size:7px;letter-spacing:.4px;padding:1px 4px;border-radius:4px;flex:0 0 auto;background:rgba(251,113,133,.13);color:var(--meat);border:1px solid rgba(251,113,133,.3)}
+  .ctrl-val{font-family:var(--mono);font-size:10px;color:var(--txt);font-weight:600;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:5px;border:1px solid var(--stroke-soft);min-width:38px;text-align:right;flex:0 0 auto}
+  .ctrl-val.pct{color:var(--teal)}
+
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:5px;cursor:pointer;
+    background:linear-gradient(90deg,var(--teal) 0%,var(--cyan) var(--p,50%),rgba(255,255,255,.09) var(--p,50%));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#eafffb;border:2px solid var(--teal);cursor:pointer;box-shadow:0 0 9px rgba(94,234,212,.7),0 2px 5px rgba(0,0,0,.4);transition:transform .12s}
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25)}
+  input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#eafffb;border:2px solid var(--teal);cursor:pointer;box-shadow:0 0 9px rgba(94,234,212,.7)}
+  input[type=range].meat{background:linear-gradient(90deg,var(--meat) 0%,var(--meat-deep) var(--p,50%),rgba(255,255,255,.09) var(--p,50%))}
+  input[type=range].meat::-webkit-slider-thumb{border-color:var(--meat);box-shadow:0 0 9px rgba(255,122,138,.7),0 2px 5px rgba(0,0,0,.4)}
+  input[type=range].meat::-moz-range-thumb{border-color:var(--meat)}
+
+  .stage .panel-body{display:flex;flex-direction:column;gap:10px;overflow:hidden;padding:12px 14px}
+  .viz-wrap{flex:1 1 auto;position:relative;border-radius:14px;min-height:0;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 42%,rgba(56,189,248,.10),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.20));
+    border:1px solid var(--stroke-soft)}
+  #steak-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .ring{position:absolute;top:46%;left:50%;border-radius:50%;border:1px solid rgba(94,234,212,.16);transform:translate(-50%,-50%);pointer-events:none}
+  .ring.r1{width:70%;height:64%;animation:breathe 6s ease-in-out infinite}
+  .ring.r2{width:84%;height:78%;border-color:rgba(56,189,248,.09);animation:breathe 6s ease-in-out infinite .6s}
+  @keyframes breathe{0%,100%{opacity:.5}50%{opacity:1}}
+  .platform{position:absolute;bottom:9%;left:50%;transform:translateX(-50%);width:54%;height:18px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(94,234,212,.28),transparent 70%);filter:blur(3px);pointer-events:none}
+  .scanline{position:absolute;left:0;right:0;height:60px;pointer-events:none;opacity:0;z-index:4;mix-blend-mode:screen;background:linear-gradient(180deg,transparent,rgba(94,234,212,.55),transparent)}
+  .scanline.on{opacity:1;animation:scan 1.5s linear infinite}
+  @keyframes scan{0%{top:-60px}100%{top:100%}}
+  .spec-overlay{position:absolute;top:11px;left:11px;display:flex;flex-direction:column;gap:5px;pointer-events:none;z-index:3}
+  .spec-chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.3px;color:var(--txt-dim);background:rgba(8,14,24,.5);border:1px solid var(--stroke-soft);border-radius:7px;padding:4px 8px;backdrop-filter:blur(8px)}
+  .spec-chip b{color:var(--txt);font-weight:600}
+  .done-badge{position:absolute;top:11px;right:11px;font-family:var(--mono);font-size:10.5px;font-weight:600;padding:6px 11px;border-radius:8px;letter-spacing:.4px;backdrop-filter:blur(8px);background:rgba(8,14,24,.5);border:1px solid var(--stroke);color:var(--amber);z-index:3}
+  .shape-badge{position:absolute;bottom:11px;right:11px;font-family:var(--mono);font-size:9.5px;letter-spacing:.5px;color:var(--teal);background:rgba(8,14,24,.5);border:1px solid rgba(94,234,212,.25);border-radius:7px;padding:4px 9px;backdrop-filter:blur(8px);z-index:3;text-transform:uppercase}
+
+  .printer{flex:0 0 auto;display:flex;flex-direction:column;gap:7px}
+  .print-status{font-family:var(--mono);font-size:10px;color:var(--txt-dim);letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .print-status b{color:var(--teal)}
+  .progress{height:7px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
+  .progress .fill{height:100%;width:0%;border-radius:5px;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--indigo));box-shadow:0 0 12px rgba(94,234,212,.6);transition:width .12s linear}
+  .btn.print{justify-content:center;font-size:12px;font-weight:700;padding:11px;letter-spacing:1.3px}
+
+  .rmode{display:flex;gap:4px;margin-left:auto}
+  .rmode button{font-family:var(--mono);font-size:8.5px;letter-spacing:.5px;padding:3px 8px;border-radius:6px;cursor:pointer;text-transform:uppercase;background:rgba(255,255,255,.04);border:1px solid var(--stroke-soft);color:var(--txt-faint)}
+  .rmode button.active{background:rgba(94,234,212,.15);border-color:rgba(94,234,212,.4);color:var(--teal)}
+
+  .readouts{grid-column:1 / -1;display:grid;grid-template-columns:1.5fr 1fr 1.15fr 1.05fr;gap:10px;min-height:0}
+  .rcard{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;backdrop-filter:blur(20px);padding:11px 13px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+  .rcard h3{font-family:var(--mono);font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);opacity:.9}
+  .feas-top{display:flex;justify-content:space-between;align-items:center}
+  .feas-top .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--txt-faint)}
+  .feas-top .v{font-family:var(--mono);font-size:12px;font-weight:700}
+  .feas-bar{height:6px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+  .feas-bar i{display:block;height:100%;border-radius:5px;transition:width .3s,background .3s}
+  .feas-note{font-size:9.5px;color:var(--amber);font-family:var(--mono);letter-spacing:.2px;display:none;line-height:1.35}
+  .feas-note.show{display:block}
+  .descriptor p{font-size:11px;line-height:1.45;color:var(--txt)}
+  .descriptor b{color:var(--teal);font-weight:600}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .stat{background:rgba(255,255,255,.035);border:1px solid var(--stroke-soft);border-radius:10px;padding:8px 9px}
+  .stat .k{font-family:var(--mono);font-size:8px;letter-spacing:.8px;text-transform:uppercase;color:var(--txt-faint)}
+  .stat .v{font-size:17px;font-weight:700;margin-top:2px;font-family:var(--mono);letter-spacing:-.5px}
+  .stat .u{font-size:9px;color:var(--txt-faint);font-weight:500;margin-left:2px}
+  .stat .bar{height:3px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+  .stat .bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--cyan));transition:width .25s}
+  .radar-row{display:flex;gap:10px;align-items:center;flex:1 1 auto;min-height:0}
+  .radar-row svg{width:120px;height:120px;flex:0 0 auto}
+  .flavor-legend{flex:1 1 auto;display:flex;flex-direction:column;gap:4px}
+  .fl-row{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--txt-dim)}
+  .fl-row .sw{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+  .fl-row .fv{margin-left:auto;font-family:var(--mono);color:var(--txt);font-size:10px}
+  .comp-row{display:flex;gap:11px;align-items:center;flex:1 1 auto;min-height:0}
+  .donut{width:96px;height:96px;border-radius:50%;flex:0 0 auto;position:relative;background:conic-gradient(#222 0 100%);transition:.3s}
+  .donut::after{content:"";position:absolute;inset:16px;border-radius:50%;background:#0a1322;box-shadow:inset 0 0 12px rgba(0,0,0,.6)}
+  .donut .hash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+  .donut .hash small{font-family:var(--mono);font-size:7px;color:var(--txt-faint);letter-spacing:.8px}
+  .donut .hash b{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.6px}
+  .legend{flex:1 1 auto;display:flex;flex-direction:column;gap:3px;max-height:100%;overflow-y:auto}
+  .lg-row{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--txt-dim)}
+  .lg-row .sw{width:8px;height:8px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 5px currentColor}
+  .lg-row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lg-row .pc{margin-left:auto;font-family:var(--mono);color:var(--txt);font-weight:600}
+
+  footer.console{flex:0 0 auto;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;color:var(--txt-faint);background:var(--glass);border:1px solid var(--stroke-soft);border-radius:10px;padding:7px 13px;backdrop-filter:blur(12px)}
+  footer .prompt{color:var(--teal)}
+  footer #log{color:var(--txt-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 auto}
+  footer .cursor{width:7px;height:12px;background:var(--teal);display:inline-block;animation:blink 1s step-end infinite;flex:0 0 auto}
+  @keyframes blink{50%{opacity:0}}
+
+  @media (max-width:1240px){
+    body{overflow:auto}.app{height:auto;min-height:100vh}
+    main{grid-template-columns:1fr;grid-template-rows:none}.readouts{grid-template-columns:1fr 1fr}.viz-wrap{min-height:340px}
+  }
+</style>
+</head>
+<body>
+  <div class="aurora"><div class="blob"></div></div>
+  <div class="grid-overlay"></div>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo"><span>🥩</span></div>
+        <div><h1>meat<b>Coder</b></h1><div class="sub">Cellular Cut Compiler · v5.0</div></div>
+      </div>
+      <div class="pills">
+        <div class="pill"><span class="dot"></span>REACTOR <b>ONLINE</b></div>
+        <div class="pill"><span class="dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></span>BIO‑INK <b id="pill-ink">2 lines</b></div>
+        <div class="pill"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span>NOZZLE <b id="pill-noz">37.0°C</b></div>
+      </div>
+      <div class="top-actions">
+        <button class="btn" id="btn-random">⚄ Randomize</button>
+        <button class="btn" id="btn-reset">↺ Reset</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel-head"><span class="ph-ico">🧬</span><h2>Donor Cell Lines</h2><span class="ph-tag" id="tag-blend">SUM 100%</span></div>
+        <div class="panel-body" id="species-body"></div>
+      </section>
+
+      <section class="panel stage">
+        <div class="panel-head"><span class="ph-ico">⬡</span><h2>Bioprint Preview</h2>
+          <div class="rmode" id="rmode">
+            <button data-mode="canvas" class="active">⬢ Procedural</button>
+            <button data-mode="svg">◇ Stylised</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="viz-wrap" id="viz">
+            <div class="ring r2"></div><div class="ring r1"></div>
+            <canvas id="steak-canvas"></canvas>
+            <div id="svg-host" style="position:absolute;inset:0;display:none"></div>
+            <div class="platform"></div>
+            <div class="scanline" id="scanline"></div>
+            <div class="spec-overlay" id="spec-overlay"></div>
+            <div class="done-badge" id="done-badge">MEDIUM‑RARE</div>
+            <div class="shape-badge" id="shape-badge">RIBEYE</div>
+          </div>
+          <div class="printer">
+            <div class="print-status" id="print-status"><b>READY</b> · design buffer synced, awaiting compile</div>
+            <div class="progress"><div class="fill" id="print-fill"></div></div>
+            <button class="btn primary print" id="btn-print">▶ Compile &amp; Bioprint Cut</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><span class="ph-ico">⚙</span><h2>Engineering Parameters</h2><span class="ph-tag" id="tag-count">0 PARAMS</span></div>
+        <div class="panel-body" id="params-body"></div>
+      </section>
+
+      <section class="readouts">
+        <div class="rcard">
+          <div class="feas-top"><span class="k">Genome Integrity</span><span class="v" id="feas-val">—</span></div>
+          <div class="feas-bar"><i id="feas-fill"></i></div>
+          <div class="feas-note" id="feas-note">⚠ DNA gaps — reference scaffold + gap‑fill required</div>
+          <div class="descriptor" style="margin-top:auto"><h3 style="margin-bottom:5px">Tasting Profile</h3><p id="descriptor-text"></p></div>
+        </div>
+        <div class="rcard">
+          <h3>Nutrition · per 100g</h3>
+          <div class="stat-grid">
+            <div class="stat"><div class="k">Calories</div><div class="v"><span id="st-cal">0</span><span class="u">kcal</span></div><div class="bar"><i id="bar-cal"></i></div></div>
+            <div class="stat"><div class="k">Protein</div><div class="v"><span id="st-pro">0</span><span class="u">g</span></div><div class="bar"><i id="bar-pro"></i></div></div>
+            <div class="stat"><div class="k">Fat</div><div class="v"><span id="st-fat">0</span><span class="u">g</span></div><div class="bar"><i id="bar-fat"></i></div></div>
+            <div class="stat"><div class="k">Omega‑3</div><div class="v"><span id="st-om">0</span><span class="u">mg</span></div><div class="bar"><i id="bar-om"></i></div></div>
+          </div>
+        </div>
+        <div class="rcard">
+          <h3>Flavor Vector</h3>
+          <div class="radar-row"><svg id="radar" viewBox="0 0 160 160"></svg><div class="flavor-legend" id="flavor-legend"></div></div>
+        </div>
+        <div class="rcard">
+          <h3>Blend Composition</h3>
+          <div class="comp-row"><div class="donut" id="donut"><div class="hash"><small>SEQ‑HASH</small><b id="seq-hash">0x000</b></div></div><div class="legend" id="legend"></div></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="console">
+      <span class="prompt">meatcoder@reactor:~$</span>
+      <span id="log">system initialised · cellular compiler ready</span>
+      <span class="cursor"></span><span class="clock" id="clock"></span>
+    </footer>
+  </div>
+
+<script>
+/* ============================ DATA ============================ */
+const SPECIES = [
+  {id:'wagyu',  name:'Wagyu Beef',     emo:'🐂', cat:'red',     era:'present', color:'#9e1f1f', umami:.92,iron:.70,gamey:.20,sweet:.30,butter:1.00,omega:.10, def:60},
+  {id:'angus',  name:'Angus Beef',     emo:'🐄', cat:'red',     era:'present', color:'#8a1c1c', umami:.82,iron:.78,gamey:.25,sweet:.25,butter:.60,omega:.10, def:0},
+  {id:'venison',name:'Venison',        emo:'🦌', cat:'red',     era:'present', color:'#5e1414', umami:.62,iron:1.00,gamey:.95,sweet:.20,butter:.15,omega:.30, def:0},
+  {id:'bison',  name:'Bison',          emo:'🦬', cat:'red',     era:'present', color:'#6e1717', umami:.72,iron:.92,gamey:.70,sweet:.20,butter:.20,omega:.30, def:0},
+  {id:'lamb',   name:'Lamb',           emo:'🐑', cat:'red',     era:'present', color:'#8f2424', umami:.70,iron:.72,gamey:.78,sweet:.30,butter:.60,omega:.20, def:0},
+  {id:'pork',   name:'Heritage Pork',  emo:'🐖', cat:'red',     era:'present', color:'#d98c84', umami:.55,iron:.35,gamey:.20,sweet:.52,butter:.62,omega:.15, def:0},
+  {id:'kangaroo',name:'Kangaroo',      emo:'🦘', cat:'red',     era:'present', color:'#6b1622', umami:.60,iron:.96,gamey:.86,sweet:.20,butter:.15,omega:.35, def:0},
+  {id:'ostrich',name:'Ostrich',        emo:'🐦', cat:'red',     era:'present', color:'#7a1d2b', umami:.68,iron:.90,gamey:.65,sweet:.25,butter:.25,omega:.30, def:0},
+  {id:'chicken',name:'Chicken',        emo:'🐔', cat:'poultry', era:'present', color:'#ecc7a6', umami:.45,iron:.22,gamey:.14,sweet:.52,butter:.32,omega:.08, def:0},
+  {id:'turkey', name:'Turkey',         emo:'🦃', cat:'poultry', era:'present', color:'#e6bd9c', umami:.48,iron:.30,gamey:.20,sweet:.46,butter:.28,omega:.10, def:0},
+  {id:'duck',   name:'Duck',           emo:'🦆', cat:'poultry', era:'present', color:'#7d2a2a', umami:.66,iron:.60,gamey:.62,sweet:.34,butter:.72,omega:.20, def:0},
+  {id:'quail',  name:'Quail',          emo:'🕊️', cat:'poultry', era:'present', color:'#c46b5a', umami:.50,iron:.40,gamey:.42,sweet:.46,butter:.35,omega:.15, def:40},
+  {id:'rabbit', name:'Rabbit',         emo:'🐇', cat:'poultry', era:'present', color:'#e9cfbb', umami:.42,iron:.40,gamey:.35,sweet:.40,butter:.22,omega:.12, def:0},
+  {id:'salmon', name:'Salmon',         emo:'🐟', cat:'fish',    era:'present', color:'#e8714e', umami:.50,iron:.45,gamey:.50,sweet:.50,butter:.55,omega:1.00, def:0},
+  {id:'tuna',   name:'Bluefin Tuna',   emo:'🍣', cat:'fish',    era:'present', color:'#b23a4a', umami:.58,iron:.70,gamey:.55,sweet:.35,butter:.35,omega:.70, def:0},
+  {id:'cod',    name:'Cod',            emo:'🐠', cat:'fish',    era:'present', color:'#eaddc6', umami:.38,iron:.25,gamey:.25,sweet:.45,butter:.18,omega:.40, def:0},
+  {id:'mammoth',name:'Woolly Mammoth', emo:'🦣', cat:'red',     era:'extinct', color:'#7a1d2b', umami:.88,iron:.86,gamey:.82,sweet:.30,butter:.50,omega:.25, def:0, feas:.55},
+  {id:'trex',   name:'T‑Rex Collagen', emo:'🦖', cat:'red',     era:'extinct', color:'#4a2030', umami:.42,iron:.72,gamey:.92,sweet:.15,butter:.20,omega:.10, def:0, feas:.22, collagen:1},
+  {id:'aurochs',name:'Aurochs',        emo:'🐃', cat:'red',     era:'extinct', color:'#7e1a1a', umami:.85,iron:.82,gamey:.55,sweet:.25,butter:.45,omega:.15, def:0, feas:.60},
+  {id:'wrhino', name:'Woolly Rhino',   emo:'🦏', cat:'red',     era:'extinct', color:'#71202a', umami:.78,iron:.85,gamey:.80,sweet:.25,butter:.35,omega:.20, def:0, feas:.42},
+  {id:'gsloth', name:'Giant Ground Sloth',emo:'🦥',cat:'red',   era:'extinct', color:'#86303a', umami:.62,iron:.66,gamey:.70,sweet:.30,butter:.45,omega:.18, def:0, feas:.40},
+  {id:'dodo',   name:'Dodo',           emo:'🦤', cat:'poultry', era:'extinct', color:'#d9b89a', umami:.52,iron:.36,gamey:.46,sweet:.46,butter:.55,omega:.15, def:0, feas:.48},
+  {id:'moa',    name:'Giant Moa',      emo:'🪶', cat:'poultry', era:'extinct', color:'#c98f6a', umami:.56,iron:.48,gamey:.62,sweet:.34,butter:.30,omega:.20, def:0, feas:.40},
+  {id:'megalodon',name:'Megalodon',    emo:'🦈', cat:'fish',    era:'extinct', color:'#9a4a55', umami:.55,iron:.80,gamey:.85,sweet:.25,butter:.30,omega:.60, def:0, feas:.28},
+  {id:'seacow', name:"Steller's Sea Cow",emo:'🦭',cat:'red',    era:'extinct', color:'#8a3344', umami:.70,iron:.70,gamey:.60,sweet:.35,butter:.85,omega:.45, def:0, feas:.35},
+];
+
+// natural myoglobin (raw redness) per cell line — white meats low, red/game high
+const MYO={wagyu:.85,angus:.85,venison:.95,bison:.90,lamb:.80,pork:.42,kangaroo:.95,ostrich:.78,
+  chicken:.12,turkey:.16,duck:.55,quail:.32,rabbit:.12,salmon:.30,tuna:.82,cod:.08,
+  mammoth:.90,trex:.60,aurochs:.85,wrhino:.85,gsloth:.60,dodo:.20,moa:.35,megalodon:.50,seacow:.60};
+
+const PARAMS = [
+  {grp:'Texture & Structure', items:[
+    {id:'fat',       label:'Fat Content',       min:2,  max:48, def:24, unit:'%',  meat:true},
+    {id:'marbling',  label:'Marbling Density',  min:0,  max:100,def:52, unit:'%'},
+    {id:'tenderness',label:'Tenderness',        min:0,  max:100,def:72, unit:''},
+    {id:'collagen',  label:'Connective Tissue', min:0,  max:100,def:24, unit:''},
+    {id:'grain',     label:'Fiber Grain',       min:0,  max:100,def:48, unit:''},
+    {id:'thickness', label:'Cut Thickness',     min:12, max:60, def:34, unit:'mm'},
+    {id:'weight',    label:'Portion Weight',    min:90, max:600,def:300,unit:'g'},
+    {id:'doneness',  label:'Target Doneness',   min:0,  max:100,def:10, unit:'',  meat:true},
+  ]},
+  {grp:'Bioprinter', items:[
+    {id:'res',    label:'Resolution',  min:40, max:400, def:110, unit:'µm'},
+    {id:'layers', label:'Layer Count', min:20, max:480, def:200, unit:''},
+    {id:'temp',   label:'Reactor Temp',min:30, max:42,  def:37,  unit:'°C', step:.1},
+    {id:'cycle',  label:'Maturation',  min:1,  max:45,  def:18,  unit:'d'},
+  ]},
+  {grp:'Flavor & Bio‑Engineering', items:[
+    {id:'myoglobin',label:'Myoglobin',  min:0,max:100,def:56,unit:'',meat:true},
+    {id:'umami',   label:'Umami',       min:0,max:100,def:52,unit:''},
+    {id:'iron',    label:'Iron',        min:0,max:100,def:42,unit:''},
+    {id:'smoke',   label:'Smoke',       min:0,max:100,def:16,unit:''},
+    {id:'truffle', label:'Truffle',     min:0,max:100,def:12,unit:''},
+    {id:'sweet',   label:'Sweetness',   min:0,max:100,def:26,unit:''},
+    {id:'omega',   label:'Omega‑3',     min:0,max:100,def:30,unit:''},
+    {id:'protein', label:'Protein',     min:14,max:36, def:26,unit:'g'},
+  ]},
+];
+
+const CAT = {
+  red:    {dot:'var(--c-red)',   shape:'steak',  shapeName:'Ribeye',   sear:[92,50,32]},
+  poultry:{dot:'var(--c-white)', shape:'breast', shapeName:'Fillet',   sear:[150,96,52]},
+  fish:   {dot:'var(--c-fish)',  shape:'fillet', shapeName:'Fish Cut', sear:[150,100,60]},
+};
+// silhouettes: moveTo(x,y) + four cubic segments (c1x c1y c2x c2y ex ey) — same arity → morphable
+const SHAPES = {
+  steak: {a:[1.00,1.00], pts:[-0.90,0, -0.95,-0.60,-0.40,-0.97,0.18,-0.93, 0.72,-0.90,1.00,-0.50,0.97,-0.04, 0.95,0.52,0.60,0.95,0.04,0.93, -0.52,0.92,-0.86,0.58,-0.90,0]},
+  breast:{a:[0.95,1.00], pts:[-0.78,-0.20, -0.86,-0.72,-0.28,-0.96,0.26,-0.86, 0.76,-0.76,0.92,-0.20,0.70,0.24, 0.50,0.66,0.20,0.96,0.00,0.98, -0.22,0.80,-0.56,0.40,-0.78,-0.20]},
+  fillet:{a:[1.42,0.60], pts:[-0.98,0, -0.75,-0.48,-0.10,-0.60,0.55,-0.42, 0.85,-0.30,1.02,-0.12,0.98,0, 1.02,0.12,0.85,0.30,0.55,0.42, -0.10,0.60,-0.75,0.48,-0.98,0]},
+};
+
+/* ============================ STATE ============================ */
+const S={}, P={};
+SPECIES.forEach(s=>S[s.id]=s.def);
+PARAMS.forEach(g=>g.items.forEach(p=>P[p.id]=p.def));
+let renderMode='canvas', lastC=null, R=null, texDirty=true, texReady=false;
+
+/* ============================ HELPERS ============================ */
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const cl255=v=>v<0?0:v>255?255:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+function hexRgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgbCss(r){return`rgb(${Math.round(r[0])},${Math.round(r[1])},${Math.round(r[2])})`;}
+function rgbaCss(r,a){return`rgba(${Math.round(r[0])},${Math.round(r[1])},${Math.round(r[2])},${a})`;}
+function mixRgb(a,b,t){return[lerp(a[0],b[0],t),lerp(a[1],b[1],t),lerp(a[2],b[2],t)];}
+function smooth(a,b,x){let t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);}
+function setFill(el){const mn=+el.min,mx=+el.max,v=+el.value;el.style.setProperty('--p',((v-mn)/(mx-mn)*100)+'%');}
+
+/* ============================ BUILD UI ============================ */
+function ctrlEl(o){
+  const w=document.createElement('div');w.className='ctrl';
+  const emo=o.emo?`<span class="emo">${o.emo}</span>`:'';
+  const dot=o.dotColor?`<span class="cdot" style="background:${o.dotColor};color:${o.dotColor}"></span>`:'';
+  const era=o.extinct?`<span class="era">EXT</span>`:'';
+  w.innerHTML=`<div class="ctrl-top">
+      <span class="ctrl-label" title="${o.tip||o.label}">${emo}${dot}<span class="nm">${o.label}</span>${era}</span>
+      <span class="ctrl-val ${o.pct?'pct':''}" id="val-${o.id}"></span></div>
+    <input type="range" class="${o.meat?'meat':''}" id="in-${o.id}" min="${o.min}" max="${o.max}" step="${o.step||1}" value="${o.val}">`;
+  return w;
+}
+function buildSpecies(){
+  const host=$('species-body');host.innerHTML='';
+  [['present','Live Cell Lines'],['extinct','De‑Extinction Bank']].forEach(([era,title])=>{
+    const g=document.createElement('div');g.className='group';
+    g.innerHTML=`<div class="group-title">${title}</div>`;
+    const grid=document.createElement('div');grid.className='grid2';
+    SPECIES.filter(s=>s.era===era).forEach(s=>{
+      const catName=s.cat==='red'?'Red meat':s.cat==='poultry'?'White / poultry':'Fish / seafood';
+      grid.appendChild(ctrlEl({id:'sp-'+s.id,label:s.name,tip:`${s.name} — ${catName}${era==='extinct'?' · de‑extinction':''}`,min:0,max:100,val:S[s.id],emo:s.emo,dotColor:CAT[s.cat].dot,extinct:era==='extinct',pct:true}));
+    });
+    g.appendChild(grid);host.appendChild(g);
+  });
+  SPECIES.forEach(s=>{const el=$('in-sp-'+s.id);el.addEventListener('input',()=>{S[s.id]=+el.value;setFill(el);recompute();log(`donor[${s.id}] = ${el.value}`);});setFill(el);});
+}
+function buildParams(){
+  const host=$('params-body');host.innerHTML='';let count=0;
+  PARAMS.forEach(grp=>{
+    const g=document.createElement('div');g.className='group';
+    g.innerHTML=`<div class="group-title">${grp.grp}</div>`;
+    const grid=document.createElement('div');grid.className='grid2';
+    grp.items.forEach(p=>{count++;grid.appendChild(ctrlEl({id:p.id,label:p.label,min:p.min,max:p.max,val:P[p.id],meat:p.meat,step:p.step}));});
+    g.appendChild(grid);host.appendChild(g);
+  });
+  PARAMS.forEach(grp=>grp.items.forEach(p=>{const el=$('in-'+p.id);el.addEventListener('input',()=>{P[p.id]=+el.value;setFill(el);recompute();log(`param[${p.id}] = ${el.value}${p.unit}`);});setFill(el);}));
+  $('tag-count').textContent=(count+SPECIES.length)+' PARAMS';
+}
+
+/* ============================ COMPUTE ============================ */
+function compute(){
+  const total=SPECIES.reduce((a,s)=>a+S[s.id],0)||1;
+  const blend=SPECIES.map(s=>({...s,pct:S[s.id]/total})).filter(b=>b.pct>0).sort((a,b)=>b.pct-a.pct);
+  const empty=blend.length===0;
+  const w=k=>blend.reduce((a,b)=>a+b[k]*b.pct,0);
+  const rgbBase=empty?[150,40,55]:blend.reduce((acc,b)=>{const c=hexRgb(b.color);return[acc[0]+c[0]*b.pct,acc[1]+c[1]*b.pct,acc[2]+c[2]*b.pct];},[0,0,0]);
+  const myoNat=empty?0.7:blend.reduce((a,b)=>a+(MYO[b.id]!==undefined?MYO[b.id]:0.6)*b.pct,0);
+  const catSum={red:0,poultry:0,fish:0};blend.forEach(b=>catSum[b.cat]+=b.pct);
+  const domCat=empty?'red':Object.entries(catSum).sort((a,b)=>b[1]-a[1])[0][0];
+  const cat=CAT[domCat];
+  const doneT=Math.pow(P.doneness/100,1.05);
+  const flav={
+    Umami:    clamp(w('umami')*70 + P.umami*0.42,0,100),
+    Iron:     clamp(w('iron')*64 + P.iron*0.5,0,100),
+    Gaminess: clamp(w('gamey')*82,0,100),
+    Sweetness:clamp(w('sweet')*62 + P.sweet*0.5,0,100),
+    Buttery:  clamp(w('butter')*55 + P.fat*1.0,0,100),
+    Smoke:    clamp(P.smoke + P.truffle*0.35 + w('gamey')*8,0,100),
+  };
+  const fatG=P.fat,proG=P.protein,cal=Math.round(proG*4+fatG*9);
+  const omega=Math.round(P.omega*7 + w('omega')*420);
+  let feas=empty?0:clamp(blend.reduce((a,b)=>a+(b.feas!==undefined?b.feas:1)*b.pct,0)*100-(P.cycle<4?5:0),0,100);
+  const extinctPct=blend.filter(b=>b.era==='extinct').reduce((a,b)=>a+b.pct,0);
+  let hseed=0;blend.forEach(b=>hseed+=b.id.charCodeAt(0)*Math.round(b.pct*100));
+  hseed+=P.fat*3+P.marbling*7+P.doneness*11+(domCat==='red'?1:domCat==='fish'?2:3)*97;
+  const hash='0x'+(Math.abs(Math.round(hseed))%65536).toString(16).toUpperCase().padStart(3,'0');
+  return {total,blend,w,empty,rgbBase,cat,domCat,myoNat,flav,fatG,proG,cal,omega,feas,extinctPct,hash,doneT};
+}
+
+/* derive the colour/material model used by the canvas renderer */
+function buildR(c){
+  const base=c.rgbBase, doneT=c.doneT;
+  const ME=clamp(c.myoNat*(0.5+P.myoglobin/100*0.85),0,1.1); // natural myoglobin, slider‑modulated
+  let bright=mixRgb(base,[255,255,255],0.12);
+  let rawM=[cl255(bright[0]*(1+0.10*ME)),bright[1]*(1-0.17*ME),bright[2]*(1-0.10*ME)];
+  rawM=mixRgb(rawM,[186,54,90],ME*0.30);                   // myoglobin → deep pink/magenta
+  let rawDark=mixRgb(rawM,[70,14,30],0.62);
+  let fatRaw=mixRgb([244,230,216],rawM,0.07);
+  const muscle=mixRgb(rawM,[128,88,68],doneT*0.85);          // doneness browns muscle
+  const muscleDark=mixRgb(rawDark,[86,58,46],doneT*0.85);
+  const fat=mixRgb(fatRaw,[204,170,122],doneT*0.65);
+  let capCol,memCol,capDepth;
+  if(c.domCat==='fish'){capCol=mixRgb([190,194,200],[150,150,140],doneT);memCol=[120,122,130];capDepth=0.05;}
+  else if(c.domCat==='poultry'){capCol=mixRgb([240,226,202],[206,166,116],doneT);memCol=mixRgb([214,186,150],[168,118,78],doneT);capDepth=0.05+P.fat/48*0.08;}
+  else{capCol=mixRgb([246,234,218],[212,178,128],doneT*0.6);memCol=mixRgb([198,150,120],[150,96,70],doneT);capDepth=0.13+P.fat/48*0.26;}
+  const T=0.20 + P.marbling/100*0.32 + P.fat/48*0.10;       // higher T → more fat web
+  const band=0.05 - P.marbling/100*0.022;                   // crisper veins at high marbling
+  return {empty:c.empty,muscle,muscleDark,fat,capCol,memCol,capDepth,T,band,doneT,sear:c.cat.sear,
+          glow:c.empty?[94,234,212]:mixRgb(c.rgbBase,[255,120,140],0.4)};
+}
+
+/* ============================ NOISE FIELD ============================ */
+const TW=420, TH=300;
+const tex=document.createElement('canvas');tex.width=TW;tex.height=TH;
+const texCtx=tex.getContext('2d');
+let FIELD=null;
+function vnoise(x,y,seed){
+  const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;
+  const h=(a,b)=>{let n=(a*374761393+b*668265263+seed*982451653)|0;n=Math.imul(n^(n>>>13),1274126177);return((n^(n>>>16))>>>0)/4294967296;};
+  const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+  return lerp(lerp(h(xi,yi),h(xi+1,yi),u),lerp(h(xi,yi+1),h(xi+1,yi+1),u),v);
+}
+function fbm(x,y,seed,oct){let a=0,amp=0.5,f=1,nrm=0;for(let o=0;o<oct;o++){a+=amp*vnoise(x*f,y*f,seed+o*31);nrm+=amp;amp*=0.5;f*=2;}return a/nrm;}
+function buildField(){
+  FIELD=new Float32Array(TW*TH);
+  const sX=11.5,sY=6.5;
+  for(let y=0;y<TH;y++){const ny=y/TH;
+    for(let x=0;x<TW;x++){const nx=x/TW;
+      const px=nx*sX+ny*1.4, py=ny*sY;                       // sheared → diagonal grain
+      const v=fbm(px,py,11,4)*0.58 + fbm(px*3.1+5,py*3.1+9,29,3)*0.42;
+      FIELD[y*TW+x]=v;
+    }}
+}
+function buildTex(R){
+  if(!FIELD)buildField();
+  const img=texCtx.createImageData(TW,TH),d=img.data;
+  const {muscle,muscleDark,fat,capCol,memCol,capDepth,T,band}=R;
+  for(let y=0;y<TH;y++){const ny=y/TH*2-1;
+    for(let x=0;x<TW;x++){const nx=x/TW*2-1,i=y*TW+x,v=FIELD[i];
+      const shade=1-ny*0.10;                                  // top lighter, bottom darker
+      let col;
+      const cb=capDepth>0.02 ? (-1+capDepth+Math.sin(nx*3.1)*0.04+(v-0.5)*0.06) : -2;
+      if(ny<cb){
+        if(Math.abs(ny-cb)<0.024){col=memCol;}                 // tan membrane line
+        else{const gl=1+0.10*Math.sin(nx*42)-(cb-ny)*0.18;col=[capCol[0]*gl,capCol[1]*gl,capCol[2]*gl];}
+      }else{
+        const t=smooth(T-band,T+band,v);                       // 1 muscle · 0 fat
+        const md=clamp((v-T)/(1-T),0,1);
+        let mus=mixRgb(muscle,muscleDark,md*0.85);
+        const fib=1+0.05*Math.sin(nx*150+ny*6+v*8);            // muscle fibre streaks
+        mus=[mus[0]*fib,mus[1]*fib,mus[2]*fib];
+        let ft=mixRgb(fat,muscle,0.05);
+        const fv=1+0.05*(((v*9)%1)-0.5);
+        ft=[ft[0]*fv,ft[1]*fv,ft[2]*fv];
+        col=mixRgb(ft,mus,t);
+      }
+      const p=i*4;d[p]=cl255(col[0]*shade);d[p+1]=cl255(col[1]*shade);d[p+2]=cl255(col[2]*shade);d[p+3]=255;
+    }}
+  texCtx.putImageData(img,0,0);
+  const g=texCtx.createRadialGradient(TW*0.34,TH*0.28,4,TW*0.34,TH*0.28,TW*0.72);
+  g.addColorStop(0,'rgba(255,255,255,0.15)');g.addColorStop(0.5,'rgba(255,255,255,0.03)');g.addColorStop(1,'rgba(255,255,255,0)');
+  texCtx.fillStyle=g;texCtx.fillRect(0,0,TW,TH);
+  texReady=true;
+}
+
+/* ============================ MORPH + DRAW LOOP ============================ */
+const DPR=Math.min(window.devicePixelRatio||1,2);
+let cur=SHAPES.steak.pts.slice(), curA=SHAPES.steak.a.slice();
+let tgt=SHAPES.steak.pts, tgtA=SHAPES.steak.a;
+function buildPath(ctx,pts,cx,cy,rw,rh){
+  ctx.beginPath();ctx.moveTo(cx+pts[0]*rw,cy+pts[1]*rh);
+  for(let k=0;k<4;k++){const o=2+k*6;ctx.bezierCurveTo(cx+pts[o]*rw,cy+pts[o+1]*rh,cx+pts[o+2]*rw,cy+pts[o+3]*rh,cx+pts[o+4]*rw,cy+pts[o+5]*rh);}
+  ctx.closePath();
+}
+function frame(t){
+  for(let i=0;i<cur.length;i++)cur[i]+=(tgt[i]-cur[i])*0.16;
+  curA[0]+=(tgtA[0]-curA[0])*0.16; curA[1]+=(tgtA[1]-curA[1])*0.16;
+  if(texDirty && R && !R.empty){buildTex(R);texDirty=false;}
+  if(renderMode==='canvas') drawFrame(t);
+  requestAnimationFrame(frame);
+}
+function drawFrame(t){
+  const host=$('viz'),cv=$('steak-canvas');
+  const W=host.clientWidth,H=host.clientHeight; if(W<10||H<10)return;
+  if(cv._w!==W||cv._h!==H){cv._w=W;cv._h=H;cv.width=W*DPR;cv.height=H*DPR;}
+  const ctx=cv.getContext('2d');ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+  const baseR=Math.min(W,H)*0.34;
+  const rw=baseR*(0.80+P.weight/600*0.5)*curA[0];
+  const rh=baseR*(0.78+P.thickness/60*0.55)*curA[1];
+  const cx=W/2, cy=H*0.45+Math.sin(t/950)*2;
+  if(!R||R.empty){drawEmpty(ctx,cx,cy,rw,rh);return;}
+  if(!texReady)return;
+  // glow
+  ctx.save();buildPath(ctx,cur,cx,cy,rw,rh);ctx.shadowColor=rgbaCss(R.glow,0.5);ctx.shadowBlur=44;ctx.shadowOffsetY=14;ctx.fillStyle=rgbCss(R.muscle);ctx.fill();ctx.restore();
+  // body
+  ctx.save();buildPath(ctx,cur,cx,cy,rw,rh);ctx.clip();
+  ctx.drawImage(tex,cx-rw,cy-rh,rw*2,rh*2);
+  if(R.doneT>0.02){const v=ctx.createRadialGradient(cx,cy,baseR*0.25,cx,cy,Math.max(rw,rh)*1.05);
+    v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(0.68,'rgba(0,0,0,0)');v.addColorStop(1,rgbaCss(mixRgb(R.sear,[34,18,10],0.6),0.22+R.doneT*0.5));
+    ctx.fillStyle=v;ctx.fillRect(0,0,W,H);}
+  const fs=ctx.createLinearGradient(0,cy,0,cy+rh);fs.addColorStop(0,'rgba(0,0,0,0)');fs.addColorStop(1,'rgba(0,0,0,0.16)');ctx.fillStyle=fs;ctx.fillRect(0,cy,W,rh);
+  ctx.restore();
+  // rim
+  ctx.save();buildPath(ctx,cur,cx,cy,rw,rh);ctx.lineJoin='round';
+  ctx.lineWidth=2+R.doneT*7;ctx.strokeStyle=rgbCss(mixRgb(R.sear,[40,22,14],R.doneT));ctx.globalAlpha=0.92;ctx.stroke();
+  ctx.globalAlpha=1;ctx.lineWidth=1.2;ctx.strokeStyle='rgba(255,255,255,0.13)';ctx.stroke();ctx.restore();
+}
+function drawEmpty(ctx,cx,cy,rw,rh){
+  ctx.save();ctx.setLineDash([6,8]);buildPath(ctx,cur,cx,cy,rw,rh);
+  ctx.strokeStyle='rgba(94,234,212,0.4)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+  ctx.fillStyle='rgba(170,190,214,0.8)';ctx.textAlign='center';
+  ctx.font='600 13px ui-monospace,monospace';ctx.fillText('◌  NO DONOR SAMPLE LOADED',cx,cy-2);
+  ctx.fillStyle='rgba(120,140,168,0.7)';ctx.font='11px ui-monospace,monospace';ctx.fillText('add cell lines to compile a cut',cx,cy+18);
+}
+
+/* ============================ SVG (stylised) ============================ */
+function drawSVG(c){
+  const sh=SHAPES[c.cat.shape], W=440,H=320,cx=220,cy=150;
+  const rw=120*(0.82+P.weight/600*0.45)*sh.a[0];
+  const rh=104*(0.8+P.thickness/60*0.5)*sh.a[1];
+  let pts=sh.pts, path=`M${(cx+pts[0]*rw).toFixed(1)},${(cy+pts[1]*rh).toFixed(1)} `;
+  for(let k=0;k<4;k++){const o=2+k*6;path+=`C${(cx+pts[o]*rw).toFixed(1)},${(cy+pts[o+1]*rh).toFixed(1)} ${(cx+pts[o+2]*rw).toFixed(1)},${(cy+pts[o+3]*rh).toFixed(1)} ${(cx+pts[o+4]*rw).toFixed(1)},${(cy+pts[o+5]*rh).toFixed(1)} `;}
+  path+='Z';
+  const r=c.empty?[150,40,55]:buildR(c).muscle;
+  const fill=rgbCss(r),light=rgbCss(mixRgb(r,[255,255,255],0.22)),dark=rgbCss(mixRgb(r,[0,0,0],0.42));
+  const glow=rgbCss(mixRgb(c.rgbBase,[255,120,140],0.4));
+  const marbA=(0.25+P.marbling/100*0.55).toFixed(2);
+  if(c.empty){$('svg-host').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:100%"><path d="${path}" fill="none" stroke="rgba(94,234,212,0.4)" stroke-width="2" stroke-dasharray="6 8"/><text x="${cx}" y="${cy}" fill="#9fb2cc" font-size="13" font-family="monospace" text-anchor="middle">NO DONOR SAMPLE</text></svg>`;return;}
+  $('svg-host').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:100%">
+    <defs>
+      <radialGradient id="mf" cx="42%" cy="36%" r="78%"><stop offset="0%" stop-color="${light}"/><stop offset="55%" stop-color="${fill}"/><stop offset="100%" stop-color="${dark}"/></radialGradient>
+      <filter id="mg" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="${glow}" flood-opacity="0.45"/></filter>
+      <filter id="marble"><feTurbulence type="fractalNoise" baseFrequency="0.022 0.052" numOctaves="5" seed="7" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.96  0 0 0 0 0.90  0 0 0 0 0.83  0 0 0 ${(0.9*marbA)} 0"/></filter>
+      <clipPath id="mc"><path d="${path}"/></clipPath>
+    </defs>
+    <path d="${path}" fill="url(#mf)" filter="url(#mg)"/>
+    <g clip-path="url(#mc)"><rect x="0" y="0" width="${W}" height="${H}" filter="url(#marble)"/>
+      <ellipse cx="${cx-28}" cy="${cy-30}" rx="110" ry="52" fill="rgba(255,255,255,0.08)"/>
+      <path d="M${cx-rw*0.82},${cy-rh*0.5} Q${cx},${cy-rh*1.1} ${cx+rw*0.82},${cy-rh*0.5}" stroke="rgba(246,234,216,${(c.domCat==='red'?0.7:0.3)})" stroke-width="${4+P.fat*0.5}" fill="none" stroke-linecap="round"/></g>
+    <path d="${path}" fill="none" stroke="${rgbCss(mixRgb(c.cat.sear,[40,22,14],c.doneT))}" stroke-width="${(2+c.doneT*6).toFixed(1)}" opacity="0.9"/>
+    <path d="${path}" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  </svg>`;
+}
+
+/* ============================ RADAR / COMP / DESC ============================ */
+function renderRadar(flav){
+  const keys=Object.keys(flav),n=keys.length,cx=80,cy=80,Rr=56;
+  const colors=['#5eead4','#38bdf8','#fb7185','#fbbf24','#f59e0b','#a78bfa'];
+  let grid='';for(let ring=1;ring<=4;ring++){let p='';for(let i=0;i<n;i++){const a=-Math.PI/2+i/n*Math.PI*2;p+=`${(cx+Math.cos(a)*Rr*ring/4).toFixed(1)},${(cy+Math.sin(a)*Rr*ring/4).toFixed(1)} `;}grid+=`<polygon points="${p}" fill="none" stroke="rgba(255,255,255,0.08)"/>`;}
+  let axes='',labels='';keys.forEach((k,i)=>{const a=-Math.PI/2+i/n*Math.PI*2;axes+=`<line x1="${cx}" y1="${cy}" x2="${(cx+Math.cos(a)*Rr).toFixed(1)}" y2="${(cy+Math.sin(a)*Rr).toFixed(1)}" stroke="rgba(255,255,255,0.07)"/>`;labels+=`<text x="${(cx+Math.cos(a)*(Rr+10)).toFixed(1)}" y="${(cy+Math.sin(a)*(Rr+10)).toFixed(1)}" fill="#7e90a8" font-size="7" font-family="monospace" text-anchor="middle" dominant-baseline="middle">${k.slice(0,4).toUpperCase()}</text>`;});
+  let dp='',dots='';keys.forEach((k,i)=>{const a=-Math.PI/2+i/n*Math.PI*2,r=Rr*flav[k]/100;dp+=`${(cx+Math.cos(a)*r).toFixed(1)},${(cy+Math.sin(a)*r).toFixed(1)} `;dots+=`<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r).toFixed(1)}" r="2" fill="#5eead4"/>`;});
+  $('radar').innerHTML=`${grid}${axes}<polygon points="${dp}" fill="rgba(94,234,212,0.22)" stroke="#5eead4" stroke-width="2"/>${dots}${labels}`;
+  $('flavor-legend').innerHTML=keys.map((k,i)=>`<div class="fl-row"><span class="sw" style="background:${colors[i]}"></span>${k}<span class="fv">${Math.round(flav[k])}</span></div>`).join('');
+}
+function renderComp(c){
+  let acc=0;const stops=[];c.blend.forEach(b=>{const f=acc,t=acc+b.pct*100;stops.push(`${b.color} ${f.toFixed(1)}% ${t.toFixed(1)}%`);acc=t;});
+  if(!c.blend.length)stops.push('#1a2438 0% 100%');
+  $('donut').style.background=`conic-gradient(${stops.join(',')})`;
+  $('seq-hash').textContent=c.hash;
+  $('legend').innerHTML=c.blend.map(b=>`<div class="lg-row"><span class="sw" style="background:${b.color};color:${b.color}"></span><span class="nm">${b.emo} ${b.name}</span><span class="pc">${Math.round(b.pct*100)}%</span></div>`).join('')||`<div class="lg-row" style="color:var(--txt-faint)">No donor cells loaded</div>`;
+}
+function descriptor(c){
+  if(c.empty)return `<b>No donor cells loaded.</b> Dial up one or more cell lines on the left to compile a cut.`;
+  const T=P.tenderness,fat=P.fat,col=P.collagen;
+  const tender=T>78?'butter‑soft, fork‑tender':T>55?'tender with gentle resistance':T>32?'firm, satisfying chew':'dense and structured';
+  const fatTxt=fat>34?'lavishly marbled':fat>22?'richly marbled':fat>12?'moderately marbled':'lean‑cut';
+  const top=c.blend[0],second=c.blend[1];
+  const lead=`${top.emo} ${top.name}`, finish=second?` finished with ${second.emo} ${second.name}`:'';
+  const dom=Object.entries(c.flav).sort((a,b)=>b[1]-a[1])[0][0].toLowerCase();
+  const colTxt=col>55?', with a gelatinous collagen‑rich bite':col>30?', lightly structured by connective tissue':'';
+  const dn=['blue','rare','medium‑rare','medium','medium‑well','well‑done'][Math.min(5,Math.floor(P.doneness/100*5.99))];
+  return `A <b>${fatTxt}</b> ${lead} ${c.cat.shapeName.toLowerCase()}${finish}, engineered ${tender}${colTxt}. Leads with <b>${dom}</b> at a <b>${dn}</b> core · ${c.proG} g protein /100 g.`;
+}
+
+/* ============================ MASTER ============================ */
+function recompute(){
+  const c=compute();lastC=c;R=buildR(c);texDirty=true;
+  tgt=SHAPES[c.cat.shape].pts;tgtA=SHAPES[c.cat.shape].a;
+  if(renderMode==='svg')drawSVG(c);
+  $('tag-blend').textContent=c.total>0&&!c.empty?`SUM ${c.total} → 100%`:'EMPTY';
+  SPECIES.forEach(s=>{const v=$('val-sp-'+s.id);if(v)v.textContent=(c.total?Math.round(S[s.id]/c.total*100):0)+'%';});
+  PARAMS.forEach(g=>g.items.forEach(p=>{const v=$('val-'+p.id);if(v)v.textContent=P[p.id]+(p.unit?(' '+p.unit):'');}));
+  renderRadar(c.flav);renderComp(c);
+  $('st-cal').textContent=c.cal;$('bar-cal').style.width=clamp(c.cal/450*100,2,100)+'%';
+  $('st-pro').textContent=c.proG;$('bar-pro').style.width=clamp(c.proG/36*100,2,100)+'%';
+  $('st-fat').textContent=c.fatG;$('bar-fat').style.width=clamp(c.fatG/48*100,2,100)+'%';
+  $('st-om').textContent=c.omega;$('bar-om').style.width=clamp(c.omega/1200*100,2,100)+'%';
+  const f=Math.round(c.feas);$('feas-val').textContent=f+'%';
+  const col=c.empty?'var(--txt-faint)':f>75?'var(--green)':f>50?'var(--amber)':'var(--red)';
+  $('feas-val').style.color=col;$('feas-fill').style.width=f+'%';
+  $('feas-fill').style.background=`linear-gradient(90deg,${col},${f>75?'#5eead4':f>50?'#f59e0b':'#fb7185'})`;
+  $('feas-note').classList.toggle('show',!c.empty&&(c.extinctPct>0||f<60));
+  $('descriptor-text').innerHTML=descriptor(c);
+  const doneN=['BLUE','RARE','MEDIUM‑RARE','MEDIUM','MEDIUM‑WELL','WELL‑DONE'][Math.min(5,Math.floor(P.doneness/100*5.99))];
+  $('done-badge').textContent=doneN;$('done-badge').style.color=P.doneness>70?'#fb7185':P.doneness>45?'#fbbf24':'#5eead4';
+  $('shape-badge').textContent=c.empty?'—':c.cat.shapeName;
+  $('spec-overlay').innerHTML=`
+    <div class="spec-chip">CUT <b>${P.weight} g</b> · ${P.thickness} mm</div>
+    <div class="spec-chip">PRINT <b>${P.layers}L</b> @ ${P.res} µm</div>
+    <div class="spec-chip">REACTOR <b>${(+P.temp).toFixed(1)}°C</b> · ${P.cycle} d</div>
+    <div class="spec-chip">SEQ <b>${c.hash}</b></div>`;
+  const live=SPECIES.filter(s=>S[s.id]>0).length;
+  $('pill-ink').textContent=live+' line'+(live===1?'':'s');
+  $('pill-noz').textContent=(+P.temp).toFixed(1)+'°C';
+}
+
+/* ============================ PRINT ============================ */
+let printing=false;
+const STEPS=[[4,'thawing donor cell lines from cryo‑bank'],[16,'seeding bioreactor · proliferating satellite cells'],[34,'gap‑filling genome via reference scaffold'],[52,'depositing muscle bio‑ink · layer pass 1'],[68,'extruding adipose marbling lattice'],[82,'weaving connective collagen matrix'],[93,'perfusing vascular flavor compounds'],[100,'maturation locked · cut rendered ✓']];
+function bioprint(){
+  if(printing||(lastC&&lastC.empty)){if(lastC&&lastC.empty)log('⚠ no donor cells loaded');return;}
+  printing=true;const c=compute();
+  $('btn-print').disabled=true;$('btn-print').style.opacity=.6;$('scanline').classList.add('on');
+  let step=0;const fill=$('print-fill');
+  (function tick(){
+    if(step>=STEPS.length){printing=false;$('btn-print').disabled=false;$('btn-print').style.opacity=1;$('scanline').classList.remove('on');
+      $('print-status').innerHTML=`<b>RENDER COMPLETE</b> · ${c.hash} ready to plate`;flash();log(`bioprint complete · ${c.hash} · ${c.cat.shapeName} · ${P.weight}g`);return;}
+    const[pct,msg]=STEPS[step];fill.style.width=pct+'%';$('print-status').innerHTML=`<b>${pct}%</b> · ${msg}`;step++;setTimeout(tick,360+Math.random()*240);
+  })();
+  log('compiling cut → bioprinter queue');
+}
+function flash(){const v=$('viz'),fl=document.createElement('div');
+  fl.style.cssText='position:absolute;inset:0;background:radial-gradient(circle,rgba(94,234,212,.45),transparent 70%);opacity:0;pointer-events:none;z-index:5;transition:opacity .15s';
+  v.appendChild(fl);requestAnimationFrame(()=>{fl.style.opacity='1';setTimeout(()=>{fl.style.opacity='0';setTimeout(()=>fl.remove(),400);},120);});}
+
+/* ============================ ACTIONS ============================ */
+function log(m){$('log').textContent=m;}
+function randomize(){
+  SPECIES.forEach(s=>S[s.id]=0);
+  const pool=[...SPECIES].sort(()=>Math.random()-0.5),n=2+Math.floor(Math.random()*2);
+  for(let i=0;i<n;i++)S[pool[i].id]=20+Math.floor(Math.random()*80);
+  PARAMS.forEach(g=>g.items.forEach(p=>{P[p.id]=Math.round((p.min+Math.random()*(p.max-p.min))/(p.step||1))*(p.step||1);}));
+  sync();recompute();log('randomised exotic blend · '+pool.slice(0,n).map(s=>s.id).join(' + '));
+}
+function reset(){
+  SPECIES.forEach(s=>S[s.id]=s.def);PARAMS.forEach(g=>g.items.forEach(p=>P[p.id]=p.def));
+  sync();recompute();$('print-fill').style.width='0%';
+  $('print-status').innerHTML='<b>READY</b> · design buffer synced, awaiting compile';log('buffer reset → default 60% wagyu / 40% quail');
+}
+function sync(){SPECIES.forEach(s=>{const el=$('in-sp-'+s.id);el.value=S[s.id];setFill(el);});PARAMS.forEach(g=>g.items.forEach(p=>{const el=$('in-'+p.id);el.value=P[p.id];setFill(el);}));}
+function setMode(m){renderMode=m;[...document.querySelectorAll('#rmode button')].forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  $('steak-canvas').style.display=m==='canvas'?'block':'none';$('svg-host').style.display=m==='svg'?'block':'none';
+  if(m==='svg'&&lastC)drawSVG(lastC);log('render mode → '+m);}
+
+/* ============================ INIT ============================ */
+buildSpecies();buildParams();
+$('btn-random').addEventListener('click',randomize);
+$('btn-reset').addEventListener('click',reset);
+$('btn-print').addEventListener('click',bioprint);
+[...document.querySelectorAll('#rmode button')].forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+function clk(){$('clock').textContent=new Date().toLocaleTimeString('en-GB');}clk();setInterval(clk,1000);
+recompute();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
