@@ -1,0 +1,1557 @@
+{
+  "stats": {
+    "total_letters": 14017,
+    "total_words": 1949958,
+    "avg_word_count": 139.1,
+    "start_year": 1820,
+    "end_year": 1870
+  },
+  "timeline": [
+    {
+      "year": 1820,
+      "count": 1,
+      "themes": {
+        "Business/Finance": 0,
+        "Family/Personal": 0,
+        "Theatre/Readings": 0,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 0,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1825,
+      "count": 1,
+      "themes": {
+        "Business/Finance": 1,
+        "Family/Personal": 0,
+        "Theatre/Readings": 0,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 0,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1831,
+      "count": 1,
+      "themes": {
+        "Business/Finance": 0,
+        "Family/Personal": 0,
+        "Theatre/Readings": 0,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 0,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1832,
+      "count": 16,
+      "themes": {
+        "Business/Finance": 0,
+        "Family/Personal": 4,
+        "Theatre/Readings": 2,
+        "Social Reform/Philanthropy": 2,
+        "Literature/Writing": 4,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1833,
+      "count": 28,
+      "themes": {
+        "Business/Finance": 1,
+        "Family/Personal": 8,
+        "Theatre/Readings": 4,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 14,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1834,
+      "count": 23,
+      "themes": {
+        "Business/Finance": 6,
+        "Family/Personal": 13,
+        "Theatre/Readings": 0,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 3,
+        "Travel/Places": 1
+      }
+    },
+    {
+      "year": 1835,
+      "count": 84,
+      "themes": {
+        "Business/Finance": 5,
+        "Family/Personal": 33,
+        "Theatre/Readings": 3,
+        "Social Reform/Philanthropy": 0,
+        "Literature/Writing": 41,
+        "Travel/Places": 0
+      }
+    },
+    {
+      "year": 1836,
+      "count": 174,
+      "themes": {
+        "Business/Finance": 12,
+        "Family/Personal": 35,
+        "Theatre/Readings": 19,
+        "Social Reform/Philanthropy": 1,
+        "Literature/Writing": 85,
+        "Travel/Places": 1
+      }
+    },
+    {
+      "year": 1837,
+      "count": 256,
+      "themes": {
+        "Business/Finance": 26,
+        "Family/Personal": 47,
+        "Theatre/Readings": 10,
+        "Social Reform/Philanthropy": 5,
+        "Literature/Writing": 106,
+        "Travel/Places": 2
+      }
+    },
+    {
+      "year": 1838,
+      "count": 266,
+      "themes": {
+        "Business/Finance": 17,
+        "Family/Personal": 46,
+        "Theatre/Readings": 18,
+        "Social Reform/Philanthropy": 6,
+        "Literature/Writing": 124,
+        "Travel/Places": 6
+      }
+    },
+    {
+      "year": 1839,
+      "count": 230,
+      "themes": {
+        "Business/Finance": 18,
+        "Family/Personal": 62,
+        "Theatre/Readings": 25,
+        "Social Reform/Philanthropy": 7,
+        "Literature/Writing": 88,
+        "Travel/Places": 6
+      }
+    },
+    {
+      "year": 1840,
+      "count": 283,
+      "themes": {
+        "Business/Finance": 15,
+        "Family/Personal": 57,
+        "Theatre/Readings": 13,
+        "Social Reform/Philanthropy": 6,
+        "Literature/Writing": 108,
+        "Travel/Places": 2
+      }
+    },
+    {
+      "year": 1841,
+      "count": 436,
+      "themes": {
+        "Business/Finance": 22,
+        "Family/Personal": 118,
+        "Theatre/Readings": 25,
+        "Social Reform/Philanthropy": 9,
+        "Literature/Writing": 153,
+        "Travel/Places": 19
+      }
+    },
+    {
+      "year": 1842,
+      "count": 446,
+      "themes": {
+        "Business/Finance": 42,
+        "Family/Personal": 144,
+        "Theatre/Readings": 35,
+        "Social Reform/Philanthropy": 33,
+        "Literature/Writing": 169,
+        "Travel/Places": 62
+      }
+    },
+    {
+      "year": 1843,
+      "count": 332,
+      "themes": {
+        "Business/Finance": 29,
+        "Family/Personal": 92,
+        "Theatre/Readings": 20,
+        "Social Reform/Philanthropy": 24,
+        "Literature/Writing": 91,
+        "Travel/Places": 20
+      }
+    },
+    {
+      "year": 1844,
+      "count": 318,
+      "themes": {
+        "Business/Finance": 35,
+        "Family/Personal": 96,
+        "Theatre/Readings": 20,
+        "Social Reform/Philanthropy": 23,
+        "Literature/Writing": 126,
+        "Travel/Places": 43
+      }
+    },
+    {
+      "year": 1845,
+      "count": 330,
+      "themes": {
+        "Business/Finance": 25,
+        "Family/Personal": 86,
+        "Theatre/Readings": 68,
+        "Social Reform/Philanthropy": 14,
+        "Literature/Writing": 118,
+        "Travel/Places": 36
+      }
+    },
+    {
+      "year": 1846,
+      "count": 311,
+      "themes": {
+        "Business/Finance": 31,
+        "Family/Personal": 91,
+        "Theatre/Readings": 20,
+        "Social Reform/Philanthropy": 27,
+        "Literature/Writing": 144,
+        "Travel/Places": 63
+      }
+    },
+    {
+      "year": 1847,
+      "count": 369,
+      "themes": {
+        "Business/Finance": 28,
+        "Family/Personal": 96,
+        "Theatre/Readings": 52,
+        "Social Reform/Philanthropy": 17,
+        "Literature/Writing": 108,
+        "Travel/Places": 30
+      }
+    },
+    {
+      "year": 1848,
+      "count": 489,
+      "themes": {
+        "Business/Finance": 55,
+        "Family/Personal": 147,
+        "Theatre/Readings": 78,
+        "Social Reform/Philanthropy": 18,
+        "Literature/Writing": 128,
+        "Travel/Places": 18
+      }
+    },
+    {
+      "year": 1849,
+      "count": 418,
+      "themes": {
+        "Business/Finance": 26,
+        "Family/Personal": 113,
+        "Theatre/Readings": 21,
+        "Social Reform/Philanthropy": 24,
+        "Literature/Writing": 111,
+        "Travel/Places": 20
+      }
+    },
+    {
+      "year": 1850,
+      "count": 526,
+      "themes": {
+        "Business/Finance": 27,
+        "Family/Personal": 118,
+        "Theatre/Readings": 40,
+        "Social Reform/Philanthropy": 21,
+        "Literature/Writing": 201,
+        "Travel/Places": 30
+      }
+    },
+    {
+      "year": 1851,
+      "count": 590,
+      "themes": {
+        "Business/Finance": 47,
+        "Family/Personal": 151,
+        "Theatre/Readings": 91,
+        "Social Reform/Philanthropy": 16,
+        "Literature/Writing": 184,
+        "Travel/Places": 25
+      }
+    },
+    {
+      "year": 1852,
+      "count": 509,
+      "themes": {
+        "Business/Finance": 37,
+        "Family/Personal": 132,
+        "Theatre/Readings": 40,
+        "Social Reform/Philanthropy": 29,
+        "Literature/Writing": 180,
+        "Travel/Places": 24
+      }
+    },
+    {
+      "year": 1853,
+      "count": 346,
+      "themes": {
+        "Business/Finance": 41,
+        "Family/Personal": 120,
+        "Theatre/Readings": 28,
+        "Social Reform/Philanthropy": 24,
+        "Literature/Writing": 139,
+        "Travel/Places": 56
+      }
+    },
+    {
+      "year": 1854,
+      "count": 468,
+      "themes": {
+        "Business/Finance": 22,
+        "Family/Personal": 135,
+        "Theatre/Readings": 36,
+        "Social Reform/Philanthropy": 30,
+        "Literature/Writing": 148,
+        "Travel/Places": 34
+      }
+    },
+    {
+      "year": 1855,
+      "count": 486,
+      "themes": {
+        "Business/Finance": 41,
+        "Family/Personal": 131,
+        "Theatre/Readings": 53,
+        "Social Reform/Philanthropy": 25,
+        "Literature/Writing": 156,
+        "Travel/Places": 49
+      }
+    },
+    {
+      "year": 1856,
+      "count": 391,
+      "themes": {
+        "Business/Finance": 34,
+        "Family/Personal": 135,
+        "Theatre/Readings": 57,
+        "Social Reform/Philanthropy": 28,
+        "Literature/Writing": 151,
+        "Travel/Places": 47
+      }
+    },
+    {
+      "year": 1857,
+      "count": 506,
+      "themes": {
+        "Business/Finance": 40,
+        "Family/Personal": 112,
+        "Theatre/Readings": 57,
+        "Social Reform/Philanthropy": 29,
+        "Literature/Writing": 155,
+        "Travel/Places": 29
+      }
+    },
+    {
+      "year": 1858,
+      "count": 405,
+      "themes": {
+        "Business/Finance": 30,
+        "Family/Personal": 113,
+        "Theatre/Readings": 51,
+        "Social Reform/Philanthropy": 22,
+        "Literature/Writing": 125,
+        "Travel/Places": 35
+      }
+    },
+    {
+      "year": 1859,
+      "count": 355,
+      "themes": {
+        "Business/Finance": 39,
+        "Family/Personal": 81,
+        "Theatre/Readings": 15,
+        "Social Reform/Philanthropy": 9,
+        "Literature/Writing": 128,
+        "Travel/Places": 28
+      }
+    },
+    {
+      "year": 1860,
+      "count": 318,
+      "themes": {
+        "Business/Finance": 27,
+        "Family/Personal": 98,
+        "Theatre/Readings": 10,
+        "Social Reform/Philanthropy": 13,
+        "Literature/Writing": 93,
+        "Travel/Places": 27
+      }
+    },
+    {
+      "year": 1861,
+      "count": 349,
+      "themes": {
+        "Business/Finance": 40,
+        "Family/Personal": 92,
+        "Theatre/Readings": 33,
+        "Social Reform/Philanthropy": 19,
+        "Literature/Writing": 143,
+        "Travel/Places": 18
+      }
+    },
+    {
+      "year": 1862,
+      "count": 331,
+      "themes": {
+        "Business/Finance": 40,
+        "Family/Personal": 96,
+        "Theatre/Readings": 39,
+        "Social Reform/Philanthropy": 19,
+        "Literature/Writing": 110,
+        "Travel/Places": 34
+      }
+    },
+    {
+      "year": 1863,
+      "count": 282,
+      "themes": {
+        "Business/Finance": 22,
+        "Family/Personal": 79,
+        "Theatre/Readings": 20,
+        "Social Reform/Philanthropy": 13,
+        "Literature/Writing": 77,
+        "Travel/Places": 29
+      }
+    },
+    {
+      "year": 1864,
+      "count": 306,
+      "themes": {
+        "Business/Finance": 18,
+        "Family/Personal": 58,
+        "Theatre/Readings": 7,
+        "Social Reform/Philanthropy": 19,
+        "Literature/Writing": 93,
+        "Travel/Places": 9
+      }
+    },
+    {
+      "year": 1865,
+      "count": 297,
+      "themes": {
+        "Business/Finance": 14,
+        "Family/Personal": 47,
+        "Theatre/Readings": 13,
+        "Social Reform/Philanthropy": 9,
+        "Literature/Writing": 109,
+        "Travel/Places": 18
+      }
+    },
+    {
+      "year": 1866,
+      "count": 340,
+      "themes": {
+        "Business/Finance": 26,
+        "Family/Personal": 70,
+        "Theatre/Readings": 51,
+        "Social Reform/Philanthropy": 14,
+        "Literature/Writing": 111,
+        "Travel/Places": 24
+      }
+    },
+    {
+      "year": 1867,
+      "count": 480,
+      "themes": {
+        "Business/Finance": 34,
+        "Family/Personal": 120,
+        "Theatre/Readings": 59,
+        "Social Reform/Philanthropy": 14,
+        "Literature/Writing": 143,
+        "Travel/Places": 70
+      }
+    },
+    {
+      "year": 1868,
+      "count": 485,
+      "themes": {
+        "Business/Finance": 65,
+        "Family/Personal": 140,
+        "Theatre/Readings": 55,
+        "Social Reform/Philanthropy": 19,
+        "Literature/Writing": 138,
+        "Travel/Places": 69
+      }
+    },
+    {
+      "year": 1869,
+      "count": 442,
+      "themes": {
+        "Business/Finance": 35,
+        "Family/Personal": 107,
+        "Theatre/Readings": 38,
+        "Social Reform/Philanthropy": 11,
+        "Literature/Writing": 129,
+        "Travel/Places": 35
+      }
+    },
+    {
+      "year": 1870,
+      "count": 208,
+      "themes": {
+        "Business/Finance": 16,
+        "Family/Personal": 41,
+        "Theatre/Readings": 8,
+        "Social Reform/Philanthropy": 7,
+        "Literature/Writing": 57,
+        "Travel/Places": 11
+      }
+    }
+  ],
+  "themes": [
+    {
+      "theme": "Literature/Writing",
+      "count": 4678
+    },
+    {
+      "theme": "Family/Personal",
+      "count": 3592
+    },
+    {
+      "theme": "Theatre/Readings",
+      "count": 1280
+    },
+    {
+      "theme": "Business/Finance",
+      "count": 1117
+    },
+    {
+      "theme": "Travel/Places",
+      "count": 1061
+    },
+    {
+      "theme": "Social Reform/Philanthropy",
+      "count": 629
+    }
+  ],
+  "recipients": [
+    {
+      "recipient": "John Forster",
+      "count": 905
+    },
+    {
+      "recipient": "Miss Burdett Coutts",
+      "count": 560
+    },
+    {
+      "recipient": "W. H. Wills",
+      "count": 461
+    },
+    {
+      "recipient": "Unknown Recipient",
+      "count": 295
+    },
+    {
+      "recipient": "Miss Georgina Hogarth",
+      "count": 218
+    },
+    {
+      "recipient": "W. C. MacReady",
+      "count": 209
+    },
+    {
+      "recipient": "Unknown Correspondent",
+      "count": 206
+    },
+    {
+      "recipient": "Thomas Beard",
+      "count": 197
+    },
+    {
+      "recipient": "Thomas Mitton",
+      "count": 186
+    },
+    {
+      "recipient": "Mark Lemon",
+      "count": 168
+    },
+    {
+      "recipient": "Wilkie Collins",
+      "count": 155
+    },
+    {
+      "recipient": "Frank Stone",
+      "count": 154
+    },
+    {
+      "recipient": "Henry Austin",
+      "count": 148
+    },
+    {
+      "recipient": "Richard Bentley",
+      "count": 135
+    },
+    {
+      "recipient": "Frederic Ouvry",
+      "count": 131
+    },
+    {
+      "recipient": "Daniel MacLise",
+      "count": 121
+    },
+    {
+      "recipient": "Sir Edward Bulwer Lytton",
+      "count": 102
+    },
+    {
+      "recipient": "Charles Kent",
+      "count": 90
+    },
+    {
+      "recipient": "John Leech",
+      "count": 86
+    },
+    {
+      "recipient": "George Cruikshank",
+      "count": 84
+    },
+    {
+      "recipient": "Mrs Henry Austin",
+      "count": 79
+    },
+    {
+      "recipient": "Messrs Chapman & Hall",
+      "count": 78
+    },
+    {
+      "recipient": "Clarkson Stanfield",
+      "count": 72
+    },
+    {
+      "recipient": "Mrs Charles Dickens",
+      "count": 71
+    },
+    {
+      "recipient": "Messrs Bradbury & Evans",
+      "count": 71
+    },
+    {
+      "recipient": "Edward Chapman",
+      "count": 67
+    },
+    {
+      "recipient": "Frederick Dickens",
+      "count": 67
+    },
+    {
+      "recipient": "F. M. Evans",
+      "count": 67
+    },
+    {
+      "recipient": "The Hon. Mrs Richard Watson",
+      "count": 63
+    },
+    {
+      "recipient": "Frederic Chapman",
+      "count": 63
+    },
+    {
+      "recipient": "Miss Mary Dickens",
+      "count": 62
+    },
+    {
+      "recipient": "Miss Catherine Hogarth",
+      "count": 61
+    },
+    {
+      "recipient": "Peter Cunningham",
+      "count": 61
+    },
+    {
+      "recipient": "Benjamin Webster",
+      "count": 58
+    },
+    {
+      "recipient": "Mrs Gaskell",
+      "count": 55
+    },
+    {
+      "recipient": "Augustus Tracey",
+      "count": 51
+    },
+    {
+      "recipient": "T. J. Thompson",
+      "count": 49
+    },
+    {
+      "recipient": "Charles Knight",
+      "count": 48
+    },
+    {
+      "recipient": "John MacRone",
+      "count": 47
+    },
+    {
+      "recipient": "T. N. Talfourd",
+      "count": 47
+    },
+    {
+      "recipient": "Emile De La Rue",
+      "count": 47
+    },
+    {
+      "recipient": "George Dolby",
+      "count": 47
+    },
+    {
+      "recipient": "Edmund Yates",
+      "count": 46
+    },
+    {
+      "recipient": "Miss Mary Boyle",
+      "count": 41
+    },
+    {
+      "recipient": "Miss Fanny Kelly",
+      "count": 40
+    },
+    {
+      "recipient": "J. P. Harley",
+      "count": 39
+    },
+    {
+      "recipient": "Henry Morley",
+      "count": 39
+    },
+    {
+      "recipient": "J. T. Fields",
+      "count": 39
+    },
+    {
+      "recipient": "George Russell",
+      "count": 39
+    },
+    {
+      "recipient": "George Cattermole",
+      "count": 38
+    }
+  ],
+  "sent_locations": [
+    {
+      "name": "Chatham, Kent",
+      "latitude": 51.3789,
+      "longitude": 0.5278,
+      "count": 1
+    },
+    {
+      "name": "Doctors' Commons, London",
+      "latitude": 51.5126,
+      "longitude": -0.0994,
+      "count": 1
+    },
+    {
+      "name": "15 Fitzroy Street, London",
+      "latitude": 51.5225,
+      "longitude": -0.1404,
+      "count": 9
+    },
+    {
+      "name": "18 Bentinck Street, London",
+      "latitude": 51.5178,
+      "longitude": -0.1507,
+      "count": 23
+    },
+    {
+      "name": "Furnival's Inn, London",
+      "latitude": 51.5186,
+      "longitude": -0.1098,
+      "count": 207
+    },
+    {
+      "name": "London",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "count": 161
+    },
+    {
+      "name": "Mrs. Denman's. Petersham near Richmond",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 1
+    },
+    {
+      "name": "48 Doughty Street, London",
+      "latitude": 51.525,
+      "longitude": -0.1167,
+      "count": 401
+    },
+    {
+      "name": "42 Portman Place, Edgeware Road, Collins's Farm.†2 North End, Hampstead",
+      "latitude": 51.5562,
+      "longitude": -0.1781,
+      "count": 1
+    },
+    {
+      "name": "paper. Address: William Ainsworth Esqre, Kensall Lodge, Harrow Road, Collins's Farm. North End. Hampstead",
+      "latitude": 51.5562,
+      "longitude": -0.1781,
+      "count": 1
+    },
+    {
+      "name": "Hampstead",
+      "latitude": 51.5562,
+      "longitude": -0.1781,
+      "count": 1
+    },
+    {
+      "name": "Manchester",
+      "latitude": 53.4808,
+      "longitude": -2.2426,
+      "count": 32
+    },
+    {
+      "name": "Broadstairs, Kent",
+      "latitude": 51.3592,
+      "longitude": 1.4402,
+      "count": 529
+    },
+    {
+      "name": "Brighton, Sussex",
+      "latitude": 50.8225,
+      "longitude": -0.1372,
+      "count": 79
+    },
+    {
+      "name": "Athenaeum Club, London",
+      "latitude": 51.5071,
+      "longitude": -0.1311,
+      "count": 26
+    },
+    {
+      "name": "Richmond†1",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 1
+    },
+    {
+      "name": "Liverpool",
+      "latitude": 53.4084,
+      "longitude": -2.9916,
+      "count": 67
+    },
+    {
+      "name": "Piazza Coffee House, Covent Garden, London",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "count": 12
+    },
+    {
+      "name": "1 Devonshire Terrace, London",
+      "latitude": 51.5235,
+      "longitude": -0.1504,
+      "count": 2342
+    },
+    {
+      "name": "Elm Cottage Petersham, Near Richmond",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 1
+    },
+    {
+      "name": "Elm Cottage Petersham, near Richmond",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 1
+    },
+    {
+      "name": "New York, USA",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "count": 72
+    },
+    {
+      "name": "35 Saint James's Square, Bath.†1",
+      "latitude": 51.3758,
+      "longitude": -2.3599,
+      "count": 1
+    },
+    {
+      "name": "Birmingham",
+      "latitude": 52.4862,
+      "longitude": -1.8904,
+      "count": 27
+    },
+    {
+      "name": "Paris, France",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "count": 117
+    },
+    {
+      "name": "Royal Hotel Edinburgh",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 3
+    },
+    {
+      "name": "Road, Sheffield",
+      "latitude": 53.3811,
+      "longitude": -1.4701,
+      "count": 1
+    },
+    {
+      "name": "when he sailed for America",
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "count": 1
+    },
+    {
+      "name": "Tremont House, Boston, USA",
+      "latitude": 42.3601,
+      "longitude": -71.0589,
+      "count": 31
+    },
+    {
+      "name": "Boston, USA",
+      "latitude": 42.3601,
+      "longitude": -71.0589,
+      "count": 77
+    },
+    {
+      "name": "Regent's Park, London",
+      "latitude": 51.5313,
+      "longitude": -0.1569,
+      "count": 72
+    },
+    {
+      "name": "Philadelphia, USA",
+      "latitude": 39.9526,
+      "longitude": -75.1652,
+      "count": 17
+    },
+    {
+      "name": "Washington, USA",
+      "latitude": 38.9072,
+      "longitude": -77.0369,
+      "count": 32
+    },
+    {
+      "name": "Richmond. Virginia",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 1
+    },
+    {
+      "name": "Montreal—Canada",
+      "latitude": 56.1304,
+      "longitude": -106.3468,
+      "count": 1
+    },
+    {
+      "name": "Genoa, Italy",
+      "latitude": 44.4056,
+      "longitude": 8.9463,
+      "count": 22
+    },
+    {
+      "name": "Garrick Club, London",
+      "latitude": 51.5113,
+      "longitude": -0.1251,
+      "count": 12
+    },
+    {
+      "name": "Rome, Italy",
+      "latitude": 41.9028,
+      "longitude": 12.4964,
+      "count": 16
+    },
+    {
+      "name": "Naples, Italy",
+      "latitude": 40.8518,
+      "longitude": 14.2681,
+      "count": 9
+    },
+    {
+      "name": "Rochester, Kent",
+      "latitude": 51.3872,
+      "longitude": 0.505,
+      "count": 26
+    },
+    {
+      "name": "Florence, Italy",
+      "latitude": 41.8719,
+      "longitude": 12.5674,
+      "count": 6
+    },
+    {
+      "name": "Just out of the Bath",
+      "latitude": 51.3758,
+      "longitude": -2.3599,
+      "count": 1
+    },
+    {
+      "name": "Daily News Office, Whitefriars, London",
+      "latitude": 51.5134,
+      "longitude": -0.1066,
+      "count": 16
+    },
+    {
+      "name": "Lausanne, Switzerland",
+      "latitude": 46.5197,
+      "longitude": 6.6323,
+      "count": 22
+    },
+    {
+      "name": "Chester Place",
+      "latitude": 51.5284,
+      "longitude": -0.1444,
+      "count": 16
+    },
+    {
+      "name": "Inn, Holborn, 1 Chester Place",
+      "latitude": 51.5284,
+      "longitude": -0.1444,
+      "count": 1
+    },
+    {
+      "name": "1 Chester Place",
+      "latitude": 51.5284,
+      "longitude": -0.1444,
+      "count": 12
+    },
+    {
+      "name": "14 Russell, Place, Chester Place",
+      "latitude": 51.5284,
+      "longitude": -0.1444,
+      "count": 1
+    },
+    {
+      "name": "CD was able to report Catherine, Chester Place",
+      "latitude": 51.5284,
+      "longitude": -0.1444,
+      "count": 1
+    },
+    {
+      "name": "Glasgow",
+      "latitude": 55.8642,
+      "longitude": -4.2518,
+      "count": 7
+    },
+    {
+      "name": "Edinburgh",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 4
+    },
+    {
+      "name": "Folkestone, Kent",
+      "latitude": 51.0789,
+      "longitude": 1.1798,
+      "count": 64
+    },
+    {
+      "name": "Bonchurch, Isle of Wight",
+      "latitude": 50.5985,
+      "longitude": -1.1895,
+      "count": 31
+    },
+    {
+      "name": "Household Words Office, Wellington Street, London",
+      "latitude": 51.5117,
+      "longitude": -0.1201,
+      "count": 269
+    },
+    {
+      "name": "Tavistock House, London",
+      "latitude": 51.5255,
+      "longitude": -0.1287,
+      "count": 1808
+    },
+    {
+      "name": "Gad's Hill Place, Higham, Kent",
+      "latitude": 51.4116,
+      "longitude": 0.4608,
+      "count": 1449
+    },
+    {
+      "name": "Henry Carey Esq, Burlington, U.S. of America, ― VI - 472 ―",
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "count": 1
+    },
+    {
+      "name": "Bath",
+      "latitude": 51.3758,
+      "longitude": -2.3599,
+      "count": 2
+    },
+    {
+      "name": "Dover, Kent",
+      "latitude": 51.1279,
+      "longitude": 1.3134,
+      "count": 68
+    },
+    {
+      "name": "Sheffield",
+      "latitude": 53.3811,
+      "longitude": -1.4701,
+      "count": 2
+    },
+    {
+      "name": "Boulogne-sur-Mer, France",
+      "latitude": 50.7252,
+      "longitude": 1.6133,
+      "count": 128
+    },
+    {
+      "name": "Venice, Italy",
+      "latitude": 41.8719,
+      "longitude": 12.5674,
+      "count": 5
+    },
+    {
+      "name": "Esquire, 2 St John's Villas, Hampstead Road",
+      "latitude": 51.5562,
+      "longitude": -0.1781,
+      "count": 1
+    },
+    {
+      "name": "Garrick",
+      "latitude": 51.5113,
+      "longitude": -0.1251,
+      "count": 1
+    },
+    {
+      "name": "Francesco Berger Esquire, 36 Thurloe Square, Brompton",
+      "latitude": 46.2276,
+      "longitude": 2.2137,
+      "count": 1
+    },
+    {
+      "name": "Waterloo Hotel, Edinburgh",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 12
+    },
+    {
+      "name": "Maxwell Street (not through post, Royal Hotel, Glasgow†5",
+      "latitude": 55.8642,
+      "longitude": -4.2518,
+      "count": 1
+    },
+    {
+      "name": "All the Year Round Office, Wellington Street, London",
+      "latitude": 51.5117,
+      "longitude": -0.1201,
+      "count": 108
+    },
+    {
+      "name": "3 Hanover Terrace",
+      "latitude": 51.53,
+      "longitude": -0.1633,
+      "count": 15
+    },
+    {
+      "name": "R.A, Kent Villas, Lansdowne Road, Notting Hill, 3 Hanover Terrace",
+      "latitude": 51.53,
+      "longitude": -0.1633,
+      "count": 1
+    },
+    {
+      "name": "3 Hanover Terrace, Mr. Lillie",
+      "latitude": 51.53,
+      "longitude": -0.1633,
+      "count": 1
+    },
+    {
+      "name": "Carrick's Royal Hotel, Glasgow",
+      "latitude": 55.8642,
+      "longitude": -4.2518,
+      "count": 11
+    },
+    {
+      "name": "16 Somers Place",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 25
+    },
+    {
+      "name": "16 Somers Place Hyde Park W",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 1
+    },
+    {
+      "name": "16 Somers Place, Hyde Park W",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 4
+    },
+    {
+      "name": "16 Somers Place, Hyde Park, W",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 3
+    },
+    {
+      "name": "James's Street, 16 Somers Place",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 1
+    },
+    {
+      "name": "16 Somers Place Hyde Park",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 3
+    },
+    {
+      "name": "Street, Stamford Street, S, 16 Somers Place",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 1
+    },
+    {
+      "name": "16 Somers Place, Hyde Park, W, Mr. Maltby",
+      "latitude": 51.5161,
+      "longitude": -0.1706,
+      "count": 1
+    },
+    {
+      "name": "Waterloo Hotel, Edinburgh, and turned away great numbers. Not only",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 1
+    },
+    {
+      "name": "York House, Bath",
+      "latitude": 51.3758,
+      "longitude": -2.3599,
+      "count": 1
+    },
+    {
+      "name": "Leeds",
+      "latitude": 53.8008,
+      "longitude": -1.5491,
+      "count": 6
+    },
+    {
+      "name": "Lord Lytton poste restante, Eaux Bonnes, Pyrénées, France",
+      "latitude": 46.2276,
+      "longitude": 2.2137,
+      "count": 1
+    },
+    {
+      "name": "Syracuse, U. S. of America",
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "count": 1
+    },
+    {
+      "name": "Kennedy's Hotel, Edinburgh",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 15
+    },
+    {
+      "name": "Kennedy's Hotel, Edinburgh, Messrs. Cape and Harris Gentlemen",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 1
+    },
+    {
+      "name": "Queen's Hotel, Leeds",
+      "latitude": 53.8008,
+      "longitude": -1.5491,
+      "count": 1
+    },
+    {
+      "name": "5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 45
+    },
+    {
+      "name": "THE ATHENÆUM, 5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 1
+    },
+    {
+      "name": "Brunswick Square, 5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 1
+    },
+    {
+      "name": "Brunswick Square, W. C, 5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 1
+    },
+    {
+      "name": "Esquire, Hunter Street, Brunswick Square, 5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 1
+    },
+    {
+      "name": "Harvard): Henry Bicknell Esquire, Cavendish House, Clapham Common, 5 Hyde Park Place W",
+      "latitude": 51.5136,
+      "longitude": -0.1658,
+      "count": 1
+    }
+  ],
+  "mentioned_locations": [
+    {
+      "name": "Highgate",
+      "latitude": 51.5714,
+      "longitude": -0.1504,
+      "count": 34
+    },
+    {
+      "name": "London",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "count": 980
+    },
+    {
+      "name": "Boston",
+      "latitude": 42.3601,
+      "longitude": -71.0589,
+      "count": 135
+    },
+    {
+      "name": "Birmingham",
+      "latitude": 52.4862,
+      "longitude": -1.8904,
+      "count": 193
+    },
+    {
+      "name": "Hampstead",
+      "latitude": 51.5562,
+      "longitude": -0.1781,
+      "count": 53
+    },
+    {
+      "name": "Bath",
+      "latitude": 51.3758,
+      "longitude": -2.3599,
+      "count": 118
+    },
+    {
+      "name": "England",
+      "latitude": 52.3555,
+      "longitude": -1.1743,
+      "count": 460
+    },
+    {
+      "name": "France",
+      "latitude": 46.2276,
+      "longitude": 2.2137,
+      "count": 112
+    },
+    {
+      "name": "Liverpool",
+      "latitude": 53.4084,
+      "longitude": -2.9916,
+      "count": 239
+    },
+    {
+      "name": "Edinburgh",
+      "latitude": 55.9533,
+      "longitude": -3.1883,
+      "count": 176
+    },
+    {
+      "name": "Athenaeum",
+      "latitude": 51.5071,
+      "longitude": -0.1311,
+      "count": 54
+    },
+    {
+      "name": "Rochester",
+      "latitude": 51.3872,
+      "longitude": 0.505,
+      "count": 115
+    },
+    {
+      "name": "Scotland",
+      "latitude": 56.4907,
+      "longitude": -4.2026,
+      "count": 127
+    },
+    {
+      "name": "Richmond",
+      "latitude": 51.4479,
+      "longitude": -0.326,
+      "count": 68
+    },
+    {
+      "name": "Paris",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "count": 419
+    },
+    {
+      "name": "Ireland",
+      "latitude": 53.4129,
+      "longitude": -8.2439,
+      "count": 91
+    },
+    {
+      "name": "Garrick",
+      "latitude": 51.5113,
+      "longitude": -0.1251,
+      "count": 56
+    },
+    {
+      "name": "Furnival",
+      "latitude": 51.5186,
+      "longitude": -0.1098,
+      "count": 4
+    },
+    {
+      "name": "Chatham",
+      "latitude": 51.3789,
+      "longitude": 0.5278,
+      "count": 49
+    },
+    {
+      "name": "Doughty Street",
+      "latitude": 51.525,
+      "longitude": -0.1167,
+      "count": 62
+    },
+    {
+      "name": "Brighton",
+      "latitude": 50.8225,
+      "longitude": -0.1372,
+      "count": 139
+    },
+    {
+      "name": "Broadstairs",
+      "latitude": 51.3592,
+      "longitude": 1.4402,
+      "count": 161
+    },
+    {
+      "name": "America",
+      "latitude": 39.8283,
+      "longitude": -98.5795,
+      "count": 319
+    },
+    {
+      "name": "Glasgow",
+      "latitude": 55.8642,
+      "longitude": -4.2518,
+      "count": 80
+    },
+    {
+      "name": "Philadelphia",
+      "latitude": 39.9526,
+      "longitude": -75.1652,
+      "count": 85
+    },
+    {
+      "name": "Manchester",
+      "latitude": 53.4808,
+      "longitude": -2.2426,
+      "count": 258
+    },
+    {
+      "name": "Washington",
+      "latitude": 38.9072,
+      "longitude": -77.0369,
+      "count": 86
+    },
+    {
+      "name": "New York",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "count": 173
+    },
+    {
+      "name": "Sheffield",
+      "latitude": 53.3811,
+      "longitude": -1.4701,
+      "count": 43
+    },
+    {
+      "name": "Boulogne",
+      "latitude": 50.7252,
+      "longitude": 1.6133,
+      "count": 114
+    },
+    {
+      "name": "Dover",
+      "latitude": 51.1279,
+      "longitude": 1.3134,
+      "count": 62
+    },
+    {
+      "name": "Canada",
+      "latitude": 56.1304,
+      "longitude": -106.3468,
+      "count": 42
+    },
+    {
+      "name": "Rome",
+      "latitude": 41.9028,
+      "longitude": 12.4964,
+      "count": 67
+    },
+    {
+      "name": "Leeds",
+      "latitude": 53.8008,
+      "longitude": -1.5491,
+      "count": 14
+    },
+    {
+      "name": "Italy",
+      "latitude": 41.8719,
+      "longitude": 12.5674,
+      "count": 142
+    },
+    {
+      "name": "Switzerland",
+      "latitude": 46.8182,
+      "longitude": 8.2275,
+      "count": 74
+    },
+    {
+      "name": "Genoa",
+      "latitude": 44.4056,
+      "longitude": 8.9463,
+      "count": 119
+    },
+    {
+      "name": "Naples",
+      "latitude": 40.8518,
+      "longitude": 14.2681,
+      "count": 55
+    },
+    {
+      "name": "Lausanne",
+      "latitude": 46.5197,
+      "longitude": 6.6323,
+      "count": 78
+    },
+    {
+      "name": "Folkestone",
+      "latitude": 51.0789,
+      "longitude": 1.1798,
+      "count": 62
+    },
+    {
+      "name": "Gad's Hill",
+      "latitude": 51.4116,
+      "longitude": 0.4608,
+      "count": 316
+    }
+  ]
+}

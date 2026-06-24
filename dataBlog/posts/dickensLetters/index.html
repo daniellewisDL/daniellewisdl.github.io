@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles Dickens: The Correspondence Explorer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-container">
+            <span class="ornament">❧</span>
+            <h1>Dickens Correspondence</h1>
+            <span class="subtitle">An Interactive Journey through 13,738 Letters (1820–1870)</span>
+        </div>
+        <nav class="tab-navigation">
+            <button class="nav-btn active" data-tab="dashboard-tab">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </button>
+            <button class="nav-btn" data-tab="map-tab">
+                <i class="fa-solid fa-map-location-dot"></i> Dickens's World
+            </button>
+            <button class="nav-btn" data-tab="explorer-tab">
+                <i class="fa-solid fa-envelope-open-text"></i> Letters Explorer
+            </button>
+            <button class="nav-btn" data-tab="pivot-tab">
+                <i class="fa-solid fa-table"></i> Pivot Analyzer
+            </button>
+        </nav>
+    </header>
+
+    <main class="app-content">
+        <!-- Loader Screen -->
+        <div id="app-loader" class="loader-overlay">
+            <div class="loader-content">
+                <div class="loader-spinner"></div>
+                <p class="loader-text">Summoning Dickens's Letters...</p>
+                <p id="loader-progress" class="loader-subtext">Loading dashboard aggregates...</p>
+            </div>
+        </div>
+
+        <!-- DASHBOARD TAB -->
+        <section id="dashboard-tab" class="tab-pane active">
+            <!-- Key Metrics Grid (8 Cards) -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-total-letters">-</div>
+                        <div class="metric-label">Total Letters</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-file-word"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-total-words">-</div>
+                        <div class="metric-label">Total Words</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-align-left"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-avg-words">-</div>
+                        <div class="metric-label">Avg. Words / Letter</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-longest-letter">5,816</div>
+                        <div class="metric-label">Longest Letter (Words)</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-map-pin"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-sent-locs">-</div>
+                        <div class="metric-label">Writing Locations</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-ment-locs">-</div>
+                        <div class="metric-label">Places Mentioned</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-precision">90.9%</div>
+                        <div class="metric-label">Exact Date Ratio</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                    <div>
+                        <div class="metric-value" id="stat-geocoded">62.0%</div>
+                        <div class="metric-label">Geocoded Ratio</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Grid -->
+            <div class="dashboard-grid">
+                <!-- Timeline Container (Spans full width) -->
+                <div class="chart-card full-width">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-chart-column"></i> Letters Written by Month & Year</h2>
+                        <div class="card-actions">
+                            <span class="help-tooltip" title="Detailed monthly writing volume from 1835 to 1870. Hover over bars to see exact letter counts.">
+                                <i class="fa-solid fa-circle-info"></i> Hover for Details
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chart-body" id="timeline-chart-container">
+                        <!-- D3 Timeline rendered here -->
+                    </div>
+                </div>
+
+                <!-- Left Column: Themes -->
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-tags"></i> Dominant Themes</h2>
+                        <span class="help-tooltip" title="Click on theme slices to filter the timeline and maps.">
+                            <i class="fa-solid fa-circle-info"></i> Interactive
+                        </span>
+                    </div>
+                    <div class="chart-body donut-wrapper" id="themes-chart-container">
+                        <!-- D3 Donut Chart rendered here -->
+                    </div>
+                </div>
+
+                <!-- Right Column: Top Recipients -->
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-users"></i> Top Correspondents</h2>
+                        <span class="help-tooltip" title="Top correspondents sorted by total number of letters.">
+                            <i class="fa-solid fa-circle-info"></i> Top 15 Recipients
+                        </span>
+                    </div>
+                    <div class="chart-body" id="recipients-chart-container">
+                        <!-- D3 Bar Chart rendered here -->
+                    </div>
+                </div>
+
+                <!-- Barcode Timeline Container (Spans full width) -->
+                <div class="chart-card full-width" style="margin-top: 10px;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-barcode"></i> Chronological Correspondence Timeline by Recipient</h2>
+                        <span class="help-tooltip" title="For each top correspondent, vertical notches show when letters were written. Colors represent themes. Hover for details.">
+                            <i class="fa-solid fa-circle-info"></i> Event Barcode Timeline
+                        </span>
+                    </div>
+                    <div class="chart-body" id="barcode-timeline-container">
+                        <!-- D3 Barcode Timeline rendered here -->
+                    </div>
+                </div>
+
+                <!-- Word Count Analytics (Spans full width) -->
+                <div class="chart-card full-width" style="margin-top: 10px;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-file-word"></i> Word Count & Letter Length Analytics</h2>
+                        <span class="help-tooltip" title="Average letter lengths for top correspondents and a ledger of the longest letters.">
+                            <i class="fa-solid fa-circle-info"></i> Length Analytics
+                        </span>
+                    </div>
+                    <div class="word-analytics-grid">
+                        <div class="word-analytics-col">
+                            <h3>Average Word Count by Recipient (Top 15)</h3>
+                            <div id="avg-word-chart-container" class="chart-body-half">
+                                <!-- D3 Average Words Bar Chart -->
+                            </div>
+                        </div>
+                        <div class="word-analytics-col">
+                            <h3>Dickens's Longest Correspondence (Outliers Ledger)</h3>
+                            <div id="longest-letters-ledger" class="longest-ledger">
+                                <!-- Scrollable Ledger list -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAP TAB -->
+        <section id="map-tab" class="tab-pane">
+            <div class="map-layout">
+                <div class="map-sidebar">
+                    <div class="sidebar-section">
+                        <h3><i class="fa-solid fa-compass"></i> Mapping the Correspondence</h3>
+                        <p class="sidebar-intro">Dickens was a relentless traveler. Explore the geography of his network. Filter locations by type or click a node to see coordinates details.</p>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Map Controls</h4>
+                        <div class="control-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-sent-locations" checked>
+                                <span class="checkbox-custom sent"></span>
+                                Locations Sent From (<span id="count-sent-nodes">0</span>)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-mentioned-locations" checked>
+                                <span class="checkbox-custom mentioned"></span>
+                                Locations Mentioned (<span id="count-mentioned-nodes">0</span>)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Selected Location Details</h4>
+                        <div id="map-location-details" class="details-placeholder">
+                            Click on a location marker on the map to inspect letter volumes and coordinates.
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Dickens's Chronological Travels</h4>
+                        <div class="travel-player">
+                            <div class="player-buttons">
+                                <button id="travel-play-btn" class="btn-player" title="Play Journeys"><i class="fa-solid fa-play"></i> Play</button>
+                                <button id="travel-pause-btn" class="btn-player" title="Pause" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+                                <button id="travel-stop-btn" class="btn-player" title="Stop"><i class="fa-solid fa-stop"></i> Stop</button>
+                            </div>
+                            <div class="player-controls">
+                                <label for="travel-speed">Speed:</label>
+                                <select id="travel-speed" class="select-small">
+                                    <option value="1">1x (Slow)</option>
+                                    <option value="5" selected>5x (Normal)</option>
+                                    <option value="15">15x (Fast)</option>
+                                    <option value="50">50x (Express)</option>
+                                </select>
+                            </div>
+                            <div class="travel-progress-container">
+                                <div class="travel-progress-bar">
+                                    <div id="travel-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="travel-current-state">
+                                <span id="travel-current-year" class="ledger-year-badge">1835</span>
+                                <span id="travel-status-text">Ready to begin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Travel Ledger</h4>
+                        <div class="travel-ledger" id="travel-ledger-container">
+                            <div class="ledger-empty">Start the travel player to record Dickens's route...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-container-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PIVOT TAB -->
+        <section id="pivot-tab" class="tab-pane">
+            <div class="pivot-layout">
+                <aside class="filter-sidebar">
+                    <div class="sidebar-header">
+                        <h3><i class="fa-solid fa-table-columns"></i> Pivot Settings</h3>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="pivot-row">Row Dimension</label>
+                        <select id="pivot-row">
+                            <option value="theme" selected>Theme</option>
+                            <option value="year">Year</option>
+                            <option value="precision">Date Precision</option>
+                            <option value="recipient">Recipient (Top 25)</option>
+                            <option value="location">Sent Location (Top 25)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="pivot-col">Column Dimension</label>
+                        <select id="pivot-col">
+                            <option value="none">None (Single Column)</option>
+                            <option value="theme">Theme</option>
+                            <option value="year" selected>Year</option>
+                            <option value="precision">Date Precision</option>
+                            <option value="recipient">Recipient (Top 25)</option>
+                            <option value="location">Sent Location (Top 25)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="pivot-metric">Value Metric</label>
+                        <select id="pivot-metric">
+                            <option value="count" selected>Count of Letters</option>
+                            <option value="total_words">Total Word Count</option>
+                            <option value="avg_words">Average Word Count</option>
+                        </select>
+                    </div>
+
+                    <div class="sidebar-section" style="margin-top: 15px;">
+                        <p class="sidebar-intro">This analyzer runs a dynamic cross-tabulation (pivot table) over all letters. The cell shading represents a relative heatmap based on the selected metric.</p>
+                    </div>
+                </aside>
+
+                <div class="pivot-main">
+                    <div class="pivot-table-wrapper" id="pivot-table-container">
+                        <!-- Pivot table will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPLORER TAB -->
+        <section id="explorer-tab" class="tab-pane">
+            <div class="explorer-layout">
+                <!-- Search & Filters Panel -->
+                <aside class="filter-sidebar">
+                    <div class="sidebar-header">
+                        <h3><i class="fa-solid fa-sliders"></i> Filter Correspondence</h3>
+                        <button id="clear-search-filters" class="btn-link">Reset Filters</button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="filter-group">
+                        <label for="search-input">Text Search</label>
+                        <div class="search-input-wrapper">
+                            <input type="text" id="search-input" placeholder="Search body, recipient, etc...">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Theme Filter -->
+                    <div class="filter-group">
+                        <label for="filter-theme">Filter by Theme</label>
+                        <select id="filter-theme">
+                            <option value="all">All Themes</option>
+                            <option value="Literature/Writing">Literature / Writing</option>
+                            <option value="Family/Personal">Family / Personal</option>
+                            <option value="Theatre/Readings">Theatre / Readings</option>
+                            <option value="Travel/Places">Travel / Places</option>
+                            <option value="Social Reform/Philanthropy">Social Reform / Philanthropy</option>
+                            <option value="Business/Finance">Business / Finance</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="filter-group">
+                        <label>Date Filter</label>
+                        <div class="range-inputs">
+                            <input type="number" id="filter-year-min" min="1820" max="1870" placeholder="Min Year">
+                            <span>to</span>
+                            <input type="number" id="filter-year-max" min="1820" max="1870" placeholder="Max Year">
+                        </div>
+                    </div>
+
+                    <!-- Recipient Filter -->
+                    <div class="filter-group">
+                        <label for="filter-recipient">Recipient</label>
+                        <select id="filter-recipient">
+                            <option value="all">All Recipients</option>
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
+
+                    <!-- Location Filter -->
+                    <div class="filter-group">
+                        <label for="filter-location">Sent From</label>
+                        <select id="filter-location">
+                            <option value="all">All Locations</option>
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
+
+                    <div id="full-load-status" class="load-status-bar">
+                        <span class="spinner-small"></span> Initializing background search engine...
+                    </div>
+                </aside>
+
+                <!-- Search Results & List -->
+                <div class="explorer-main">
+                    <div class="results-meta">
+                        <span id="results-count">Showing 0 letters</span>
+                        <div class="sorting-controls">
+                            <label for="sort-select">Sort By</label>
+                            <select id="sort-select">
+                                <option value="date-asc">Date (Oldest First)</option>
+                                <option value="date-desc">Date (Newest First)</option>
+                                <option value="word-desc">Word Count (Longest First)</option>
+                                <option value="word-asc">Word Count (Shortest First)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Letters List -->
+                    <div id="letters-list" class="letters-list-container">
+                        <!-- Dynamic letter cards rendered here -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container" id="pagination">
+                        <!-- Pagination buttons -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- LETTER MODAL (PARCHMENT SHEET) -->
+    <div id="letter-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal-btn" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="parchment-sheet">
+                <div class="parchment-body">
+                    <!-- Top Ribbon info -->
+                    <div class="letter-top-meta">
+                        <span id="modal-letter-id">Letter #</span>
+                        <div class="letter-themes-tags" id="modal-themes-tags">
+                            <!-- Tags -->
+                        </div>
+                    </div>
+
+                    <!-- Address & Date Block -->
+                    <div class="letter-letterhead" id="modal-letterhead">
+                        <!-- Location and Date -->
+                    </div>
+
+                    <!-- Salutation -->
+                    <div class="letter-salutation" id="modal-salutation">
+                        <!-- My Dear... -->
+                    </div>
+
+                    <!-- Body -->
+                    <div class="letter-text-body" id="modal-body">
+                        <!-- Paragraphs -->
+                    </div>
+
+                    <!-- Valediction Block -->
+                    <div class="letter-valediction">
+                        <div id="modal-signoff">Ever yours...</div>
+                        <div id="modal-signature" class="signature-line">Charles Dickens</div>
+                    </div>
+
+                    <!-- Postscript Block -->
+                    <div class="letter-postscript" id="modal-postscript" style="display: none;">
+                        <strong>P.S.</strong> <span id="modal-postscript-text"></span>
+                    </div>
+
+                    <!-- Editorial Notes & Footnotes -->
+                    <div class="letter-editorial-notes">
+                        <h4><i class="fa-solid fa-scroll"></i> Editorial Context</h4>
+                        <p id="modal-metadata">Metadata about sources...</p>
+                        <div class="editorial-row">
+                            <div class="editorial-col">
+                                <span class="lbl">Date Precision:</span> <span id="modal-date-precision" class="val">Exact</span>
+                            </div>
+                            <div class="editorial-col">
+                                <span class="lbl">Word Count:</span> <span id="modal-word-count" class="val">0 words</span>
+                            </div>
+                        </div>
+                        <div class="editorial-row" id="modal-mentioned-row">
+                            <div class="col-full">
+                                <span class="lbl">Locations Mentioned:</span> <span id="modal-mentioned-locations" class="val">None</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- D3.js and Leaflet.js Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Main Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
