@@ -1,1 +1,68 @@
-This is a test. A bloody good one, but a test nonetheless.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0d1117; /* Dark futuristic background */
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .image-container {
+            width: 90%;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            /* Subtle glowing shadow to match the glowing orange accents */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(230, 115, 0, 0.15); 
+        }
+
+        h1 {
+            font-size: 5vw; /* Responsive large text */
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 0;
+            text-align: center;
+            background: linear-gradient(90deg, #ffffff, #a3b8cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Fallback for smaller screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-container">
+        <!-- The placeholder references your image name verbatim -->
+        <img src="./src/image2.png" alt="Futuristic Mathematics Makes Sense Book Covers">
+    </div>
+
+    <h1>Coming soon</h1>
+
+</body>
+</html>
