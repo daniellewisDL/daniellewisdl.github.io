@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Letters of Wilkie Collins — A Cartulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="js/lib/d3.min.js"></script>
+<script src="js/lib/topojson.min.js"></script>
+</head>
+<body>
+<div id="loader"><div class="orn">❧</div><div>Unfolding the correspondence…</div></div>
+
+<header class="appbar">
+  <div class="brand"><span class="orn">❦</span> The Letters of Wilkie Collins
+    <span class="tag"><span id="hdr-count">—</span> letters · 1831–1889</span></div>
+  <nav id="nav">
+    <button data-view="frontispiece" class="active">Frontispiece</button>
+    <button data-view="chronicle">Chronicle</button>
+    <button data-view="atlas">Atlas</button>
+    <button data-view="correspondents">Correspondents</button>
+    <button data-view="ledger">Ledger</button>
+    <button data-view="reading">Reading Room</button>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="frontispiece" class="view"></section>
+  <section id="chronicle" class="view" hidden></section>
+  <section id="atlas" class="view" hidden></section>
+  <section id="correspondents" class="view" hidden></section>
+  <section id="ledger" class="view" hidden></section>
+  <section id="reading" class="view" hidden></section>
+</main>
+
+<footer class="colophon">
+  <span class="orn">❦</span> &nbsp;Letters courtesy of the <a href="https://wilkiecollinssociety.org/collected-letters/" target="_blank" rel="noopener">Wilkie Collins Society</a>.&nbsp; <span class="orn">❦</span>
+</footer>
+
+<!-- hover preview card -->
+<div id="tip" class="tip" hidden></div>
+<!-- full-letter reading panel -->
+<div id="scrim" hidden></div>
+<aside id="letter-panel" hidden></aside>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
