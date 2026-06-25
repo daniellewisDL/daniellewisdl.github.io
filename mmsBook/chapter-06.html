@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Extending the Language — Mathematics Makes Sense</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav topnav">
+  <a href="chapter-05.html">&larr; 5. Illustrating the language</a>
+  <span class="nav-mid">Mathematics Makes Sense</span>
+  <a href="chapter-07.html">7. Becoming more familiar &rarr;</a>
+</nav>
+
+<main>
+  <p class="eyebrow">Chapter Six</p>
+  <h1>Extending the Language</h1>
+
+  <span class="pageref" id="p60">page 60</span>
+
+  <p><span class="para-num">71.</span> In an advertisement of a vacancy it said:</p>
+  <blockquote>&lsquo;Candidates must have Mathematics or Physics qualifications.&rsquo;</blockquote>
+  <p>Four boys, who were looking for a job, read it: John, who had passed in Geography and English; Peter, who had passed in Physics and Chemistry; Brian, whose certificate was for Maths, and English; and Tony, who had passed in Physics and Maths. It is easy enough to decide who could apply. Peter could as he had Physics: Brian because he had Mathematics: Tony because he had both: but John couldn&rsquo;t as he had neither. Had the advertisement said, &lsquo;the candidate must have Maths and Physics&rsquo;, then Tony would have been the only one eligible.</p>
+  <p>Thus, you see how <span class="expr">A &and; B</span> is more restrictive than <span class="expr">A &or; B</span>.</p>
+
+  <p><span class="para-num">72.</span> By setting out the positive and negative forms of the two conditions in as many ways as possible we can examine their joint effect upon a proposition.</p>
+  <table class="book">
+    <tbody>
+      <tr><td>TONY</td><td class="expr">A</td><td class="expr">B</td></tr>
+      <tr><td>JOHN</td><td class="expr">A&prime;</td><td class="expr">B&prime;</td></tr>
+      <tr><td>BRIAN</td><td class="expr">A</td><td class="expr">B&prime;</td></tr>
+      <tr><td>PETER</td><td class="expr">A&prime;</td><td class="expr">B</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.9rem;"><em>Note:</em> If the operator is &or; any row having a positive is effective. If the operator is &and; there must be as many positives as conditions.</p>
+  <p>Using the symbols 1 and 0 we could make out a &lsquo;Truth Table&rsquo;.</p>
+
+  <table class="book">
+    <caption>Table 6</caption>
+    <thead><tr><th>&nbsp;</th><th colspan="2">Conditions A &or; B</th><th>Truth Value</th><th colspan="2">Conditions A &and; B</th><th>Truth Value</th></tr></thead>
+    <tbody>
+      <tr><td>TONY</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>JOHN</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>BRIAN</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>PETER</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="pageref" id="p61">page 61</span> Truth Tables are useful in cases of difficult relationships.</p>
+
+  <p><span class="para-num">73.</span> We now see if the diagram gives the same result.</p>
+  <figure class="scan">
+    <img src="figures/fig-35.png" alt="Venn diagrams showing the candidates' qualifications: condition (a) A ∨ B and (b) A ∧ B, with individual diagrams for Tony, John, Brian and Peter showing which areas each occupies.">
+    <figcaption>Fig. 35</figcaption>
+  </figure>
+  <p>If we compare the qualifications of the candidates in the same way we confirm that under Condition (a) John is <span style="font-variant:small-caps;">excluded</span> and that under Condition (b) only Tony is <span style="font-variant:small-caps;">included</span>.</p>
+
+  <p><span class="para-num">74.</span> Taking a closer look at the basic diagram we observe that it consists of four distinct areas as follows:</p>
+  <figure class="scan">
+    <img src="figures/fig-36.png" alt="Two overlapping circles A and B dividing the space into four areas: 1 (the overlap), 2 and 3 (the crescents), and 4 (outside both circles).">
+    <figcaption>Fig. 36</figcaption>
+  </figure>
+  <p>Areas one, two, and three are <span style="font-variant:small-caps;">inside</span>. While 4 is one <span style="font-variant:small-caps;">outside</span> and surrounding the diagram. Each single area is defined by the <span style="font-variant:small-caps;">conjunction</span> of the conditions in one of the possible variations as shown below.</p>
+  <table class="book">
+    <caption>Table 7</caption>
+    <tbody>
+      <tr><td>AREA 1</td><td class="expr">A &and; B</td></tr>
+      <tr><td>AREA 2</td><td class="expr">A&prime; &and; B</td></tr>
+      <tr><td>AREA 3</td><td class="expr">A &and; B&prime;</td></tr>
+      <tr><td>AREA 4</td><td class="expr">A&prime; &and; B&prime;</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="para-num">75.</span> <span class="pageref" id="p62">page 62</span> The four areas of the diagram can be shaded in various ways to show different combinations of positive and negative conditions. In the last section we saw that each single area is defined by the two conditions in conjunction.</p>
+  <figure class="scan">
+    <img src="figures/fig-37.png" alt="Two overlapping circles A and B with area 3 (the part of A outside B) shaded, illustrating A ∧ B′.">
+    <figcaption>Fig. 37 &mdash; This illustrates A &and; B&prime;</figcaption>
+  </figure>
+  <p>If the diagram of two interlocking circles is a <span style="font-variant:small-caps;">true model</span> of the ways in which two conditions may be combined, then we should be able to match every pattern with a unique statement in Algebra. Consider the analysis of:</p>
+  <blockquote>&lsquo;I will go if it is fine and I have had a meal.&rsquo;</blockquote>
+  <table class="book">
+    <caption>Table 8</caption>
+    <thead><tr><th>Variations of Related Conditions</th><th>Corresponding Algebra</th><th>Areas to be Shaded</th></tr></thead>
+    <tbody>
+      <tr><td>(a) If fine: had meal</td><td class="expr">A &and; B</td><td>1</td></tr>
+      <tr><td>(b) Not fine: had meal</td><td class="expr">A&prime; &and; B</td><td>2</td></tr>
+      <tr><td>(c) If fine: not had meal</td><td class="expr">A &and; B&prime;</td><td>3</td></tr>
+      <tr><td>(d) Not fine: not had meal</td><td class="expr">A&prime; &and; B&prime;</td><td>4</td></tr>
+      <tr><td>(e) If it is fine</td><td class="expr">A</td><td>1 and 3</td></tr>
+      <tr><td>(f) If had meal</td><td class="expr">B</td><td>1 and 2</td></tr>
+      <tr><td>(g) ?</td><td class="expr">A * B</td><td>1 and 2</td></tr>
+      <tr><td>(h) ?</td><td class="expr">A * B</td><td>2 and 3</td></tr>
+      <tr><td>(i) If not fine</td><td class="expr">A&prime;</td><td>2 and 4</td></tr>
+      <tr><td>(j) Not had meal</td><td class="expr">B&prime;</td><td>3 and 4</td></tr>
+      <tr><td>(k) If fine OR had meal</td><td class="expr">A &or; B</td><td>1, 2, 3</td></tr>
+      <tr><td>(l) Not fine OR had meal</td><td class="expr">A&prime; &or; B</td><td>1, 2, 4</td></tr>
+      <tr><td>(m) If fine OR not had meal</td><td class="expr">A &or; B&prime;</td><td>1, 3, 4</td></tr>
+      <tr><td>(n) Not fine OR not had meal</td><td class="expr">A&prime; &or; B&prime;</td><td>2, 3, 4</td></tr>
+    </tbody>
+  </table>
+  <p>The two cases (g) and (h) are not covered by the operators &and;/&or;. We must examine these more closely in the next section.</p>
+
+  <p><span class="para-num">76.</span> The diagrams in Section 77 correspond to lines (g) and (h) in the Table of Area Patterns of the last section (Table 8).<span class="pageref" id="p63">page 63</span> It is clear they cannot represent the operation &and; as this gives a single-area pattern. Nor can they represent the operation &or; as this gives a triple-area pattern.</p>
+  <p>Notice, too, that single-area patterns match a one in four Truth Value, and the triple-area patterns correspond to a three in four Truth Value which we will deal with in Section 72.</p>
+
+  <p><span class="para-num">77.</span> We have hatched patterns of double-areas for single conditions (e), (f), (i), (j), but the patterns we are now investigating are different in a striking way. They are disjoined by another area intervening. What we must do is to [1] find a logical definition of the pattern, [2] invent a symbol for this kind of combination, and [3] see if it fits a logical situation.</p>
+  <figure class="scan">
+    <img src="figures/fig-38.png" alt="Two diagrams (a) and (b), each two overlapping circles, with two disjoined (non-touching) areas shaded — the exclusive-or patterns.">
+    <figcaption>Fig. 38 (a) and (b)</figcaption>
+  </figure>
+  <p>Area 1 is that part of B which isn&rsquo;t A&prime;. Area 4 is that part of A&prime; which isn&rsquo;t B. Thus, (g) represents A&prime; or B, <span style="font-variant:small-caps;">but not both</span>. But Area 1 is also that part of A which isn&rsquo;t B&prime;, and Area 4 is also that part of B&prime; which isn&rsquo;t A. Therefore (g) also illustrates A or B&prime;, <span style="font-variant:small-caps;">but not both</span>.</p>
+  <p>Area 2 is that part of B which isn&rsquo;t A. Area 3 is that part of A which isn&rsquo;t B. Thus, (h) represents A or B, <span style="font-variant:small-caps;">but not both</span>. But Area 2 is also that part of A&prime; which isn&rsquo;t B&prime;, and Area 3 is also that part of B&prime; which isn&rsquo;t A&prime;. Therefore (h) also illustrates A&prime; or B&prime;, <span style="font-variant:small-caps;">but not both</span>.</p>
+  <p><strong>Clearly, we shall require a new symbol for this kind of relationship.</strong></p>
+
+  <p><span class="para-num">78.</span> When we use the word &lsquo;or&rsquo; it is not always clear exactly what we mean. We may mean [either or both], but we may mean [either but <span style="font-variant:small-caps;">not</span> both].<span class="pageref" id="p64">page 64</span> If I say, &lsquo;I would like a football or some shin-guards,&rsquo; I imply that I need both and I wouldn&rsquo;t object if both were given me. This kind of situation is represented by Fig. 39.</p>
+  <figure class="scan">
+    <img src="figures/fig-39.png" alt="Two overlapping circles A and B with the whole of both circles shaded, the inclusive-or A ∨ B.">
+    <figcaption>Fig. 39</figcaption>
+  </figure>
+  <p>We have already decided to indicate this situation by the symbol &or;. We write it as A &or; B.</p>
+  <p>But if a boy&rsquo;s father says to him just before Christmas, &lsquo;You may have a camera or a record player.&rsquo; There is no doubt the boy may choose <span style="font-variant:small-caps;">only one</span> of the alternatives. It is this second kind of &lsquo;or&rsquo; which we have to indicate. As the <span style="font-variant:small-caps;">or</span> is emphatic let us underline the symbol thus &veebar;, so that if having a camera is the A condition, and having a record player is the B condition, the choice is A &veebar; B.</p>
+
+  <p><span class="para-num">79.</span> Now consider what the father means if he says, &lsquo;Either you can&rsquo;t have a camera or you can&rsquo;t have a record player.&rsquo; He is implying the choice of one or the other, so that the meaning is the same as before. Thus, there is <span style="font-variant:small-caps;">no logical difference</span> between the two. In other words A &veebar; B = A&prime; &veebar; B&prime;. That is why each of these diagrams has two algebraic equivalents.</p>
+  <figure class="scan">
+    <img src="figures/fig-40-41.png" alt="Two exclusive-or diagrams. Fig. 40 with labels A′ ⊻ B and A ⊻ B′; Fig. 41 with labels A ⊻ B and A′ ⊻ B′.">
+    <figcaption>Fig. 40 (A&prime; &veebar; B = A &veebar; B&prime;) &nbsp;&nbsp;&nbsp; Fig. 41 (A &veebar; B = A&prime; &veebar; B&prime;)</figcaption>
+  </figure>
+
+  <p><span class="para-num">80.</span> (a) In Section 72 we used a Truth Table to show the difference in effectiveness between conditions linked by &or; and those linked by &and;, if you refer to that example you will see that<span class="pageref" id="p65">page 65</span> when two conditions are related by &or; there are three chances out of four of their combination being effective, but when they are linked by &and; there is only one chance out of four. Had the advertisement said the candidate must have only one of two qualifications, only Brian or Peter would have been eligible. Thus, when two conditions are linked by &veebar; there are two chances out of four of their being effective.</p>
+  <p>Here is a situation of the &lsquo;either but not both&rsquo; combination. In an examination the instructions to the candidates read:</p>
+  <blockquote>&lsquo;Answer Question 1 only from either Section A <span style="font-variant:small-caps;">or</span> Section B and one other Question.&rsquo;</blockquote>
+  <p>Tony answered Question 1 in Section A and Question 1 in Section B.<br>
+  John answered Question 3 in Section A and Question 1 in Section B.<br>
+  Brian answered Question 1 in Section A and Question 4 in Section B.<br>
+  Peter answered Question 1 in Section A and Question 3 in Section B.</p>
+  <p>They all answered two questions, but which properly obeyed the intended instructions? The restriction applies to the first question in both sections. We make out a Truth Table concerning this.</p>
+  <table class="book">
+    <caption>Table 9</caption>
+    <thead><tr><th>&nbsp;</th><th colspan="2">Conditions A &veebar; B</th><th>Truth Value</th></tr></thead>
+    <tbody>
+      <tr><td>TONY</td><td>1</td><td>1</td><td>0</td></tr>
+      <tr><td>JOHN</td><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>BRIAN</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>PETER</td><td>0</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+  <p>Only John and Brian properly obeyed the instructions. When the exclusive <span style="font-variant:small-caps;">or</span> is intended it is often emphasised. This may help you to recognise the difference between &or; and &veebar;.</p>
+
+  <p><span class="para-num">80.</span> (b) <span class="pageref" id="p66">page 66</span> In Chapter Four, Section 53 there was a diagram showing the connection between the operations of Propositional Algebra and types of electrical circuits. They were:</p>
+  <figure class="scan">
+    <img src="figures/fig-42.png" alt="Three circuit diagrams: (a) SERIES representing A ∧ B, (b) PARALLEL representing A ∨ B, and (c) a two-way / cross-over switch circuit representing A ⊻ B.">
+    <figcaption>Fig. 42 &mdash; (a) Represents A &and; B &nbsp; (b) Represents A &or; B &nbsp; (c) Represents A &veebar; B</figcaption>
+  </figure>
+  <p>If electrical circuits are to be used as physical models of this Algebra we will need one to represent our new operator &veebar;. As this operator means &lsquo;either but not both&rsquo; the circuit will have to allow either switch to operate the lamp, but if both are operated they should &lsquo;cancel out&rsquo;. Examine the circuit in Fig. 42(c).</p>
+  <p>If you trace the circuit in various ways you will find that movement of either switch changes the state of the lamp, but movement of both leaves it as it is. This is a simplified version of a two-way switch such as you probably have in your hall or landing, so that the lamp can be switched <span style="font-variant:small-caps;">on</span> or <span style="font-variant:small-caps;">off</span> from upstairs or downstairs by the operation of either switch.</p>
+
+  <div class="review">
+    <h3>Sixth Review</h3>
+    <p><span class="para-num">R.71.</span> The show at the local cinema was advertised as: &lsquo;<span style="font-variant:small-caps;">going west</span>. An adventure film for young and old.&rsquo; Two boys had been discussing whether they would go. Jack had said, &lsquo;I&rsquo;ll go if it is a Technicolor Western.&rsquo; Tom had said, &lsquo;I&rsquo;ll go if it&rsquo;s a Cowboy film.&rsquo;<br>
+    (a) Which of the boys was more likely to go?<br>
+    (b) Write the Algebra of Jack&rsquo;s proposition.<br>
+    (c) Write the Algebra of Tom&rsquo;s proposition.</p>
+    <p>As a matter of fact it was a Travel Film. Both boys went and they enjoyed it very much.</p>
+    <p><span class="para-num">R.72.</span> Examine these Truth Tables.</p>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <table class="book">
+        <caption>Table 10</caption>
+        <thead><tr><th colspan="2">A * B</th><th>Truth Value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <table class="book">
+        <caption>Table 11</caption>
+        <thead><tr><th colspan="2">A * B</th><th>Truth Value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td></tr>
+          <tr><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(a) What operator does the asterisk stand for in Table 10?<br>
+    (b) What operator does the asterisk stand for in Table 11?<br>
+    (c) Analyse the following statement: &lsquo;John said he would leave school if he did not pass his exam. and he got a job before the new term began.&rsquo; Then write the Algebra of this proposition.<br>
+    (d) Copy and shade Fig. 43 to represent John&rsquo;s proposition.<br>
+    (e) Make out the appropriate Truth Table.</p>
+    <figure class="scan">
+      <img src="figures/fig-43.png" alt="Two overlapping circles A and B with the four areas numbered 4, 3, 1, 2, for the reader to shade.">
+      <figcaption>Fig. 43</figcaption>
+    </figure>
+
+    <p><span class="para-num">R.73.</span></p>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <table class="book">
+        <caption>Table 12</caption>
+        <thead><tr><th>Area</th><th colspan="2">A&prime; &and; B</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>3</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>4</td><td>1</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <table class="book">
+        <caption>Table 13</caption>
+        <thead><tr><th>Area</th><th colspan="2">A &and; B</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>2</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>3</td><td>1</td><td>0</td><td>0</td></tr>
+          <tr><td>4</td><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Refer to the diagrams of the boys&rsquo; qualifications and say:<br>
+    (a) Which corresponds to Table 12.<br>
+    (b) Which corresponds to Table 13.</p>
+    <p><span class="para-num">R.74.</span> Copy this diagram.</p>
+    <figure class="scan">
+      <img src="figures/fig-44.png" alt="Two overlapping circles A and B with areas numbered 4 (outside), 3, 1, 2; area 3 is labelled A ∧ B′ as a worked example.">
+      <figcaption>Fig. 44</figcaption>
+    </figure>
+    <p>(a) In each of the four areas write the positive or negative forms of A,B, which it represents. Area 3 has been done as a guide for you.<br>
+    (b) How many areas have to be shaded to represent two conditions effective together?<br>
+    (c) How many areas have to be shaded to illustrate two conditions either or both of which are fully effective?</p>
+    <p><span class="para-num">R.75.</span> (a) How many different patterns of shaded areas are possible using two interlocking circles?<br>
+    (b) Is the number of different ways of making patterns listed in the table of Section 75 complete?<br>
+    (c) What others can you think of?<br>
+    (d) Copy these diagrams and use them to illustrate your answer to (c).</p>
+    <figure class="scan">
+      <img src="figures/fig-45.png" alt="Two pairs of overlapping circles A and B, (a) and (b), unshaded, for the reader to shade.">
+      <figcaption>Fig. 45 (a) and (b)</figcaption>
+    </figure>
+    <p><span class="para-num">R.76.</span> (a) and (b) Of the fourteen different area patterns listed in Section 75 there were only two which could not be matched by Single Conditions, or by Double Conditions linked by &or;/&and;. Say which these were, and illustrate your answers.</p>
+    <p><span class="para-num">R.77.</span> (a) What three steps are suggested to deal with them?<br>
+    (b) Write the Algebra for [A or B, but not both].<br>
+    (c) Write the Algebra for [A&prime; or B, but not both].</p>
+    <p><span class="para-num">R.78.</span> (a) Write the Algebra for the logical relationships of the conditions in this statement: &lsquo;You may not go to the cinema tonight <span style="font-variant:small-caps;">or</span> you may not go on Saturday.&rsquo;<br>
+    (b) Write the Algebra for this: &lsquo;You may go <span style="font-variant:small-caps;">either</span> tonight <span style="font-variant:small-caps;">or</span> on Saturday.&rsquo;<br>
+    (c) Draw the diagrams representing (a) and (b).</p>
+    <p><span class="para-num">R.79.</span> Read carefully the propositions you dealt with in the last question, and refer to your translation of them into Algebra and your diagrams.<br>
+    (a) What can you say about the logic of both?<br>
+    (b) Express your answer to 79 (a) in Algebra.</p>
+    <p>If you find this last question difficult consult Section 79 again.</p>
+    <p><span class="para-num">R.80.</span> (a) In a competition it was stated that the first prize would be a washing machine or its value in cash. Write the Algebra of this statement.<br>
+    (b) When we are considering two conditions we use A/B to represent them. If we had to consider three conditions, what should we use to represent the third?<br>
+    (c) Sometimes it is necessary to look upon two conditions as though they were one in relation to a third. To indicate this we enclose them in brackets as in this case: [A * B]. Consider this situation carefully, and then see if you can express it clearly in Algebra. &lsquo;John&rsquo;s father said he could have for his birthday <span style="font-variant:small-caps;">either</span> a fountain pen and a propelling pencil, or a set of drawing instruments.&rsquo;<br>
+    (d) Study the six Truth Tables on p. 70, and then say what the operator combining the conditions must be in each. In other words say which of these symbols &and;, &or;, &veebar;, you would use in place of *.</p>
+
+    <table class="book">
+      <caption>Table 14</caption>
+      <thead><tr>
+        <th>[i] A * B</th><th>Truth</th>
+        <th>[ii] A * B</th><th>Truth</th>
+        <th>[iii] A * B</th><th>Truth</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1&nbsp;&nbsp;1</td><td>1</td><td>A&nbsp;&nbsp;B</td><td>0</td><td>A&nbsp;&nbsp;B</td><td>1</td></tr>
+        <tr><td>0&nbsp;&nbsp;1</td><td>1</td><td>A&prime;&nbsp;B</td><td>1</td><td>A&prime;&nbsp;B</td><td>0</td></tr>
+        <tr><td>1&nbsp;&nbsp;0</td><td>1</td><td>A&nbsp;&nbsp;B&prime;</td><td>1</td><td>A&nbsp;&nbsp;B&prime;</td><td>0</td></tr>
+        <tr><td>0&nbsp;&nbsp;0</td><td>0</td><td>A&prime;&nbsp;B&prime;</td><td>0</td><td>A&prime;&nbsp;B&prime;</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <table class="book">
+      <thead><tr>
+        <th>[iv] A * B</th><th>Truth</th>
+        <th>[v] A * B</th><th>Truth</th>
+        <th>[vi] A * B</th><th>Truth</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1&nbsp;&nbsp;1</td><td>0</td><td>1&nbsp;&nbsp;1</td><td>1</td><td>A&nbsp;&nbsp;B</td><td>1</td></tr>
+        <tr><td>0&nbsp;&nbsp;1</td><td>1</td><td>0&nbsp;&nbsp;1</td><td>0</td><td>A&prime;&nbsp;B</td><td>1</td></tr>
+        <tr><td>1&nbsp;&nbsp;0</td><td>1</td><td>1&nbsp;&nbsp;0</td><td>0</td><td>A&nbsp;&nbsp;B&prime;</td><td>1</td></tr>
+        <tr><td>0&nbsp;&nbsp;0</td><td>0</td><td>0&nbsp;&nbsp;0</td><td>0</td><td>A&prime;&nbsp;B&prime;</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<nav class="nav botnav">
+  <a href="chapter-05.html">&larr; 5. Illustrating the language</a>
+  <span class="nav-mid"><a href="index.html">Contents</a></span>
+  <a href="chapter-07.html">7. Becoming more familiar &rarr;</a>
+</nav>
+
+</body>
+</html>

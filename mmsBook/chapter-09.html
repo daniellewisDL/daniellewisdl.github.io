@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. Number Bases — Mathematics Makes Sense</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav topnav">
+  <a href="chapter-08.html">&larr; 8. Other related ideas</a>
+  <span class="nav-mid">Mathematics Makes Sense</span>
+  <a href="chapter-10.html">10. Men; mathematics; machines &rarr;</a>
+</nav>
+
+<main>
+  <p class="eyebrow">Chapter Nine</p>
+  <h1>Number Bases</h1>
+
+  <span class="pageref" id="p126">page 126</span>
+
+  <p><span class="para-num">103.</span> In the last chapter we read that Mathematics began with the simple act of counting, and when we count we are recognising two aspects of number. The first is <span style="font-variant:small-caps;">order</span>, the second is <span style="font-variant:small-caps;">group-size</span>. If we speak of three specks of dust and three elephants we imply that each speck could be matched to one elephant, and that both groups could be matched to the ordered jingle we call counting. Whether we say, &lsquo;one, two, three, four, &hellip;&rsquo; or &lsquo;inter, mitzy, titzy, tool&hellip;&rsquo;* doesn&rsquo;t matter in the least, so long as the sounds we employ are thought of always in the same order. If I say a triangle has titzy sides my meaning is clear to you if we have agreed on this jingle, because you have a mental picture of a line to match &lsquo;inter&rsquo;, another to match &lsquo;mitzy&rsquo;, and another to match &lsquo;titzy&rsquo;. But this ability to see group-size is limited to quite small collections. If I asked you to draw a polygon with &lsquo;domina&rsquo; sides, you would have to count the words to discover that &lsquo;domina&rsquo; in the jingle matches seven in ordinary counting. In other words, you would rely on &lsquo;order-counting&rsquo; to tell you when the &lsquo;group&rsquo; was complete.</p>
+  <p style="font-size:0.85rem;color:var(--muted);">* See note at end of chapter.</p>
+
+  <p><span class="para-num">104.</span> The ability to recognise group-size is variable, but most people find it difficult to recognise at a glance groups composed of more than seven items. You can test this for yourself by taking a handful of coins and attempting to say how many there are without counting them. If we have to estimate large groups it is quite surprising how wildly inaccurate we can be.<span class="pageref" id="p127">page 127</span> If you examine this array of &lsquo;400&rsquo; dots you will realise that without counting them you cannot be sure whether there are 400 or not. The group is too large for our minds to comprehend and we have to relate it to number-groups which are familiar through long usage.</p>
+
+  <figure class="scan"><img src="figures/fig-82a.png" alt="A large rectangular array of dots, claimed to be '400'."><figcaption>Fig. 82(a)</figcaption></figure>
+
+  <p>All we really know about 400 is that it is less than 401 and greater than 399, but in itself it is too large for us to recognise. There are some parts of the world where the people would not use a nice tidy number like 400 to describe this group of dots. I did because they can be arranged thus:</p>
+
+  <figure class="scan"><img src="figures/fig-82b.png" alt="The same dots arranged in groups of one hundred."><figcaption>Fig. 82(b)</figcaption></figure>
+
+  <p>But they could be arranged in other ways: some people would say there were 256 dots and &lsquo;prove&rsquo; it by arranging them in this way:</p>
+
+  <figure class="scan"><img src="figures/fig-82c.png" alt="The same dots arranged in groups based on eight (octal), totalling 400 in octal = 256 in decimal."><figcaption>Fig. 82(c)</figcaption></figure>
+
+  <p>The dots haven&rsquo;t changed&mdash;only the way they have been arranged.</p>
+
+  <p><span class="para-num">105.</span> <span class="pageref" id="p128">page 128</span> You will have realised that I tried to play a trick on you in the last section. When I persuaded you there were 400 dots I was attempting to make you accept a different number-system without realising it. I was using the <span style="font-variant:small-caps;">octal</span> system in which the group-size is based on eight, while you were thinking in the <span style="font-variant:small-caps;">decimal</span> system based on ten. We could compare the two systems in this way:</p>
+
+  <figure class="scan"><img src="figures/fig-83.png" alt="Dot comparison of the octal system (100, 10, 1 = hundred, ten, one octads) and the decimal system."><figcaption>Fig. 83</figcaption></figure>
+
+  <p>When we write 100 we mean one hundred if we are using <span style="font-variant:small-caps;">decimals</span>, or one octad if we are writing in <span style="font-variant:small-caps;">octals</span>. Notice that this figure in either system means the same, as it does in any number system, because when we count we are describing groups made up of ones. It is only when we are thinking in groups that the figures have different meanings. It would be very confusing if we did not know what system was being used, and we take it for granted that everybody writes numbers in the <span style="font-variant:small-caps;">decimal</span> system, unless they say otherwise.</p>
+
+  <p><span class="para-num">106.</span> If we want to indicate that the numbers we are using are other than decimal numbers, we do so by means of sub-scripts written at the bottom right-hand side, e.g. 12&#8328; would show that the figures 1 2 do not stand for the decimal number twelve, but<span class="pageref" id="p129">page 129</span> for two units and one eight. Thus, 12&#8328; = 10 in the usual notation.</p>
+  <p>Here is another example: 312&#8324; is written &lsquo;to the base 4&rsquo;. That is to say, the figure 2 tells us there are two &lsquo;one&rsquo;s&rsquo;, the figure 1 tells us there is one &lsquo;four&rsquo;, and the figure 3 tells us there are three &lsquo;four &times; four&rsquo; that is sixteen.</p>
+  <blockquote class="expr">Thus, 312&#8324; = 3(4&sup2;) + 1(4&sup1;) + 2(4&#8304;)<br>= 48 + 4 + 2<br>= 54 in the familiar decimal system.</blockquote>
+
+  <p><span class="para-num">107.</span> Apart from helping us to understand the structure of the decimal system, there are other reasons for learning about different number bases. Some people think we should replace our ten-based system by the <span style="font-variant:small-caps;">duodecimal</span> system based on twelve. One of their reasons is that the more useful numbers are those with many factors. Ten has only two factors, 2 and 5, but twelve has twice as many, 2, 3, 4, and 6. Having so many factors would make many calculations easier, particularly the Arithmetic of feet and inches, or shillings and pence. The <span style="font-variant:small-caps;">octonary</span> system (based on eight), and the <span style="font-variant:small-caps;">binary</span> system (based on two) are used in electronic calculators which we should know something about if we are to be up-to-date. We will have a look at each of these number systems in turn.</p>
+
+  <p><span class="para-num">108.</span> When we collect units in groups of ten we are using a <span style="font-variant:small-caps;">denary</span> or decimal system; if we collect in eights we are using an <span style="font-variant:small-caps;">octonary</span> or octal system; if we collect in twos we are using a <span style="font-variant:small-caps;">binary</span> or binal system; and to calculate in any number system you have only to remember to collect the items in the appropriate group-sizes. Here are some examples:</p>
+  <table class="book">
+    <thead><tr><th>Octal</th><th>Decimal</th><th>Duodecimal</th></tr></thead>
+    <tbody>
+      <tr><td>17</td><td>15</td><td>13</td></tr>
+      <tr><td>44</td><td>36</td><td>30</td></tr>
+      <tr><td>52</td><td>42</td><td>36</td></tr>
+      <tr><td style="border-top:2px solid var(--ink);">135</td><td style="border-top:2px solid var(--ink);">93</td><td style="border-top:2px solid var(--ink);">79</td></tr>
+    </tbody>
+  </table>
+  <p>All these &lsquo;sums&rsquo; represent exactly the same calculation. Line by line they refer to the same number of items: One eight + seven = one ten + five = one twelve + three.<span class="pageref" id="p130">page 130</span> Four eights + four = three tens + six = three twelves + nought. Five eights + two = four tens + two = three twelves + six. If you study the totals in the same way you will see that they each represent the same final quantity.</p>
+
+  <p><span class="para-num">109.</span> In octonary you &lsquo;carry&rsquo; one every time you make a group of eight; in denary you &lsquo;carry&rsquo; one every time you make a group of ten; and in a duodecimal system each time you collect twelve. But there is one race of people who use <span style="font-variant:small-caps;">different base groups in each column</span>. They are the B&rsquo;swamis. Here are some B&rsquo;swami sums. Can you deduce their number bases?</p>
+  <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+    <table class="book"><caption>[A]</caption><tbody><tr><td>128</td></tr><tr><td>314</td></tr><tr><td>227</td></tr><tr><td style="border-top:2px solid var(--ink);">807</td></tr></tbody></table>
+    <table class="book"><caption>[B]</caption><tbody><tr><td>195</td></tr><tr><td>286</td></tr><tr><td>354</td></tr><tr><td style="border-top:2px solid var(--ink);">733</td></tr></tbody></table>
+    <table class="book"><caption>[C]</caption><tbody><tr><td>196</td></tr><tr><td>385</td></tr><tr><td>219</td></tr><tr><td style="border-top:2px solid var(--ink);">754</td></tr></tbody></table>
+  </div>
+  <p>In the examples we shall do you may rely on the fact that the whole calculation will be done in the same base throughout, so that even if it is unfamiliar it will at least be consistent.</p>
+
+  <p><span class="para-num">110.</span> In ten-based grouping there is no need of a digit greater than nine. The familiar symbols are: 1, 2, 3, 4, 5, 6, 7, 8, 9, and a zero symbol which is 0. Thus, to write numbers in <span style="font-variant:small-caps;">octals</span> only seven digits are required with an additional zero symbol. Counting is:</p>
+  <table class="book"><tbody>
+    <tr><td>ONE</td><td>TWO</td><td>THREE</td><td>FOUR</td><td>FIVE</td><td>SIX</td><td>SEVEN</td><td>OCT</td><td>OCTY-ONE &hellip;</td></tr>
+    <tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>10</td><td>11</td></tr>
+  </tbody></table>
+  <p>This means that in the <span style="font-variant:small-caps;">binary</span> system we require only the symbol 1 as well as the zero symbol. Thus, the above sequence written in Binary would be:</p>
+  <blockquote class="expr">1&nbsp;&nbsp;10&nbsp;&nbsp;11&nbsp;&nbsp;100&nbsp;&nbsp;101&nbsp;&nbsp;110&nbsp;&nbsp;111&nbsp;&nbsp;1000&nbsp;&nbsp;1001</blockquote>
+  <p>So long as the base required is less than the ten-base, the single digits can be selected from those we know well. But if we decide to use a base grouping greater than ten we have to invent<span class="pageref" id="p131">page 131</span> single digit symbols to fill the gap between 9 and the base we are using. Thus, in Duodecimals I write:</p>
+
+  <figure class="scan"><img src="figures/fig-duodec.png" alt="The duodecimal numerals: ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE DEN LEV DOZ = 1 2 3 4 5 6 7 8 9 ⊙ ℰ 10."><figcaption>The duodecimal numerals (den = &#9737;, lev = &#8455;)</figcaption></figure>
+
+  <p>The complete group now consists of <span style="font-variant:small-caps;">twelve units</span>, it is indicated by 10 and called DOZ. I have chosen to call the number after nine, DEN (&#9737;); and the next number I call LEV (&#8455;). Both the names and the symbols I have invented remind you of the numbers they replace, and at the same time they are sufficiently different to avoid confusion. You may be saying it would have been easier to keep on adding to the difficulties in this way! <span style="font-variant:small-caps;">This is precisely the attitude men had towards the Arabic numerals when they began to replace the Roman numerals.</span> What I hope, however, is that after trying some simple calculations with Duodecimal numerals you will understand better the processes of Ordinary Arithmetic.</p>
+
+  <p><span class="para-num">111.</span> The recognised processes of Arithmetic are: <span style="font-variant:small-caps;">addition, subtraction, multiplication,</span> and <span style="font-variant:small-caps;">division</span>. Each is a variation of the fundamental process of counting.</p>
+  <figure class="scan"><img src="figures/fig-processes.png" alt="Four number-line diagrams: Counting 'on' is adding (positively); Counting 'off' is subtracting (adding negatively); Counting 'on' in equal groups is multiplying; Counting 'off' in equal groups is dividing."><figcaption>The four processes as movements on the number line</figcaption></figure>
+  <ul style="list-style:none;padding-left:0;">
+    <li>Counting &lsquo;ON&rsquo; is ADDING (positively).</li>
+    <li>Counting &lsquo;OFF&rsquo; is SUBTRACTING (or ADDING NEGATIVELY).</li>
+    <li>Counting &lsquo;ON&rsquo; in EQUAL GROUPS is MULTIPLYING.</li>
+    <li>Counting &lsquo;OFF&rsquo; in EQUAL GROUPS is DIVIDING.</li>
+  </ul>
+
+  <p><span class="para-num">&nbsp;</span> <span class="pageref" id="p132">page 132</span> The &lsquo;Family of Processes&rsquo; is related in this way: OFF &larr; <span style="font-variant:small-caps;">counting</span> &rarr; ON; Subtraction / Addition; Division / Multiplication. Addition and Subtraction in any number base are easy, so long as we remember how many units make a complete group. Multiplication and Division can&rsquo;t be done unless we memorise Group Tables, or have them written out to refer to. You will find the Tables in the next two sections useful when attempting exercises in Duodecimals, Octals, or Binals.</p>
+
+  <p><span class="para-num">112.</span> <span style="font-variant:small-caps;">Duodecimal Group Table.</span> Parts of this table will be familiar to you but some will appear very strange.</p>
+  <figure class="scan"><img src="figures/table-25.png" alt="Table 25: the duodecimal multiplication group table, 1 to 10 (doz) on each axis, using the den (⊙) and lev (ℰ) symbols for ten and eleven."><figcaption>Table 25 &mdash; Duodecimal Group Table</figcaption></figure>
+  <p>You will find that you want to translate the last column as ten, twenty, thirty, etc., but you should resist this. The digits 30 do not mean three tens, but three dozens. When you translate 7 &times; 7 you should think of the product as four dozens and one. Thinking of inches and feet will help: 49 inches = 4 ft 1 in which checks with the line 7, column 7. It is helpful to read the table like this: Seven ones are seven; seven twos are onedy-two; seven threes are onedy-nine; seven fours are twodry-four, etc. Can you complete the last entry in the table?</p>
+
+  <p><span class="para-num">113.</span> <span class="pageref" id="p133">page 133</span> <span style="font-variant:small-caps;">Octal Group Table.</span></p>
+  <figure class="scan"><img src="figures/table-26.png" alt="Table 26: the octal multiplication group table, 1 to 10 (oct) on each axis."><figcaption>Table 26 &mdash; Octal Group Table</figcaption></figure>
+  <p>This group table does not require any new symbols. You will notice it is much smaller than the Duodecimal Table, just as the Duodecimal Table is larger than the Table of Tens we learned in the Primary School. This is one effect of using a different number base&mdash;as the base is reduced the variety of number groups is less and the fewer &lsquo;multiplication facts&rsquo; there are to remember. When we use the base 2 in the Binary System, the Multiplication Table looks like this:</p>
+  <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+    <table class="book"><caption>Table 27</caption>
+      <thead><tr><th>&times;</th><th>0</th><th>1</th></tr></thead>
+      <tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>0</td><td>1</td></tr></tbody>
+    </table>
+    <table class="book"><caption>Table 28</caption>
+      <thead><tr><th>+</th><th>0</th><th>1</th></tr></thead>
+      <tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>10</td></tr></tbody>
+    </table>
+  </div>
+  <p>These are all the Multiplication facts there are to remember. It couldn&rsquo;t be simpler&mdash;could it? The Addition Table is just as easy.</p>
+
+  <p><span class="para-num">114.</span> In Chapter Two we first saw how to change from one number base to another. The method is to divide the number by the base required and to take note of the remainders.<span class="pageref" id="p134">page 134</span> This process is continued until the number is exhausted. Here is an example. To write 120 (Base 10) in Base 9:</p>
+  <table class="book"><tbody>
+    <tr><td>9)120</td><td></td></tr>
+    <tr><td>9)13</td><td>remainder 3</td></tr>
+    <tr><td>9)1</td><td>remainder 4</td></tr>
+    <tr><td>0</td><td>remainder 1</td></tr>
+  </tbody></table>
+  <p>The analysis on the right means 1(9&sup2;) + 4(9&sup1;) + 3(9&#8304;) = 81 + 36 + 3 = 120&#8321;&#8320;. Thus, 120&#8321;&#8320; = 143&#8329;. This analysis is called expansion, and is a method of changing a number written in an unfamiliar base into its Base 10 equivalent. Here is an example. To change 384&#8321;&#8322; to Base 10 by continuous division. To divide by ten (DEN in its Duodecimal form of &#9737;) we refer to the table of Duodecimal Groups in Section 112.</p>
+  <table class="book"><tbody>
+    <tr><td>&#9737;)384</td><td></td></tr>
+    <tr><td>&#9737;)45</td><td>remainder 2</td></tr>
+    <tr><td>&#9737;)5</td><td>remainder 3</td></tr>
+    <tr><td>0</td><td>remainder 5</td></tr>
+  </tbody></table>
+  <p>The result shows that 384&#8321;&#8322; = 532&#8321;&#8320;, and we can check this by the method of expansion as follows:</p>
+  <blockquote class="expr">384&#8321;&#8322; = 3(12&sup2;) + 8(12&sup1;) + 4(12&#8304;)<br>= 3 &times; 144 + 8 &times; 12 + 4 &times; 1<br>= 432 + 96 + 4<br>= 532.</blockquote>
+
+  <p><span class="para-num">115.</span> Ever since number was invented men have tried to find ways of reducing the drudgery and uncertainty of calculation. The word itself comes from the Latin &lsquo;calculus&rsquo;, meaning a small stone or pebble, and refers to the use of pebbles or counters. When we speak of the &lsquo;counter&rsquo; in a shop we recall its original chequed surface covered with squares to make the counting of money easier. The title of the British Minister who is responsible<span class="pageref" id="p135">page 135</span> for the nation&rsquo;s money comes from the same source. We have already heard of the Abacus or bead-frame which was one of the earliest calculating devices and which is still in common use in Japan.</p>
+
+  <p><span class="para-num">116.</span> In Sections 112&ndash;14 we saw that although Addition was a fairly easy process, Multiplying was much more difficult. Until the Tables of Groups [Multiplication Tables] are known for the base you are using it is a slow and uncertain process. Among the early attempts to simplify it were various methods of &lsquo;setting out&rsquo;. Here is one such called the &lsquo;Grating Method&rsquo;. To calculate 324 &times; 458 = 148,392. The two numbers are written on the outside of the &lsquo;Grating&rsquo; as shown in Fig. 84. Each partial product is written as found:</p>
+  <figure class="scan"><img src="figures/fig-84.png" alt="The grating method for 324 × 458: a grid with diagonals, each cell containing a partial product split by its diagonal, summed along the diagonals to give 148,392."><figcaption>Fig. 84</figcaption></figure>
+  <p>single digits below the diagonal, double digits above and below. &lsquo;Carrying&rsquo; is required only during the final addition which is done along the diagonals. Examples in old manuscripts were lavishly decorated&mdash;as if the calculator were so proud of his skill he felt it deserved framing.</p>
+
+  <p><span class="para-num">117.</span> In the seventeenth century, John Napier, a Scotsman, applied the &lsquo;grating&rsquo; method in a device which has become known as &lsquo;Napier&rsquo;s Bones&rsquo;. This consists of single strips on which are engraved the products of the multiplication tables.<span class="pageref" id="p136">page 136</span> A set of these, made of ivory and enclosed in a leather case, can be seen in the Science Museum in London. Lord John Napier is most famous for his invention of logarithms. There has probably been no other single contribution to the simplification of calculation so important as logarithms, in the preparation of which Napier spent over fourteen years. By means of them you can do calculations which were beyond the ablest mathematicians three hundred years ago.</p>
+  <figure class="scan"><img src="figures/fig-85.png" alt="Napier's Bones or Rods: a full set of numbered strips, each engraved with the multiples of its digit split across diagonals."><figcaption>Fig. 85</figcaption></figure>
+
+  <p><span class="para-num">118.</span> The simple device known as Napier&rsquo;s Bones or Rods was not of any mathematical significance compared with his invention of logarithms, but it is of considerable interest in the development of calculating methods. The best way of understanding its use is to make a set of strips out of card, and with them do some simple calculations. You can see the connection with the grating method in the example below. This is the same calculation we did in Section 116. To multiply 324 by 458, you select the 3 rod, 2 rod, 2 strip, and 4 strip, and lay them side by side as shown. Next, you make a note of the diagonal totals in the 4th, 5th, and 8th rows to correspond with the multiplier 458.<span class="pageref" id="p137">page 137</span></p>
+  <figure class="scan"><img src="figures/fig-86.png" alt="Napier's rods set up to multiply 324 by 458, with the 4th, 5th and 8th rows read off and the diagonal totals 1296, 1620 and 2592 noted."><figcaption>Fig. 86</figcaption></figure>
+  <p>Care must be taken to &lsquo;shift&rsquo; the figures one place to the right to allow for hundreds, tens, and units. The sum of the part products is the result required.</p>
+  <blockquote class="expr">&hellip; 4th row diagonal totals = 1296<br>&hellip; 5th row diagonal totals = 1620<br>&hellip; 8th row diagonal totals = 2592<br>Thus, 324 &times; 458 = 148392.</blockquote>
+
+  <p><span class="para-num">119.</span> The first machine designed for calculating, of which there is any record, was invented by Pascal in 1642. Looked at through modern eyes it would seem a simple apparatus of cogs and gears, but in Pascal&rsquo;s day it was a remarkable and mysterious piece of machinery. Its main feature was the way it &lsquo;carried&rsquo; from one column to the next. Nowadays we are familiar with this sort of mechanism in milometers and turnstile counters and dozens of similar applications. Another famous mathematician, Leibniz, about 1671 invented a more versatile machine, which is supposed to have been capable of counting, addition, subtraction, multiplication, and division.</p>
+  <p>On most shop counters today you will find calculating machines of one sort or another. The more expensive kind, like Pascal&rsquo;s, are simply adders, and either are hand-operated, or electrically operated. The forerunner of most modern calculating machines was that of Charles Babbage (1792&ndash;1871). His &lsquo;calculating engine&rsquo; was designed to<span class="pageref" id="p138">page 138</span> perform most elaborate numerical processes, but it was never completed. It is recorded that the British Government spent over one hundred thousand pounds on its development before relegating it to the Kensington Museum, where it can still be seen.</p>
+  <p>One of the greatest obstacles to the successful development of computers was the attempt to make them conform to the Denary system. Although he did not apply it to his own machine, Leibniz (1646&ndash;1716) pointed out the advantages of the Binary system of representing numbers, but it was not until between 1940&ndash;50, using the new science of Electronics, that Binary Computers became a practicable proposition.</p>
+
+  <p><span class="para-num">120.</span> The Binary system is not a new idea. It was known to the Ancient Chinese. Our own weights reflect the convenience of this method of counting. Have you noticed in a butcher&rsquo;s shop or a greengrocer&rsquo;s where they use balance instead of spring scales, that the weights go up in powers of two? If the weights are to be put in one scale-pan and the goods in the other, <span style="font-variant:small-caps;">all intermediate</span> weights in units of the smallest, may be determined over the range from the smallest up to twice the biggest minus the smallest. We express this in Algebra to make it clearer. Let <span class="expr">s</span> be the smallest, and <span class="expr">L</span> the largest. Then the full range of possible weighings is:</p>
+  <blockquote class="expr">From s to [2L &minus; s]</blockquote>
+  <p>We will test this. If our weights are 1 lb, 2 lb, 4 lb, 8 lb, and 16 lb we should be able to weigh up to 31 lb in units of 1 lb.</p>
+  <blockquote class="expr">To weigh eleven pounds 8 + 2 + 1 = 11.<br>To weigh twenty-seven pounds 16 + 8 + 2 + 1 = 27.<br>To weigh thirty-one pounds <span style="font-variant:small-caps;">all the weights</span> = 31.</blockquote>
+  <p>It is interesting to note that a full range of brass weights begins at &frac12; oz, and each weight after is doubled up to 4 lb. The next is not 8 lb but 7 lb, after which it again becomes binary in form because as you know it continues:</p>
+  <table class="book"><tbody>
+    <tr><td>14 lb</td><td>= 1 stone</td></tr>
+    <tr><td>28 lb</td><td>= 1 quarter</td></tr>
+    <tr><td>56 lb</td><td>= 1 half cwt</td></tr>
+    <tr><td>112 lb</td><td>= 1 cwt</td></tr>
+  </tbody></table>
+  <p>It is not certain why the pattern changes at 7 lb, but if it had not, the standard cwt would have been 128 lb.</p>
+
+  <p><span class="para-num">121.</span> <span class="pageref" id="p139">page 139</span> Just as with a set of weights in which each is twice as big as the one before it, we can weigh any amount up to twice the largest minus one unit, so with number columns arranged to accommodate powers of two we can represent any number over a similar range using only the symbols 1 and 0.</p>
+  <table class="book"><tbody>
+    <tr><td>2&#8312;</td><td>2&#8311;</td><td>2&#8310;</td><td>2&#8309;</td><td>2&#8308;</td><td>2&sup3;</td><td>2&sup2;</td><td>2&sup1;</td><td>2&#8304;</td></tr>
+    <tr><td>256</td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+  </tbody></table>
+  <p>Previously we have been shown how to translate a Denary number into Binary by successive division. Another method is to select from the columns shown above the parts necessary (beginning with the largest) to make up the number we require. If we wished to convert 67&#8321;&#8320; to Binary we could say it is made up of 64 + 2 + 1 and by selecting those columns get 1000011.</p>
+
+  <p><span class="para-num">122.</span> At once we can see a disadvantage of Binary numbers for ordinary purposes. Besides taking up a lot of room they take longer to write. Neither of these bother an electronic computer because the digits are transformed into pulses of electricity which travel so fast that the length of the number just doesn&rsquo;t matter. One part of the computer is used as a number &lsquo;store&rsquo; in which the digits are &lsquo;spots&rsquo; of magnetism. These are sometimes translated into Octonary because it is more compact and is easily translated into Binary. 2&sup3; = 8&sup1; which means that every 3 columns of Binary are equivalent to 1 column of Octonary. Thus, if we group the Binary number of the last paragraph into triads we get 001,000,011 [the two noughts in front are only put in to complete the first triad]&mdash;then by inspection we can translate it into Octonary:</p>
+  <blockquote class="expr">1 0 3</blockquote>
+  <p>This means 1(8&sup2;) + 0(8&sup1;) + 3(8&#8304;) = 64 + 0 + 3 = 67.</p>
+
+  <div class="review">
+    <h3>Ninth Review</h3>
+    <p><span class="para-num">R.103.</span> (a) Name two aspects of number.<br>
+    (b) Which do we use when we count?<br>
+    (c) If I do not know how many there are in a certain collection, how can I find out?<span class="pageref" id="p140">page 140</span><br>
+    (d) When I have done this what will I have established in respect of the collection, ORDER or GROUP-SIZE?<br>
+    (e) Using the jingle in Section 103 say how many sides an octagon has.</p>
+    <p><span class="para-num">R.104.</span> (a) Can you recognise the size of ANY group, however big?<br>
+    (b) What is the approximate limit suggested?<br>
+    (c) It is stated that our knowledge of a number like 648 is limited. What are the limits referred to?<br>
+    (d) Do we appreciate order or group-size in a large number?<br>
+    (e) Using the Denary system say how many dots there were.<br>
+    (f) Express this number in the Octal system.<br>
+    (g) Look at these diagrams and WITHOUT counting say how many dots each has.</p>
+    <figure class="scan"><img src="figures/fig-87.png" alt="Eight small diagrams (1)–(8), each a grouped pattern of dots to be recognised without counting."><figcaption>Fig. 87</figcaption></figure>
+    <p>(h) What sometimes helps to make large groups more easily recognisable?</p>
+    <p><span class="para-num">R.105.</span> (a) What is the group-size on which numbers are normally based?<br>
+    (b) The numbers we normally use are called Decimals. Give another name for this system.<br>
+    (c) What is the base of the Octal system?<br>
+    (d) If a whole number is written to the base 5, what will the extreme right-hand figure represent?<br>
+    (e) What is represented by the right-hand digit of whole numbers in any system?<br>
+    (f) If <span class="expr">abc</span> represents a number written to base 6, what group-size would the number <span class="expr">a</span> refer to?</p>
+    <p><span class="para-num">R.106.</span> <span class="pageref" id="p141">page 141</span> (a) If we want to indicate the base we are using how do we show it?<br>
+    (b) Show that these numbers are written to the bases stated: 326 (base 8); 351 (base 6); 10010 (base 2).<br>
+    (c) What is wrong with this number? 356&#8324;.</p>
+    <p><span class="para-num">R.107.</span> (a) Give two reasons why learning about different number bases is worth while.<br>
+    (b) What makes a number specially useful?</p>
+    <p><span class="para-num">R.108.</span> (a) What must be remembered when adding in an unfamiliar base?<br>
+    (b) Explain how the totals shown in the OCTAL and the DUODECIMAL sums in Section 108 each equal 93 in DENARY.<br>
+    (c) In each of the following sums say which base is being used:</p>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <table class="book"><caption>(i)</caption><tbody><tr><td>13</td></tr><tr><td>24</td></tr><tr><td>6</td></tr><tr><td style="border-top:2px solid var(--ink);">46</td></tr></tbody></table>
+      <table class="book"><caption>(ii)</caption><tbody><tr><td>23</td></tr><tr><td>10</td></tr><tr><td>34</td></tr><tr><td style="border-top:2px solid var(--ink);">122</td></tr></tbody></table>
+      <table class="book"><caption>(iii)</caption><tbody><tr><td>361</td></tr><tr><td>73</td></tr><tr><td>245</td></tr><tr><td style="border-top:2px solid var(--ink);">700</td></tr></tbody></table>
+    </div>
+    <p><span class="para-num">R.109.</span> Have another look at the B&rsquo;swami sums. Reading from right to left the variable bases were: [A] 12 and 3; [B] 12 and 20; [C] 16 and 14. You have probably guessed that we are the race of people referred to. All these examples were taken from an English Arithmetic Book (see tables on page xv). B&rsquo;SWAMI is my contraction of British Standard Weights and Measures (Imperial) and the sums will look familiar if I write them thus:</p>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <table class="book"><caption>[A] yds&nbsp;ft&nbsp;in</caption><tbody><tr><td>1 2 8</td></tr><tr><td>3 1 4</td></tr><tr><td>2 2 7</td></tr><tr><td style="border-top:2px solid var(--ink);">8 0 7</td></tr></tbody></table>
+      <table class="book"><caption>[B] &pound;&nbsp;s.&nbsp;d.</caption><tbody><tr><td>1 9 5</td></tr><tr><td>2 8 6</td></tr><tr><td>3 5 4</td></tr><tr><td style="border-top:2px solid var(--ink);">7 3 3</td></tr></tbody></table>
+      <table class="book"><caption>[C] st&nbsp;lb&nbsp;oz</caption><tbody><tr><td>1 9 6</td></tr><tr><td>3 8 5</td></tr><tr><td>2 1 9</td></tr><tr><td style="border-top:2px solid var(--ink);">7 5 4</td></tr></tbody></table>
+    </div>
+    <p><span class="pageref" id="p142">page 142</span> (a) What is a complete group when ADDING inches?<br>
+    (b) What is a complete group when ADDING ounces?<br>
+    (c) What is a complete group when ADDING minutes?<br>
+    (d) What base is used when ADDING feet?<br>
+    (e) What base is used when ADDING pence?<br>
+    (f) What base is used when SUBTRACTING inches from feet?<br>
+    (g) What base is used when changing tons to stones?<br>
+    (h) What base is used when changing square feet to square inches?<br>
+    (i) What base is used when changing square feet to square yards?<br>
+    (j) What base is used when converting centimetres to metres?<br>
+    (k) Why should arithmetic in unfamiliar bases be easier than B&rsquo;swami?</p>
+    <p><span class="para-num">R.110.</span> (a) Translate this into modern notation: CCCXXIV.<br>
+    (b) The same number is repeated three times below. In each case state the value of the numeral in brackets.</p>
+    <blockquote class="expr">(i) C(C)CXXIV (C) =<br>(ii) CC(C)XXIV (C) =<br>(iii) CCCXX(I)V (I) =</blockquote>
+    <p>(c) Complete this statement: In Roman numbers the value of a particular numeral does not change with its &hellip;&hellip; .<br>
+    (d) Here is a number in Denary &hellip; 30353. In each of the following cases give the value represented by the figure in brackets.</p>
+    <blockquote class="expr">(i) 3 0(3)5 3 (3) =<br>(ii) (3)0 3 5 3 (3) =<br>(iii) 3 0 3 5(3) (3) =</blockquote>
+    <p>(e) Complete this statement: In modern notation digits have [one/two] values. One is indicated by the [symbol; +; &minus;; brackets], and the other is indicated by its [shape; size; position].<br>
+    (f) In the diagram on page 143 there are patterns of dots and under each a &lsquo;base&rsquo; number. Copy it and in the bottom cell write the symbols you would use to represent the number of dots in the base indicated.</p>
+    <figure class="scan"><img src="figures/fig-88.png" alt="Fig. 88: patterns of dots above a row of cells, each headed by a base (4, 2, 5, 12, 8, 7, 6, 2), with rows for Units, Base and Digits to complete."><figcaption>Fig. 88 &mdash; copy the diagram, do not write on this page</figcaption></figure>
+    <p><span class="para-num">R.111.</span> (a) What is called the fundamental process of Arithmetic?<br>
+    (b) What definition is given of multiplying?<br>
+    (c) What process is equivalent to the continuous subtraction of equal groups?<br>
+    (d) In the diagrammatic illustrations of arithmetical processes in Section 111, four &lsquo;sums&rsquo; are presented. The first illustrates: 0 + 3 + 4 + 2 = 9. Write the other three in the usual form.<br>
+    (e) In the illustration of &lsquo;counting on&rsquo;, or adding positively, an arrow is shown pointing in this direction &rarr;. In the next illustration showing the subtraction of a positive number the arrow points this way &larr;. Which way would the arrow point to illustrate the SUBTRACTION OF A NEGATIVE NUMBER?<br>
+    (f) Complete this statement: &lsquo;When thinking of numbers as an ordered array with negatives to the left of zero and positives to the right, adding is a movement in the &rarr; direction when the added number is &hellip;&hellip;, and in the &larr; direction when the added number is &hellip;&hellip; .&rsquo;<br>
+    (g) Complete this statement: Subtraction of a positive number may be thought of as a rotation of direction from &rarr; to &larr;, but the subtraction of a negative number causes a &hellip;&hellip; rotation.<br>
+    (h) Complete this statement: Subtracting a negative number has the same effect as &hellip;&hellip; .<br>
+    (i) Give the results of:</p>
+    <blockquote class="expr">(i) 0 + 8 &minus; 5 =&nbsp;&nbsp;&nbsp;(ii) 0 + 8 &minus; (+5) =<br>(iii) 0 + 8 + (&minus;5) =&nbsp;&nbsp;&nbsp;(iv) 0 + 8 &minus; (&minus;5) =<br>(v) 0 &minus; 8 + (&minus;5) =&nbsp;&nbsp;&nbsp;(vi) 0 &minus; 8 &minus; (&minus;5) =</blockquote>
+
+    <p><span class="para-num">R.112.</span> <span class="pageref" id="p144">page 144</span> Try to answer these questions without consulting the Duodecimal Tables in Section 112. Refer to it only if you must.<br>
+    (a) Express the answers in 12-base and in 10-base. No. (i) is done for you as an example.</p>
+    <blockquote class="expr">(i) 6 &times; 5 = 26 (12-base) = 30 (10-base)<br>(ii) 3 &times; 7 =&nbsp;&nbsp;(iii) 9 &times; 8 =&nbsp;&nbsp;(iv) 7 &times; &#9737; =&nbsp;&nbsp;(v) 9 &times; &#9737; =</blockquote>
+    <p>(b) In the Denary Table there are many interesting patterns, e.g. the products of 5 have as their last digit either 0 or 5. What corresponds to this in the Duodecimal Tables?<br>
+    (c) Write out that sequence.<br>
+    (d) Write out the 9 sequence in the Denary Table.<br>
+    (e) What do you notice about the digits of each product?<br>
+    (f) What happens after 45?<br>
+    (g) What Duodecimal sequence has a similar pattern?<br>
+    (h) Write out that sequence.<br>
+    (i) After which product does reversal of the digits start?<br>
+    (j) Is there one sequence in the Denary Table in which BOTH digits in each product are the same. Write it out.<br>
+    (k) Where would you expect to find a similar sequence in the Duodecimal Table?<br>
+    (l) Is 2 an odd or an even number?</p>
+    <p>On the next two pages you will find some calculations using the Duodecimal Tables. Try to complete them without consulting the Tables. <span style="font-variant:small-caps;">Remember</span>&mdash;&lsquo;carry&rsquo; and &lsquo;borrow&rsquo; in groups of twelve <span style="font-variant:small-caps;">not</span> ten.</p>
+    <p>(m) <span style="font-variant:small-caps;">Duodecimal additions.</span></p>
+    <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
+      <table class="book"><caption>(i)</caption><tbody><tr><td>336</td></tr><tr><td>23</td></tr><tr><td>248</td></tr></tbody></table>
+      <table class="book"><caption>(ii)</caption><tbody><tr><td>4&#8455;9</td></tr><tr><td>32</td></tr><tr><td>35</td></tr></tbody></table>
+      <table class="book"><caption>(iii)</caption><tbody><tr><td>7&#9737;6</td></tr><tr><td>138</td></tr><tr><td>18&#9737;</td></tr></tbody></table>
+      <table class="book"><caption>(iv)</caption><tbody><tr><td>317</td></tr><tr><td>&#9737;3</td></tr><tr><td>2</td></tr></tbody></table>
+    </div>
+    <p>(n) <span style="font-variant:small-caps;">Duodecimal subtractions.</span></p>
+    <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
+      <table class="book"><caption>(i)</caption><tbody><tr><td>362</td></tr><tr><td>14</td></tr></tbody></table>
+      <table class="book"><caption>(ii)</caption><tbody><tr><td>2&#9737;5</td></tr><tr><td>3&#9737;</td></tr></tbody></table>
+      <table class="book"><caption>(iii)</caption><tbody><tr><td>59&#9737;</td></tr><tr><td>&#9737;&#8455;</td></tr></tbody></table>
+      <table class="book"><caption>(iv)</caption><tbody><tr><td>483</td></tr><tr><td>394</td></tr></tbody></table>
+      <table class="book"><caption>(v)</caption><tbody><tr><td>&#9737;&#9737;&#9737;</td></tr><tr><td>&#9737;&#9737;&#8455;</td></tr></tbody></table>
+    </div>
+    <p><span class="pageref" id="p145">page 145</span> (o) Translate these numbers from Duodecimals into DENARY: (i) 42 (ii) 6&#9737;0 (iii) 31&middot;3.<br>
+    (p) <span style="font-variant:small-caps;">Duodecimal multiplications</span> (e.g. 19 &times; 32, &#9737; &times; 36&#9737;, and similar products set out in the original).<br>
+    (q) <span style="font-variant:small-caps;">Duodecimal divisions</span>: (i) 8)394 (ii) &#9737;)&#9737;3&#9737; (iii) 7)6781 (iv) 23)5716.</p>
+    <p>In the DENARY system this last example would be 27)9,666 and would yield the result 358. This is precisely the same as 25&#9737; in Duodecimal which translated = 358&#8321;&#8320;. 2 gross + 5 dozen + ten = 358&#8321;&#8320;.</p>
+    <p><span class="para-num">R.113.</span> (a) Find the following products, giving the result in OCTONARY and DENARY, as in the first example.</p>
+    <blockquote class="expr">(i) 5 &times; 4 = 24&#8328; = 20&#8321;&#8320;<br>(ii) 7 &times; 5 =&nbsp;&nbsp;(iii) 2 &times; 3 =&nbsp;&nbsp;(iv) 4 &times; 5 =&nbsp;&nbsp;(v) 7 &times; 9 =</blockquote>
+    <p>(b) Complete this statement: As the base number is reduced the number of multiplication facts which have to be remembered gets &hellip;&hellip;, while the amount of room the number takes up gets &hellip;&hellip; .<br>
+    (c) Do these Binary calculations:</p>
+    <blockquote class="expr">(i) 0 + 1 =&nbsp;&nbsp;(ii) 0 + 0 =&nbsp;&nbsp;(iii) 1 + 1 =&nbsp;&nbsp;(iv) 1 + 0 =<br>(v) 1 + 11 =&nbsp;&nbsp;(vi) 11 + 10 + 1 =&nbsp;&nbsp;(vii) 1 &times; 0 =&nbsp;&nbsp;(viii) 1 &times; 1 =<br>(ix) 0 &times; 0 =&nbsp;&nbsp;(x) 1 &times; 1 =</blockquote>
+    <p><span class="para-num">R.114.</span> <span class="pageref" id="p146">page 146</span> (Computer additions, subtractions and multiplications in Binary &mdash; sets of column sums to be worked, e.g. 101 + 10, 1011 &times; 11, etc.)</p>
+    <p>(a) What two methods have been suggested for changing the base of a number?<br>
+    (b) Find the base 10 equivalent of 372&#8328; by expansion.<br>
+    (c) Change 5,836&#8321;&#8320; to its equivalent in base 7 by the method of continuous division.<br>
+    (d) Change 423&#8328; to base 6 by the method of continuous division. (<em>Hint:</em> Use the Octal Table in Section 113.)<br>
+    (e) Check (d) by the method of expansion.</p>
+    <p><span class="para-num">R.115.</span> (a) From what Latin word is the word &lsquo;calculation&rsquo; derived?<br>
+    (b) What did the Latin word mean?<br>
+    (c) What is the appearance of &lsquo;checked&rsquo; material?<br>
+    (d) What game is played on a chequer board?<br>
+    (e) What is the title of the British Minister responsible for the National Budget?<br>
+    (f) Why is the serving table in a shop called a counter?<br>
+    (g) What is the proper name of the bead-frame used as a calculating device?<br>
+    (h) In what country is it still used?</p>
+    <p><span class="para-num">R.116.</span> (a) What must be memorised to make multiplication and division easier?<br>
+    (b) How did the &lsquo;grating&rsquo; method assist multiplying?<br>
+    (c) What mechanical device does it suggest?</p>
+    <p><span class="para-num">R.117.</span> <span class="pageref" id="p148">page 148</span> (a) What was the device known as Napier&rsquo;s Bones used for?<br>
+    (b) What important contribution did Lord John Napier make to Mathematics?<br>
+    (c) How long ago did he live?<br>
+    (d) Where would you go to see a set of Napier&rsquo;s Rods?</p>
+    <p><span class="para-num">R.118.</span> (a) What strips from Napier&rsquo;s Rods would you select in order to multiply 4872 &times; 609?<br>
+    (b) Which would you select to multiply 6009 &times; 4872?<br>
+    (c) To multiply 4872 &times; 3050, how many actual multiplication numbers do you need?<br>
+    (d) Which strips would you select?<br>
+    (e) If I used ONLY the 2-rod and the 7-rod to multiply 2007 by 56893, which rows would I have to look up?<br>
+    (f) How many additions would there be?<br>
+    (g) How must the part products be arranged?</p>
+    <p><span class="para-num">R.119.</span> (a) Who is credited with inventing the first calculating machine?<br>
+    (b) What other contribution to Mathematics of his have we read of in this book?<br>
+    (c) What is the name of the mathematician who invented a calculating machine in 1671?<br>
+    (d) What operations could it perform?<br>
+    (e) What is the name of the English mathematician who invented the &lsquo;analytical&rsquo; engine just over a hundred years ago?<br>
+    (f) Is this machine still in existence?<br>
+    (g) Where can it be seen?<br>
+    (h) What hindered the development of a really useful computer?<br>
+    (i) Which mathematician stressed the importance of the Binary system?<br>
+    (j) When were modern-type computers first developed?<br>
+    (k) Instead of being mechanically operated, on what branch of science are they based?<br>
+    (l) Here is a list of calculating aids. Rewrite it putting the items in chronological order of their invention or use.</p>
+    <p class="choices"><span>Babbage&rsquo;s Analytical Engine</span> <span>Napier&rsquo;s Rods</span> <span>Electronic Computers</span> <span>Fingers</span> <span>Cash Registers</span> <span>Pebbles</span> <span>The Abacus</span> <span>Arabic Numerals</span> <span>Logarithms</span> <span>Pascal&rsquo;s Machine</span></p>
+    <p><span class="para-num">R.120.</span> <span class="pageref" id="p149">page 149</span> (a) One example of the use of a Binary system is in the British System of Weights. Select the least number of weights with which to weigh: (i) 5 lb. (ii) 20 lb. (iii) 10 lb. (iv) 92 lb. (v) 77 lb. (vi) 34 lb.<br>
+    (b) If BOTH pans could be used for putting the weights on how could the weights be graduated?</p>
+    <p><span class="para-num">R.121.</span> (a) Refer to the arrangement of powers of 2 in order to do these translations.</p>
+    <p><strong>DENARY into BINARY:</strong></p>
+    <blockquote class="expr">(i) 260 =&nbsp;&nbsp;(ii) 9 =&nbsp;&nbsp;(iii) 30 =&nbsp;&nbsp;(iv) 190 =&nbsp;&nbsp;(v) 49 =<br>(vi) 73 =&nbsp;&nbsp;(vii) 255 =&nbsp;&nbsp;(viii) 5 =&nbsp;&nbsp;(ix) 63 =&nbsp;&nbsp;(x) 511 =</blockquote>
+    <p><strong>BINARY into DENARY:</strong></p>
+    <blockquote class="expr">(xi) 1101 =&nbsp;&nbsp;(xii) 10010 =&nbsp;&nbsp;(xiii) 1000001 =&nbsp;&nbsp;(xiv) 111111 =&nbsp;&nbsp;(xv) 101010 =</blockquote>
+    <p><span class="para-num">R.122.</span> (a) To translate Octonary into Binary you should remember that every Octal digit occupies three places when put into Binary.</p>
+    <p><strong>OCTONARY into BINARY:</strong></p>
+    <blockquote class="expr">(i) 23 =&nbsp;&nbsp;(ii) 156 =&nbsp;&nbsp;(iii) 77 =&nbsp;&nbsp;(iv) 52 =&nbsp;&nbsp;(v) 333 =</blockquote>
+    <p><strong>BINARY into OCTONARY:</strong></p>
+    <blockquote class="expr">(i) 110 =&nbsp;&nbsp;(ii) 1010 =&nbsp;&nbsp;(iii) 111011011 =&nbsp;&nbsp;(iv) 100011 =&nbsp;&nbsp;(v) 11101011 =</blockquote>
+    <p style="font-size:0.85rem;color:var(--muted);">Note: The jingle referred to at the beginning of this chapter on page 126 is a traditional English counting rhyme. It appears in the <em>Oxford Nursery Rhyme Book</em> by Iona and Peter Opie (Oxford University Press). The whole rhyme runs as follows: &lsquo;Inter, mitzy, titzy, tool, Ira, dira, domino, Oker, poker, dominoker, Out goes you.&rsquo;</p>
+  </div>
+</main>
+
+<nav class="nav botnav">
+  <a href="chapter-08.html">&larr; 8. Other related ideas</a>
+  <span class="nav-mid"><a href="index.html">Contents</a></span>
+  <a href="chapter-10.html">10. Men; mathematics; machines &rarr;</a>
+</nav>
+
+</body>
+</html>

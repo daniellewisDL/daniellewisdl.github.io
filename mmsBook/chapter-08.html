@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. Other Related Ideas — Mathematics Makes Sense</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav topnav">
+  <a href="chapter-07.html">&larr; 7. Becoming more familiar</a>
+  <span class="nav-mid">Mathematics Makes Sense</span>
+  <a href="chapter-09.html">9. Number bases &rarr;</a>
+</nav>
+
+<main>
+  <p class="eyebrow">Chapter Eight</p>
+  <h1>Other Related Ideas</h1>
+
+  <span class="pageref" id="p89">page 89</span>
+
+  <p><span class="para-num">89.</span> As we noted in Section 20, Chapter Two, one of the most important inspirations man had in the development of his mathematical ideas was the invention of the symbol for zero. It is probable that this was suggested by the empty wire on the abacus, so that it stands for the &lsquo;empty set&rsquo;. Five hundred years ago it was looked upon with suspicion, even learned men were reluctant to accept the idea of a symbol for &lsquo;nothing&rsquo;, but today the concept of 0 and 1 forms the basis of logical thinking and is the main feature of the Binary notation on which the arithmetic of Electronic Computers is built.</p>
+
+  <p><span class="para-num">90.</span> In the last chapter we examined the relationships of alternatives. That is to say, we were thinking in every case of just two conditions combined in one way or another. But in problems of industrial management, finance, electronics, and science in general; as well as in problems of housing, transport, and any situation where classification or selection is involved, there are many factors to be taken into account. Problems which consist of multiple choice elements must first be analysed and broken down into sets of alternatives. When we make a rational choice we <span style="font-variant:small-caps;">always choose between two alternatives</span>. If we do otherwise our choice is random and unlikely to be fully effective.</p>
+  <p>An electronic computer can &lsquo;Compare&rsquo; two numbers, and &lsquo;Choose&rsquo; one rather than another, and the responsibility of the &lsquo;programmer&rsquo; is to break down the multiple choice problem which is to be dealt with into its component alternatives and translate them into the numerical form the computer is designed to handle. In the questions on Section 14 we had an example of this, and in this chapter we will carry the technique a little farther.</p>
+
+  <p><span class="para-num">91.</span> The model we used for two combined conditions was two interlocked circles. Three conditions will need three circles. When two circles were interlocked they formed four distinct<span class="pageref" id="p90">page 90</span> areas, 2&sup2; = 4 areas. With three circles, 2&sup3; = 8 areas. But 2&#8308; = 16 areas, and we might expect there to be 2&#8308; patterns. But 2&#8312; = 256, which seems a great many patterns out of such a simple diagram.</p>
+  <p>In the previous chapter we found each different pattern represented a different combination of the two conditions. If this is true of the present case it means that three conditions may be combined in <span style="font-variant:small-caps;">two hundred and fifty-six</span> different ways. We must investigate this further.</p>
+
+  <figure class="scan">
+    <img src="figures/fig-61.png" alt="Three interlocking circles A, B and C dividing the plane into eight areas numbered 1 to 8.">
+    <figcaption>Fig. 61</figcaption>
+  </figure>
+
+  <p><span class="para-num">92.</span> The scientific method of investigation is first to observe behaviour, then to make an easily understood model of the situation and experiment on it. From this a working rule (called an hypothesis) is found, and then the hypothesis is tested by further experiment. Even then we should be cautious. To the true scientist all knowledge is constantly under review. The most we can ever do is to find an explanation which best fits the facts. But the best fit is only an approximation in the light of our present understanding. For hundreds of years men were able to &lsquo;explain&rsquo; the movement of the Solar System by considering the Earth as the centre around which the rest revolved. Believing Man to be the most important creature in the Universe, they easily allowed their observations to persuade them the Earth occupied the central position. But the scientific mind constantly searches for what it knows it can never find&mdash;the complete truth. We must always be prepared to find out that we were wrong.</p>
+
+  <p><span class="para-num">93.</span> We will now consider the behaviour of elements of a set being grouped in various ways.</p>
+  <p>[1] Four boys were supposed to go to the dentist. In how many different groups could they go?</p>
+  <table class="book">
+    <tbody>
+      <tr><td>(a) They could not go. This would be a group of none.</td><td>1 group</td></tr>
+      <tr><td>(b) Each could go alone.</td><td>4 groups</td></tr>
+      <tr><td>(c) They could go in pairs: (AB, AC, AD, BC, BD, CD).</td><td>6 groups</td></tr>
+      <tr><td>(d) They could go in threes: (ABC, ABD, ACD, BCD).</td><td>4 groups</td></tr>
+      <tr><td>(e) They could go in fours: (ABCD).</td><td>1 group</td></tr>
+      <tr><td style="text-align:right;"><strong>Total</strong></td><td><strong>16 groups</strong></td></tr>
+    </tbody>
+  </table>
+  <p>[2] In how many different ways could two boys catch the measles? Not at all (1); separately (2); together (1): total, 4.</p>
+  <p>[3] Three girls wanted to go to the cinema. In how many different ways could they decide to use their money?</p>
+  <table class="book">
+    <tbody>
+      <tr><td>(a) They could decide not to go.</td><td>1 way</td></tr>
+      <tr><td>(b) They could let one girl (A, B, or C) go.</td><td>3 ways</td></tr>
+      <tr><td>(c) They could let two girls (AB, AC, or BC) go.</td><td>3 ways</td></tr>
+      <tr><td>(d) They could all go together.</td><td>1 way</td></tr>
+      <tr><td style="text-align:right;"><strong>Total</strong></td><td><strong>8 ways</strong></td></tr>
+    </tbody>
+  </table>
+  <p>If we now put these facts in order:</p>
+  <table class="book">
+    <thead><tr><th>Elements</th><th>Groups</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>2</td><td>4, i.e. 2&sup2;</td><td rowspan="3">The number of groupings is &lsquo;two raised to the power of the number of elements&rsquo;.</td></tr>
+      <tr><td>3</td><td>8, i.e. 2&sup3;</td></tr>
+      <tr><td>4</td><td>16, i.e. 2&#8308;</td></tr>
+    </tbody>
+  </table>
+  <p>Generally, with <span class="expr">n</span> elements, the possible groups are 2&#8319;.&dagger;</p>
+  <p style="font-size:0.85rem;color:var(--muted);">&dagger; Note: Ignoring &lsquo;order&rsquo;, i.e. A,B = B,A.</p>
+
+  <p><span class="para-num">94.</span> We can test the hypothesis of the last paragraph to our problem in this way. By enclosing an area we divide the surface into two parts&mdash;inside and outside. Where another area overlaps the first one, it must cut it into two parts, and at the same time it must form a new inside and outside out of the surrounding area. Thus, each added area which intersects all the previous ones doubles the number of areas in the diagram (see diagrams 3 and 4). Each circle represents a condition and is an element of a set which clearly accumulates by the rule we found, i.e. 2&#8319;.<span class="pageref" id="p92">page 92</span> This number of areas then becomes the element of another set which is subject to the grouping law (like the boys going to the dentist). This will be clearer if you study the diagrams below.</p>
+
+  <figure class="scan">
+    <img src="figures/fig-62.png" alt="Five diagrams: [1] empty space, no areas (2⁰ = 1 pattern); [2] a plane surface, one area (2¹ = 2 patterns); [3] one circle giving two areas (2² = 4 patterns); [4] two circles, four areas (2⁴ = 16 patterns); [5] three circles, eight areas (2⁸ = 256 patterns).">
+    <figcaption>Fig. 62</figcaption>
+  </figure>
+  <p style="font-size:0.9rem;">[1] Empty space, <span style="font-variant:small-caps;">no</span> areas. 2&#8304; = 1 pattern (no shading). &nbsp; [2] A plane surface, <span style="font-variant:small-caps;">one</span> area. 2&sup1; = 2 patterns (shade or not shade). &nbsp; [3] Two areas. 2&sup2; = 4 patterns: (0), (1), (2), (1,2). &nbsp; [4] 2 conditions, 4 areas. 2&#8308; = 16 patterns. &nbsp; [5] 3 conditions, 8 areas. 2&#8312; = 256 patterns.</p>
+
+  <p><span class="para-num">95.</span> Numbers can be arranged in many interesting sequences.</p>
+  <table class="book">
+    <tbody>
+      <tr><td>(a) The natural numbers are:</td><td class="expr">1 2 3 4 5 6 7 8 &hellip;</td></tr>
+      <tr><td>(b) The &lsquo;odd&rsquo; numbers are:</td><td class="expr">1 3 5 7 9 11 &hellip;</td></tr>
+      <tr><td>(c) The &lsquo;even&rsquo; numbers are:</td><td class="expr">2 4 6 8 10 12 &hellip;</td></tr>
+    </tbody>
+  </table>
+  <p>The familiar products of our Multiplication Tables form other sequences, some of which have recognisable patterns:</p>
+  <table class="book">
+    <tbody>
+      <tr><td>(d)</td><td class="expr">11 22 33 44 55 66 77 88 99 &hellip;</td></tr>
+      <tr><td>(e)</td><td class="expr">5 10 15 20 25 &hellip;</td></tr>
+      <tr><td>(f)</td><td class="expr">9 18 27 36 45 &hellip;</td></tr>
+    </tbody>
+  </table>
+  <p>Here are three less familiar sequences:</p>
+  <table class="book">
+    <tbody>
+      <tr><td>(g)</td><td class="expr">1 4 9 16 25 36 49 &hellip;</td></tr>
+      <tr><td>(h)</td><td class="expr">1 3 6 10 15 21 28 &hellip;</td></tr>
+      <tr><td>(i)</td><td class="expr">1 2 3 5 7 11 13 &hellip;</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="pageref" id="p93">page 93</span> One famous arrangement of numbers we will find useful in our present enquiry. They form a large triangle and first appeared in print in 1527.&dagger; This was used by a great French mathematician, Blaise Pascal (1623&ndash;62), and have become known as</p>
+
+  <table class="book">
+    <caption>Pascal&rsquo;s Triangle</caption>
+    <thead><tr><th>Line</th><th>Sequence</th><th>Total 2&#8319;</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td class="expr">1</td><td>1</td></tr>
+      <tr><td>1</td><td class="expr">1&nbsp;&nbsp;1</td><td>2</td></tr>
+      <tr><td>2</td><td class="expr">1&nbsp;&nbsp;2&nbsp;&nbsp;1</td><td>4</td></tr>
+      <tr><td>3</td><td class="expr">1&nbsp;&nbsp;3&nbsp;&nbsp;3&nbsp;&nbsp;1</td><td>8</td></tr>
+      <tr><td>4</td><td class="expr">1&nbsp;&nbsp;4&nbsp;&nbsp;6&nbsp;&nbsp;4&nbsp;&nbsp;1</td><td>16</td></tr>
+    </tbody>
+  </table>
+  <p>Study this pattern of numbers carefully. When you have seen how it is constructed, copy it and continue until you get to line 9, i.e. the tenth line. I hope you will have seen the connection it has with the grouping of elements, but if you haven&rsquo;t, look again through Section 93 before going on.</p>
+  <p style="font-size:0.85rem;color:var(--muted);">&dagger; Sanford, <em>Short History of Maths</em>, p. 177.</p>
+
+  <p><span class="para-num">96.</span> Pascal&rsquo;s Triangle to the ninth line looks like this:</p>
+  <table class="book">
+    <thead><tr><th>Line</th><th>Sequences</th><th>Totals</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td class="expr">1</td><td>1</td></tr>
+      <tr><td>1</td><td class="expr">1&nbsp;1</td><td>2</td></tr>
+      <tr><td>2</td><td class="expr">1&nbsp;2&nbsp;1</td><td>4</td></tr>
+      <tr><td>3</td><td class="expr">1&nbsp;3&nbsp;3&nbsp;1</td><td>8</td></tr>
+      <tr><td>4</td><td class="expr">1&nbsp;4&nbsp;6&nbsp;4&nbsp;1</td><td>16</td></tr>
+      <tr><td>5</td><td class="expr">1&nbsp;5&nbsp;10&nbsp;10&nbsp;5&nbsp;1</td><td>32</td></tr>
+      <tr><td>6</td><td class="expr">1&nbsp;6&nbsp;15&nbsp;20&nbsp;15&nbsp;6&nbsp;1</td><td>64</td></tr>
+      <tr><td>7</td><td class="expr">1&nbsp;7&nbsp;21&nbsp;35&nbsp;35&nbsp;21&nbsp;7&nbsp;1</td><td>128</td></tr>
+      <tr><td>8</td><td class="expr">1&nbsp;8&nbsp;28&nbsp;56&nbsp;70&nbsp;56&nbsp;28&nbsp;8&nbsp;1</td><td>256</td></tr>
+    </tbody>
+  </table>
+  <p>If you look up the number of conditions you are dealing with in the line column, you will find the number of areas in the diagram which represent them in the totals column on the opposite side. If you look up that number of areas in the totals column you will find the number of patterns that can be made with them in the totals column opposite.</p>
+
+  <p><span class="para-num">&nbsp;</span> <span class="pageref" id="p94">page 94</span> Can you see this double use of the triangle? Here are two examples:</p>
+  <p>[1] Problems governed by 2 conditions are represented by 2 circles. Looking up 2 in the line column tells us there are 4 areas. Looking up 4 in the line column tells us there are 16 patterns.</p>
+  <p>[2] Three conditions can be represented by 3 circles. Line 3 of the triangle tells us there are 8 areas. And line 8 of the triangle would tell us there are 256 patterns.</p>
+
+  <p><span class="para-num">97.</span> We can obtain more detailed information from the Triangle than merely the total number of arrangements possible with a given set of elements. If you refer back to the problem of the boys going to the dentist (Section 93) you will see that with four boys there were sixteen arrangements. To find this out we had to imagine all the ways they could group themselves.</p>
+  <table class="book">
+    <tbody>
+      <tr><td>No boys</td><td>1 group</td><td rowspan="5">See line 4 of Pascal&rsquo;s Triangle</td></tr>
+      <tr><td>Individually</td><td>4 groups</td></tr>
+      <tr><td>In pairs</td><td>6 groups</td></tr>
+      <tr><td>In threes</td><td>4 groups</td></tr>
+      <tr><td>Altogether</td><td>1 group</td></tr>
+    </tbody>
+  </table>
+  <p>The four boys were the four elements of the set we had to consider, and Pascal&rsquo;s triangle line 4 is precisely the list we want. When we are trying to decide how many patterns can be made, it is the number of areas available which is the set of elements.</p>
+  <p>Example: If there were five areas we could make different patterns as follows:</p>
+  <table class="book">
+    <tbody>
+      <tr><td>None shaded</td><td>1 pattern</td><td rowspan="6">Line 5 of the Triangle gives <span style="font-variant:small-caps;">all</span> this information.</td></tr>
+      <tr><td>Separate areas</td><td>5 patterns</td></tr>
+      <tr><td>Double areas</td><td>10 patterns</td></tr>
+      <tr><td>Triple areas</td><td>10 patterns</td></tr>
+      <tr><td>In fours</td><td>5 patterns</td></tr>
+      <tr><td>All shaded</td><td>1 pattern</td></tr>
+      <tr><td style="text-align:right;"><strong>Total</strong></td><td><strong>32 patterns</strong></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="para-num">&nbsp;</span> <span class="pageref" id="p95">page 95</span> Pascal also used this number triangle to solve a problem about the chances of success in a gambling game. He was the first to realise its wider applications to problems involving expansions like (a + b)&#8319;, and this is another example of the birth of a mathematical idea of great importance conceived as the result of a comparatively trifling matter.</p>
+
+  <p><span class="para-num">98.</span> You may be surprised, if not incredulous, when you discover that 6 conditions can be combined in</p>
+  <blockquote class="expr">18,446,744,073,709,551,616 ways.</blockquote>
+  <p>6 conditions would require 6 overlapped boundaries and line 6 of the Triangle tells us there would then be 2&#8310; = 64 areas. Therefore, the number of different patterns (which represent the combination of conditions) is 2&#8310;&#8308;, which is the number quoted above.</p>
+  <p>Diagrams as a means of explaining mathematical ideas are very useful, but they have their limitations. Sooner or later the diagram becomes more confusing than the idea it was meant to clarify. Here is a typical example! When we first learn about indices and &lsquo;raising to powers&rsquo;, the expressions &lsquo;squared&rsquo; and &lsquo;cubed&rsquo; are often used and we are shown models like these:</p>
+
+  <figure class="scan">
+    <img src="figures/fig-63.png" alt="Models illustrating indices: a line (n¹), a square (n²), and a cube (n³).">
+    <figcaption>Fig. 63</figcaption>
+  </figure>
+
+  <p>But these are limited in their application, for we cannot visualise n&#8308; or any greater &lsquo;dimension&rsquo;. We may think of 5&sup2; as a point in space, but we cannot imagine 5&sup3;, it would have to be space turned inside out. Nevertheless, although powers &lt;0 and &gt;3 are unreal as dimensions, point, line, area, and solid are useful ways of illustrating n&#8304;, n&sup1;, n&sup2;, and n&sup3;. Mathematics is the study of abstract ideas, and to get the most out of it we should use diagrams only until we have grasped the underlying notion, so that we may then discard the model and develop further the mental concepts we have formed.</p>
+
+  <p><span class="para-num">99.</span> <span class="pageref" id="p96">page 96</span> The diagram of 3-condition relationships is analysed below. As a model it may be nearing the limit of its usefulness. If you copy and study it carefully it will help you to answer the eighth review. If you get it clear in your mind you will the more easily deal with the Algebra on its own when we can no longer illustrate it.</p>
+
+  <figure class="scan">
+    <img src="figures/fig-64.png" alt="The 'Truth Checking' diagram: three interlocking circles A, B, C with all eight areas labelled with their algebra — 1 ABC, 2 A′BC, 3 AB′C, 4 A′B′C, 5 ABC′, 6 A′BC′, 7 AB′C′, 8 A′B′C′.">
+    <figcaption>Fig. 64</figcaption>
+  </figure>
+
+  <p>In Section 74 we saw that each area in 2-conditional relationships was uniquely determined by 2 conditions in conjunction. From this diagram you can see it is also true that with 3 conditions each area is determined by all 3 in conjunction. Each area has A, B, and C, in one form or other, and no combination is the same for any two areas. This will be our &lsquo;Truth Checking&rsquo; diagram. A Truth Table emphasises the same point.</p>
+
+  <table class="book">
+    <caption>Table 15</caption>
+    <thead><tr><th>Area</th><th colspan="3">Conditions A&nbsp;&nbsp;B&nbsp;&nbsp;C</th><th>Algebra</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td class="expr">ABC</td></tr>
+      <tr><td>2</td><td>0</td><td>1</td><td>1</td><td class="expr">A&prime;BC</td></tr>
+      <tr><td>3</td><td>1</td><td>0</td><td>1</td><td class="expr">AB&prime;C</td></tr>
+      <tr><td>4</td><td>0</td><td>0</td><td>1</td><td class="expr">A&prime;B&prime;C</td></tr>
+      <tr><td>5</td><td>1</td><td>1</td><td>0</td><td class="expr">ABC&prime;</td></tr>
+      <tr><td>6</td><td>0</td><td>1</td><td>0</td><td class="expr">A&prime;BC&prime;</td></tr>
+      <tr><td>7</td><td>1</td><td>0</td><td>0</td><td class="expr">AB&prime;C&prime;</td></tr>
+      <tr><td>8</td><td>0</td><td>0</td><td>0</td><td class="expr">A&prime;B&prime;C&prime;</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="pageref" id="p97">page 97</span> Notice the pattern of the numbers in the table. When dealing with conditions by means of brackets, as we first did in Section 83, care must be taken in translating the situation into Algebra. Consider this example: When asked what vegetables she would prefer, Jean said, &lsquo;I will have carrots and turnips if they are mixed, or peas.&rsquo; We might translate that into: [AB] &or; C = 1. Then we could proceed to make out a Truth Table, and from it draw a diagram to illustrate her choice.</p>
+
+  <table class="book">
+    <caption>Table 16</caption>
+    <thead><tr><th>Area No.</th><th>[A &and; B]</th><th>Truth value</th><th>&or; C</th><th>Final Truth Value</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="expr">1 &and; 1</td><td>1&Dagger;</td><td>1</td><td>1&dagger;</td></tr>
+      <tr><td>2</td><td class="expr">0&nbsp;&nbsp;1</td><td>0</td><td>1</td><td>1&dagger;</td></tr>
+      <tr><td>3</td><td class="expr">1&nbsp;&nbsp;0</td><td>0</td><td>1</td><td>1&dagger;</td></tr>
+      <tr><td>4</td><td class="expr">0&nbsp;&nbsp;0</td><td>0</td><td>1</td><td>1&dagger;</td></tr>
+      <tr><td>5</td><td class="expr">1&nbsp;&nbsp;1</td><td>1&Dagger;</td><td>0</td><td>1&dagger;</td></tr>
+      <tr><td>6</td><td class="expr">0&nbsp;&nbsp;1</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>7</td><td class="expr">1&nbsp;&nbsp;0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>8</td><td class="expr">0&nbsp;&nbsp;0</td><td>0</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.85rem;color:var(--muted);">&Dagger; Because the terms in brackets are linked by &and; they have a Truth value of 1 <span style="font-variant:small-caps;">only</span> when there is 1 in <span style="font-variant:small-caps;">both</span> columns.<br>
+  &dagger; Because C is linked to the brackets by &or; the final Truth value is a 1 here &Dagger; <span style="font-variant:small-caps;">or</span> under C.</p>
+  <p>The diagram illustrating this should be examined closely.</p>
+
+  <figure class="scan">
+    <img src="figures/fig-65.png" alt="The three-circle truth-checking diagram with areas shaded to illustrate [A ∧ B] ∨ C, including areas 2 and 3.">
+    <figcaption>Fig. 65</figcaption>
+  </figure>
+  <p>Think about the implication of the shading in Areas 2 and 3.</p>
+
+  <p><span class="para-num">100.</span> You are now probably saying to yourself, &lsquo;What a clumsy way of deciding what vegetables to order. If you had to make out a Truth Table and draw a diagram before serving the meal, it would be spoiled before you got it. Anybody would<span class="pageref" id="p98">page 98</span> know right away that she wouldn&rsquo;t have either carrots or turnips singly, or either of them with peas.&rsquo;</p>
+  <p>And, of course, you are quite right. Anybody would know because as we said at the beginning of the book, our minds are quite wonderful in their ability to analyse the factors of a situation and out of them build a rational choice. But the question we are discussing is how to do this kind of thing with machines. The explanation is that we did not &lsquo;programme&rsquo; the problem properly. We had not taken into account that Jean will only have carrots or turnips if they are mixed, or either of them with peas; we must be certain to exclude them, separately. The Algebra is not [AB] &or; C it is [AB] &or; [A&prime;B&prime;C].</p>
+
+  <p><span class="para-num">101.</span> This Algebra is designed for machines. Machines cannot think, they can only obey, and their operation is controlled by valves or transistors and the circuits through which the electricity flows. Computers are amazing devices. They can work on problems for days without suffering fatigue and they are incredibly fast in their operation. But it is the human mind of the &lsquo;programmer&rsquo; which has to do all their true thinking for them.</p>
+
+  <p><span class="para-num">102.</span> The programming of a computer is a skilled job. The programmer must understand the problem thoroughly so that he may set out a series of instructions for the machine to follow. He must be careful not to omit any essential step however small, because if he does, the machine, blindly following his plan, will arrive at the wrong result. At the same time, a good programmer tries not to put in any unnecessary instructions.</p>
+  <p>Look at the programme called &lsquo;Getting up and going to work&rsquo; (Fig. 66). I hope you find it amusing and instructive. You will notice that the instructions are written in two kinds of frames. This is to distinguish the two kinds of operations which the computer can perform. When it is a straightforward arithmetical process, the instruction is put in a rectangular frame, but when there has to be a choice made, the instruction is put in a rhomboidal or diamond-shaped frame so that the programmer can easily distinguish them when he is checking the programme. These always indicate a Yes/No situation and I have shown this by using the symbols 1 and 0.<span class="pageref" id="p99">page 99</span> Trace the circuit in a number of different ways by sometimes following the &lsquo;yes&rsquo; path, and at other times following the &lsquo;no&rsquo; path. The programme as it is written is faulty. Perhaps you would like to discover in what way.</p>
+  <p>Try to make out a programme for a familiar task like &lsquo;Washing up&rsquo; or &lsquo;Cooking a meal&rsquo;. Don&rsquo;t forget the golden rule that no essential step must be left out. If you can manage to include some &lsquo;choice&rsquo; questions, these will make your programme seem more like the real thing.</p>
+
+  <figure class="scan">
+    <img src="figures/fig-66.png" alt="A light-hearted flow-chart titled 'Getting up and going to work', with rectangular action boxes (Set alarm, Shake wife, Eat your breakfast, Go to work) and diamond decision boxes (Wife wakes?, Is it dark?, Is it below 45°?, Got car keys?, Married 5 years?), connected by yes/no paths.">
+    <figcaption>Fig. 66 &mdash; Programme: &lsquo;Getting up and going to work&rsquo;</figcaption>
+  </figure>
+
+  <div class="review">
+    <h3>Eighth Review</h3>
+
+    <p><span class="para-num">R.89.</span> (a) What may have suggested the need for a zero symbol?<br>
+    (b) What symbols are used in Binary Notation?<br>
+    (c) What are the equivalents for 1 and 0 in an electrical circuit?</p>
+    <p><span class="para-num">R.90.</span> (a) &lsquo;John couldn&rsquo;t make up his mind whether to buy a Cream Chocolate bar, a Caramel bar, or a Nut Chocolate bar.&rsquo; Say how he could break down his problem, so that he always chooses between two alternatives, and still takes into account all the possibilities.<br>
+    (b) What is the difference between rational and random choice?</p>
+    <p><span class="para-num">R.91.</span> (a) By what model do we represent two conditions?<br>
+    (b) What feature suggests their being in some way combined?<br>
+    (c) What is done to show a particular combination?<br>
+    (d) In the model of two conditions how many regions are there?<br>
+    (e) What would the <span style="font-variant:small-caps;">whole area</span> represent?</p>
+    <p><span class="para-num">R.92.</span> (a) What is it that scientists seek to discover?<br>
+    (b) Look through the whole of this sentence and say which of the 111 characters would make the best badge to represent the scientific mind?<br>
+    (c) List the steps of a scientific investigation.<br>
+    (d) Explain the meaning of the word &lsquo;hypothesis&rsquo;.<br>
+    (e) What must always be done to an hypothesis?</p>
+    <p><span class="para-num">R.93.</span> (a) In a set of <span class="expr">n</span> elements, how many different groups are possible, not taking order into account? [i.e. AB = BA].<br>
+    (b) If five girls planned to visit an exhibition on a certain afternoon, and I went there at 3 p.m., I might find one of them there, or two, or three, or four, or all of them, or indeed, none of them. How many different groups of five girls could there be?<br>
+    (c) The girls&rsquo; names were, Alice, Betty, Cicely, Daisy, Eve. If I found three of them there, who might they be? [Make a list of all possibilities.]<br>
+    (d) Copy the prepared table below and in each column list the appropriate groups of girls.<span class="pageref" id="p101">page 101</span> For convenience you may use the initial letters of their names (A, B, C, D, and E) to distinguish them.</p>
+    <table class="book">
+      <caption>Table 17</caption>
+      <thead><tr><th>None</th><th>Ones</th><th>Twos</th><th>Threes</th><th>Fours</th><th>Fives</th></tr></thead>
+      <tbody>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td colspan="6" style="text-align:right;">TOTALS</td></tr>
+      </tbody>
+    </table>
+    <p><span class="para-num">R.94.</span> (a) This paragraph illustrated how extra conditions caused a greater increase in areas, which in turn resulted in a very rapid increase in the number of patterns. Look at these two sequences of numbers:</p>
+    <table class="book">
+      <tbody>
+        <tr><td>A.P.</td><td class="expr">1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;6&nbsp;&nbsp;7</td></tr>
+        <tr><td>G.P.</td><td class="expr">3&nbsp;&nbsp;9&nbsp;&nbsp;27&nbsp;&nbsp;81&nbsp;&nbsp;243&nbsp;&nbsp;729</td></tr>
+      </tbody>
+    </table>
+    <p>In the first, the difference between successive terms is always the same. The series is an Arithmetical Progression. In the second, the difference results from a multiplicative factor, and the series is called a Geometric Progression.<br>
+    (i) In what ratio is the G.P. accelerating?<br>
+    (ii) What will the seventh term be?</p>
+    <p><span class="pageref" id="p102">page 102</span> (b) Copy the table below and set out the facts regarding the growth of areas and patterns as the result of added conditions. The first five columns can be completed by consulting Section 94, the sixth column should then be filled in on your own.</p>
+    <table class="book">
+      <caption>Table 18</caption>
+      <thead><tr><th>&nbsp;</th><th>[1]</th><th>[2]</th><th>[3]</th><th>[4]</th><th>[5]</th><th>[6]</th></tr></thead>
+      <tbody>
+        <tr><td>Conditions</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>&nbsp;</td></tr>
+        <tr><td>Areas</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Patterns</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <p>(c) What is the regular increment of the conditions?<br>
+    (d) In what kind of progression are they?<br>
+    (e) What kind of progression do the areas form?<br>
+    (f) If the number of conditions is <span class="expr">n</span> what is the increment rate of: (i) The areas? (ii) The patterns?<br>
+    (g) Each additional circle doubles the number of areas. Is it possible to make 16 areas with 4 circles? (Practise on scrap paper first.)<br>
+    (h) Draw a diagram having 16 areas for 4 conditions.<br>
+    (i) If the number of circles [or other irregular boundary] is <span class="expr">c</span> the number of areas may be expressed as 2&#7580;. Express the number of patterns in the same way.</p>
+    <p><span class="para-num">R.95.</span> The letter-references of the questions correspond to those in the original paragraph which you should consult.<br>
+    (a) Write the next three numbers of the first sequence.<br>
+    (b) Write the next three &lsquo;odd&rsquo; numbers.<br>
+    (c) How do you recognise &lsquo;even&rsquo; numbers? Write the next three.<br>
+    (d) Write the next three numbers in that sequence.<br>
+    (e) How do you recognise numbers divisible by 5?<br>
+    (f) Write the next three in sequence (f). What do you notice about the sum of the digits? What happens to the digits after 45?<br>
+    (g) What is special about this sequence?<span class="pageref" id="p103">page 103</span> Write the next three. Look again at the sequence of &lsquo;odd&rsquo; numbers.</p>
+    <figure class="scan">
+      <img src="figures/fig-67.png" alt="The odd numbers 1 3 5 7 9 11 13 15 17 with arrows showing them being accumulated into a running total.">
+      <figcaption>Fig. 67</figcaption>
+    </figure>
+    <p>Add them, writing the accumulative total as a new sequence. What do you notice about the series of totals?</p>
+    <p>(h) If a grocer piles cans so that every upper one bridges the two underneath it, the total number of cans he will need for <span class="expr">n</span> layers will be the <span class="expr">n</span>-th number in this sequence.</p>
+    <figure class="scan">
+      <img src="figures/fig-68.png" alt="Triangular-number patterns of dots: 1, 3, 6, 10, ... each a triangular arrangement.">
+      <figcaption>Fig. 68</figcaption>
+    </figure>
+    <p>They are called &lsquo;triangular&rsquo; numbers for a very obvious reason. Write the next three. Now sum the natural numbers in the same way we summed the odd numbers in (g) above. What do you find?<br>
+    (i) What is special about this sequence? Write the next three.<br>
+    (j) What is the name of the famous arrangement of numbers from which these five totals are taken? 1 2 4 8 16. We could write 2&sup1; 2&sup2; 2&sup3; 2&#8308;. What should we then write before 2&sup1;? What number would this represent? Each term is doubled. What then is the term before 1? What &lsquo;power of 2&rsquo; would represent it?</p>
+    <p><span class="para-num">R.96.</span> (a) 2&sup3; = 2 &times; 2 &times; 2 = 8. From Pascal&rsquo;s Triangle find 3&#8308;.<br>
+    (b) How many areas in a diagram illustrating 5 conditions?<br>
+    (c) Which line of the Triangle would give the number of patterns?<br>
+    (d) In how many different groups could 6 boys be arranged, ignoring order?</p>
+    <p><span class="para-num">R.97.</span> (a) How many different groups of 3 can be taken from 7?<br>
+    (b) What is the total of line ten of Pascal&rsquo;s Triangle (not the tenth line)?</p>
+    <p><span class="para-num">R.98.</span> <span class="pageref" id="p104">page 104</span> The surprising growth under the process of doubling has given rise to a number of interesting stories.</p>
+    <p>The inventor of the game of Chess was a mathematician. When he was asked by the Indian prince for whom he invented it, what reward he would like, he is said to have replied, &lsquo;I would like one grain of wheat on the first square of the chess-board, two grains on the second square, four on the third, eight on the fourth, and so on, until every square has been dealt with.&rsquo; The prince agreed readily, but when he tried to fulfil his part of the bargain he discovered <span style="font-variant:small-caps;">there wasn&rsquo;t enough wheat in the world</span>. As there are 64 squares on a chessboard he would need 2&#8310;&sup3; grains for the last square alone, and altogether he needed 2&#8310;&#8308; &minus; 1 (see Section 98, page 95).<br>
+    (a) (i) How many grains are required for the <span style="font-variant:small-caps;">last</span> square?<br>
+    (ii) How many grains are required <span style="font-variant:small-caps;">altogether</span>?<br>
+    (iii) Express the last answer to 3 significant figures.</p>
+    <p>There is also the story of a rich man who was very contemptuous of people who earned their living. One day, his horse went lame and he called at the village smithy. In a very superior way, he said to the smith, &lsquo;How much will you charge me, fellow, to shoe my horse?&rsquo; and turning to his companion, said, &lsquo;I expect it will take him an age to reckon it, as I expect such people can hardly cypher.&rsquo; The blacksmith was a very intelligent man and knew a lot about numbers because he used to amuse himself thinking about them as he worked at his forge, replied, &lsquo;I will let your lordship choose. You may pay me a golden sovereign for each shoe, or one penny for the first nail, two pennies for the second, four pennies for the third, and so on.&rsquo;</p>
+    <figure class="scan">
+      <img src="figures/fig-69.png" alt="A horse-shoe with seven nail holes drawn around it.">
+      <figcaption>Fig. 69</figcaption>
+    </figure>
+    <p>&lsquo;You foolish fellow,&rsquo; the rich man said. &lsquo;Of course I will choose the second method.&rsquo;<br>
+    (b) How many pence did he have to pay? Study this drawing of a horse-shoe before answering and then consult the table in Section 137 (page 159).<br>
+    (c) In what way are mathematical diagrams useful?<br>
+    (d) In what way are they limited?<br>
+    (e) If 2&sup3; = 2 &times; 2 &times; 2. What does 2&sup2; equal?<span class="pageref" id="p105">page 105</span><br>
+    (f) When we first saw Pascal&rsquo;s Triangle in Section 95 the end column was headed 2&#8319;. The letter <span class="expr">n</span> stood for the line number. The lines were numbered from 0. With these line numbers as indices, the totals along each line match the powers of 2; e.g. line 3 total = 2&sup3; = 8. Thus, the meaning we gave to 2&#8304; was 1. In the same sort of way, 1,000 = 10&sup3;; 100 = 10&sup2;; 10 = 10&sup1;; and 1 = 10&#8304;. 10&#8304; or 2&#8304; is only a method of indicating the &lsquo;<span style="font-variant:small-caps;">units</span>&rsquo; position. What is 5&#8304;?<br>
+    (g) What does 3&#8304; mean? What does 12&#8304; mean?<br>
+    (h) Mathematics began with the simple act of counting, and any number system is built up of &lsquo;units&rsquo;. When we use &lsquo;place-value&rsquo; to show tens, hundreds, thousands, or to show twos, fours, eights, etc., we always have a place for the <span style="font-variant:small-caps;">units</span>: what is n&#8304;?<br>
+    (i) If 2&sup2; = 4: and 2&sup1; = 2: and 2&#8304; = 1: then (i) 2&#8315;&sup1; (ii) 2&#8315;&sup2; (iii) 2&#8315;&sup3; (iv) 2&#8315;&#8308;? Answers in fractions.<br>
+    (j) Try (i) 10&#8315;&sup1; (ii) 10&#8315;&sup2; (iii) 10&#8315;&sup3; (iv) 10&#8315;&#8308;? Answers in decimals.</p>
+    <p><span class="para-num">R.99.</span> (a) Which area of the basic diagram is AB, but not C?<br>
+    (b) Which areas would you shade to indicate BC?<br>
+    (c) What conditions of A, B, C, are indicated by area 4?<br>
+    (d) What areas would you shade to indicate that a proposition is bound to be effective?<br>
+    (e) How would you indicate &empty;?<br>
+    (f) What areas denote B&prime;?<br>
+    (g) Using Binary notation indicate A&prime;BC&prime;.<br>
+    (h) In column A of the Truth Table how are the symbols 1, 0 arranged?<br>
+    (i) What is the arrangement in the B column?<br>
+    (j) What is it in the C column?<br>
+    (k) Why is this regular array insisted upon?</p>
+    <p><span class="para-num">R.100.</span> (a) What is meant by the complement of an expression?<br>
+    (b) What is the function of brackets?<br>
+    (c) What was the implication of area 2 being shaded?<br>
+    (d) What was the implication of area 3 being shaded?</p>
+    <p><span class="para-num">R.101.</span> <span class="pageref" id="p106">page 106</span> (a) What was the suggested reason for getting the wrong result?<br>
+    (b) What governs the &lsquo;thinking&rsquo; of a computer?<br>
+    (c) Name two ways in which computers are superior to brains?<br>
+    (d) In what way is the human mind superior to the best computer?</p>
+    <p>It was pointed out how very careful one must be when translating a situation into Algebra or illustrating it by means of a diagram. It is a question of clear thinking, and is very much the problem of the programmer who must make absolutely certain that the instructions he gives the machine are complete without being superfluous. The next few pages are exercises similar to those of Chapter Seven, but this time you will be dealing with three conditions instead of two. In each case, unless other instructions are given, you should supply whichever is missing of: (a) Diagram; (b) Algebra; or (c) Statement.</p>
+    <p style="font-variant:small-caps; font-size:0.85rem;">Read these notes first</p>
+    <ol>
+      <li>Inside the top left circle = A, outside it is A&prime;.</li>
+      <li>Inside the top right circle = B, outside it is B&prime;.</li>
+      <li>Inside the bottom circle = C, outside it is C&prime;.</li>
+      <li>Shading represents the effective area according to the relationship between the conditions.</li>
+      <li>A means <span style="font-variant:small-caps;">both</span> together&mdash;can be omitted. Thus, AB = A &and; B. &or; means <span style="font-variant:small-caps;">either</span> or <span style="font-variant:small-caps;">both</span>. &veebar; means Either, but <span style="font-variant:small-caps;">not</span> both. It can be replaced by a compound expression: A &veebar; B &harr; AB&prime; &or; A&prime;B</li>
+      <li>Brackets indicate that the terms inside are to be treated jointly before considering the relationship with another.</li>
+      <li>This must be taken into account when using a Truth Table.</li>
+      <li>When 1 or 2 conditions only have to be illustrated the extra circle(s) has/have been ignored.</li>
+    </ol>
+    <p><span class="pageref" id="p107">page 107</span> (e) Supply the Algebra and a diagram for:<br>
+    [1] I will go for a walk tonight if it is fine.<br>
+    [2] I will go alone or with anyone except John.<br>
+    [3] Now copy the diagram and supply the Algebra.<br>
+    [4] Draw the diagram of the given Algebra.</p>
+    <figure class="scan">
+      <img src="figures/fig-70.png" alt="A 2×2 grid of three-circle diagrams: [1] 'I will go for a walk if it is fine'; [2] 'I will go alone or with anyone except John'; [3] a shaded diagram; [4] B ∧ C = 1.">
+      <figcaption>Fig. 70</figcaption>
+    </figure>
+    <p><span class="pageref" id="p108">page 108</span> (f) Give the Algebra and the diagram which represent:<br>
+    [1] The men agreed to call off the strike if they were given a rise of 10% and/or a monthly bonus of 25% on increased production.<br>
+    [2] There is an old saying, &lsquo;Two&rsquo;s company, three&rsquo;s none.&rsquo; Think of this when supplying diagram and Algebra for: &lsquo;Sybil wanted to go for a walk with Robin or Bill.&rsquo;<br>
+    [3] and [4] Supply the Algebra and diagram respectively.</p>
+    <figure class="scan">
+      <img src="figures/fig-71.png" alt="A 2×2 grid of three-circle diagrams [1]–[4]; [4] is labelled A ∧ C′ = 1.">
+      <figcaption>Fig. 71</figcaption>
+    </figure>
+    <p><span class="pageref" id="p109">page 109</span> (g) [1] Draw the diagram and give the Algebra for: &lsquo;The applicant must have qualifications in English and French or English and Spanish.&rsquo;<br>
+    [2] Draw the diagram to represent A &or; B&prime;.<br>
+    [3] Draw the diagram of AB &or; A&prime;B&prime;.<br>
+    [4] Give the Algebra and the diagram to represent: &lsquo;Get from the baker&rsquo;s a crusty loaf that is not burnt.&rsquo;</p>
+    <figure class="scan">
+      <img src="figures/fig-72.png" alt="A 2×2 grid of three-circle diagrams; [2] labelled A ∨ B′; [3] labelled AB ∨ A′B′.">
+      <figcaption>Fig. 72</figcaption>
+    </figure>
+    <p><span class="pageref" id="p110">page 110</span> (h) Give the Algebra and diagram for:<br>
+    [1] &lsquo;I will go for a walk if it is fine or if it is raining.&rsquo; This means I am quite determined to go for a walk.<br>
+    [2] This coffee is cold, it was scalded me. <em>[sic]</em><br>
+    [3] Match the diagram with Algebra.<br>
+    [4] Draw the reversal of the diagram [3] and thus state the <span style="font-variant:small-caps;">opposite algebraic expression</span>.</p>
+    <figure class="scan">
+      <img src="figures/fig-73.png" alt="A 2×2 grid of three-circle diagrams [1]–[4]; [3] is shaded.">
+      <figcaption>Fig. 73</figcaption>
+    </figure>
+    <p><span class="pageref" id="p111">page 111</span> (i) Consider the meaning of: &lsquo;Mr. Jones said he would stay at home that evening if the timber had been delivered and the weather was wet, unless his friend called for him in his car.&rsquo;<br>
+    [1] Draw the diagram and give the Algebra.<br>
+    [2] Draw the diagram and give the Algebra if the word <em>unless</em> is changed to &lsquo;or&rsquo; and &lsquo;called&rsquo; becomes &lsquo;did not call&rsquo;.<br>
+    [3] and [4] Draw the diagrams of the given Algebra.</p>
+    <figure class="scan">
+      <img src="figures/fig-74.png" alt="A 2×2 grid of three-circle diagrams; [3] labelled A′ ∧ B ∧ C; [4] labelled A ∨ B′ ∨ C′.">
+      <figcaption>Fig. 74</figcaption>
+    </figure>
+    <p><span class="pageref" id="p112">page 112</span> (j) Translate these statements into Algebra and match them with appropriate diagrams.<br>
+    [1] Mother said she would do the washing if it was fine, and the water was hot, and Father wasn&rsquo;t in.<br>
+    [2] The pump will work unless the switch isn&rsquo;t on, or a fuse is gone, or the machine is faulty.<br>
+    [3] The candidate must know Shorthand, Typing, and Business Accountancy.<br>
+    [4] I would like to go to Scotland, but not by land or sea.</p>
+    <figure class="scan">
+      <img src="figures/fig-75.png" alt="A 2×2 grid of three-circle diagrams [1]–[4].">
+      <figcaption>Fig. 75</figcaption>
+    </figure>
+    <p><span class="pageref" id="p113">page 113</span> (k) Betty said she would marry Andy, Bill, or Charles. Her friend Eve said she wouldn&rsquo;t marry either Charlie or Andy, but she would marry Bill.<br>
+    [1] Give the Algebra and diagram for this.<br>
+    [2] Give the Algebra and diagram for this.<br>
+    [3] and [4] Draw the diagrams for the given Algebra.</p>
+    <figure class="scan">
+      <img src="figures/fig-76.png" alt="A 2×2 grid of three-circle diagrams; [3] labelled AB′C = 1; [4] labelled A′B′C = 1.">
+      <figcaption>Fig. 76</figcaption>
+    </figure>
+    <p><span class="pageref" id="p114">page 114</span> (l) In each of these give the diagram or the Algebra as appropriate.</p>
+    <figure class="scan">
+      <img src="figures/fig-77.png" alt="A 2×2 grid of three-circle diagrams; [1] labelled A′ ∨ B′ ∨ C; [2] labelled [A ∨ B′ ∨ C′]′ = 1; [3] and [4] shaded.">
+      <figcaption>Fig. 77</figcaption>
+    </figure>
+    <p>(m) Let A = being able to walk. Let B = being able to breathe under water. Let C = being able to fly. Thus, choose from DOG, FISH, SNAKE the one for which the following conditions <span style="font-variant:small-caps;">only one</span> is true. &lsquo;It can walk: it can&rsquo;t breathe under water: it can&rsquo;t fly.&rsquo;</p>
+    <p><span class="pageref" id="p115">page 115</span> <span style="font-variant:small-caps;">First complete this truth table</span></p>
+    <table class="book">
+      <caption>Table 19</caption>
+      <thead><tr><th>Required Condition</th><th>A &or; B&prime; &or; C&prime;</th><th>Truth Value</th></tr></thead>
+      <tbody>
+        <tr><td>DOG</td><td></td><td></td></tr>
+        <tr><td>FISH</td><td></td><td></td></tr>
+        <tr><td>SNAKE</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <figure class="scan">
+      <img src="figures/fig-78.png" alt="A 2×2 grid of three-circle diagrams: (1) give the algebra and diagram for the CONDITIONS; (2) for the DOG; (3) for the FISH; (4) for the SNAKE.">
+      <figcaption>Fig. 78</figcaption>
+    </figure>
+    <p><span class="para-num">R.102.</span> (a) What is the significant difference implied by the rhomboidal frames and the others in the flow-chart?<br>
+    (b) The symbols 1 and 0 indicate the position of the appropriate switches. Look at the switch labelled &lsquo;Is it dark?&rsquo; Would you say the next stage was &lsquo;Turn on light&rsquo; or &lsquo;Temperature Test&rsquo;?<span class="pageref" id="p116">page 116</span><br>
+    (c) All the switches are shown in the positive position according to the question asked. If the facts in any one case were different, what would happen to the switch position?<br>
+    (d) Is the programme &lsquo;blocked&rsquo;?<br>
+    (e) What could happen to allow the programme to continue?<br>
+    (f) How many &lsquo;conditions&rsquo; are there in this programme?<br>
+    (g) How many areas would there be if a Venn diagram could be drawn?<br>
+    (h) In Section 101 it was pointed out that the programmer had to think for the machine because if he made any mistake the machine would follow it blindly. Strictly according to this programme, how would this man be dressed when he arrived at work?<br>
+    (i) You may object that &lsquo;Go to the bathroom&rsquo; includes getting dressed, but the computer programmer cannot get away with an omission of this kind. How could this be rectified in the programme?<br>
+    (j) If you consider there is too big a gap between &lsquo;Got car keys?&rsquo; and &lsquo;Go to work&rsquo;, what do you think ought to be inserted? Try to programme it. This is the reason for the arrow labelled &lsquo;Sub-routine&rsquo; which we will discuss later on.<br>
+    (k) Did you notice that if the answer to &lsquo;Got car keys?&rsquo; was &lsquo;No&rsquo;, the man would have to walk to the garage door twice if the programme were followed strictly as it is written? Suggest a simple way of correcting this.<br>
+    (l) You probably decided to insert &lsquo;Start the car&rsquo; between &lsquo;Got car keys?&rsquo; and &lsquo;Go to work&rsquo;. If you did, it was a good choice. The car is used for so many purposes that it would form part of all these programmes, and this makes it very suitable for planning in advance. In computer programming, the same kind of calculation is often required, such as, for example, &lsquo;Find the square root of.&rsquo; These are ready programmed as sub-routines to save the programmer having to write out the detail every time.</p>
+    <p>If you found the sub-routine difficult to write, try again after you have been through this next example. It is called &lsquo;Studying a Mathematics Text Book&rsquo;, and provision has been made for all kinds of alternatives, such as being unable to read a foreign language; or the student being unable to read; or needing spectacles; or being unable to answer some of the questions; and so on. Go through it carefully.<span class="pageref" id="p117">page 117</span> When you have fully understood it, try again to write out a &lsquo;perfect programme&rsquo; for the sub-routine on &lsquo;Starting the car&rsquo;. Real programmes are written in numerical code called &lsquo;machine language&rsquo;. Different computers are designed to operate in different codes. Most of these are based on the Binary notation which we are going to discuss more thoroughly in the next chapter.</p>
+    <figure class="scan">
+      <img src="figures/fig-79.png" alt="A flow-chart titled 'Studying a Mathematics Textbook' with action boxes (Open book, Read it, Read next paragraph, Write answer) and decision diamonds (Can you read it?, Are you wearing glasses?, Do you understand it?, Is book foreign?, Is there another paragraph?, Have you read it 3 times?), including sub-routine paths to 'Learn to read', 'Obtain primer', 'Consult teacher'.">
+      <figcaption>Fig. 79 &mdash; Programme: Studying a Mathematics Textbook</figcaption>
+    </figure>
+    <p><span class="pageref" id="p118">page 118</span> (m) <span style="font-variant:small-caps;">Sub-routine&mdash;&lsquo;Starting a car.&rsquo;</span> In case you are still having difficulty with the writing of this programme here are a few suggestions to help you.</p>
+    <ol>
+      <li>The right key must be selected.</li>
+      <li>The ignition switch has to be turned on.</li>
+      <li>The hand-brake should be on.</li>
+      <li>The gear lever should be disengaged.</li>
+      <li>The engine should be allowed to &lsquo;warm up&rsquo; before the car is driven.</li>
+      <li>If the engine will not start, it could be due to: (a) A fault in the fuel circuit. (b) A fault in the electrical circuit.</li>
+      <li>It is often necessary to pull out the &lsquo;choke&rsquo; when starting the engine from cold.</li>
+      <li>Among other hazards are: (a) No fuel in the tank. (b) Dirt in the carburettor. (c) Plugs or distributor need cleaning. (d) Battery needs charging.</li>
+      <li>Even if the engine starts it may stop and have to be re-started.</li>
+      <li>There may be a flat tyre.</li>
+      <li>If the car won&rsquo;t start you may have to: (a) Seek help from a neighbour. (b) Ring up the local garage. (c) Go by &rsquo;bus or train. (d) Get a lift in a friend&rsquo;s car. (e) Walk to work. (f) &rsquo;Phone and explain that you will be late.</li>
+      <li>You must remember to close the garage door.</li>
+    </ol>
+
+    <h3 style="margin-top:2rem;">Dealing with Large Numbers</h3>
+    <p>Turn back to R.98 on page 104. I expect you answered those questions by seeing their connection with the huge number quoted in Section 98 on page 95. The number was 18,446,744,073,709,551,616 and I want to show you one way of handling numbers like this.</p>
+
+    <p><span class="pageref" id="p119">page 119</span> <strong>[1] The Wheat on the Chessboard.</strong> When this story is first heard the statement that there isn&rsquo;t enough wheat in the world to satisfy the conditions is often disbelieved. I expect you were surprised, so let&rsquo;s check it. First, we make out a Table.</p>
+    <table class="book">
+      <caption>Table 20</caption>
+      <thead><tr><th>Square</th><th>Grains</th><th>2&#8319;</th></tr></thead>
+      <tbody>
+        <tr><td>1st</td><td>1</td><td>2&#8304;</td></tr>
+        <tr><td>2nd</td><td>2</td><td>2&sup1;</td></tr>
+        <tr><td>3rd</td><td>4</td><td>2&sup2;</td></tr>
+        <tr><td>4th</td><td>8</td><td>2&sup3;</td></tr>
+        <tr><td>5th</td><td>16</td><td>2&#8308;</td></tr>
+        <tr><td>nth</td><td>&nbsp;</td><td>2&#8317;&#8319;&#8315;&sup1;&#8318;</td></tr>
+      </tbody>
+    </table>
+    <p>You will notice that the number of grains is always the power of two which is one less than the square order. Thus, on the 64th square there would have to be 2&#8310;&sup3; grains. To find the answer to Section 98 (a) [1] you would have to continue this table until you arrived at the 64th line, doubling the number each time. The answer is 9,223,372,036,854,775,808 grains on square 64. Additionally, there would be all the grains on squares 1 to 63.</p>
+    <table class="book">
+      <caption>Table 21</caption>
+      <thead><tr><th>Square</th><th>Grains</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td>1</td></tr>
+        <tr><td>2</td><td>2</td><td>3</td></tr>
+        <tr><td>3</td><td>4</td><td>7</td></tr>
+        <tr><td>4</td><td>8</td><td>15</td></tr>
+        <tr><td>5</td><td>16</td><td>31</td></tr>
+      </tbody>
+    </table>
+    <p>You will notice that the total is always one less than the number on the <span style="font-variant:small-caps;">next</span> square. Thus, the total of all the grains on the chessboard will be one less than twice as many as are on square 64. In fact, it then is: 18,446,744,073,709,551,615 grains. This number, using 3 significant figures is approximately 18,400,000,000,000,000,000 grains.</p>
+
+    <p><span class="pageref" id="p120">page 120</span> The number 18,400,000,000,000,000,000 is too big for me to comprehend on its own. Let us try to see its significance in other terms. Even if the grains were small, ten side by side would measure 1 inch.</p>
+    <table class="book">
+      <tbody>
+        <tr><td>All of them would stretch for</td><td>1,840,000,000,000,000,000 inches.</td></tr>
+        <tr><td>Dividing by 12 gives this equal to</td><td>153,000,000,000,000,000 feet.</td></tr>
+        <tr><td>Dividing by 3 gives this equal to</td><td>51,000,000,000,000,000 yards.</td></tr>
+        <tr><td>This is approximately equal to</td><td>30,000,000,000,000 miles.</td></tr>
+      </tbody>
+    </table>
+    <p>The distance between Earth and Sun is 93,000,000 miles. Even if the distance between them were 100,000,000 miles, there would be enough grains to form a close-packed band stretching from Earth to Sun approximately half a mile wide.</p>
+    <p>This calculation hasn&rsquo;t helped me very much because the model I have created is as unreal as the number was. We think of quantities of grain in sacks or by weight. Let us calculate the weight of the grains. A grain is the smallest unit in our Table of Weights. From a table we will see that 7,000 grains are equivalent to 1 pound avoirdupois. Notice that our number is 18 followed by 18 zeros, i.e. 18 &times; 10&sup1;&#8312;. Every time we divide by 10, the index will be reduced by one.</p>
+    <table class="book">
+      <tbody>
+        <tr><td>No. of grains, to two significant figures</td><td>= 18 &times; 10&sup1;&#8312;</td></tr>
+        <tr><td>Dividing by 7,000</td><td>= 2&frac12; &times; 10&sup1;&#8309; pounds.</td></tr>
+        <tr><td>Dividing by 2,240 [i.e. 2&frac14; &times; 10&sup3;]</td><td>= 1 &times; 10&sup1;&sup2; tons.</td></tr>
+      </tbody>
+    </table>
+    <p>Weight of wheat is approximately 1,000,000,000,000 tons. World production of wheat (1960), was 250,000,000 tons.</p>
+    <p style="font-size:0.85rem;color:var(--muted);">Note: The calculation in American units would be even easier: Dividing by 2,000 [i.e. 2 &times; 10&sup3; short tons] = 1&middot;25 &times; 10&sup1;&#8309; short tons. Weight of wheat is approximately 1,250,000,000,000 short tons. World production of wheat (1960) was 280,000,000 short tons. See tables on page xv.</p>
+
+    <p><span class="pageref" id="p121">page 121</span> <strong>[2] Shoeing the Rich Man&rsquo;s Horse.</strong> I went into some detail regarding the last question in order to show you how various calculations may be shortened provided we maintain <span style="font-variant:small-caps;">sufficient accuracy for our purpose</span>. We were not concerned with the <span style="font-variant:small-caps;">exact</span> quantity of wheat, but only with comparing it to world production.</p>
+    <p>The standard method of shoeing horses is to use six nails in each fore-hoof, and eight nails in each hind-hoof. Thus, 28 nails are used altogether and in my illustration I showed 7 nail holes. To find out how much the shoeing cost if the first nail was one penny and every nail after was double the price of the one before, we start with finding 2&sup2;&#8312; &minus; 1. This equals 268,435,455.</p>
+    <table class="book">
+      <tbody>
+        <tr><td>Thus cost in pence</td><td>= 268,435,455 pence</td></tr>
+        <tr><td>Dividing by 12</td><td>= 22,369,621 shillings + 3d.</td></tr>
+        <tr><td>Dividing by 20</td><td>= &pound;1,118,481 1s. and 3d.</td></tr>
+      </tbody>
+    </table>
+    <p>The amount is so surprisingly large that we would have been content to know it was over &pound;1,000,000. We would have come to this conclusion by using the previous method.</p>
+    <table class="book">
+      <tbody>
+        <tr><td>Cost in pence</td><td>= 268 &times; 10&#8310;</td></tr>
+        <tr><td>Cost in pounds</td><td>= 1 &times; 10&#8310; [Approx. division by 240]</td></tr>
+        <tr><td>Conclusion:</td><td>it would cost over &pound;1,000,000.</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem;color:var(--muted);">Note: as American readers may use a decimal currency such as U.S.A. (see page xv) the calculation would be very simple. If the first nail cost 1 cent, then: Total cost = 268,435,455 cents = 2,684,354&middot;55 dollars.</p>
+    <p>Here is an easy problem for you. You had two parents; four grand-parents; eight great-grand-parents, and so on. Counting a generation every thirty years, how many ancestors have you since the year A.D. 1? Surprising isn&rsquo;t it. All men may not be brothers but they are certainly closely related.</p>
+
+    <p><span class="pageref" id="p122">page 122</span> <strong>[3] The Pyramid of Discs.</strong> Figure 80 represents a pile of four coins graded in size and value. It has to be rebuilt in a different place under these conditions: (1) the coins must be moved singly; (2) a larger value must never be put on a smaller; (3) there must never be more than three piles.</p>
+    <figure class="scan">
+      <img src="figures/fig-80.png" alt="A pile of four coins graded in size, labelled U.S.A. (dime, quarter, half-dollar, dollar) and Britain (sixpence, shilling, florin, half-crown).">
+      <figcaption>Fig. 80</figcaption>
+    </figure>
+    <p>Problem: What is the minimum number of moves necessary? Answer: Fifteen. (Try it yourself before following Table 22.)</p>
+    <figure class="scan">
+      <img src="figures/table-22.png" alt="Table 22: a fifteen-step grid showing the disc positions after each of the fifteen moves needed to rebuild the pyramid of four discs.">
+      <figcaption>Table 22 &mdash; the fifteen moves</figcaption>
+    </figure>
+
+    <p><span class="pageref" id="p123">page 123</span> I recently bought a puzzle based on this problem. It was called &lsquo;DISC-IT&rsquo;. It was made of plastic and there were ten discs coloured alternately black and white. They were threaded on an upright rod as shown below. The problem was to rebuild</p>
+    <figure class="scan">
+      <img src="figures/fig-81.png" alt="A puzzle of ten discs of decreasing size threaded on an upright rod, with two empty side rods.">
+      <figcaption>Fig. 81</figcaption>
+    </figure>
+    <p>them on either of the side rods, moving only one disc at a time and never putting a larger on a smaller. This is exactly the same problem, but with more discs. We are more concerned with the Mathematics of it, and the question I ask is: What is the minimum number of moves necessary? Imagine first there was only one disc, then two, then three, then five [we know the answer to 4 discs]. When you have experimented, tabulate your results and formulate an hypothesis and then test it. Finally, answer my question. Copy and complete this table.</p>
+    <table class="book">
+      <caption>Table 23</caption>
+      <thead><tr><th>Discs</th><th>Moves</th><th>Formula</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td></td></tr>
+        <tr><td>2</td><td></td><td></td></tr>
+        <tr><td>3</td><td></td><td></td></tr>
+        <tr><td>4</td><td>15</td><td></td></tr>
+        <tr><td>5</td><td></td><td></td></tr>
+        <tr><td>6</td><td></td><td></td></tr>
+        <tr><td>7</td><td></td><td></td></tr>
+        <tr><td>10</td><td></td><td></td></tr>
+        <tr><td>n</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <p>Estimating 1 move per second, what is the least time it would take to solve the &lsquo;Disc-it&rsquo; puzzle?</p>
+
+    <p><span class="pageref" id="p124">page 124</span> <strong>[4] The Tower of Brahma.</strong> This is a very ancient puzzle and I quote an interesting legend about it from <em>Mathematical Recreations and Essays</em> by W. W. Rouse Ball.</p>
+    <blockquote>&lsquo;In the great temple at Benares beneath the dome which marks the centre of the world, rests a brass plate in which are fixed three diamond needles, each a cubit high and as thick as the body of a bee. On one of these needles, at the creation, God placed sixty-four discs of pure gold, the largest disc resting on the brass plate and the others getting smaller and smaller up to the top one. This is the Tower of Brahma. Day and night unceasingly, the priests transfer the discs from one diamond needle to another, according to the fixed and immutable laws of Brahma, which require that the priest on duty must not move more than one disc at a time, and that he must place this disc on a needle so that there is no smaller disc below it. When the sixty-four discs shall have thus been transferred from the needle on which, at the creation, God placed them, to one of the other needles, tower, temple, and Brahmans alike will crumble into dust, and with a thunder-clap the world will vanish.&rsquo;</blockquote>
+    <p><span class="para-num">R.102.(n)</span> Question [1]. How many moves are necessary to rebuild the Tower of Brahma?<br>
+    Question [2]. How long will it take reckoning one move per second?</p>
+    <p style="font-variant:small-caps; font-size:0.85rem;">Do not read on until you have attempted the two questions.</p>
+
+    <p><span class="pageref" id="p125">page 125</span> Your completed Table from page 123 should look like this:</p>
+    <table class="book">
+      <caption>Table 24</caption>
+      <thead><tr><th>Discs</th><th>Moves</th><th>Formula</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td class="expr">2&sup1; &minus; 1</td></tr>
+        <tr><td>2</td><td>3</td><td class="expr">2&sup2; &minus; 1</td></tr>
+        <tr><td>3</td><td>7</td><td class="expr">2&sup3; &minus; 1</td></tr>
+        <tr><td>4</td><td>15</td><td class="expr">2&#8308; &minus; 1</td></tr>
+        <tr><td>5</td><td>31</td><td class="expr">2&#8309; &minus; 1</td></tr>
+        <tr><td>6</td><td>63</td><td class="expr">2&#8310; &minus; 1</td></tr>
+        <tr><td>7</td><td>127</td><td class="expr">2&#8311; &minus; 1</td></tr>
+        <tr><td>10</td><td>1,023</td><td class="expr">2&sup1;&#8304; &minus; 1</td></tr>
+        <tr><td>n</td><td></td><td class="expr">2&#8319; &minus; 1</td></tr>
+      </tbody>
+    </table>
+    <p>To solve the &lsquo;Disc-it&rsquo; puzzle requires 1,023 moves, and will take 17 minutes 3 seconds. The number of moves to rebuild the Tower of Brahma is 2&#8310;&#8308; &minus; 1. We have already met this number, which we approximate as 18 &times; 10&sup1;&#8312;. I hope you used it in this form to obtain a rough estimate of how long it will take the priests to complete their task.</p>
+    <table class="book">
+      <tbody>
+        <tr><td>At one move per second</td><td>= 18 &times; 10&sup1;&#8312; seconds</td></tr>
+        <tr><td>Dividing by 3,600 [i.e. 36 &times; 10&sup2;]</td><td>= 0&middot;5 &times; 10&sup1;&#8310; hours</td></tr>
+        <tr><td>Dividing by 25 [i.e. 0&middot;25 &times; 10&sup2;]</td><td>= 2 &times; 10&sup1;&#8308; (days)</td></tr>
+        <tr><td>Dividing by 400 [i.e. 4 &times; 10&sup2;]</td><td>= 0&middot;5 &times; 10&sup1;&sup2; (years)</td></tr>
+      </tbody>
+    </table>
+    <p>So that although we allowed the priests an extra hour in every day, and an extra thirty-five days in every year, it would still take them 500,000,000,000 years.</p>
+  </div>
+</main>
+
+<nav class="nav botnav">
+  <a href="chapter-07.html">&larr; 7. Becoming more familiar</a>
+  <span class="nav-mid"><a href="index.html">Contents</a></span>
+  <a href="chapter-09.html">9. Number bases &rarr;</a>
+</nav>
+
+</body>
+</html>

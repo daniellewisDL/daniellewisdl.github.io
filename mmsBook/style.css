@@ -1,0 +1,215 @@
+/* Mathematics Makes Sense — digitised edition
+   Reading-focused stylesheet for the static chapter pages. */
+
+:root {
+  --paper: #f6f1e7;
+  --ink: #1f1b16;
+  --muted: #6b6457;
+  --rule: #d8cdb8;
+  --accent: #7a5c2e;
+  --link: #5a4a8a;
+  --max-width: 44rem;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Top / bottom navigation bars ---- */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+.nav a {
+  color: var(--link);
+  text-decoration: none;
+  padding: 0.3rem 0.1rem;
+}
+.nav a:hover { text-decoration: underline; }
+.nav .nav-mid { color: var(--muted); text-align: center; flex: 1; }
+.nav .disabled { color: var(--rule); pointer-events: none; }
+.topnav { border-bottom: 1px solid var(--rule); }
+.botnav { border-top: 1px solid var(--rule); margin-top: 2.5rem; }
+
+/* ---- Main reading column ---- */
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 1rem;
+}
+
+.eyebrow {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin: 0 0 0.4rem;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+h2 {
+  font-size: 1.35rem;
+  margin: 2.2rem 0 0.8rem;
+  font-weight: 600;
+}
+h3 {
+  font-size: 1.1rem;
+  margin: 1.6rem 0 0.6rem;
+  font-weight: 600;
+}
+
+p { margin: 0 0 1rem; }
+
+/* Numbered teaching paragraphs in the original are set with an italic number. */
+.para-num { font-style: italic; font-weight: 600; }
+
+/* Lettered / numbered question lists */
+ol, ul { margin: 0 0 1rem; padding-left: 1.6rem; }
+li { margin: 0.25rem 0; }
+
+/* Bracketed word-choice lists, e.g. [Love] [Honour] [Justice] */
+.choices { font-weight: 600; }
+.choices span { white-space: nowrap; margin-right: 0.4rem; }
+
+/* Original page-number markers in the margin/flow */
+.pageref {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.68rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0 0.35rem;
+  margin: 1.5rem 0 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+/* Review boxes */
+.review {
+  border: 1px solid var(--rule);
+  background: rgba(122, 92, 46, 0.05);
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  margin: 2rem 0;
+}
+.review h3 { margin-top: 0.4rem; }
+
+/* Tables reproduced from the book */
+table.book {
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+}
+table.book caption {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+table.book th, table.book td {
+  border: 1px solid var(--rule);
+  padding: 0.35rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* Figures cropped from the original scans */
+figure.scan {
+  margin: 1.4rem auto;
+  text-align: center;
+}
+figure.scan img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #fff;
+  mix-blend-mode: multiply;
+}
+figure.scan figcaption {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+/* Blockquotes / set-off examples */
+blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--rule);
+  color: var(--muted);
+}
+
+/* Math / logic expressions inline */
+.expr { font-style: italic; }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+
+/* ---- Contents (index) page ---- */
+.cover {
+  text-align: center;
+  padding: 2rem 1.25rem 1rem;
+}
+.cover .eyebrow { text-align: center; }
+.cover h1 { font-size: 2.6rem; margin-bottom: 0.3rem; }
+.cover .author { color: var(--muted); font-style: italic; margin-bottom: 0.5rem; }
+.cover .sub { color: var(--muted); font-size: 0.9rem; }
+
+.toc { list-style: none; padding: 0; margin: 1.5rem 0; }
+.toc li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.toc .ch-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  min-width: 2.2rem;
+  font-weight: 600;
+}
+.toc .ch-title { flex: 1; }
+.toc .ch-title a { color: var(--ink); text-decoration: none; }
+.toc .ch-title a:hover { color: var(--link); text-decoration: underline; }
+.toc .ch-desc { display: block; font-size: 0.82rem; color: var(--muted); font-style: italic; margin-top: 0.15rem; }
+.toc .ch-page { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+
+footer.colophon {
+  max-width: var(--max-width);
+  margin: 1rem auto 3rem;
+  padding: 0 1.25rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  html { font-size: 17px; }
+  .nav { flex-wrap: wrap; }
+}
