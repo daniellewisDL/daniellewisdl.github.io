@@ -2,6 +2,7 @@
 let dashboardData = null;
 let lettersLight = null;
 let lettersEnriched = null;
+let lettersMentions = null;
 
 // Filtering & Search state
 let recipientDominantTheme = {};
@@ -150,17 +151,31 @@ async function loadLettersLight() {
         
         // Render barcode timeline
         renderCorrespondentsTimeline();
-        
+
         // Initialize travel player
         initTravelPlayer();
-        
+
         statusEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color: var(--gold-accent);"></i> Search Engine Ready';
-        
+
+        // Load the small mentioned-locations sidecar (used by modal + stats)
+        loadLettersMentions();
+
         // Async load the full content in the background for detailed reader
         loadLettersEnriched();
     } catch (err) {
         console.error("Error loading lightweight index:", err);
         statusEl.textContent = "Search engine initialization failed.";
+    }
+}
+
+async function loadLettersMentions() {
+    try {
+        const response = await fetch("letters_mentions.json");
+        lettersMentions = await response.json();
+        // Refresh the mentioned-locations stat now that data is available
+        if (lettersLight) updateSearchResults();
+    } catch (err) {
+        console.error("Error loading mentions sidecar:", err);
     }
 }
 
@@ -181,6 +196,10 @@ async function loadLettersEnriched() {
 
 // --- DASHBOARD FUNCTIONS ---
 function populateStats(stats) {
+    const sub = document.getElementById("app-subtitle");
+    if (sub && stats.start_year && stats.end_year) {
+        sub.textContent = `An Interactive Journey through ${stats.total_letters.toLocaleString()} Letters (${stats.start_year}–${stats.end_year})`;
+    }
     document.getElementById("stat-total-letters").textContent = stats.total_letters.toLocaleString();
     document.getElementById("stat-total-words").textContent = stats.total_words.toLocaleString();
     document.getElementById("stat-avg-words").textContent = stats.avg_word_count + " words";
@@ -1078,22 +1097,26 @@ function openLetterModal(id) {
 
 function renderFullLetter(letter, id) {
     document.getElementById("modal-letter-id").textContent = `Letter #${id + 1}`;
-    
+
+    // Derived analytics live in the lightweight index + mentions sidecar (id-aligned by array index)
+    const lite = (lettersLight && lettersLight[id]) ? lettersLight[id] : {};
+    const mentioned = (lettersMentions && lettersMentions[id]) ? lettersMentions[id] : [];
+
     // Themes tags
     const themesTags = document.getElementById("modal-themes-tags");
-    themesTags.innerHTML = letter.themes.map(t => `<span class="tag-badge">${t}</span>`).join(" ");
-    
+    themesTags.innerHTML = (lite.t || []).map(t => `<span class="tag-badge">${t}</span>`).join(" ");
+
     // Address & Date
     const letterhead = document.getElementById("modal-letterhead");
     let letterheadText = "";
     if (letter.location_sent_from) {
         letterheadText += `${letter.location_sent_from}\n`;
-    } else if (letter.address_date) {
+    } else if (letter.address_panel) {
         // Extract address portion
-        const firstLine = letter.address_date.split('\n')[0];
+        const firstLine = letter.address_panel.split('\n')[0];
         if (firstLine.length < 50) letterheadText += `${firstLine}\n`;
     }
-    letterheadText += `<span style="font-weight: 600;">${letter.date_inferred}</span>`;
+    letterheadText += `<span style="font-weight: 600;">${lite.d || letter.date_on_page || ""}</span>`;
     letterhead.innerHTML = letterheadText;
     
     // Salutation
@@ -1102,9 +1125,9 @@ function renderFullLetter(letter, id) {
     // Body paragraphs
     const bodyContainer = document.getElementById("modal-body");
     bodyContainer.innerHTML = "";
-    if (letter.body) {
+    if (letter.text) {
         // Split by newlines (handles single and double newlines)
-        const rawLines = letter.body.split(/\n+/);
+        const rawLines = letter.text.split(/\n+/);
         const paragraphs = [];
         let currentParagraph = "";
         
@@ -1166,7 +1189,7 @@ function renderFullLetter(letter, id) {
     }
     
     // Sign off & Signature
-    document.getElementById("modal-signoff").innerHTML = letter.sign_off || "";
+    document.getElementById("modal-signoff").innerHTML = letter.valediction || "";
     document.getElementById("modal-signature").innerHTML = letter.signature || "Charles Dickens";
     
     // Postscript
@@ -1179,16 +1202,16 @@ function renderFullLetter(letter, id) {
     }
     
     // Editorial Notes
-    document.getElementById("modal-metadata").innerHTML = letter.metadata || "No editor footnotes recorded.";
-    document.getElementById("modal-date-precision").textContent = letter.date_precision.replace("_", " ");
-    document.getElementById("modal-word-count").textContent = `${letter.word_count} words`;
-    
+    document.getElementById("modal-metadata").innerHTML = letter.source_note || "No editor footnotes recorded.";
+    document.getElementById("modal-date-precision").textContent = (lite.p || "unknown").replace(/_/g, " ");
+    document.getElementById("modal-word-count").textContent = `${lite.w || 0} words`;
+
     // Locations mentioned row
     const mentionedRow = document.getElementById("modal-mentioned-row");
     const locationsList = document.getElementById("modal-mentioned-locations");
-    if (letter.locations_mentioned && letter.locations_mentioned.length > 0) {
+    if (mentioned && mentioned.length > 0) {
         mentionedRow.style.display = "block";
-        locationsList.textContent = letter.locations_mentioned.join(", ");
+        locationsList.textContent = mentioned.join(", ");
     } else {
         mentionedRow.style.display = "none";
     }
@@ -1432,12 +1455,10 @@ function updateFilteredStats(filtered) {
     document.getElementById("stat-precision").textContent = precisionRatio + "%";
     document.getElementById("stat-geocoded").textContent = geocodedRatio + "%";
     
-    if (lettersEnriched) {
+    if (lettersMentions) {
         filtered.forEach(f => {
-            const le = lettersEnriched[f.id];
-            if (le && le.locations_mentioned) {
-                le.locations_mentioned.forEach(m => mentLocs.add(m));
-            }
+            const m = lettersMentions[f.id];
+            if (m) m.forEach(x => mentLocs.add(x));
         });
         document.getElementById("stat-ment-locs").textContent = mentLocs.size.toLocaleString();
     } else {

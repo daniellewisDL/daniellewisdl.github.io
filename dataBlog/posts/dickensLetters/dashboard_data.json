@@ -1,1557 +1,4713 @@
 {
-  "stats": {
-    "total_letters": 14017,
-    "total_words": 1949958,
-    "avg_word_count": 139.1,
-    "start_year": 1820,
-    "end_year": 1870
+ "stats": {
+  "total_letters": 14163,
+  "total_words": 2122394,
+  "avg_word_count": 149.9,
+  "start_year": 1820,
+  "end_year": 1870
+ },
+ "timeline": [
+  {
+   "year": 1820,
+   "count": 1,
+   "themes": {
+    "Literature/Writing": 0,
+    "Family/Personal": 0,
+    "Theatre/Readings": 0,
+    "Business/Finance": 0,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 0
+   }
   },
-  "timeline": [
-    {
-      "year": 1820,
-      "count": 1,
-      "themes": {
-        "Business/Finance": 0,
-        "Family/Personal": 0,
-        "Theatre/Readings": 0,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 0,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1825,
-      "count": 1,
-      "themes": {
-        "Business/Finance": 1,
-        "Family/Personal": 0,
-        "Theatre/Readings": 0,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 0,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1831,
-      "count": 1,
-      "themes": {
-        "Business/Finance": 0,
-        "Family/Personal": 0,
-        "Theatre/Readings": 0,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 0,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1832,
-      "count": 16,
-      "themes": {
-        "Business/Finance": 0,
-        "Family/Personal": 4,
-        "Theatre/Readings": 2,
-        "Social Reform/Philanthropy": 2,
-        "Literature/Writing": 4,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1833,
-      "count": 28,
-      "themes": {
-        "Business/Finance": 1,
-        "Family/Personal": 8,
-        "Theatre/Readings": 4,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 14,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1834,
-      "count": 23,
-      "themes": {
-        "Business/Finance": 6,
-        "Family/Personal": 13,
-        "Theatre/Readings": 0,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 3,
-        "Travel/Places": 1
-      }
-    },
-    {
-      "year": 1835,
-      "count": 84,
-      "themes": {
-        "Business/Finance": 5,
-        "Family/Personal": 33,
-        "Theatre/Readings": 3,
-        "Social Reform/Philanthropy": 0,
-        "Literature/Writing": 41,
-        "Travel/Places": 0
-      }
-    },
-    {
-      "year": 1836,
-      "count": 174,
-      "themes": {
-        "Business/Finance": 12,
-        "Family/Personal": 35,
-        "Theatre/Readings": 19,
-        "Social Reform/Philanthropy": 1,
-        "Literature/Writing": 85,
-        "Travel/Places": 1
-      }
-    },
-    {
-      "year": 1837,
-      "count": 256,
-      "themes": {
-        "Business/Finance": 26,
-        "Family/Personal": 47,
-        "Theatre/Readings": 10,
-        "Social Reform/Philanthropy": 5,
-        "Literature/Writing": 106,
-        "Travel/Places": 2
-      }
-    },
-    {
-      "year": 1838,
-      "count": 266,
-      "themes": {
-        "Business/Finance": 17,
-        "Family/Personal": 46,
-        "Theatre/Readings": 18,
-        "Social Reform/Philanthropy": 6,
-        "Literature/Writing": 124,
-        "Travel/Places": 6
-      }
-    },
-    {
-      "year": 1839,
-      "count": 230,
-      "themes": {
-        "Business/Finance": 18,
-        "Family/Personal": 62,
-        "Theatre/Readings": 25,
-        "Social Reform/Philanthropy": 7,
-        "Literature/Writing": 88,
-        "Travel/Places": 6
-      }
-    },
-    {
-      "year": 1840,
-      "count": 283,
-      "themes": {
-        "Business/Finance": 15,
-        "Family/Personal": 57,
-        "Theatre/Readings": 13,
-        "Social Reform/Philanthropy": 6,
-        "Literature/Writing": 108,
-        "Travel/Places": 2
-      }
-    },
-    {
-      "year": 1841,
-      "count": 436,
-      "themes": {
-        "Business/Finance": 22,
-        "Family/Personal": 118,
-        "Theatre/Readings": 25,
-        "Social Reform/Philanthropy": 9,
-        "Literature/Writing": 153,
-        "Travel/Places": 19
-      }
-    },
-    {
-      "year": 1842,
-      "count": 446,
-      "themes": {
-        "Business/Finance": 42,
-        "Family/Personal": 144,
-        "Theatre/Readings": 35,
-        "Social Reform/Philanthropy": 33,
-        "Literature/Writing": 169,
-        "Travel/Places": 62
-      }
-    },
-    {
-      "year": 1843,
-      "count": 332,
-      "themes": {
-        "Business/Finance": 29,
-        "Family/Personal": 92,
-        "Theatre/Readings": 20,
-        "Social Reform/Philanthropy": 24,
-        "Literature/Writing": 91,
-        "Travel/Places": 20
-      }
-    },
-    {
-      "year": 1844,
-      "count": 318,
-      "themes": {
-        "Business/Finance": 35,
-        "Family/Personal": 96,
-        "Theatre/Readings": 20,
-        "Social Reform/Philanthropy": 23,
-        "Literature/Writing": 126,
-        "Travel/Places": 43
-      }
-    },
-    {
-      "year": 1845,
-      "count": 330,
-      "themes": {
-        "Business/Finance": 25,
-        "Family/Personal": 86,
-        "Theatre/Readings": 68,
-        "Social Reform/Philanthropy": 14,
-        "Literature/Writing": 118,
-        "Travel/Places": 36
-      }
-    },
-    {
-      "year": 1846,
-      "count": 311,
-      "themes": {
-        "Business/Finance": 31,
-        "Family/Personal": 91,
-        "Theatre/Readings": 20,
-        "Social Reform/Philanthropy": 27,
-        "Literature/Writing": 144,
-        "Travel/Places": 63
-      }
-    },
-    {
-      "year": 1847,
-      "count": 369,
-      "themes": {
-        "Business/Finance": 28,
-        "Family/Personal": 96,
-        "Theatre/Readings": 52,
-        "Social Reform/Philanthropy": 17,
-        "Literature/Writing": 108,
-        "Travel/Places": 30
-      }
-    },
-    {
-      "year": 1848,
-      "count": 489,
-      "themes": {
-        "Business/Finance": 55,
-        "Family/Personal": 147,
-        "Theatre/Readings": 78,
-        "Social Reform/Philanthropy": 18,
-        "Literature/Writing": 128,
-        "Travel/Places": 18
-      }
-    },
-    {
-      "year": 1849,
-      "count": 418,
-      "themes": {
-        "Business/Finance": 26,
-        "Family/Personal": 113,
-        "Theatre/Readings": 21,
-        "Social Reform/Philanthropy": 24,
-        "Literature/Writing": 111,
-        "Travel/Places": 20
-      }
-    },
-    {
-      "year": 1850,
-      "count": 526,
-      "themes": {
-        "Business/Finance": 27,
-        "Family/Personal": 118,
-        "Theatre/Readings": 40,
-        "Social Reform/Philanthropy": 21,
-        "Literature/Writing": 201,
-        "Travel/Places": 30
-      }
-    },
-    {
-      "year": 1851,
-      "count": 590,
-      "themes": {
-        "Business/Finance": 47,
-        "Family/Personal": 151,
-        "Theatre/Readings": 91,
-        "Social Reform/Philanthropy": 16,
-        "Literature/Writing": 184,
-        "Travel/Places": 25
-      }
-    },
-    {
-      "year": 1852,
-      "count": 509,
-      "themes": {
-        "Business/Finance": 37,
-        "Family/Personal": 132,
-        "Theatre/Readings": 40,
-        "Social Reform/Philanthropy": 29,
-        "Literature/Writing": 180,
-        "Travel/Places": 24
-      }
-    },
-    {
-      "year": 1853,
-      "count": 346,
-      "themes": {
-        "Business/Finance": 41,
-        "Family/Personal": 120,
-        "Theatre/Readings": 28,
-        "Social Reform/Philanthropy": 24,
-        "Literature/Writing": 139,
-        "Travel/Places": 56
-      }
-    },
-    {
-      "year": 1854,
-      "count": 468,
-      "themes": {
-        "Business/Finance": 22,
-        "Family/Personal": 135,
-        "Theatre/Readings": 36,
-        "Social Reform/Philanthropy": 30,
-        "Literature/Writing": 148,
-        "Travel/Places": 34
-      }
-    },
-    {
-      "year": 1855,
-      "count": 486,
-      "themes": {
-        "Business/Finance": 41,
-        "Family/Personal": 131,
-        "Theatre/Readings": 53,
-        "Social Reform/Philanthropy": 25,
-        "Literature/Writing": 156,
-        "Travel/Places": 49
-      }
-    },
-    {
-      "year": 1856,
-      "count": 391,
-      "themes": {
-        "Business/Finance": 34,
-        "Family/Personal": 135,
-        "Theatre/Readings": 57,
-        "Social Reform/Philanthropy": 28,
-        "Literature/Writing": 151,
-        "Travel/Places": 47
-      }
-    },
-    {
-      "year": 1857,
-      "count": 506,
-      "themes": {
-        "Business/Finance": 40,
-        "Family/Personal": 112,
-        "Theatre/Readings": 57,
-        "Social Reform/Philanthropy": 29,
-        "Literature/Writing": 155,
-        "Travel/Places": 29
-      }
-    },
-    {
-      "year": 1858,
-      "count": 405,
-      "themes": {
-        "Business/Finance": 30,
-        "Family/Personal": 113,
-        "Theatre/Readings": 51,
-        "Social Reform/Philanthropy": 22,
-        "Literature/Writing": 125,
-        "Travel/Places": 35
-      }
-    },
-    {
-      "year": 1859,
-      "count": 355,
-      "themes": {
-        "Business/Finance": 39,
-        "Family/Personal": 81,
-        "Theatre/Readings": 15,
-        "Social Reform/Philanthropy": 9,
-        "Literature/Writing": 128,
-        "Travel/Places": 28
-      }
-    },
-    {
-      "year": 1860,
-      "count": 318,
-      "themes": {
-        "Business/Finance": 27,
-        "Family/Personal": 98,
-        "Theatre/Readings": 10,
-        "Social Reform/Philanthropy": 13,
-        "Literature/Writing": 93,
-        "Travel/Places": 27
-      }
-    },
-    {
-      "year": 1861,
-      "count": 349,
-      "themes": {
-        "Business/Finance": 40,
-        "Family/Personal": 92,
-        "Theatre/Readings": 33,
-        "Social Reform/Philanthropy": 19,
-        "Literature/Writing": 143,
-        "Travel/Places": 18
-      }
-    },
-    {
-      "year": 1862,
-      "count": 331,
-      "themes": {
-        "Business/Finance": 40,
-        "Family/Personal": 96,
-        "Theatre/Readings": 39,
-        "Social Reform/Philanthropy": 19,
-        "Literature/Writing": 110,
-        "Travel/Places": 34
-      }
-    },
-    {
-      "year": 1863,
-      "count": 282,
-      "themes": {
-        "Business/Finance": 22,
-        "Family/Personal": 79,
-        "Theatre/Readings": 20,
-        "Social Reform/Philanthropy": 13,
-        "Literature/Writing": 77,
-        "Travel/Places": 29
-      }
-    },
-    {
-      "year": 1864,
-      "count": 306,
-      "themes": {
-        "Business/Finance": 18,
-        "Family/Personal": 58,
-        "Theatre/Readings": 7,
-        "Social Reform/Philanthropy": 19,
-        "Literature/Writing": 93,
-        "Travel/Places": 9
-      }
-    },
-    {
-      "year": 1865,
-      "count": 297,
-      "themes": {
-        "Business/Finance": 14,
-        "Family/Personal": 47,
-        "Theatre/Readings": 13,
-        "Social Reform/Philanthropy": 9,
-        "Literature/Writing": 109,
-        "Travel/Places": 18
-      }
-    },
-    {
-      "year": 1866,
-      "count": 340,
-      "themes": {
-        "Business/Finance": 26,
-        "Family/Personal": 70,
-        "Theatre/Readings": 51,
-        "Social Reform/Philanthropy": 14,
-        "Literature/Writing": 111,
-        "Travel/Places": 24
-      }
-    },
-    {
-      "year": 1867,
-      "count": 480,
-      "themes": {
-        "Business/Finance": 34,
-        "Family/Personal": 120,
-        "Theatre/Readings": 59,
-        "Social Reform/Philanthropy": 14,
-        "Literature/Writing": 143,
-        "Travel/Places": 70
-      }
-    },
-    {
-      "year": 1868,
-      "count": 485,
-      "themes": {
-        "Business/Finance": 65,
-        "Family/Personal": 140,
-        "Theatre/Readings": 55,
-        "Social Reform/Philanthropy": 19,
-        "Literature/Writing": 138,
-        "Travel/Places": 69
-      }
-    },
-    {
-      "year": 1869,
-      "count": 442,
-      "themes": {
-        "Business/Finance": 35,
-        "Family/Personal": 107,
-        "Theatre/Readings": 38,
-        "Social Reform/Philanthropy": 11,
-        "Literature/Writing": 129,
-        "Travel/Places": 35
-      }
-    },
-    {
-      "year": 1870,
-      "count": 208,
-      "themes": {
-        "Business/Finance": 16,
-        "Family/Personal": 41,
-        "Theatre/Readings": 8,
-        "Social Reform/Philanthropy": 7,
-        "Literature/Writing": 57,
-        "Travel/Places": 11
-      }
-    }
-  ],
-  "themes": [
-    {
-      "theme": "Literature/Writing",
-      "count": 4678
-    },
-    {
-      "theme": "Family/Personal",
-      "count": 3592
-    },
-    {
-      "theme": "Theatre/Readings",
-      "count": 1280
-    },
-    {
-      "theme": "Business/Finance",
-      "count": 1117
-    },
-    {
-      "theme": "Travel/Places",
-      "count": 1061
-    },
-    {
-      "theme": "Social Reform/Philanthropy",
-      "count": 629
-    }
-  ],
-  "recipients": [
-    {
-      "recipient": "John Forster",
-      "count": 905
-    },
-    {
-      "recipient": "Miss Burdett Coutts",
-      "count": 560
-    },
-    {
-      "recipient": "W. H. Wills",
-      "count": 461
-    },
-    {
-      "recipient": "Unknown Recipient",
-      "count": 295
-    },
-    {
-      "recipient": "Miss Georgina Hogarth",
-      "count": 218
-    },
-    {
-      "recipient": "W. C. MacReady",
-      "count": 209
-    },
-    {
-      "recipient": "Unknown Correspondent",
-      "count": 206
-    },
-    {
-      "recipient": "Thomas Beard",
-      "count": 197
-    },
-    {
-      "recipient": "Thomas Mitton",
-      "count": 186
-    },
-    {
-      "recipient": "Mark Lemon",
-      "count": 168
-    },
-    {
-      "recipient": "Wilkie Collins",
-      "count": 155
-    },
-    {
-      "recipient": "Frank Stone",
-      "count": 154
-    },
-    {
-      "recipient": "Henry Austin",
-      "count": 148
-    },
-    {
-      "recipient": "Richard Bentley",
-      "count": 135
-    },
-    {
-      "recipient": "Frederic Ouvry",
-      "count": 131
-    },
-    {
-      "recipient": "Daniel MacLise",
-      "count": 121
-    },
-    {
-      "recipient": "Sir Edward Bulwer Lytton",
-      "count": 102
-    },
-    {
-      "recipient": "Charles Kent",
-      "count": 90
-    },
-    {
-      "recipient": "John Leech",
-      "count": 86
-    },
-    {
-      "recipient": "George Cruikshank",
-      "count": 84
-    },
-    {
-      "recipient": "Mrs Henry Austin",
-      "count": 79
-    },
-    {
-      "recipient": "Messrs Chapman & Hall",
-      "count": 78
-    },
-    {
-      "recipient": "Clarkson Stanfield",
-      "count": 72
-    },
-    {
-      "recipient": "Mrs Charles Dickens",
-      "count": 71
-    },
-    {
-      "recipient": "Messrs Bradbury & Evans",
-      "count": 71
-    },
-    {
-      "recipient": "Edward Chapman",
-      "count": 67
-    },
-    {
-      "recipient": "Frederick Dickens",
-      "count": 67
-    },
-    {
-      "recipient": "F. M. Evans",
-      "count": 67
-    },
-    {
-      "recipient": "The Hon. Mrs Richard Watson",
-      "count": 63
-    },
-    {
-      "recipient": "Frederic Chapman",
-      "count": 63
-    },
-    {
-      "recipient": "Miss Mary Dickens",
-      "count": 62
-    },
-    {
-      "recipient": "Miss Catherine Hogarth",
-      "count": 61
-    },
-    {
-      "recipient": "Peter Cunningham",
-      "count": 61
-    },
-    {
-      "recipient": "Benjamin Webster",
-      "count": 58
-    },
-    {
-      "recipient": "Mrs Gaskell",
-      "count": 55
-    },
-    {
-      "recipient": "Augustus Tracey",
-      "count": 51
-    },
-    {
-      "recipient": "T. J. Thompson",
-      "count": 49
-    },
-    {
-      "recipient": "Charles Knight",
-      "count": 48
-    },
-    {
-      "recipient": "John MacRone",
-      "count": 47
-    },
-    {
-      "recipient": "T. N. Talfourd",
-      "count": 47
-    },
-    {
-      "recipient": "Emile De La Rue",
-      "count": 47
-    },
-    {
-      "recipient": "George Dolby",
-      "count": 47
-    },
-    {
-      "recipient": "Edmund Yates",
-      "count": 46
-    },
-    {
-      "recipient": "Miss Mary Boyle",
-      "count": 41
-    },
-    {
-      "recipient": "Miss Fanny Kelly",
-      "count": 40
-    },
-    {
-      "recipient": "J. P. Harley",
-      "count": 39
-    },
-    {
-      "recipient": "Henry Morley",
-      "count": 39
-    },
-    {
-      "recipient": "J. T. Fields",
-      "count": 39
-    },
-    {
-      "recipient": "George Russell",
-      "count": 39
-    },
-    {
-      "recipient": "George Cattermole",
-      "count": 38
-    }
-  ],
-  "sent_locations": [
-    {
-      "name": "Chatham, Kent",
-      "latitude": 51.3789,
-      "longitude": 0.5278,
-      "count": 1
-    },
-    {
-      "name": "Doctors' Commons, London",
-      "latitude": 51.5126,
-      "longitude": -0.0994,
-      "count": 1
-    },
-    {
-      "name": "15 Fitzroy Street, London",
-      "latitude": 51.5225,
-      "longitude": -0.1404,
-      "count": 9
-    },
-    {
-      "name": "18 Bentinck Street, London",
-      "latitude": 51.5178,
-      "longitude": -0.1507,
-      "count": 23
-    },
-    {
-      "name": "Furnival's Inn, London",
-      "latitude": 51.5186,
-      "longitude": -0.1098,
-      "count": 207
-    },
-    {
-      "name": "London",
-      "latitude": 51.5074,
-      "longitude": -0.1278,
-      "count": 161
-    },
-    {
-      "name": "Mrs. Denman's. Petersham near Richmond",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 1
-    },
-    {
-      "name": "48 Doughty Street, London",
-      "latitude": 51.525,
-      "longitude": -0.1167,
-      "count": 401
-    },
-    {
-      "name": "42 Portman Place, Edgeware Road, Collins's Farm.†2 North End, Hampstead",
-      "latitude": 51.5562,
-      "longitude": -0.1781,
-      "count": 1
-    },
-    {
-      "name": "paper. Address: William Ainsworth Esqre, Kensall Lodge, Harrow Road, Collins's Farm. North End. Hampstead",
-      "latitude": 51.5562,
-      "longitude": -0.1781,
-      "count": 1
-    },
-    {
-      "name": "Hampstead",
-      "latitude": 51.5562,
-      "longitude": -0.1781,
-      "count": 1
-    },
-    {
-      "name": "Manchester",
-      "latitude": 53.4808,
-      "longitude": -2.2426,
-      "count": 32
-    },
-    {
-      "name": "Broadstairs, Kent",
-      "latitude": 51.3592,
-      "longitude": 1.4402,
-      "count": 529
-    },
-    {
-      "name": "Brighton, Sussex",
-      "latitude": 50.8225,
-      "longitude": -0.1372,
-      "count": 79
-    },
-    {
-      "name": "Athenaeum Club, London",
-      "latitude": 51.5071,
-      "longitude": -0.1311,
-      "count": 26
-    },
-    {
-      "name": "Richmond†1",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 1
-    },
-    {
-      "name": "Liverpool",
-      "latitude": 53.4084,
-      "longitude": -2.9916,
-      "count": 67
-    },
-    {
-      "name": "Piazza Coffee House, Covent Garden, London",
-      "latitude": 51.5074,
-      "longitude": -0.1278,
-      "count": 12
-    },
-    {
-      "name": "1 Devonshire Terrace, London",
-      "latitude": 51.5235,
-      "longitude": -0.1504,
-      "count": 2342
-    },
-    {
-      "name": "Elm Cottage Petersham, Near Richmond",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 1
-    },
-    {
-      "name": "Elm Cottage Petersham, near Richmond",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 1
-    },
-    {
-      "name": "New York, USA",
-      "latitude": 40.7128,
-      "longitude": -74.006,
-      "count": 72
-    },
-    {
-      "name": "35 Saint James's Square, Bath.†1",
-      "latitude": 51.3758,
-      "longitude": -2.3599,
-      "count": 1
-    },
-    {
-      "name": "Birmingham",
-      "latitude": 52.4862,
-      "longitude": -1.8904,
-      "count": 27
-    },
-    {
-      "name": "Paris, France",
-      "latitude": 48.8566,
-      "longitude": 2.3522,
-      "count": 117
-    },
-    {
-      "name": "Royal Hotel Edinburgh",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 3
-    },
-    {
-      "name": "Road, Sheffield",
-      "latitude": 53.3811,
-      "longitude": -1.4701,
-      "count": 1
-    },
-    {
-      "name": "when he sailed for America",
-      "latitude": 39.8283,
-      "longitude": -98.5795,
-      "count": 1
-    },
-    {
-      "name": "Tremont House, Boston, USA",
-      "latitude": 42.3601,
-      "longitude": -71.0589,
-      "count": 31
-    },
-    {
-      "name": "Boston, USA",
-      "latitude": 42.3601,
-      "longitude": -71.0589,
-      "count": 77
-    },
-    {
-      "name": "Regent's Park, London",
-      "latitude": 51.5313,
-      "longitude": -0.1569,
-      "count": 72
-    },
-    {
-      "name": "Philadelphia, USA",
-      "latitude": 39.9526,
-      "longitude": -75.1652,
-      "count": 17
-    },
-    {
-      "name": "Washington, USA",
-      "latitude": 38.9072,
-      "longitude": -77.0369,
-      "count": 32
-    },
-    {
-      "name": "Richmond. Virginia",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 1
-    },
-    {
-      "name": "Montreal—Canada",
-      "latitude": 56.1304,
-      "longitude": -106.3468,
-      "count": 1
-    },
-    {
-      "name": "Genoa, Italy",
-      "latitude": 44.4056,
-      "longitude": 8.9463,
-      "count": 22
-    },
-    {
-      "name": "Garrick Club, London",
-      "latitude": 51.5113,
-      "longitude": -0.1251,
-      "count": 12
-    },
-    {
-      "name": "Rome, Italy",
-      "latitude": 41.9028,
-      "longitude": 12.4964,
-      "count": 16
-    },
-    {
-      "name": "Naples, Italy",
-      "latitude": 40.8518,
-      "longitude": 14.2681,
-      "count": 9
-    },
-    {
-      "name": "Rochester, Kent",
-      "latitude": 51.3872,
-      "longitude": 0.505,
-      "count": 26
-    },
-    {
-      "name": "Florence, Italy",
-      "latitude": 41.8719,
-      "longitude": 12.5674,
-      "count": 6
-    },
-    {
-      "name": "Just out of the Bath",
-      "latitude": 51.3758,
-      "longitude": -2.3599,
-      "count": 1
-    },
-    {
-      "name": "Daily News Office, Whitefriars, London",
-      "latitude": 51.5134,
-      "longitude": -0.1066,
-      "count": 16
-    },
-    {
-      "name": "Lausanne, Switzerland",
-      "latitude": 46.5197,
-      "longitude": 6.6323,
-      "count": 22
-    },
-    {
-      "name": "Chester Place",
-      "latitude": 51.5284,
-      "longitude": -0.1444,
-      "count": 16
-    },
-    {
-      "name": "Inn, Holborn, 1 Chester Place",
-      "latitude": 51.5284,
-      "longitude": -0.1444,
-      "count": 1
-    },
-    {
-      "name": "1 Chester Place",
-      "latitude": 51.5284,
-      "longitude": -0.1444,
-      "count": 12
-    },
-    {
-      "name": "14 Russell, Place, Chester Place",
-      "latitude": 51.5284,
-      "longitude": -0.1444,
-      "count": 1
-    },
-    {
-      "name": "CD was able to report Catherine, Chester Place",
-      "latitude": 51.5284,
-      "longitude": -0.1444,
-      "count": 1
-    },
-    {
-      "name": "Glasgow",
-      "latitude": 55.8642,
-      "longitude": -4.2518,
-      "count": 7
-    },
-    {
-      "name": "Edinburgh",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 4
-    },
-    {
-      "name": "Folkestone, Kent",
-      "latitude": 51.0789,
-      "longitude": 1.1798,
-      "count": 64
-    },
-    {
-      "name": "Bonchurch, Isle of Wight",
-      "latitude": 50.5985,
-      "longitude": -1.1895,
-      "count": 31
-    },
-    {
-      "name": "Household Words Office, Wellington Street, London",
-      "latitude": 51.5117,
-      "longitude": -0.1201,
-      "count": 269
-    },
-    {
-      "name": "Tavistock House, London",
-      "latitude": 51.5255,
-      "longitude": -0.1287,
-      "count": 1808
-    },
-    {
-      "name": "Gad's Hill Place, Higham, Kent",
-      "latitude": 51.4116,
-      "longitude": 0.4608,
-      "count": 1449
-    },
-    {
-      "name": "Henry Carey Esq, Burlington, U.S. of America, ― VI - 472 ―",
-      "latitude": 39.8283,
-      "longitude": -98.5795,
-      "count": 1
-    },
-    {
-      "name": "Bath",
-      "latitude": 51.3758,
-      "longitude": -2.3599,
-      "count": 2
-    },
-    {
-      "name": "Dover, Kent",
-      "latitude": 51.1279,
-      "longitude": 1.3134,
-      "count": 68
-    },
-    {
-      "name": "Sheffield",
-      "latitude": 53.3811,
-      "longitude": -1.4701,
-      "count": 2
-    },
-    {
-      "name": "Boulogne-sur-Mer, France",
-      "latitude": 50.7252,
-      "longitude": 1.6133,
-      "count": 128
-    },
-    {
-      "name": "Venice, Italy",
-      "latitude": 41.8719,
-      "longitude": 12.5674,
-      "count": 5
-    },
-    {
-      "name": "Esquire, 2 St John's Villas, Hampstead Road",
-      "latitude": 51.5562,
-      "longitude": -0.1781,
-      "count": 1
-    },
-    {
-      "name": "Garrick",
-      "latitude": 51.5113,
-      "longitude": -0.1251,
-      "count": 1
-    },
-    {
-      "name": "Francesco Berger Esquire, 36 Thurloe Square, Brompton",
-      "latitude": 46.2276,
-      "longitude": 2.2137,
-      "count": 1
-    },
-    {
-      "name": "Waterloo Hotel, Edinburgh",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 12
-    },
-    {
-      "name": "Maxwell Street (not through post, Royal Hotel, Glasgow†5",
-      "latitude": 55.8642,
-      "longitude": -4.2518,
-      "count": 1
-    },
-    {
-      "name": "All the Year Round Office, Wellington Street, London",
-      "latitude": 51.5117,
-      "longitude": -0.1201,
-      "count": 108
-    },
-    {
-      "name": "3 Hanover Terrace",
-      "latitude": 51.53,
-      "longitude": -0.1633,
-      "count": 15
-    },
-    {
-      "name": "R.A, Kent Villas, Lansdowne Road, Notting Hill, 3 Hanover Terrace",
-      "latitude": 51.53,
-      "longitude": -0.1633,
-      "count": 1
-    },
-    {
-      "name": "3 Hanover Terrace, Mr. Lillie",
-      "latitude": 51.53,
-      "longitude": -0.1633,
-      "count": 1
-    },
-    {
-      "name": "Carrick's Royal Hotel, Glasgow",
-      "latitude": 55.8642,
-      "longitude": -4.2518,
-      "count": 11
-    },
-    {
-      "name": "16 Somers Place",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 25
-    },
-    {
-      "name": "16 Somers Place Hyde Park W",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 1
-    },
-    {
-      "name": "16 Somers Place, Hyde Park W",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 4
-    },
-    {
-      "name": "16 Somers Place, Hyde Park, W",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 3
-    },
-    {
-      "name": "James's Street, 16 Somers Place",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 1
-    },
-    {
-      "name": "16 Somers Place Hyde Park",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 3
-    },
-    {
-      "name": "Street, Stamford Street, S, 16 Somers Place",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 1
-    },
-    {
-      "name": "16 Somers Place, Hyde Park, W, Mr. Maltby",
-      "latitude": 51.5161,
-      "longitude": -0.1706,
-      "count": 1
-    },
-    {
-      "name": "Waterloo Hotel, Edinburgh, and turned away great numbers. Not only",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 1
-    },
-    {
-      "name": "York House, Bath",
-      "latitude": 51.3758,
-      "longitude": -2.3599,
-      "count": 1
-    },
-    {
-      "name": "Leeds",
-      "latitude": 53.8008,
-      "longitude": -1.5491,
-      "count": 6
-    },
-    {
-      "name": "Lord Lytton poste restante, Eaux Bonnes, Pyrénées, France",
-      "latitude": 46.2276,
-      "longitude": 2.2137,
-      "count": 1
-    },
-    {
-      "name": "Syracuse, U. S. of America",
-      "latitude": 39.8283,
-      "longitude": -98.5795,
-      "count": 1
-    },
-    {
-      "name": "Kennedy's Hotel, Edinburgh",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 15
-    },
-    {
-      "name": "Kennedy's Hotel, Edinburgh, Messrs. Cape and Harris Gentlemen",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 1
-    },
-    {
-      "name": "Queen's Hotel, Leeds",
-      "latitude": 53.8008,
-      "longitude": -1.5491,
-      "count": 1
-    },
-    {
-      "name": "5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 45
-    },
-    {
-      "name": "THE ATHENÆUM, 5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 1
-    },
-    {
-      "name": "Brunswick Square, 5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 1
-    },
-    {
-      "name": "Brunswick Square, W. C, 5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 1
-    },
-    {
-      "name": "Esquire, Hunter Street, Brunswick Square, 5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 1
-    },
-    {
-      "name": "Harvard): Henry Bicknell Esquire, Cavendish House, Clapham Common, 5 Hyde Park Place W",
-      "latitude": 51.5136,
-      "longitude": -0.1658,
-      "count": 1
-    }
-  ],
-  "mentioned_locations": [
-    {
-      "name": "Highgate",
-      "latitude": 51.5714,
-      "longitude": -0.1504,
-      "count": 34
-    },
-    {
-      "name": "London",
-      "latitude": 51.5074,
-      "longitude": -0.1278,
-      "count": 980
-    },
-    {
-      "name": "Boston",
-      "latitude": 42.3601,
-      "longitude": -71.0589,
-      "count": 135
-    },
-    {
-      "name": "Birmingham",
-      "latitude": 52.4862,
-      "longitude": -1.8904,
-      "count": 193
-    },
-    {
-      "name": "Hampstead",
-      "latitude": 51.5562,
-      "longitude": -0.1781,
-      "count": 53
-    },
-    {
-      "name": "Bath",
-      "latitude": 51.3758,
-      "longitude": -2.3599,
-      "count": 118
-    },
-    {
-      "name": "England",
-      "latitude": 52.3555,
-      "longitude": -1.1743,
-      "count": 460
-    },
-    {
-      "name": "France",
-      "latitude": 46.2276,
-      "longitude": 2.2137,
-      "count": 112
-    },
-    {
-      "name": "Liverpool",
-      "latitude": 53.4084,
-      "longitude": -2.9916,
-      "count": 239
-    },
-    {
-      "name": "Edinburgh",
-      "latitude": 55.9533,
-      "longitude": -3.1883,
-      "count": 176
-    },
-    {
-      "name": "Athenaeum",
-      "latitude": 51.5071,
-      "longitude": -0.1311,
-      "count": 54
-    },
-    {
-      "name": "Rochester",
-      "latitude": 51.3872,
-      "longitude": 0.505,
-      "count": 115
-    },
-    {
-      "name": "Scotland",
-      "latitude": 56.4907,
-      "longitude": -4.2026,
-      "count": 127
-    },
-    {
-      "name": "Richmond",
-      "latitude": 51.4479,
-      "longitude": -0.326,
-      "count": 68
-    },
-    {
-      "name": "Paris",
-      "latitude": 48.8566,
-      "longitude": 2.3522,
-      "count": 419
-    },
-    {
-      "name": "Ireland",
-      "latitude": 53.4129,
-      "longitude": -8.2439,
-      "count": 91
-    },
-    {
-      "name": "Garrick",
-      "latitude": 51.5113,
-      "longitude": -0.1251,
-      "count": 56
-    },
-    {
-      "name": "Furnival",
-      "latitude": 51.5186,
-      "longitude": -0.1098,
-      "count": 4
-    },
-    {
-      "name": "Chatham",
-      "latitude": 51.3789,
-      "longitude": 0.5278,
-      "count": 49
-    },
-    {
-      "name": "Doughty Street",
-      "latitude": 51.525,
-      "longitude": -0.1167,
-      "count": 62
-    },
-    {
-      "name": "Brighton",
-      "latitude": 50.8225,
-      "longitude": -0.1372,
-      "count": 139
-    },
-    {
-      "name": "Broadstairs",
-      "latitude": 51.3592,
-      "longitude": 1.4402,
-      "count": 161
-    },
-    {
-      "name": "America",
-      "latitude": 39.8283,
-      "longitude": -98.5795,
-      "count": 319
-    },
-    {
-      "name": "Glasgow",
-      "latitude": 55.8642,
-      "longitude": -4.2518,
-      "count": 80
-    },
-    {
-      "name": "Philadelphia",
-      "latitude": 39.9526,
-      "longitude": -75.1652,
-      "count": 85
-    },
-    {
-      "name": "Manchester",
-      "latitude": 53.4808,
-      "longitude": -2.2426,
-      "count": 258
-    },
-    {
-      "name": "Washington",
-      "latitude": 38.9072,
-      "longitude": -77.0369,
-      "count": 86
-    },
-    {
-      "name": "New York",
-      "latitude": 40.7128,
-      "longitude": -74.006,
-      "count": 173
-    },
-    {
-      "name": "Sheffield",
-      "latitude": 53.3811,
-      "longitude": -1.4701,
-      "count": 43
-    },
-    {
-      "name": "Boulogne",
-      "latitude": 50.7252,
-      "longitude": 1.6133,
-      "count": 114
-    },
-    {
-      "name": "Dover",
-      "latitude": 51.1279,
-      "longitude": 1.3134,
-      "count": 62
-    },
-    {
-      "name": "Canada",
-      "latitude": 56.1304,
-      "longitude": -106.3468,
-      "count": 42
-    },
-    {
-      "name": "Rome",
-      "latitude": 41.9028,
-      "longitude": 12.4964,
-      "count": 67
-    },
-    {
-      "name": "Leeds",
-      "latitude": 53.8008,
-      "longitude": -1.5491,
-      "count": 14
-    },
-    {
-      "name": "Italy",
-      "latitude": 41.8719,
-      "longitude": 12.5674,
-      "count": 142
-    },
-    {
-      "name": "Switzerland",
-      "latitude": 46.8182,
-      "longitude": 8.2275,
-      "count": 74
-    },
-    {
-      "name": "Genoa",
-      "latitude": 44.4056,
-      "longitude": 8.9463,
-      "count": 119
-    },
-    {
-      "name": "Naples",
-      "latitude": 40.8518,
-      "longitude": 14.2681,
-      "count": 55
-    },
-    {
-      "name": "Lausanne",
-      "latitude": 46.5197,
-      "longitude": 6.6323,
-      "count": 78
-    },
-    {
-      "name": "Folkestone",
-      "latitude": 51.0789,
-      "longitude": 1.1798,
-      "count": 62
-    },
-    {
-      "name": "Gad's Hill",
-      "latitude": 51.4116,
-      "longitude": 0.4608,
-      "count": 316
-    }
-  ]
+  {
+   "year": 1825,
+   "count": 1,
+   "themes": {
+    "Literature/Writing": 1,
+    "Family/Personal": 1,
+    "Theatre/Readings": 0,
+    "Business/Finance": 1,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 0
+   }
+  },
+  {
+   "year": 1831,
+   "count": 2,
+   "themes": {
+    "Literature/Writing": 0,
+    "Family/Personal": 0,
+    "Theatre/Readings": 0,
+    "Business/Finance": 0,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 0
+   }
+  },
+  {
+   "year": 1832,
+   "count": 16,
+   "themes": {
+    "Literature/Writing": 4,
+    "Family/Personal": 6,
+    "Theatre/Readings": 2,
+    "Business/Finance": 0,
+    "Travel/Places": 1,
+    "Social Reform/Philanthropy": 1
+   }
+  },
+  {
+   "year": 1833,
+   "count": 28,
+   "themes": {
+    "Literature/Writing": 14,
+    "Family/Personal": 8,
+    "Theatre/Readings": 4,
+    "Business/Finance": 1,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 0
+   }
+  },
+  {
+   "year": 1834,
+   "count": 24,
+   "themes": {
+    "Literature/Writing": 4,
+    "Family/Personal": 12,
+    "Theatre/Readings": 0,
+    "Business/Finance": 5,
+    "Travel/Places": 1,
+    "Social Reform/Philanthropy": 0
+   }
+  },
+  {
+   "year": 1835,
+   "count": 83,
+   "themes": {
+    "Literature/Writing": 39,
+    "Family/Personal": 36,
+    "Theatre/Readings": 2,
+    "Business/Finance": 5,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 0
+   }
+  },
+  {
+   "year": 1836,
+   "count": 182,
+   "themes": {
+    "Literature/Writing": 92,
+    "Family/Personal": 33,
+    "Theatre/Readings": 16,
+    "Business/Finance": 13,
+    "Travel/Places": 0,
+    "Social Reform/Philanthropy": 1
+   }
+  },
+  {
+   "year": 1837,
+   "count": 286,
+   "themes": {
+    "Literature/Writing": 129,
+    "Family/Personal": 41,
+    "Theatre/Readings": 12,
+    "Business/Finance": 24,
+    "Travel/Places": 6,
+    "Social Reform/Philanthropy": 6
+   }
+  },
+  {
+   "year": 1838,
+   "count": 296,
+   "themes": {
+    "Literature/Writing": 140,
+    "Family/Personal": 49,
+    "Theatre/Readings": 17,
+    "Business/Finance": 21,
+    "Travel/Places": 12,
+    "Social Reform/Philanthropy": 7
+   }
+  },
+  {
+   "year": 1839,
+   "count": 269,
+   "themes": {
+    "Literature/Writing": 107,
+    "Family/Personal": 67,
+    "Theatre/Readings": 22,
+    "Business/Finance": 19,
+    "Travel/Places": 7,
+    "Social Reform/Philanthropy": 9
+   }
+  },
+  {
+   "year": 1840,
+   "count": 316,
+   "themes": {
+    "Literature/Writing": 137,
+    "Family/Personal": 75,
+    "Theatre/Readings": 13,
+    "Business/Finance": 19,
+    "Travel/Places": 10,
+    "Social Reform/Philanthropy": 11
+   }
+  },
+  {
+   "year": 1841,
+   "count": 481,
+   "themes": {
+    "Literature/Writing": 202,
+    "Family/Personal": 150,
+    "Theatre/Readings": 27,
+    "Business/Finance": 26,
+    "Travel/Places": 27,
+    "Social Reform/Philanthropy": 15
+   }
+  },
+  {
+   "year": 1842,
+   "count": 486,
+   "themes": {
+    "Literature/Writing": 184,
+    "Family/Personal": 164,
+    "Theatre/Readings": 39,
+    "Business/Finance": 43,
+    "Travel/Places": 79,
+    "Social Reform/Philanthropy": 40
+   }
+  },
+  {
+   "year": 1843,
+   "count": 361,
+   "themes": {
+    "Literature/Writing": 112,
+    "Family/Personal": 105,
+    "Theatre/Readings": 21,
+    "Business/Finance": 29,
+    "Travel/Places": 21,
+    "Social Reform/Philanthropy": 21
+   }
+  },
+  {
+   "year": 1844,
+   "count": 341,
+   "themes": {
+    "Literature/Writing": 138,
+    "Family/Personal": 112,
+    "Theatre/Readings": 24,
+    "Business/Finance": 38,
+    "Travel/Places": 60,
+    "Social Reform/Philanthropy": 26
+   }
+  },
+  {
+   "year": 1845,
+   "count": 364,
+   "themes": {
+    "Literature/Writing": 138,
+    "Family/Personal": 113,
+    "Theatre/Readings": 74,
+    "Business/Finance": 25,
+    "Travel/Places": 50,
+    "Social Reform/Philanthropy": 16
+   }
+  },
+  {
+   "year": 1846,
+   "count": 338,
+   "themes": {
+    "Literature/Writing": 163,
+    "Family/Personal": 111,
+    "Theatre/Readings": 18,
+    "Business/Finance": 33,
+    "Travel/Places": 63,
+    "Social Reform/Philanthropy": 39
+   }
+  },
+  {
+   "year": 1847,
+   "count": 405,
+   "themes": {
+    "Literature/Writing": 124,
+    "Family/Personal": 116,
+    "Theatre/Readings": 62,
+    "Business/Finance": 25,
+    "Travel/Places": 35,
+    "Social Reform/Philanthropy": 21
+   }
+  },
+  {
+   "year": 1848,
+   "count": 529,
+   "themes": {
+    "Literature/Writing": 136,
+    "Family/Personal": 169,
+    "Theatre/Readings": 103,
+    "Business/Finance": 61,
+    "Travel/Places": 28,
+    "Social Reform/Philanthropy": 19
+   }
+  },
+  {
+   "year": 1849,
+   "count": 451,
+   "themes": {
+    "Literature/Writing": 142,
+    "Family/Personal": 144,
+    "Theatre/Readings": 27,
+    "Business/Finance": 28,
+    "Travel/Places": 28,
+    "Social Reform/Philanthropy": 33
+   }
+  },
+  {
+   "year": 1850,
+   "count": 540,
+   "themes": {
+    "Literature/Writing": 222,
+    "Family/Personal": 136,
+    "Theatre/Readings": 49,
+    "Business/Finance": 28,
+    "Travel/Places": 31,
+    "Social Reform/Philanthropy": 22
+   }
+  },
+  {
+   "year": 1851,
+   "count": 625,
+   "themes": {
+    "Literature/Writing": 198,
+    "Family/Personal": 171,
+    "Theatre/Readings": 98,
+    "Business/Finance": 53,
+    "Travel/Places": 27,
+    "Social Reform/Philanthropy": 18
+   }
+  },
+  {
+   "year": 1852,
+   "count": 537,
+   "themes": {
+    "Literature/Writing": 193,
+    "Family/Personal": 156,
+    "Theatre/Readings": 37,
+    "Business/Finance": 38,
+    "Travel/Places": 27,
+    "Social Reform/Philanthropy": 35
+   }
+  },
+  {
+   "year": 1853,
+   "count": 357,
+   "themes": {
+    "Literature/Writing": 148,
+    "Family/Personal": 129,
+    "Theatre/Readings": 28,
+    "Business/Finance": 36,
+    "Travel/Places": 64,
+    "Social Reform/Philanthropy": 27
+   }
+  },
+  {
+   "year": 1854,
+   "count": 477,
+   "themes": {
+    "Literature/Writing": 167,
+    "Family/Personal": 152,
+    "Theatre/Readings": 47,
+    "Business/Finance": 26,
+    "Travel/Places": 36,
+    "Social Reform/Philanthropy": 38
+   }
+  },
+  {
+   "year": 1855,
+   "count": 508,
+   "themes": {
+    "Literature/Writing": 184,
+    "Family/Personal": 154,
+    "Theatre/Readings": 59,
+    "Business/Finance": 40,
+    "Travel/Places": 66,
+    "Social Reform/Philanthropy": 33
+   }
+  },
+  {
+   "year": 1856,
+   "count": 408,
+   "themes": {
+    "Literature/Writing": 148,
+    "Family/Personal": 157,
+    "Theatre/Readings": 66,
+    "Business/Finance": 39,
+    "Travel/Places": 67,
+    "Social Reform/Philanthropy": 29
+   }
+  },
+  {
+   "year": 1857,
+   "count": 538,
+   "themes": {
+    "Literature/Writing": 181,
+    "Family/Personal": 134,
+    "Theatre/Readings": 67,
+    "Business/Finance": 43,
+    "Travel/Places": 39,
+    "Social Reform/Philanthropy": 24
+   }
+  },
+  {
+   "year": 1858,
+   "count": 432,
+   "themes": {
+    "Literature/Writing": 143,
+    "Family/Personal": 134,
+    "Theatre/Readings": 56,
+    "Business/Finance": 30,
+    "Travel/Places": 38,
+    "Social Reform/Philanthropy": 24
+   }
+  },
+  {
+   "year": 1859,
+   "count": 369,
+   "themes": {
+    "Literature/Writing": 150,
+    "Family/Personal": 94,
+    "Theatre/Readings": 21,
+    "Business/Finance": 42,
+    "Travel/Places": 24,
+    "Social Reform/Philanthropy": 17
+   }
+  },
+  {
+   "year": 1860,
+   "count": 335,
+   "themes": {
+    "Literature/Writing": 117,
+    "Family/Personal": 110,
+    "Theatre/Readings": 8,
+    "Business/Finance": 28,
+    "Travel/Places": 26,
+    "Social Reform/Philanthropy": 14
+   }
+  },
+  {
+   "year": 1861,
+   "count": 362,
+   "themes": {
+    "Literature/Writing": 159,
+    "Family/Personal": 107,
+    "Theatre/Readings": 42,
+    "Business/Finance": 43,
+    "Travel/Places": 17,
+    "Social Reform/Philanthropy": 17
+   }
+  },
+  {
+   "year": 1862,
+   "count": 345,
+   "themes": {
+    "Literature/Writing": 136,
+    "Family/Personal": 109,
+    "Theatre/Readings": 37,
+    "Business/Finance": 35,
+    "Travel/Places": 32,
+    "Social Reform/Philanthropy": 21
+   }
+  },
+  {
+   "year": 1863,
+   "count": 301,
+   "themes": {
+    "Literature/Writing": 85,
+    "Family/Personal": 86,
+    "Theatre/Readings": 18,
+    "Business/Finance": 21,
+    "Travel/Places": 33,
+    "Social Reform/Philanthropy": 18
+   }
+  },
+  {
+   "year": 1864,
+   "count": 317,
+   "themes": {
+    "Literature/Writing": 116,
+    "Family/Personal": 75,
+    "Theatre/Readings": 8,
+    "Business/Finance": 23,
+    "Travel/Places": 13,
+    "Social Reform/Philanthropy": 24
+   }
+  },
+  {
+   "year": 1865,
+   "count": 329,
+   "themes": {
+    "Literature/Writing": 138,
+    "Family/Personal": 66,
+    "Theatre/Readings": 19,
+    "Business/Finance": 17,
+    "Travel/Places": 28,
+    "Social Reform/Philanthropy": 14
+   }
+  },
+  {
+   "year": 1866,
+   "count": 385,
+   "themes": {
+    "Literature/Writing": 139,
+    "Family/Personal": 93,
+    "Theatre/Readings": 56,
+    "Business/Finance": 29,
+    "Travel/Places": 19,
+    "Social Reform/Philanthropy": 14
+   }
+  },
+  {
+   "year": 1867,
+   "count": 516,
+   "themes": {
+    "Literature/Writing": 151,
+    "Family/Personal": 150,
+    "Theatre/Readings": 73,
+    "Business/Finance": 38,
+    "Travel/Places": 71,
+    "Social Reform/Philanthropy": 19
+   }
+  },
+  {
+   "year": 1868,
+   "count": 515,
+   "themes": {
+    "Literature/Writing": 148,
+    "Family/Personal": 164,
+    "Theatre/Readings": 64,
+    "Business/Finance": 70,
+    "Travel/Places": 71,
+    "Social Reform/Philanthropy": 17
+   }
+  },
+  {
+   "year": 1869,
+   "count": 476,
+   "themes": {
+    "Literature/Writing": 193,
+    "Family/Personal": 149,
+    "Theatre/Readings": 79,
+    "Business/Finance": 49,
+    "Travel/Places": 36,
+    "Social Reform/Philanthropy": 48
+   }
+  },
+  {
+   "year": 1870,
+   "count": 222,
+   "themes": {
+    "Literature/Writing": 80,
+    "Family/Personal": 49,
+    "Theatre/Readings": 9,
+    "Business/Finance": 26,
+    "Travel/Places": 11,
+    "Social Reform/Philanthropy": 7
+   }
+  }
+ ],
+ "themes": [
+  {
+   "theme": "Literature/Writing",
+   "count": 5206
+  },
+  {
+   "theme": "Family/Personal",
+   "count": 4090
+  },
+  {
+   "theme": "Theatre/Readings",
+   "count": 1425
+  },
+  {
+   "theme": "Travel/Places",
+   "count": 1204
+  },
+  {
+   "theme": "Business/Finance",
+   "count": 1171
+  },
+  {
+   "theme": "Social Reform/Philanthropy",
+   "count": 745
+  }
+ ],
+ "recipients": [
+  {
+   "recipient": "John Forster",
+   "count": 927
+  },
+  {
+   "recipient": "Angela Burdett Coutts",
+   "count": 571
+  },
+  {
+   "recipient": "W. H. Wills",
+   "count": 491
+  },
+  {
+   "recipient": "Georgina Hogarth",
+   "count": 245
+  },
+  {
+   "recipient": "Unknown Correspondent",
+   "count": 235
+  },
+  {
+   "recipient": "William Charles Macready",
+   "count": 219
+  },
+  {
+   "recipient": "Thomas Mitton",
+   "count": 204
+  },
+  {
+   "recipient": "Thomas Beard",
+   "count": 200
+  },
+  {
+   "recipient": "Mark Lemon",
+   "count": 176
+  },
+  {
+   "recipient": "Wilkie Collins",
+   "count": 165
+  },
+  {
+   "recipient": "Frank Stone",
+   "count": 161
+  },
+  {
+   "recipient": "Henry Austin",
+   "count": 156
+  },
+  {
+   "recipient": "Richard Bentley",
+   "count": 140
+  },
+  {
+   "recipient": "Frederic Ouvry",
+   "count": 138
+  },
+  {
+   "recipient": "Daniel Maclise",
+   "count": 129
+  },
+  {
+   "recipient": "Sir Edward Bulwer Lytton",
+   "count": 113
+  },
+  {
+   "recipient": "Charles Kent",
+   "count": 95
+  },
+  {
+   "recipient": "Messrs Chapman & Hall",
+   "count": 94
+  },
+  {
+   "recipient": "George Cruikshank",
+   "count": 90
+  },
+  {
+   "recipient": "John Leech",
+   "count": 87
+  },
+  {
+   "recipient": "Messrs Bradbury & Evans",
+   "count": 83
+  },
+  {
+   "recipient": "Mrs Charles Dickens",
+   "count": 81
+  },
+  {
+   "recipient": "Mrs Henry Austin",
+   "count": 80
+  },
+  {
+   "recipient": "Frederick Dickens",
+   "count": 75
+  },
+  {
+   "recipient": "Edward Chapman",
+   "count": 74
+  },
+  {
+   "recipient": "Clarkson Stanfield",
+   "count": 73
+  },
+  {
+   "recipient": "Mary Dickens",
+   "count": 73
+  },
+  {
+   "recipient": "Frederic Chapman",
+   "count": 69
+  },
+  {
+   "recipient": "F. M. Evans",
+   "count": 67
+  },
+  {
+   "recipient": "The Hon. Mrs Richard Watson",
+   "count": 64
+  },
+  {
+   "recipient": "Benjamin Webster",
+   "count": 63
+  },
+  {
+   "recipient": "Peter Cunningham",
+   "count": 63
+  },
+  {
+   "recipient": "Miss Catherine Hogarth",
+   "count": 61
+  },
+  {
+   "recipient": "Thomas Noon Talfourd",
+   "count": 60
+  },
+  {
+   "recipient": "Elizabeth Gaskell",
+   "count": 60
+  },
+  {
+   "recipient": "James T. Fields",
+   "count": 53
+  },
+  {
+   "recipient": "T. J. Thompson",
+   "count": 51
+  },
+  {
+   "recipient": "Augustus Tracey",
+   "count": 51
+  },
+  {
+   "recipient": "George Dolby",
+   "count": 50
+  },
+  {
+   "recipient": "John Macrone",
+   "count": 49
+  },
+  {
+   "recipient": "Edmund Yates",
+   "count": 49
+  },
+  {
+   "recipient": "Emile De La Rue",
+   "count": 48
+  },
+  {
+   "recipient": "John Pritt Harley",
+   "count": 47
+  },
+  {
+   "recipient": "Charles Knight",
+   "count": 45
+  },
+  {
+   "recipient": "George Cattermole",
+   "count": 44
+  },
+  {
+   "recipient": "Bernhard Tauchnitz",
+   "count": 44
+  },
+  {
+   "recipient": "Mary Boyle",
+   "count": 43
+  },
+  {
+   "recipient": "Fanny Kelly",
+   "count": 42
+  },
+  {
+   "recipient": "Percy Fitzgerald",
+   "count": 42
+  },
+  {
+   "recipient": "Henry Morley",
+   "count": 41
+  }
+ ],
+ "sent_locations": [
+  {
+   "name": "Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1908
+  },
+  {
+   "name": "Tavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1306
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1181
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 751
+  },
+  {
+   "name": "Doughty Street",
+   "latitude": 51.525,
+   "longitude": -0.1167,
+   "count": 262
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON. W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 235
+  },
+  {
+   "name": "Broadstairs",
+   "latitude": 51.3592,
+   "longitude": 1.4402,
+   "count": 231
+  },
+  {
+   "name": "Broadstairs, Kent",
+   "latitude": 51.3592,
+   "longitude": 1.4402,
+   "count": 230
+  },
+  {
+   "name": "Furnivals Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 172
+  },
+  {
+   "name": "Gad's Hill Place",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 161
+  },
+  {
+   "name": "48 Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 132
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 129
+  },
+  {
+   "name": "1 Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 114
+  },
+  {
+   "name": "OFFICE OF HOUSEHOLD WORDS",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 103
+  },
+  {
+   "name": "Tavistock House, London",
+   "latitude": 51.5255,
+   "longitude": -0.1287,
+   "count": 94
+  },
+  {
+   "name": "Office of Household Words",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 80
+  },
+  {
+   "name": "Tavistock House, Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 52
+  },
+  {
+   "name": "Gad's Hill",
+   "latitude": 51.4116,
+   "longitude": 0.4608,
+   "count": 49
+  },
+  {
+   "name": "5 Hyde Park Place W",
+   "latitude": 51.5136,
+   "longitude": -0.1658,
+   "count": 45
+  },
+  {
+   "name": "Office of AYR",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 43
+  },
+  {
+   "name": "Boulogne",
+   "latitude": 50.7252,
+   "longitude": 1.6133,
+   "count": 36
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON, W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 36
+  },
+  {
+   "name": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 32
+  },
+  {
+   "name": "Villa du Camp de droite, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 28
+  },
+  {
+   "name": "Office of  AYR",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 28
+  },
+  {
+   "name": "16 Somers Place",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 28
+  },
+  {
+   "name": "Devonshire Terrace, London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 26
+  },
+  {
+   "name": "Great Malvern",
+   "latitude": 52.111,
+   "longitude": -2.3286,
+   "count": 26
+  },
+  {
+   "name": "Adelphi Hotel, Liverpool",
+   "latitude": 53.4057,
+   "longitude": -2.9773,
+   "count": 26
+  },
+  {
+   "name": "Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 25
+  },
+  {
+   "name": "15 Furnivals Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 24
+  },
+  {
+   "name": "10 Camden Crescent, Dover",
+   "latitude": 51.1234,
+   "longitude": 1.3154,
+   "count": 24
+  },
+  {
+   "name": "Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 23
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 23
+  },
+  {
+   "name": "London. 1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 23
+  },
+  {
+   "name": "Petersham",
+   "latitude": 51.4437,
+   "longitude": -0.3053,
+   "count": 22
+  },
+  {
+   "name": "49 Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 21
+  },
+  {
+   "name": "Gad's Hill Place, Higham, by Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 21
+  },
+  {
+   "name": "Parker House, Boston",
+   "latitude": 42.3578,
+   "longitude": -71.0602,
+   "count": 21
+  },
+  {
+   "name": "Twickenham Park",
+   "latitude": 51.4437,
+   "longitude": -0.3427,
+   "count": 20
+  },
+  {
+   "name": "Chester Place",
+   "latitude": 51.5284,
+   "longitude": -0.1444,
+   "count": 20
+  },
+  {
+   "name": "Household Words Office",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 20
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 19
+  },
+  {
+   "name": "3 Hanover Terrace",
+   "latitude": 51.53,
+   "longitude": -0.1633,
+   "count": 19
+  },
+  {
+   "name": "Villa des Moulineaux, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 18
+  },
+  {
+   "name": "Tremont House",
+   "latitude": 41.2739,
+   "longitude": -82.8407,
+   "count": 16
+  },
+  {
+   "name": "Athenaeum",
+   "latitude": 51.5071,
+   "longitude": -0.1311,
+   "count": 16
+  },
+  {
+   "name": "London, 1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 16
+  },
+  {
+   "name": "49 Champs Elysées",
+   "latitude": 48.8701,
+   "longitude": 2.3057,
+   "count": 16
+  },
+  {
+   "name": "Westminster Hotel, New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 16
+  },
+  {
+   "name": "Kennedy's Hotel, Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 16
+  },
+  {
+   "name": "48 Doughty Street London",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 15
+  },
+  {
+   "name": "Adelphi Hotel Liverpool",
+   "latitude": 53.4057,
+   "longitude": -2.9773,
+   "count": 15
+  },
+  {
+   "name": "Carlton House",
+   "latitude": 53.1727,
+   "longitude": -0.8066,
+   "count": 14
+  },
+  {
+   "name": "Folkestone, Kent",
+   "latitude": 51.0789,
+   "longitude": 1.1798,
+   "count": 14
+  },
+  {
+   "name": "Bentinck Street",
+   "latitude": 51.5172,
+   "longitude": -0.15,
+   "count": 13
+  },
+  {
+   "name": "1 Chester Place",
+   "latitude": 51.5284,
+   "longitude": -0.1444,
+   "count": 13
+  },
+  {
+   "name": "Folkestone",
+   "latitude": 51.0789,
+   "longitude": 1.1798,
+   "count": 13
+  },
+  {
+   "name": "REGENT STREET",
+   "latitude": 51.513,
+   "longitude": -0.1406,
+   "count": 13
+  },
+  {
+   "name": "5 Hyde Park Place",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 13
+  },
+  {
+   "name": "13 Furnivals Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 12
+  },
+  {
+   "name": "Washington",
+   "latitude": 38.9072,
+   "longitude": -77.0369,
+   "count": 12
+  },
+  {
+   "name": "Regents Park",
+   "latitude": 50.9175,
+   "longitude": -1.4396,
+   "count": 12
+  },
+  {
+   "name": "49 Avenue des Champs Elysées",
+   "latitude": 48.8701,
+   "longitude": 2.3057,
+   "count": 12
+  },
+  {
+   "name": "Waterloo Hotel, Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 12
+  },
+  {
+   "name": "H. W. Office",
+   "latitude": 52.6768,
+   "longitude": -2.4468,
+   "count": 11
+  },
+  {
+   "name": "Garrick Club",
+   "latitude": 51.5114,
+   "longitude": -0.1264,
+   "count": 11
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 11
+  },
+  {
+   "name": "40 Albion Street Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 10
+  },
+  {
+   "name": "Carlton House, New York",
+   "latitude": 40.7531,
+   "longitude": -73.8819,
+   "count": 10
+  },
+  {
+   "name": "Osnaburgh Terrace",
+   "latitude": 51.5247,
+   "longitude": -0.1436,
+   "count": 10
+  },
+  {
+   "name": "90 Fleet Street",
+   "latitude": 51.5142,
+   "longitude": -0.1055,
+   "count": 10
+  },
+  {
+   "name": "Bonchurch, Isle of Wight",
+   "latitude": 50.5985,
+   "longitude": -1.1895,
+   "count": 10
+  },
+  {
+   "name": "Paris, 49 Avenue des Champs Elysées",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 10
+  },
+  {
+   "name": "KENT",
+   "latitude": 51.2787,
+   "longitude": 0.5217,
+   "count": 10
+  },
+  {
+   "name": "Carrick's Royal Hotel, Glasgow",
+   "latitude": 55.8642,
+   "longitude": -4.2518,
+   "count": 10
+  },
+  {
+   "name": "5 Hyde Park Place, W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 10
+  },
+  {
+   "name": "Rosemont, Lausanne, Switzerland",
+   "latitude": 46.5165,
+   "longitude": 6.6355,
+   "count": 9
+  },
+  {
+   "name": "Glasgow",
+   "latitude": 55.8642,
+   "longitude": -4.2518,
+   "count": 9
+  },
+  {
+   "name": "Bedford Hotel, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 9
+  },
+  {
+   "name": "Household Words",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 9
+  },
+  {
+   "name": "49 Avenue des Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 9
+  },
+  {
+   "name": "Tavistock House. W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 9
+  },
+  {
+   "name": "Lord Warden Hotel, Dover",
+   "latitude": 51.1153,
+   "longitude": 1.312,
+   "count": 9
+  },
+  {
+   "name": "16 HYDE PARK GATE SOUTH, KENSINGTON GORE. W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 9
+  },
+  {
+   "name": "GAD'S HILL PLACE",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 9
+  },
+  {
+   "name": "THE ATHENÆUM",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 9
+  },
+  {
+   "name": "Selwood Place",
+   "latitude": 51.4899,
+   "longitude": -0.1771,
+   "count": 8
+  },
+  {
+   "name": "Doughty St",
+   "latitude": 51.5235,
+   "longitude": -0.1165,
+   "count": 8
+  },
+  {
+   "name": "Private, 1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 8
+  },
+  {
+   "name": "Tremont House, Boston",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 8
+  },
+  {
+   "name": "9 Osnaburgh Terrace",
+   "latitude": 51.5247,
+   "longitude": -0.1436,
+   "count": 8
+  },
+  {
+   "name": "Rosemont",
+   "latitude": 51.5539,
+   "longitude": -0.1311,
+   "count": 8
+  },
+  {
+   "name": "London, 1 Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 8
+  },
+  {
+   "name": "Birmingham",
+   "latitude": 52.4862,
+   "longitude": -1.8904,
+   "count": 8
+  },
+  {
+   "name": "Brighton, 148 Kings Road",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 8
+  },
+  {
+   "name": "10 Camden Crescent Dover",
+   "latitude": 51.1234,
+   "longitude": 1.3154,
+   "count": 8
+  },
+  {
+   "name": "Hotel des Bains, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 8
+  },
+  {
+   "name": "Tavistock House, London. W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 8
+  },
+  {
+   "name": "Private, GAD'S HILL PLACE, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 8
+  },
+  {
+   "name": "Fitzroy Street",
+   "latitude": 51.5238,
+   "longitude": -0.1402,
+   "count": 7
+  },
+  {
+   "name": "Devonshire T",
+   "latitude": 51.5213,
+   "longitude": -0.15,
+   "count": 7
+  },
+  {
+   "name": "Peschiere",
+   "latitude": 45.5523,
+   "longitude": 8.1529,
+   "count": 7
+  },
+  {
+   "name": "Bonchurch",
+   "latitude": 50.5984,
+   "longitude": -1.1895,
+   "count": 7
+  },
+  {
+   "name": "Paris, rue du Faubourg St. Honoré, 27",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 7
+  },
+  {
+   "name": "Hotel du Helder, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 7
+  },
+  {
+   "name": "Great Western Hotel",
+   "latitude": 50.7305,
+   "longitude": -3.5424,
+   "count": 7
+  },
+  {
+   "name": "5 Hyde Park Place, London W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 7
+  },
+  {
+   "name": "18 Bentinck Street",
+   "latitude": 51.517,
+   "longitude": -0.1501,
+   "count": 6
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 6
+  },
+  {
+   "name": "Private, 1 Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 6
+  },
+  {
+   "name": "Niagara Falls",
+   "latitude": 43.0848,
+   "longitude": -79.0702,
+   "count": 6
+  },
+  {
+   "name": "London. 1 Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 6
+  },
+  {
+   "name": "48 Rue de Courcelles, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 6
+  },
+  {
+   "name": "Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 6
+  },
+  {
+   "name": "Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 6
+  },
+  {
+   "name": "Devonshire House",
+   "latitude": 51.5557,
+   "longitude": -0.0749,
+   "count": 6
+  },
+  {
+   "name": "Tavistock House London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 6
+  },
+  {
+   "name": "Champs Elysées",
+   "latitude": 48.8708,
+   "longitude": 2.3053,
+   "count": 6
+  },
+  {
+   "name": "Gad's Hill, Higham, by Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 6
+  },
+  {
+   "name": "6 Southwick Place",
+   "latitude": 51.5146,
+   "longitude": -0.1694,
+   "count": 6
+  },
+  {
+   "name": "Queen's Hotel, Manchester",
+   "latitude": 42.9501,
+   "longitude": -71.4313,
+   "count": 6
+  },
+  {
+   "name": "48 Doughty Street Mecklenburgh Square",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 5
+  },
+  {
+   "name": "7 Mar",
+   "latitude": 51.4888,
+   "longitude": 0.2619,
+   "count": 5
+  },
+  {
+   "name": "Royal Hotel",
+   "latitude": 52.6012,
+   "longitude": 1.7355,
+   "count": 5
+  },
+  {
+   "name": "Baltimore. United States",
+   "latitude": 39.2925,
+   "longitude": -76.605,
+   "count": 5
+  },
+  {
+   "name": "Baltimore",
+   "latitude": 39.2909,
+   "longitude": -76.6108,
+   "count": 5
+  },
+  {
+   "name": "Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 5
+  },
+  {
+   "name": "48 Rue de Courcelles",
+   "latitude": 48.8767,
+   "longitude": 2.3077,
+   "count": 5
+  },
+  {
+   "name": "Regents Park, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 5
+  },
+  {
+   "name": "London Tavern",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 5
+  },
+  {
+   "name": "Dover",
+   "latitude": 51.1279,
+   "longitude": 1.3134,
+   "count": 5
+  },
+  {
+   "name": "1 Junction Parade, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 5
+  },
+  {
+   "name": "Newcastle on Tyne",
+   "latitude": 54.9964,
+   "longitude": -1.796,
+   "count": 5
+  },
+  {
+   "name": "Paris. rue du Faubourg St. Honoré, 27",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 5
+  },
+  {
+   "name": "Leeds",
+   "latitude": 53.8008,
+   "longitude": -1.5491,
+   "count": 5
+  },
+  {
+   "name": "Blackburn",
+   "latitude": 53.7493,
+   "longitude": -2.4841,
+   "count": 5
+  },
+  {
+   "name": "Boston",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 5
+  },
+  {
+   "name": "Philadelphia",
+   "latitude": 39.9526,
+   "longitude": -75.1652,
+   "count": 5
+  },
+  {
+   "name": "Bentinck St",
+   "latitude": 51.5172,
+   "longitude": -0.15,
+   "count": 4
+  },
+  {
+   "name": "Brompton",
+   "latitude": 54.3617,
+   "longitude": -1.4237,
+   "count": 4
+  },
+  {
+   "name": "Furnival's Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 4
+  },
+  {
+   "name": "Chalk",
+   "latitude": 51.4321,
+   "longitude": 0.3994,
+   "count": 4
+  },
+  {
+   "name": "Manchester",
+   "latitude": 53.4808,
+   "longitude": -2.2426,
+   "count": 4
+  },
+  {
+   "name": "Doughty Street London",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 4
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regents Park, London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "9 Feb",
+   "latitude": 52.3385,
+   "longitude": 0.2678,
+   "count": 4
+  },
+  {
+   "name": "1, Devonshire Terrace, York Gate, Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "Montreal",
+   "latitude": 52.4668,
+   "longitude": 0.9383,
+   "count": 4
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "Athenæum",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 4
+  },
+  {
+   "name": "Whitefriars",
+   "latitude": 52.4051,
+   "longitude": -1.5016,
+   "count": 4
+  },
+  {
+   "name": "Rosemont, Lausanne",
+   "latitude": 46.5165,
+   "longitude": 6.6355,
+   "count": 4
+  },
+  {
+   "name": "Paris, 48 Rue de Courcelles",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 4
+  },
+  {
+   "name": "Athenaeum Club",
+   "latitude": 51.5068,
+   "longitude": -0.1328,
+   "count": 4
+  },
+  {
+   "name": "On mourning paper, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "Albion Hotel, Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 4
+  },
+  {
+   "name": "Devonshire Terrace, Christmas Day 1849",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 4
+  },
+  {
+   "name": "8 Feb",
+   "latitude": 52.3385,
+   "longitude": 0.2678,
+   "count": 4
+  },
+  {
+   "name": "Strand",
+   "latitude": 51.5076,
+   "longitude": -0.1271,
+   "count": 4
+  },
+  {
+   "name": "London, Tavistock House Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 4
+  },
+  {
+   "name": "Pavilion, Folkestone",
+   "latitude": 51.0866,
+   "longitude": 1.1751,
+   "count": 4
+  },
+  {
+   "name": "Chateau des Moulineaux, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 4
+  },
+  {
+   "name": "Hôtel Meurice, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 4
+  },
+  {
+   "name": "Gad's Hill Place, Higham by Rochester, Kent",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 4
+  },
+  {
+   "name": "Tavistock House, W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 4
+  },
+  {
+   "name": "Tavistock House W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 4
+  },
+  {
+   "name": "Wolverhampton",
+   "latitude": 52.5848,
+   "longitude": -2.1276,
+   "count": 4
+  },
+  {
+   "name": "Hull",
+   "latitude": 53.7624,
+   "longitude": -0.3301,
+   "count": 4
+  },
+  {
+   "name": "16 HYDE PARK GATE SOUTH, KENSINGTON GORE, W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 4
+  },
+  {
+   "name": "aGAD'S HILL PLACE, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 4
+  },
+  {
+   "name": "57 Gloster Place",
+   "latitude": 51.5926,
+   "longitude": -2.986,
+   "count": 4
+  },
+  {
+   "name": "THE ATHENAEUM",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 4
+  },
+  {
+   "name": "16 Somers Place, Hyde Park W",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 4
+  },
+  {
+   "name": "16 Somers Place, Hyde Park, W",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 4
+  },
+  {
+   "name": "16 Somers Place Hyde Park",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 4
+  },
+  {
+   "name": "Belfast",
+   "latitude": 51.5065,
+   "longitude": -0.0812,
+   "count": 4
+  },
+  {
+   "name": "Westminster Hotel, Irving Place, New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 4
+  },
+  {
+   "name": "ATHENÆUM",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 4
+  },
+  {
+   "name": "9 July",
+   "latitude": 53.4632,
+   "longitude": -2.2161,
+   "count": 3
+  },
+  {
+   "name": "Elm Cottage Petersham, Near Richmond",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 3
+  },
+  {
+   "name": "At Forster's",
+   "latitude": 53.5515,
+   "longitude": -0.7793,
+   "count": 3
+  },
+  {
+   "name": "Private, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 3
+  },
+  {
+   "name": "Royal Hotel Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 3
+  },
+  {
+   "name": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 3
+  },
+  {
+   "name": "Cincinnati. Ohio",
+   "latitude": 39.0998,
+   "longitude": -84.5119,
+   "count": 3
+  },
+  {
+   "name": "2 Mar",
+   "latitude": 51.4888,
+   "longitude": 0.2619,
+   "count": 3
+  },
+  {
+   "name": "Albaro",
+   "latitude": 45.3541,
+   "longitude": 11.1893,
+   "count": 3
+  },
+  {
+   "name": "Genoa",
+   "latitude": 44.4056,
+   "longitude": 8.9463,
+   "count": 3
+  },
+  {
+   "name": "Bedford Hotel Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 3
+  },
+  {
+   "name": "1 Devonshire Terrace, London",
+   "latitude": 51.5235,
+   "longitude": -0.1504,
+   "count": 3
+  },
+  {
+   "name": "148 King's Road, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 3
+  },
+  {
+   "name": "148 Kings Road, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 3
+  },
+  {
+   "name": "Winterbourne",
+   "latitude": 51.447,
+   "longitude": -1.3452,
+   "count": 3
+  },
+  {
+   "name": "Brighton, 148 King's Road",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 3
+  },
+  {
+   "name": "HOUSEHOLD WORDS OFFICE",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 3
+  },
+  {
+   "name": "On mourning paper, Broadstairs, Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 3
+  },
+  {
+   "name": "Sheffield",
+   "latitude": 53.3811,
+   "longitude": -1.4701,
+   "count": 3
+  },
+  {
+   "name": "aTavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 3
+  },
+  {
+   "name": "Chateau des Molineaux, Rue Beaurepaire, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 3
+  },
+  {
+   "name": "Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 3
+  },
+  {
+   "name": "3 Albion Villas, Folkestone",
+   "latitude": 51.0783,
+   "longitude": 1.1803,
+   "count": 3
+  },
+  {
+   "name": "Paris, 49 Champs Elysées",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 3
+  },
+  {
+   "name": "2 July",
+   "latitude": 53.4631,
+   "longitude": -2.2165,
+   "count": 3
+  },
+  {
+   "name": "Villa des Moulineaux, near Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 3
+  },
+  {
+   "name": "Tavistock House, Christmas Eve, 1856",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 3
+  },
+  {
+   "name": "Gad's Hill Place, Higham",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 3
+  },
+  {
+   "name": "Gad's Hill Place, Higham, by Rochester, Kent",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 3
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON. W. C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 3
+  },
+  {
+   "name": "ALL THE YEAR ROUND OFFICE",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 3
+  },
+  {
+   "name": "Private, TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON. W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 3
+  },
+  {
+   "name": "3 Mar",
+   "latitude": 51.4888,
+   "longitude": 0.2619,
+   "count": 3
+  },
+  {
+   "name": "Torquay",
+   "latitude": 50.4652,
+   "longitude": -3.5211,
+   "count": 3
+  },
+  {
+   "name": "Hotel du Helder",
+   "latitude": 45.752,
+   "longitude": 4.8403,
+   "count": 3
+  },
+  {
+   "name": "Private, OFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 3
+  },
+  {
+   "name": "Dublin",
+   "latitude": 52.2815,
+   "longitude": 1.1704,
+   "count": 3
+  },
+  {
+   "name": "Parker House, Boston, U.S",
+   "latitude": 42.3578,
+   "longitude": -71.0602,
+   "count": 3
+  },
+  {
+   "name": "Parker House",
+   "latitude": 40.7286,
+   "longitude": -73.8625,
+   "count": 3
+  },
+  {
+   "name": "Westminster Hotel",
+   "latitude": 40.7979,
+   "longitude": -74.35,
+   "count": 3
+  },
+  {
+   "name": "Boston, Christmas Eve 1867",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 3
+  },
+  {
+   "name": "15 Furnivals Inn. London",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 2
+  },
+  {
+   "name": "On mourning paper, 48 Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 2
+  },
+  {
+   "name": "48 Doughty Street, Mecklenburgh Square",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 2
+  },
+  {
+   "name": "New London Inn Exeter",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 2
+  },
+  {
+   "name": "aDevonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "Old Ship Hotel Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 2
+  },
+  {
+   "name": "1 Devonshire Terrace. York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regent's Park, London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "London 1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "Regents Park London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 2
+  },
+  {
+   "name": "Private, Broadstairs, Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 2
+  },
+  {
+   "name": "Devonshire Terrace, York Gate, Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "London, 1 Devonshire Terrace, York Gate, Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "London, 1 Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "London—1 Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "London. I Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "Hotel Bristol, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Albion Hotel Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 2
+  },
+  {
+   "name": "Devonshire Terrace, Christmas Day 1845",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "Paris. 48 Rue de Courcelles. St. Honoré",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Paris. 48 Rue de Courcelles",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Athenaeum Club, London",
+   "latitude": 51.5071,
+   "longitude": -0.1311,
+   "count": 2
+  },
+  {
+   "name": "Kent",
+   "latitude": 51.2787,
+   "longitude": 0.5217,
+   "count": 2
+  },
+  {
+   "name": "Hotel Windsor, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Devonshire Terrace, Christmas Eve, 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 2
+  },
+  {
+   "name": "Hotel Wagram, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Household Words Office, 1851",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 2
+  },
+  {
+   "name": "Tavistock House, Tavistock Square, London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Bath",
+   "latitude": 51.3758,
+   "longitude": -2.3599,
+   "count": 2
+  },
+  {
+   "name": "London, Tavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Tavistock House, Christmas Day 1852",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Private, Tavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "49 Avenue des Champs Elysées Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "49 Champs Elysées Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Villa des Moulineaux, Boulogne S/M",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 2
+  },
+  {
+   "name": "Tavistock House, London. W. C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Tavistock House. W. C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Tavistock House, W. C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "Gad's Hill, by Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 2
+  },
+  {
+   "name": "GARRICK CLUB",
+   "latitude": 51.5114,
+   "longitude": -0.1264,
+   "count": 2
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 2
+  },
+  {
+   "name": "GAD'S HILL, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 2
+  },
+  {
+   "name": "Gads Hill Place",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 2
+  },
+  {
+   "name": "16, HYDE PARK GATE SOUTH, KENSINGTON GORE. W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 2
+  },
+  {
+   "name": "Paris. Hotel du Helder, Rue du Helder",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "Paris, Hotel du Helder",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 2
+  },
+  {
+   "name": "GAD'S HILL",
+   "latitude": 51.4116,
+   "longitude": 0.4608,
+   "count": 2
+  },
+  {
+   "name": "OFFICE OF \"ALL THE YEAR ROUND\"",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 2
+  },
+  {
+   "name": "Adelphi, Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 2
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM BY ROCHESTER KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 2
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM BY ROCHESTER",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 2
+  },
+  {
+   "name": "Queen's Hotel, Leeds",
+   "latitude": 53.8008,
+   "longitude": -1.5491,
+   "count": 2
+  },
+  {
+   "name": "James's Square, London, Northampton",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "James's Square, Furnivals Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 1
+  },
+  {
+   "name": "Cavendish Square, Furnivals Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 1
+  },
+  {
+   "name": "Mrs. Denman's. Petersham near Richmond",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 1
+  },
+  {
+   "name": "15 Furnival's Inn",
+   "latitude": 51.518,
+   "longitude": -0.11,
+   "count": 1
+  },
+  {
+   "name": "Hampstead",
+   "latitude": 51.5562,
+   "longitude": -0.1781,
+   "count": 1
+  },
+  {
+   "name": "48 Doughty St. Mecklenburgh Square London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "48 Doughty Street Mecklenburg Square London",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "Morgan Sep 3rd.\", 12 High Street Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Morgan Esqre. On mourning paper, Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "DOUGHTY STREET",
+   "latitude": 51.525,
+   "longitude": -0.1167,
+   "count": 1
+  },
+  {
+   "name": "48 Doughty St. Mecklenburg Square London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Doughty Street [18",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "M. P, &c &c, Russell Square, Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "48 Doughty Street, London",
+   "latitude": 51.525,
+   "longitude": -0.1167,
+   "count": 1
+  },
+  {
+   "name": "Richmond",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 1
+  },
+  {
+   "name": "sent in next, Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "Doughty Street. London",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "Doughty Street, Decr. 13th. 1837",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "48 Doughty Street, Decr. 27th. 1838",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "48, Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "[Doughty] Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "Bradbury, 1 Clarence Terrace, 48 Doughty Street",
+   "latitude": 51.5237,
+   "longitude": -0.118,
+   "count": 1
+  },
+  {
+   "name": "New London Inn. Exeter",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "New London Inn, Exeter",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Elm Cottage Petersham, near Richmond",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Private, 1 Devonshire Terrace, York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Private, 1 Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "V. R, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "7 on Mon 20 Apr; weather supports, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1, Devonshire Terrace, York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "37 Albion Street Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "1, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate, Regents Park, London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Mitton, at Broadstairs Sepr. 1840\", Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "The Lawn House Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, 12th Octr. 1840",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, York Gate, Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "York Gate Regents Park London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, 13th. Nov 1840",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Eighteenth Novr. 1840",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate, Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "By Coach, Private, Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Seventh Decr. 1841",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Just going",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Adelphi Hotel. Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 1
+  },
+  {
+   "name": "Tremont House, Boston, Jan. 28, 1842",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 1
+  },
+  {
+   "name": "Private, Carlton House New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Richmond. Virginia",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 1
+  },
+  {
+   "name": "Montreal—Canada",
+   "latitude": 56.1304,
+   "longitude": -106.3468,
+   "count": 1
+  },
+  {
+   "name": "In Haste, Carlton House, New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Carlton House. New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Private and Confidential, 1 Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Broadstairs, Kent. England",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, York Gate Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "In great haste, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, Regents Park, Oct. 26th, 1842",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate Regents, Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, Thirteenth Jany. 1843",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, Twenty First Jany. 1843",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Thirty First Jan 1843",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Seventeenth Feby, 1843",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate Regents Park London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace:",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Private, 1 Devonshire Terrace, York Gate, Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Confidential, Broadstairs, Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate—Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Broadstairs—Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "London, 1, Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "139, London Devonshire Terrace, York Gate Regent's Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Christmas Day 1843",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "I Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Liverpool Radley's Hotel",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 1
+  },
+  {
+   "name": "London 1, Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, On Greasy Paper",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "London 1 Devonshire Terrace York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "London. 1 Devonshire Terrace, York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "14 Russell Place, Fitzroy Square, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Naples",
+   "latitude": 40.8518,
+   "longitude": 14.2681,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, Sept. 16th. 1845",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, 1845",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace. London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire-terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, —I mean, at Mr. Forster's",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, New Years Day 1846",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Fourteenth—I mean Fifteenth",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "confirms, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "London. 1 Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, 1846",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Lausanne",
+   "latitude": 46.5197,
+   "longitude": 6.6323,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, Sixteenth Sept 1846",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Paris. 48 Rue de Courcelles, St. Honoré",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "48 Rue de Courcelles, St. Honoré, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris. 48 Rue de Courcelles. St. Honore",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Piazza Coffee House, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "1 Chester Place, Regents Park, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "148 King's Road Brighton, Dimanche Mai 23. 1847",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "148 King's Road, Brighton, Mercredi Mai 26 1847",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "148 King's Road, Brighton, Mercredi 26 Mai 1847",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "Regent's Park, London",
+   "latitude": 51.5313,
+   "longitude": -0.1569,
+   "count": 1
+  },
+  {
+   "name": "Athenæum Club, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "aBroadstairs, Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Victoria Hotel, Euston Square, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Broadstairs Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "No. 2, Broadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "London Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "5 Junction House, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Jeudi 31 Mars 1848",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Juin 10. 1848",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "London, Devonshire Terrace, York Gate Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Broadstairs, Aout 7. 1848",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Bedford Hotel, Brighton, Nov. 28th, 1848",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "Devonshire [Terrace]",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Twenty Seventh Janry. 1849",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, 29 Janvier 1849",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "London, Devonshire Terrace, York Gate, Regents Park",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Junction House, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "Hotel Ballard, Broadstairs sur Mer",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Twentieth Novr. 1849",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Private and Confidential, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Private, Devonshire Terrace, London",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, London, Feb. 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Juin 6, 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "In a Café, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Hotel Windsor, Paris, after Post-time",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "I mean Broadstairs!",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Broadstairs, Kent, 1 Octobre, 1850",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regents Park, 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, London, 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Office of \"Household Words\"",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "This is No. 2, Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Devonshire Terrace, Christmas Day, 1850",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate Regents Park, 1851",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, York Gate, Regent's Park, 1851",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 1
+  },
+  {
+   "name": "Office of Household Words, parted at D.H)",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "Stone Esquire, Tavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Office of Household Words, 5 Septr 1851",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "No. 2, Broadstairs, Kent",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "aBroadstairs",
+   "latitude": 51.359,
+   "longitude": 1.438,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Tavistock Square, Nov. 17th, 1851",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Private, Tavistock House, Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "London, Tavistock House, Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Office of Household Words, Quarter to one",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "Hotel des Bains Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Office of Household Words, Messrs. Coutts and Co",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "Office of Household Words, Christmas Eve 1852",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, 17th Feb., 1853",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Junction Parade, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "a1, Junction Parade, Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "Tavistock [House]",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Chateau des Molineaux Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Chateau des Moulineaux, Rue Beaurepaire, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Boulogne, Chateau des Moulineaux",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Chateau des Moulineaux Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, London, Sept. 8th, 1853",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Villa des Moulineaux Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Boulogne, To The Editor of The Times",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Hotel de Paris, Strasbourg",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Christmas Eve 1853",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House 24 Mar, 54",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Alison, Edinburgh, Tavistock House, London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Boulogne, Villa du Camp de droite",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Villa du Camp de Droite, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Ville du Camp de droite, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Villa de Camp de droite, Boulogne",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Boulogne, 1854",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House;",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Christmas Eve 1854",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, 5th Jany. 1855",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Hotel Meurice, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "B, Tavistock House, London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Tavistock Square London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "3 Albion Villas, Folkestone, Kent",
+   "latitude": 51.2787,
+   "longitude": 0.5217,
+   "count": 1
+  },
+  {
+   "name": "49, Avenue des Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris, 49 Avenue des champs Elyseés",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "49 Avenue des champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris, 49 Avenue des champs Elysées",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "John's Wood Road, London, 49 Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House — I mean H. W. Office",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "aHousehold Words Office",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "49, Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Champs Elysées, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris, Champs Elysées 49",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris Champs Elysées 49",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Villa des Moulineaux, Boulogne sur mer",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Boulogne, Villa des Moulineaux",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "Villa des Moulineaux, Boulogne Sur Mer",
+   "latitude": 50.7264,
+   "longitude": 1.6147,
+   "count": 1
+  },
+  {
+   "name": "H. M. S. Tavistock, Port of London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Christmas Day, 1856",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Gravesend, Kent",
+   "latitude": 51.2787,
+   "longitude": 0.5217,
+   "count": 1
+  },
+  {
+   "name": "Rochester",
+   "latitude": 51.3872,
+   "longitude": 0.505,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill, Higham by Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill Place, Higham, Kent",
+   "latitude": 51.4116,
+   "longitude": 0.4608,
+   "count": 1
+  },
+  {
+   "name": "Garrick",
+   "latitude": 51.5113,
+   "longitude": -0.1251,
+   "count": 1
+  },
+  {
+   "name": "Private, Tavistock House, London",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill Place, Higham by Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "[OFFICE OF HOUSEHOLD WORDS]",
+   "latitude": 51.5119,
+   "longitude": -0.119,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Lord Mayor's Day, 1857",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Tavistock Square, W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, London W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Tavistock House, Londres, Mardi, 2 mars, 1858",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "W, TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON. W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill Place, Kent",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, LONDON W C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "TAVISTOCK HOUSE, TAVISTOCK SQUARE, W.C",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 1
+  },
+  {
+   "name": "aOFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, New Year's Day 1860",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "[OFFICE OF ALL THE YEAR ROUND,]",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill Place 18",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "Gad's-hill, Jan.8",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "3 Hanover Terrace, Regents Park, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "All The Year Round",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "GAD'S HILLS PLACE, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "On mourning paper, Bedford Hotel Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "All The Year Round Office",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "Radley's Adelphi Hotel Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 1
+  },
+  {
+   "name": "16 Hyde Park Gate South. W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "16, Hyde Park Gate South, W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "Hyde Park Gate",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "Paris, Rue Du Faubourg St. Honoré, 27",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris, Rue du Faubourg St. Honoré, 27",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris. Rue du Faubourg St. Honoré, 27",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "Paris, Hôtel due Helder, Rue du Helder",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "57 Glo'ster Place, Hyde Park Gardens, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "On Gad's Hill headed mourning paper, 57 Gloster Place",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "On Gad's Hill headed mourning paper, 57 Glo'ster Place",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "C, OFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "[GAD'S HILL PLACE,], HIGHAM [BY ROCHESTER, KENT.]",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "GADS HILL PLACE, HIGHAM BY ROCHESTER",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "16 Somers Place Hyde Park W",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 1
+  },
+  {
+   "name": "James's Street, 16 Somers Place",
+   "latitude": 51.5161,
+   "longitude": -0.1706,
+   "count": 1
+  },
+  {
+   "name": "Hôtel Du Helder, Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, Oct. 6, 1865",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "6 Southwick Place, Hyde Park, London, W",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "6 Southwick Place Hyde Park London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, aDec 13 1866a",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "York House, Bath",
+   "latitude": 51.3758,
+   "longitude": -2.3599,
+   "count": 1
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM, BY ROCHESTER",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "GADS HILL PLACE, HIGHAM BY ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM by ROCHESTER, KENT",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill Rochester",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "GAD'S HILL PLACE, HIGHAM BY ROCHESTER, KENT, Sept. 2",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "Porch, OFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "ATHENAEUM",
+   "latitude": 51.5071,
+   "longitude": -0.1311,
+   "count": 1
+  },
+  {
+   "name": "Parker House, Boston. U.S, 4th. Jany. 1868",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 1
+  },
+  {
+   "name": "Parker House, Boston. U.S",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 1
+  },
+  {
+   "name": "Westminster [Hotel], Irving Place, New York City",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Westminster Hotel, New York City",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Westminster Hotel, Irving Place, New York City",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Westminster Hotel New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Westminster Hotel, New York, New Years Eve 1867",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Westminster Hotel, New York, New Year's Eve, 1867",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "439, Westminster Hotel, New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 1
+  },
+  {
+   "name": "Syracuse, U. S. of America",
+   "latitude": 39.8283,
+   "longitude": -98.5795,
+   "count": 1
+  },
+  {
+   "name": "Boston, U.S",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 1
+  },
+  {
+   "name": "Messrs. Naylor Vickers and Co, Boston",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 1
+  },
+  {
+   "name": "\" bound for Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 1
+  },
+  {
+   "name": "Gad's Hill, Higham by Rochester, Kent",
+   "latitude": 51.3892,
+   "longitude": 0.4561,
+   "count": 1
+  },
+  {
+   "name": "AYR Office",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "London, 25 Sept. 1868",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "Office, Strand, OFFICE OF ALL THE YEAR ROUND",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "New Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, Dec 28 1868",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "A. Y. R. Office, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "26 Wellington Street London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "PM Liverpool 9 Apr 69, Adelphi Hotel, Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 1
+  },
+  {
+   "name": "26 Wellington Street, Strand, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, a Aug. 23 1869a",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "26 Wellington Street, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, No. 2",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "OFFICE OF ALL THE YEAR ROUND, No. 3!!!",
+   "latitude": 51.5117,
+   "longitude": -0.1196,
+   "count": 1
+  },
+  {
+   "name": "5 HYDE PARK PLACE, LONDON W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "THE ATHENÆUM, 5 Hyde Park Place W",
+   "latitude": 51.5136,
+   "longitude": -0.1658,
+   "count": 1
+  },
+  {
+   "name": "5 Hyde Park Place. W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "5 Hyde Park Place S. W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  },
+  {
+   "name": "5 Hyde Park Place, London, W",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 1
+  }
+ ],
+ "mentioned_locations": [
+  {
+   "name": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1260
+  },
+  {
+   "name": "England",
+   "latitude": 52.3555,
+   "longitude": -1.1743,
+   "count": 525
+  },
+  {
+   "name": "Paris",
+   "latitude": 48.8566,
+   "longitude": 2.3522,
+   "count": 457
+  },
+  {
+   "name": "America",
+   "latitude": 39.8283,
+   "longitude": -98.5795,
+   "count": 368
+  },
+  {
+   "name": "Gad's Hill",
+   "latitude": 51.4116,
+   "longitude": 0.4608,
+   "count": 366
+  },
+  {
+   "name": "Manchester",
+   "latitude": 53.4808,
+   "longitude": -2.2426,
+   "count": 332
+  },
+  {
+   "name": "Liverpool",
+   "latitude": 53.4084,
+   "longitude": -2.9916,
+   "count": 307
+  },
+  {
+   "name": "Birmingham",
+   "latitude": 52.4862,
+   "longitude": -1.8904,
+   "count": 250
+  },
+  {
+   "name": "Rochester",
+   "latitude": 51.3872,
+   "longitude": 0.505,
+   "count": 229
+  },
+  {
+   "name": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "count": 229
+  },
+  {
+   "name": "Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 214
+  },
+  {
+   "name": "Devonshire-terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 185
+  },
+  {
+   "name": "Broadstairs",
+   "latitude": 51.3592,
+   "longitude": 1.4402,
+   "count": 181
+  },
+  {
+   "name": "Italy",
+   "latitude": 41.8719,
+   "longitude": 12.5674,
+   "count": 162
+  },
+  {
+   "name": "Boston",
+   "latitude": 42.3601,
+   "longitude": -71.0589,
+   "count": 155
+  },
+  {
+   "name": "Bath",
+   "latitude": 51.3758,
+   "longitude": -2.3599,
+   "count": 154
+  },
+  {
+   "name": "Brighton",
+   "latitude": 50.8225,
+   "longitude": -0.1372,
+   "count": 153
+  },
+  {
+   "name": "Scotland",
+   "latitude": 56.4907,
+   "longitude": -4.2026,
+   "count": 134
+  },
+  {
+   "name": "France",
+   "latitude": 46.2276,
+   "longitude": 2.2137,
+   "count": 128
+  },
+  {
+   "name": "Boulogne",
+   "latitude": 50.7252,
+   "longitude": 1.6133,
+   "count": 123
+  },
+  {
+   "name": "Genoa",
+   "latitude": 44.4056,
+   "longitude": 8.9463,
+   "count": 118
+  },
+  {
+   "name": "Rochester, Kent",
+   "latitude": 51.3872,
+   "longitude": 0.505,
+   "count": 111
+  },
+  {
+   "name": "Ireland",
+   "latitude": 53.4129,
+   "longitude": -8.2439,
+   "count": 108
+  },
+  {
+   "name": "Washington",
+   "latitude": 38.9072,
+   "longitude": -77.0369,
+   "count": 100
+  },
+  {
+   "name": "Glasgow",
+   "latitude": 55.8642,
+   "longitude": -4.2518,
+   "count": 97
+  },
+  {
+   "name": "Richmond",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 86
+  },
+  {
+   "name": "Switzerland",
+   "latitude": 46.8182,
+   "longitude": 8.2275,
+   "count": 84
+  },
+  {
+   "name": "Tavistock House",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 81
+  },
+  {
+   "name": "Lausanne",
+   "latitude": 46.5197,
+   "longitude": 6.6323,
+   "count": 79
+  },
+  {
+   "name": "Philadelphia",
+   "latitude": 39.9526,
+   "longitude": -75.1652,
+   "count": 74
+  },
+  {
+   "name": "Athenaeum",
+   "latitude": 51.5071,
+   "longitude": -0.1311,
+   "count": 73
+  },
+  {
+   "name": "Garrick",
+   "latitude": 51.5113,
+   "longitude": -0.1251,
+   "count": 67
+  },
+  {
+   "name": "Dover",
+   "latitude": 51.1279,
+   "longitude": 1.3134,
+   "count": 67
+  },
+  {
+   "name": "Folkestone",
+   "latitude": 51.0789,
+   "longitude": 1.1798,
+   "count": 66
+  },
+  {
+   "name": "Devonshire Terrace",
+   "latitude": 51.5246,
+   "longitude": -0.1556,
+   "count": 65
+  },
+  {
+   "name": "Rome",
+   "latitude": 41.9028,
+   "longitude": 12.4964,
+   "count": 63
+  },
+  {
+   "name": "Chatham",
+   "latitude": 51.3789,
+   "longitude": 0.5278,
+   "count": 58
+  },
+  {
+   "name": "Hampstead",
+   "latitude": 51.5562,
+   "longitude": -0.1781,
+   "count": 57
+  },
+  {
+   "name": "Naples",
+   "latitude": 40.8518,
+   "longitude": 14.2681,
+   "count": 55
+  },
+  {
+   "name": "Doughty Street",
+   "latitude": 51.525,
+   "longitude": -0.1167,
+   "count": 52
+  },
+  {
+   "name": "Dublin",
+   "latitude": 52.2815,
+   "longitude": 1.1704,
+   "count": 47
+  },
+  {
+   "name": "Sheffield",
+   "latitude": 53.3811,
+   "longitude": -1.4701,
+   "count": 47
+  },
+  {
+   "name": "Baltimore",
+   "latitude": 39.2909,
+   "longitude": -76.6108,
+   "count": 43
+  },
+  {
+   "name": "Tavistock Square",
+   "latitude": 51.5246,
+   "longitude": -0.128,
+   "count": 41
+  },
+  {
+   "name": "Canada",
+   "latitude": 56.1304,
+   "longitude": -106.3468,
+   "count": 41
+  },
+  {
+   "name": "Highgate",
+   "latitude": 51.5714,
+   "longitude": -0.1504,
+   "count": 37
+  },
+  {
+   "name": "Peschiere",
+   "latitude": 45.5523,
+   "longitude": 8.1529,
+   "count": 35
+  },
+  {
+   "name": "Athenæum",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 24
+  },
+  {
+   "name": "Broadstairs, Kent",
+   "latitude": 51.3592,
+   "longitude": 1.4402,
+   "count": 22
+  },
+  {
+   "name": "Leeds",
+   "latitude": 53.8008,
+   "longitude": -1.5491,
+   "count": 20
+  },
+  {
+   "name": "THE ATHENÆUM",
+   "latitude": 51.5047,
+   "longitude": -0.1476,
+   "count": 19
+  },
+  {
+   "name": "Belfast",
+   "latitude": 51.5065,
+   "longitude": -0.0812,
+   "count": 19
+  },
+  {
+   "name": "Devonshire House",
+   "latitude": 51.5557,
+   "longitude": -0.0749,
+   "count": 17
+  },
+  {
+   "name": "REGENT STREET",
+   "latitude": 51.513,
+   "longitude": -0.1406,
+   "count": 17
+  },
+  {
+   "name": "Tavistock House, London",
+   "latitude": 51.5255,
+   "longitude": -0.1287,
+   "count": 17
+  },
+  {
+   "name": "Brompton",
+   "latitude": 54.3617,
+   "longitude": -1.4237,
+   "count": 14
+  },
+  {
+   "name": "Chalk",
+   "latitude": 51.4321,
+   "longitude": 0.3994,
+   "count": 13
+  },
+  {
+   "name": "Montreal",
+   "latitude": 52.4668,
+   "longitude": 0.9383,
+   "count": 13
+  },
+  {
+   "name": "Champs Elysées",
+   "latitude": 48.8708,
+   "longitude": 2.3053,
+   "count": 13
+  },
+  {
+   "name": "Great Malvern",
+   "latitude": 52.111,
+   "longitude": -2.3286,
+   "count": 12
+  },
+  {
+   "name": "5 Hyde Park Place",
+   "latitude": 51.5145,
+   "longitude": -0.1632,
+   "count": 11
+  },
+  {
+   "name": "Petersham",
+   "latitude": 51.4437,
+   "longitude": -0.3053,
+   "count": 10
+  },
+  {
+   "name": "Wolverhampton",
+   "latitude": 52.5848,
+   "longitude": -2.1276,
+   "count": 10
+  },
+  {
+   "name": "Royal Hotel",
+   "latitude": 52.6012,
+   "longitude": 1.7355,
+   "count": 10
+  },
+  {
+   "name": "Hull",
+   "latitude": 53.7624,
+   "longitude": -0.3301,
+   "count": 9
+  },
+  {
+   "name": "Torquay",
+   "latitude": 50.4652,
+   "longitude": -3.5211,
+   "count": 9
+  },
+  {
+   "name": "3 Hanover Terrace",
+   "latitude": 51.53,
+   "longitude": -0.1633,
+   "count": 9
+  },
+  {
+   "name": "Westminster Hotel",
+   "latitude": 40.7979,
+   "longitude": -74.35,
+   "count": 9
+  },
+  {
+   "name": "Albaro",
+   "latitude": 45.3541,
+   "longitude": 11.1893,
+   "count": 8
+  },
+  {
+   "name": "6 Southwick Place",
+   "latitude": 51.5146,
+   "longitude": -0.1694,
+   "count": 7
+  },
+  {
+   "name": "Carlton House",
+   "latitude": 53.1727,
+   "longitude": -0.8066,
+   "count": 6
+  },
+  {
+   "name": "Rosemont",
+   "latitude": 51.5539,
+   "longitude": -0.1311,
+   "count": 6
+  },
+  {
+   "name": "1 Chester Place",
+   "latitude": 51.5284,
+   "longitude": -0.1444,
+   "count": 6
+  },
+  {
+   "name": "Chester Place",
+   "latitude": 51.5284,
+   "longitude": -0.1444,
+   "count": 6
+  },
+  {
+   "name": "Blackburn",
+   "latitude": 53.7493,
+   "longitude": -2.4841,
+   "count": 5
+  },
+  {
+   "name": "Bonchurch, Isle of Wight",
+   "latitude": 50.5985,
+   "longitude": -1.1895,
+   "count": 5
+  },
+  {
+   "name": "Hotel du Helder",
+   "latitude": 45.752,
+   "longitude": 4.8403,
+   "count": 5
+  },
+  {
+   "name": "5 Hyde Park Place W",
+   "latitude": 51.5136,
+   "longitude": -0.1658,
+   "count": 5
+  },
+  {
+   "name": "Furnival",
+   "latitude": 51.5186,
+   "longitude": -0.1098,
+   "count": 4
+  },
+  {
+   "name": "Doughty St",
+   "latitude": 51.5235,
+   "longitude": -0.1165,
+   "count": 4
+  },
+  {
+   "name": "Twickenham Park",
+   "latitude": 51.4437,
+   "longitude": -0.3427,
+   "count": 3
+  },
+  {
+   "name": "Osnaburgh Terrace",
+   "latitude": 51.5247,
+   "longitude": -0.1436,
+   "count": 3
+  },
+  {
+   "name": "48 Rue de Courcelles",
+   "latitude": 48.8767,
+   "longitude": 2.3077,
+   "count": 3
+  },
+  {
+   "name": "Waterloo Hotel, Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 3
+  },
+  {
+   "name": "Great Western Hotel",
+   "latitude": 50.7305,
+   "longitude": -3.5424,
+   "count": 3
+  },
+  {
+   "name": "Parker House",
+   "latitude": 40.7286,
+   "longitude": -73.8625,
+   "count": 3
+  },
+  {
+   "name": "9 Osnaburgh Terrace",
+   "latitude": 51.5247,
+   "longitude": -0.1436,
+   "count": 2
+  },
+  {
+   "name": "90 Fleet Street",
+   "latitude": 51.5142,
+   "longitude": -0.1055,
+   "count": 2
+  },
+  {
+   "name": "Lausanne, Switzerland",
+   "latitude": 46.5197,
+   "longitude": 6.6323,
+   "count": 2
+  },
+  {
+   "name": "Winterbourne",
+   "latitude": 51.447,
+   "longitude": -1.3452,
+   "count": 2
+  },
+  {
+   "name": "49 Champs Elysées",
+   "latitude": 48.8701,
+   "longitude": 2.3057,
+   "count": 2
+  },
+  {
+   "name": "Carrick's Royal Hotel, Glasgow",
+   "latitude": 55.8642,
+   "longitude": -4.2518,
+   "count": 2
+  },
+  {
+   "name": "Kennedy's Hotel, Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 2
+  },
+  {
+   "name": "Bentinck St",
+   "latitude": 51.5172,
+   "longitude": -0.15,
+   "count": 1
+  },
+  {
+   "name": "Royal Hotel Edinburgh",
+   "latitude": 55.9533,
+   "longitude": -3.1883,
+   "count": 1
+  },
+  {
+   "name": "Niagara Falls",
+   "latitude": 43.0848,
+   "longitude": -79.0702,
+   "count": 1
+  },
+  {
+   "name": "Piazza Coffee House, Covent Garden, London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "count": 1
+  },
+  {
+   "name": "1 Devonshire Terrace, London",
+   "latitude": 51.5235,
+   "longitude": -0.1504,
+   "count": 1
+  },
+  {
+   "name": "Richmond. Virginia",
+   "latitude": 51.4479,
+   "longitude": -0.326,
+   "count": 1
+  },
+  {
+   "name": "Folkestone, Kent",
+   "latitude": 51.0789,
+   "longitude": 1.1798,
+   "count": 1
+  },
+  {
+   "name": "Newcastle on Tyne",
+   "latitude": 54.9964,
+   "longitude": -1.796,
+   "count": 1
+  },
+  {
+   "name": "Boulogne-sur-Mer, France",
+   "latitude": 50.7252,
+   "longitude": 1.6133,
+   "count": 1
+  },
+  {
+   "name": "Lord Lytton poste restante, Eaux Bonnes, Pyrénées, France",
+   "latitude": 46.2276,
+   "longitude": 2.2137,
+   "count": 1
+  }
+ ]
 }
