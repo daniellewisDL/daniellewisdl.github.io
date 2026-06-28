@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exports and Imports to and from Denmark &amp; Norway — Playfair (1786)</title>
+
+<!-- Period-appropriate engraved serifs. Playfair Display (a Didone named for William
+     Playfair himself) for the engraved titling; EB Garamond for the old-style figures
+     and the flowing italic captions. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
+<style>
+  :root{
+    --paper:      #f3ead4;   /* aged page                     */
+    --plate:      #fcf9ef;   /* lighter ground inside the plate */
+    --ink:        #3c322a;   /* engraving ink (frame + text)  */
+    --grid:       #ab9c81;   /* faint ruled lines             */
+    --pink:       #f7d8d4;   /* balance against England       */
+    --tan:        #e8dab4;   /* balance in favour of England  */
+    --imports:    #bb7b2a;   /* ochre line                    */
+    --exports:    #9c333d;   /* maroon line                   */
+  }
+
+  html,body{ margin:0; height:100%; }
+  body{
+    background:
+      radial-gradient(120% 120% at 50% 12%, #f7efda 0%, #efe5cb 55%, #e6d9ba 100%);
+    color:var(--ink);
+    font-family:'EB Garamond', Garamond, 'Times New Roman', serif;
+    display:flex; align-items:center; justify-content:center;
+    min-height:100%;
+    padding:28px 18px;
+    box-sizing:border-box;
+  }
+
+  figure{
+    margin:0;
+    width:min(1100px, 100%);
+    background:var(--paper);
+    border-radius:2px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.5) inset,
+      0 18px 45px -22px rgba(40,28,12,.55),
+      0 3px 10px -6px rgba(40,28,12,.35);
+    padding:8px;
+  }
+
+  svg{ display:block; width:100%; height:auto; }
+
+  /* ---- type styles, all set on the SVG text ---- */
+  text{ fill:var(--ink); }
+
+  .t-pre, .t-post{ font-family:'Playfair Display', serif; font-weight:400; font-size:23px; }
+  .t-country{ font-family:'Playfair Display', serif; font-weight:600; font-size:30px; letter-spacing:1.5px; }
+  .t-year-in-title{ font-feature-settings:'onum' 1; }
+
+  .axis-num{
+    font-family:'EB Garamond', serif; font-weight:400; font-size:16px;
+    font-feature-settings:'onum' 1; fill:#4a3f33;
+  }
+  .axis-num.big{ font-size:15px; }
+  .year-num{
+    font-family:'EB Garamond', serif; font-weight:400; font-size:17px;
+    font-feature-settings:'onum' 1; fill:#4a3f33; text-anchor:middle;
+  }
+
+  .lbl-line{ font-family:'EB Garamond', serif; font-style:italic; font-size:15px; fill:#5a4a3a; }
+  .lbl-series{ font-family:'EB Garamond', serif; font-style:italic; font-size:17px; fill:#5a4a3a; }
+
+  .balance-against{ font-family:'Playfair Display', serif; font-weight:600; font-size:23px; letter-spacing:1.5px; fill:#5d4636; }
+  .balance-favour{  font-family:'Playfair Display', serif; font-weight:600; font-size:22px; letter-spacing:1px; fill:#5d4636; }
+  .balance-favour .min{ font-style:italic; font-weight:400; font-size:18px; letter-spacing:0; }
+
+  .chip-tx{ font-family:'EB Garamond', serif; font-size:14.5px; }
+  .chip-tx .chip-name{ font-style:italic; }
+  .chip-tx .chip-val{ font-feature-settings:'lnum' 1; }
+
+  .caption{ font-family:'Playfair Display', serif; font-style:italic; font-weight:500; font-size:21px; }
+  .credit{ font-family:'EB Garamond', serif; font-style:italic; font-size:13.5px; fill:#5a4a3a; }
+</style>
+</head>
+
+<body>
+<figure>
+  <svg id="chart" viewBox="0 0 1000 740" role="img"
+       aria-label="William Playfair's 1786 time-series chart of English exports to and imports from Denmark and Norway, 1700 to 1780.">
+    <defs>
+      <!-- hand-engraved wobble for the ruled & drawn lines -->
+      <filter id="rough" x="-2%" y="-2%" width="104%" height="104%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.011 0.016" numOctaves="2" seed="11" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <!-- faint paper grain -->
+      <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="g"/>
+        <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .04 0"/>
+      </filter>
+    </defs>
+  </svg>
+</figure>
+
+<script>
+// ---------------------------------------------------------------------------
+//  Data — traced directly from the original plate (Playfair_TimeSeries-2.png)
+//  by sampling the ochre (imports) and maroon (exports) lines column-by-column
+//  and mapping pixels to the engraved grid.  Values are in units of £10,000.
+// ---------------------------------------------------------------------------
+const data = [
+  {year:1700, imports:72.0, exports:34.0},
+  {year:1702, imports:73.0, exports:38.0},
+  {year:1704, imports:75.0, exports:41.0},
+  {year:1706, imports:77.0, exports:44.0},
+  {year:1708, imports:80.0, exports:51.0},
+  {year:1710, imports:83.0, exports:60.0},
+  {year:1712, imports:85.0, exports:70.0},
+  {year:1714, imports:87.0, exports:76.0},
+  {year:1716, imports:89.0, exports:78.5},
+  {year:1718, imports:93.0, exports:77.5},
+  {year:1720, imports:98.0, exports:76.5},
+  {year:1722, imports:102.0, exports:75.5},
+  {year:1724, imports:102.5, exports:73.5},
+  {year:1726, imports:102.5, exports:71.0},
+  {year:1728, imports:100.5, exports:68.5},
+  {year:1730, imports:97.5, exports:64.5},
+  {year:1732, imports:95.0, exports:62.0},
+  {year:1734, imports:94.0, exports:61.0},
+  {year:1736, imports:93.7, exports:61.5},
+  {year:1738, imports:93.6, exports:63.5},
+  {year:1740, imports:93.6, exports:66.0},
+  {year:1742, imports:94.0, exports:71.0},
+  {year:1744, imports:93.4, exports:74.5},
+  {year:1746, imports:92.8, exports:75.5},
+  {year:1748, imports:92.0, exports:76.7},
+  {year:1750, imports:90.3, exports:78.8},
+  {year:1752, imports:87.0, exports:80.5},
+  {year:1754, imports:80.5, exports:82.5},
+  {year:1756, imports:78.0, exports:86.0},
+  {year:1758, imports:78.0, exports:92.0},
+  {year:1759, imports:77.6, exports:101.0},
+  {year:1760, imports:78.4, exports:111.0},
+  {year:1761, imports:78.0, exports:122.0},
+  {year:1762, imports:77.5, exports:133.0},
+  {year:1763, imports:78.0, exports:142.0},
+  {year:1764, imports:79.0, exports:148.0},
+  {year:1765, imports:80.3, exports:152.0},
+  {year:1766, imports:80.3, exports:156.0},
+  {year:1768, imports:82.7, exports:160.0},
+  {year:1770, imports:84.2, exports:165.0},
+  {year:1772, imports:87.4, exports:170.0},
+  {year:1774, imports:90.8, exports:176.0},
+  {year:1776, imports:91.8, exports:182.0},
+  {year:1778, imports:92.0, exports:185.5},
+  {year:1780, imports:92.5, exports:188.0}
+];
+
+// ---- plate geometry (viewBox units, proportioned to the original) ----------
+const X_LEFT = 42, X_RIGHT = 895;          // 1700 … 1780 gridlines
+const FRAME_L = 37, FRAME_R = 962;
+const FRAME_T = 67, FRAME_B = 636;
+const Y_TOP = 102, Y_BOT = 629;            // value 190 … value 0
+
+const x = d3.scaleLinear().domain([1700, 1780]).range([X_LEFT, X_RIGHT]);
+const y = d3.scaleLinear().domain([0, 190]).range([Y_BOT, Y_TOP]);
+
+const curve = d3.curveCatmullRom.alpha(0.5);
+
+const svg = d3.select("#chart");
+
+// paper grain wash --------------------------------------------------------
+svg.append("rect").attr("x",0).attr("y",0).attr("width",1000).attr("height",740)
+   .attr("fill","#000").attr("filter","url(#grain)").attr("opacity",1);
+
+// ground inside the plate -------------------------------------------------
+svg.append("rect").attr("x",FRAME_L).attr("y",FRAME_T)
+   .attr("width",FRAME_R-FRAME_L).attr("height",FRAME_B-FRAME_T)
+   .attr("fill","var(--plate)");
+
+// everything drawn with the engraving tool sits in the "rough" group ------
+const ink = svg.append("g").attr("filter","url(#rough)");
+
+// ---- ruled grid ---------------------------------------------------------
+const grid = ink.append("g");
+// horizontal rules at every 10 (£10,000) unit
+for(let v=10; v<=190; v+=10){
+  grid.append("line")
+    .attr("x1",FRAME_L).attr("x2",FRAME_R)
+    .attr("y1",y(v)).attr("y2",y(v))
+    .attr("stroke","var(--grid)").attr("stroke-width", v===100?0:0.85)
+    .attr("opacity",0.92);
+}
+// vertical rules at each decade
+for(let yr=1700; yr<=1780; yr+=10){
+  grid.append("line")
+    .attr("x1",x(yr)).attr("x2",x(yr))
+    .attr("y1",FRAME_T).attr("y2",FRAME_B)
+    .attr("stroke","var(--grid)").attr("stroke-width",0.85)
+    .attr("opacity",0.92);
+}
+
+// ---- difference fills (Bostock-style two-colour band) -------------------
+const clipAbove = d3.area().curve(curve).x(d=>x(d.year)).y0(FRAME_T).y1(d=>y(d.exports));
+const clipBelow = d3.area().curve(curve).x(d=>x(d.year)).y0(FRAME_B).y1(d=>y(d.exports));
+const band      = d3.area().curve(curve).x(d=>x(d.year)).y0(d=>y(d.exports)).y1(d=>y(d.imports));
+
+svg.select("defs").append("clipPath").attr("id","clip-above")
+   .append("path").datum(data).attr("d",clipAbove);
+svg.select("defs").append("clipPath").attr("id","clip-below")
+   .append("path").datum(data).attr("d",clipBelow);
+
+// pink where imports sit above exports (balance against England)
+ink.append("path").datum(data)
+   .attr("d",band).attr("fill","var(--pink)").attr("clip-path","url(#clip-above)");
+// tan where exports sit above imports (balance in favour of England)
+ink.append("path").datum(data)
+   .attr("d",band).attr("fill","var(--tan)").attr("clip-path","url(#clip-below)");
+
+// ---- the two engraved lines --------------------------------------------
+const lineImports = d3.line().curve(curve).x(d=>x(d.year)).y(d=>y(d.imports));
+const lineExports = d3.line().curve(curve).x(d=>x(d.year)).y(d=>y(d.exports));
+
+ink.append("path").datum(data).attr("d",lineImports).attr("id","path-imports")
+   .attr("fill","none").attr("stroke","var(--imports)")
+   .attr("stroke-width",2.6).attr("stroke-linejoin","round").attr("stroke-linecap","round");
+ink.append("path").datum(data).attr("d",lineExports).attr("id","path-exports")
+   .attr("fill","none").attr("stroke","var(--exports)")
+   .attr("stroke-width",2.8).attr("stroke-linejoin","round").attr("stroke-linecap","round");
+
+// ---- emphasised "100,000" double rule ----------------------------------
+ink.append("line").attr("x1",FRAME_L).attr("x2",FRAME_R).attr("y1",y(100)-1.6).attr("y2",y(100)-1.6)
+   .attr("stroke","var(--ink)").attr("stroke-width",0.9).attr("opacity",0.85);
+ink.append("line").attr("x1",FRAME_L).attr("x2",FRAME_R).attr("y1",y(100)+1.6).attr("y2",y(100)+1.6)
+   .attr("stroke","var(--ink)").attr("stroke-width",0.9).attr("opacity",0.85);
+
+// ---- double frame -------------------------------------------------------
+ink.append("rect").attr("x",FRAME_L).attr("y",FRAME_T)
+   .attr("width",FRAME_R-FRAME_L).attr("height",FRAME_B-FRAME_T)
+   .attr("fill","none").attr("stroke","var(--ink)").attr("stroke-width",2.4);
+ink.append("rect").attr("x",FRAME_L+4.5).attr("y",FRAME_T+4.5)
+   .attr("width",FRAME_R-FRAME_L-9).attr("height",FRAME_B-FRAME_T-9)
+   .attr("fill","none").attr("stroke","var(--ink)").attr("stroke-width",0.9);
+
+// =========================================================================
+//  TEXT (crisp — outside the rough filter)
+// =========================================================================
+
+// ---- title --------------------------------------------------------------
+const title = svg.append("text").attr("x",500).attr("y",42).attr("text-anchor","middle");
+title.append("tspan").attr("class","t-pre").text("Exports and Imports to and from ");
+title.append("tspan").attr("class","t-country").text("DENMARK & NORWAY");
+title.append("tspan").attr("class","t-post").text(" from ");
+title.append("tspan").attr("class","t-post t-year-in-title").text("1700");
+title.append("tspan").attr("class","t-post").text(" to ");
+title.append("tspan").attr("class","t-post t-year-in-title").text("1780");
+title.append("tspan").attr("class","t-post").text(".");
+
+// ---- right-hand value axis ---------------------------------------------
+const axis = svg.append("g");
+for(let v=10; v<=190; v+=10){
+  if(v===100) continue;
+  axis.append("text").attr("class","axis-num")
+    .attr("x", X_RIGHT+12).attr("y", y(v)+5)
+    .text(v);
+  // small lead tick
+  axis.append("line").attr("x1",X_RIGHT+2).attr("x2",X_RIGHT+9)
+    .attr("y1",y(v)).attr("y2",y(v)).attr("stroke","#4a3f33").attr("stroke-width",0.8);
+}
+axis.append("text").attr("class","axis-num big")
+  .attr("x", X_RIGHT+12).attr("y", y(100)+5).text("100,000");
+
+// ---- bottom year axis ---------------------------------------------------
+const xaxis = svg.append("g");
+for(let yr=1700; yr<=1780; yr+=10){
+  xaxis.append("text").attr("class","year-num")
+    .attr("x", x(yr)).attr("y", FRAME_B+24).text(yr);
+}
+
+// ---- in-plate inscriptions ---------------------------------------------
+const note = svg.append("g");
+
+function rot(sel, deg, px, py){ sel.attr("transform", `rotate(${deg} ${px} ${py})`); }
+
+// "Line of Imports" riding just above the rising ochre line (clear white)
+note.append("text").attr("class","lbl-line")
+  .attr("x", x(1711.5)).attr("y", y(92)).text("Line of Imports")
+  .call(s=>rot(s,-17, x(1711.5), y(92)));
+
+// "Line of Exports" just under the maroon line (clear white)
+note.append("text").attr("class","lbl-line")
+  .attr("x", x(1721)).attr("y", y(66)).text("Line of Exports")
+  .call(s=>rot(s,9, x(1721), y(66)));
+
+// BALANCE AGAINST — centred in the widest part of the pink wedge
+note.append("text").attr("class","balance-against").attr("text-anchor","middle")
+  .attr("x", x(1731)).attr("y", y(80)).text("BALANCE AGAINST")
+  .call(s=>rot(s,-2, x(1731), y(80)));
+
+// BALANCE in FAVOUR of ENGLAND. — three lines well inside the tan wedge
+const fav = note.append("text").attr("class","balance-favour").attr("text-anchor","middle");
+fav.append("tspan").attr("x", x(1770.5)).attr("y", y(131))
+   .html('BALANCE <tspan class="min">in</tspan>');
+fav.append("tspan").attr("x", x(1770.5)).attr("y", y(120))
+   .html('FAVOUR <tspan class="min">of</tspan>');
+fav.append("tspan").attr("x", x(1770.5)).attr("y", y(109)).text("ENGLAND.");
+
+// "Exports" in the white space just above the steep maroon climb
+note.append("text").attr("class","lbl-series").attr("text-anchor","middle")
+  .attr("x", x(1758)).attr("y", y(112)).text("Exports")
+  .call(s=>rot(s,-62, x(1758), y(112)));
+
+// "Imports" in the white just below the lower ochre line on the right
+note.append("text").attr("class","lbl-series").attr("text-anchor","middle")
+  .attr("x", x(1773)).attr("y", y(82)).text("Imports")
+  .call(s=>rot(s,-12, x(1773), y(82)));
+
+// ---- bottom caption & engraver credits ----------------------------------
+svg.append("text").attr("class","caption").attr("text-anchor","middle")
+   .attr("x",500).attr("y",FRAME_B+55)
+   .text("The Bottom line is divided into Years, the Right hand line into £10,000 each.");
+
+svg.append("text").attr("class","credit")
+   .attr("x",FRAME_L+6).attr("y",FRAME_B+76)
+   .text("Published as the Act directs, 1ˢᵗ May 1786, by Wᵐ Playfair");
+
+svg.append("text").attr("class","credit").attr("text-anchor","end")
+   .attr("x",FRAME_R-2).attr("y",FRAME_B+76)
+   .text("Neele sculpt. 352, Strand, London.");
+
+// =========================================================================
+//  INTERACTIVITY — a hover tracer that reads both series at the cursor's year
+// =========================================================================
+const impPath = document.getElementById("path-imports");
+const expPath = document.getElementById("path-exports");
+
+// find the point on a (monotone-in-x) path at a target x via binary search
+function pointAtX(path, xt){
+  const L = path.getTotalLength();
+  let lo = 0, hi = L, p = path.getPointAtLength(0);
+  for(let i=0;i<24;i++){
+    const mid = (lo+hi)/2; p = path.getPointAtLength(mid);
+    if(p.x < xt) lo = mid; else hi = mid;
+  }
+  return p;
+}
+
+const focus = svg.append("g").attr("class","focus").style("display","none")
+                 .attr("pointer-events","none");
+
+// vertical guide
+focus.append("line").attr("class","f-guide")
+  .attr("y1",FRAME_T).attr("y2",FRAME_B)
+  .attr("stroke","var(--ink)").attr("stroke-width",0.8)
+  .attr("stroke-dasharray","4 3").attr("opacity",0.7);
+
+// dashed connectors to the right-hand scale
+const impConn = focus.append("line").attr("stroke","var(--imports)")
+  .attr("stroke-width",0.8).attr("stroke-dasharray","3 3").attr("opacity",0.7);
+const expConn = focus.append("line").attr("stroke","var(--exports)")
+  .attr("stroke-width",0.8).attr("stroke-dasharray","3 3").attr("opacity",0.7);
+
+// markers on each line
+const impDot = focus.append("circle").attr("r",4.2)
+  .attr("fill","var(--imports)").attr("stroke","#fff").attr("stroke-width",1.3);
+const expDot = focus.append("circle").attr("r",4.2)
+  .attr("fill","var(--exports)").attr("stroke","#fff").attr("stroke-width",1.3);
+
+// a small value chip helper (rounded rect + label + value)
+function chip(g, accent){
+  const grp = g.append("g");
+  grp.append("rect").attr("class","chip-bg").attr("rx",3).attr("ry",3)
+     .attr("fill","#fffaf0").attr("stroke",accent).attr("stroke-width",1).attr("opacity",0.96);
+  const t = grp.append("text").attr("class","chip-tx").attr("x",8).attr("y",16);
+  t.append("tspan").attr("class","chip-name").attr("fill",accent);
+  t.append("tspan").attr("class","chip-val").attr("fill","#3c322a")
+   .attr("font-weight","700").attr("dx",6);
+  return {grp, t};
+}
+const impChip = chip(focus, "#bb7b2a");
+const expChip = chip(focus, "#9c333d");
+
+// year chip on the bottom axis — a parchment pill matching the value chips
+const yearChip = focus.append("g");
+yearChip.append("rect").attr("rx",3).attr("ry",3)
+  .attr("fill","#fffaf0").attr("stroke","var(--ink)").attr("stroke-width",1).attr("opacity",0.97);
+const yearTx = yearChip.append("text").attr("text-anchor","middle")
+  .attr("dominant-baseline","central")
+  .style("fill","var(--ink)").style("font-family","'EB Garamond',serif")
+  .style("font-size","16px").style("font-weight","700")
+  .style("font-feature-settings","'onum' 1");
+
+function placeChip(c, name, value, px, py, accent){
+  c.t.select(".chip-name").text(name);
+  c.t.select(".chip-val").text(Math.round(value));
+  const bb = c.t.node().getBBox();
+  const padX = 8, padY = 6, w = bb.width + padX*2, h = bb.height + padY*2;
+  // prefer placing to the right of the dot; flip left near the frame edge
+  let cx = px + 12;
+  if(cx + w > X_RIGHT - 2) cx = px - 12 - w;
+  let cy = py - h/2;
+  cy = Math.max(FRAME_T + 2, Math.min(cy, FRAME_B - h - 2));
+  c.grp.attr("transform", `translate(${cx},${cy})`);
+  c.grp.select(".chip-bg").attr("x",0).attr("y",0).attr("width",w).attr("height",h);
+  c.t.attr("x", padX).attr("y", padY + bb.height - 4);
+}
+
+function move(event){
+  const [mx] = d3.pointer(event, svg.node());
+  const yr = Math.max(1700, Math.min(1780, x.invert(mx)));
+  const px = x(yr);
+  const pi = pointAtX(impPath, px);
+  const pe = pointAtX(expPath, px);
+  const impVal = y.invert(pi.y);
+  const expVal = y.invert(pe.y);
+
+  focus.style("display", null);
+  focus.select(".f-guide").attr("x1",px).attr("x2",px);
+  impDot.attr("cx",px).attr("cy",pi.y);
+  expDot.attr("cx",px).attr("cy",pe.y);
+  impConn.attr("x1",px).attr("y1",pi.y).attr("x2",X_RIGHT).attr("y2",pi.y);
+  expConn.attr("x1",px).attr("y1",pe.y).attr("x2",X_RIGHT).attr("y2",pe.y);
+
+  placeChip(impChip, "Imports", impVal, px, pi.y, "#bb7b2a");
+  placeChip(expChip, "Exports", expVal, px, pe.y, "#9c333d");
+
+  yearTx.text(Math.round(yr));
+  const yb = yearTx.node().getBBox();
+  const yw = yb.width + 20, yh = 24, yry = FRAME_B + 7;
+  yearChip.select("rect")
+    .attr("x", px - yw/2).attr("y", yry)
+    .attr("width", yw).attr("height", yh);
+  yearTx.attr("x", px).attr("y", yry + yh/2);
+}
+
+// transparent capture surface over the data area
+svg.append("rect").attr("class","capture")
+  .attr("x",X_LEFT).attr("y",FRAME_T)
+  .attr("width",X_RIGHT-X_LEFT).attr("height",FRAME_B-FRAME_T)
+  .attr("fill","transparent").style("cursor","crosshair")
+  .on("pointermove", move)
+  .on("pointerenter", move)
+  .on("pointerleave", () => focus.style("display","none"));
+</script>
+</body>
+</html>
