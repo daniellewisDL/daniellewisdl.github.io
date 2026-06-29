@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The state of our union is … still getting simpler</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#6b6b6b; --faint:#9a9a9a; --rule:#e2e2e2;
+    --bg:#ffffff; --panel:#fafafa;
+    --rep:#d64545; --dem:#2b6cb0; --whig:#c99a2e; --fed:#7b54c9;
+    --demrep:#2f9e6b; --unaff:#7a8595;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px;}
+  .kicker{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border-bottom:2px solid var(--ink);display:inline-block;padding-bottom:3px;margin:16px 0 9px;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.4vw,36px);line-height:1.05;margin:0 0 4px;}
+  h1 .em{font-style:italic;}
+  .sub{font-family:var(--serif);font-size:clamp(14px,1.8vw,17px);color:#333;margin:0 0 3px;font-weight:400;}
+  .byline{font-size:11.5px;color:var(--muted);margin:6px 0 0;line-height:1.4;}
+  .byline a{color:var(--dem);text-decoration:none;border-bottom:1px solid #cfdcec;}
+  .lede{font-family:var(--serif);font-size:14px;line-height:1.45;color:#333;max-width:820px;margin:9px 0 0;}
+
+  .controls{display:flex;flex-wrap:wrap;gap:6px 13px;align-items:center;margin:13px 0 5px;
+    padding:8px 11px;background:var(--panel);border:1px solid var(--rule);border-radius:9px;font-size:12px;}
+  .controls .grp{display:flex;align-items:center;gap:6px;}
+  .controls label{display:flex;align-items:center;gap:6px;cursor:pointer;color:#333;}
+  .controls .sep{width:1px;height:17px;background:var(--rule);}
+  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden;}
+  .seg button{border:0;background:#fff;padding:4px 9px;font:inherit;color:#444;cursor:pointer;}
+  .seg button.on{background:var(--ink);color:#fff;}
+  .controls select{font:inherit;padding:4px 8px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:#1a1a1a;cursor:pointer;font-weight:600;}
+  .hint{font-size:11px;color:var(--faint);margin:5px 2px 0;line-height:1.4;}
+
+  .chartcard{position:relative;border:1px solid var(--rule);border-radius:12px;padding:8px 6px 0;margin-top:9px;background:#fff;}
+  svg{display:block;width:100%;height:auto;font-family:var(--sans);cursor:crosshair;}
+  .axis line,.axis path{stroke:#cfcfcf;}
+  .grid line{stroke:#f0f0f0;}
+  .axis text{fill:var(--faint);font-size:12px;}
+  .axlabel{fill:var(--muted);font-size:12.5px;letter-spacing:.02em;}
+  .bub{cursor:pointer;transition:stroke-width .1s;}
+  .trend{fill:none;stroke:#111;stroke-width:2.4;stroke-dasharray:1;opacity:.85;}
+  .trendband{fill:#000;opacity:.04;}
+
+  .tracer-guide{stroke:#cfcfcf;stroke-width:1;stroke-dasharray:3 4;}
+  .tracer-lead{fill:none;stroke:#2a2a2a;stroke-width:1.2;stroke-dasharray:2 3;}
+  .tracer-ring{stroke:#1a1a1a;stroke-width:2;}
+  .callout-box{fill:#fff;stroke:#d2d2d2;stroke-width:1;filter:drop-shadow(0 3px 9px rgba(0,0,0,.13));}
+  .callout-meta{fill:#6b6b6b;font-size:11.5px;}
+  .callout-val{fill:#111;font-family:var(--serif);font-size:22px;font-weight:600;}
+  .callout-unit{fill:#8a8a8a;font-size:11px;}
+  .annot-line{stroke:#5b7088;stroke-opacity:.5;stroke-width:1;stroke-dasharray:4 4;}
+  .annot-label{fill:#8a94a0;font-size:10.5px;font-style:italic;}
+  .quad-div{stroke:#c2c2c2;stroke-width:1;stroke-dasharray:5 5;}
+  .quad-corner{fill:#a2a2a2;font-size:11px;font-style:italic;letter-spacing:.02em;}
+
+  .spotlight{display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:center;
+    border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin-top:16px;background:var(--panel);}
+  .medallion{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:var(--serif);font-size:26px;font-weight:600;}
+  .spotlight .name{font-family:var(--serif);font-size:22px;font-weight:600;margin:0;}
+  .spotlight .meta{font-size:13px;color:var(--muted);margin:3px 0 0;}
+  .spotlight .big{font-family:var(--serif);font-size:30px;font-weight:600;}
+  .spotlight .row{display:flex;gap:28px;flex-wrap:wrap;margin-top:8px;}
+  .spotlight .row div span{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted);margin:14px 2px 0;}
+  .legend .sw{display:inline-flex;align-items:center;gap:6px;}
+  .legend .dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+
+  .callout{border-left:3px solid var(--ink);background:var(--panel);padding:16px 20px;margin:38px 0 10px;border-radius:0 10px 10px 0;}
+  .callout h3{margin:0 0 8px;font-family:var(--serif);font-size:20px;}
+  .callout ul{margin:0;padding-left:18px;}
+  .callout li{margin:6px 0;font-size:15px;}
+
+  h2.section{font-family:var(--serif);font-size:30px;margin:54px 0 6px;}
+  .section-sub{color:var(--muted);font-size:14px;margin:0 0 22px;}
+  .grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:18px 20px;}
+  .card{border-top:2px solid var(--rule);padding-top:12px;}
+  .card .rk{font-family:var(--serif);font-size:13px;color:var(--faint);}
+  .card .nm{font-family:var(--serif);font-size:19px;font-weight:600;display:flex;align-items:center;gap:8px;margin:2px 0;}
+  .card .pdot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .card .fk{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1;}
+  .card .yrs{font-size:11.5px;color:var(--faint);margin:4px 0 10px;}
+  .card .q{font-size:13px;color:#444;font-style:italic;border-left:2px solid var(--rule);padding-left:10px;}
+  .card .ql{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;font-style:normal;}
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);}
+  footer code{background:var(--panel);padding:1px 5px;border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Data · Language · The Presidency</div>
+  <h1>The state of our union is … <span class="em">still getting simpler</span></h1>
+  <p class="sub">How the linguistic standard of the presidential address has kept declining - now through 2026</p>
+  <p class="byline">An update of the Guardian US interactive team's 2013 piece,
+    <a href="https://www.theguardian.com/world/interactive/2013/feb/12/state-of-the-union-reading-level" target="_blank" rel="noopener">"the state of our union is … dumber."</a>
+    Reading level scored with the <b>Flesch-Kincaid</b> test. Source texts: stateoftheunion.onetwothree.net.</p>
+  <p class="lede">All 240 annual messages since George Washington in 1790, each scored for the U.S. school grade a reader needs to follow it — one bubble per address (bigger = longer). The slide the Guardian charted in 2013 hasn't stopped: the four simplest addresses in 235 years all came in the last four.</p>
+
+  <div class="controls">
+    <div class="grp"><span style="color:#666">View</span>
+      <div class="seg" id="viewmode">
+        <button data-v="time" class="on">Over time</button>
+        <button data-v="quad">Length × reading level</button>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="grp"><span style="color:#666">Measure&nbsp;(↕)</span>
+      <select id="ymetric"></select>
+    </div>
+    <div class="sep"></div>
+    <div class="grp"><span style="color:#666">Colour&nbsp;by</span>
+      <div class="seg" id="colormode">
+        <button data-v="party" class="on">Party</button>
+        <button data-v="delivery">Spoken / written</button>
+        <button data-v="none">Neutral</button>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <label><input type="checkbox" id="trendtog" checked> Trend line (25-yr)</label>
+  </div>
+
+  <div class="chartcard">
+    <svg id="chart" viewBox="0 0 1180 640" preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Bubble chart of Flesch-Kincaid reading level of State of the Union addresses, 1790 to 2026"></svg>
+  </div>
+  <p class="hint">Use <b>View</b> to switch between the timeline and the <b>length × reading-level</b> scatter. On the timeline, move across to trace the nearest year's address (the dotted line snaps to it), and switch the vertical axis with <b>Measure</b>. Bubble size = word count.</p>
+  <div class="legend" id="legend"></div>
+
+  <div class="spotlight" id="spotlight"></div>
+
+  <div class="callout">
+    <h3>What's changed since the 2013 Guardian piece</h3>
+    <ul>
+      <li><b>A new floor.</b> The Guardian's most readable president was George H.W. Bush at grade 8.6. Joseph Biden's addresses now average <b>7.8</b>, and his 2023 message scored <b>7.3</b> — the simplest in the entire 235-year record.</li>
+      <li><b>The decline didn't deepened.</b> Six of the ten most readable addresses ever now come from the post-2013 era.</li>
+      <li><b>Trump's two-act arc.</b> His first-term addresses sat near grade 9.3–10.4. His 2025 and 2026 addresses dropped to <b>7.7–7.8</b>: simpler, looser, and far longer.</li>
+      <li><b>Simpler <i>and</i> longer.</b> The 2026 address ran <b>10,588 words</b> — a modern spoken-era record — even as its reading level hit a near-low. Short sentences, more of them.</li>
+      <li><b>It's not just reading level.</b> Switch the <b>Measure</b> menu above: presidents now say “I” more than ever (Biden 2024 hit <b>34 per 1,000 words</b>), address the room as “you” far more than the 19th-century page ever did, and pack in short, applause-ready lines — <b>~38–39%</b> of recent sentences run eight words or fewer, versus near zero for most of history.</li>
+      <li><b>Two more ways to look.</b> The <b>Length × reading level</b> view (the View switch) shows recent addresses landing in the “longer &amp; simpler” corner; and the <b>1913 marker</b> on the timeline is where written messages to Congress gave way to the spoken address.</li>
+    </ul>
+  </div>
+
+  <h2 class="section">Presidents in order of reading level</h2>
+  <p class="section-sub">Average Flesch-Kincaid grade across all of a president's addresses, most readable first. A representative sentence from each.</p>
+  <div class="grid-cards" id="cards"></div>
+
+  <footer>
+    <p><b>Method.</b> Flesch-Kincaid Grade Level computed with the <code>textstat</code> library over the full text of each address
+    (calibrated to within ~0.5 grades of the Guardian's 2013 figures — e.g. Benjamin Harrison 1892: 15.1 here vs 15.5 there).
+    Bubble area is proportional to word count. "Spoken vs written" before 1913 follows the historical record;
+    a handful of post-1913 written messages (e.g. Coolidge/Hoover, Carter 1981) are flagged best-effort.</p>
+    <p>Addresses: <span id="naddr"></span> · Years: 1790–2026 · Built as an homage/update; not affiliated with The Guardian.</p>
+  </footer>
+</div>
+
+<script id="data" type="application/json">{"addresses":[{"y":1790,"d":"17900108","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":1088,"fk":22.3,"ease":15.7,"asl":45.33,"i":13.77,"we":11.94,"you":18.37,"tone":66.1,"short":0.0},{"y":1790,"d":"17901208","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":1403,"fk":18.01,"ease":31.7,"asl":36.92,"i":10.69,"we":19.96,"you":14.26,"tone":37.6,"short":7.5},{"y":1791,"d":"17911025","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":2305,"fk":19.84,"ease":23.6,"asl":39.74,"i":3.91,"we":2.6,"you":11.28,"tone":44.4,"short":3.4},{"y":1792,"d":"17921106","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":2100,"fk":17.46,"ease":31.2,"asl":34.43,"i":14.34,"we":7.17,"you":8.13,"tone":21.3,"short":4.9},{"y":1793,"d":"17931203","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":1967,"fk":17.79,"ease":32.4,"asl":36.43,"i":11.2,"we":12.21,"you":5.6,"tone":29.1,"short":3.6},{"y":1794,"d":"17941119","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":2917,"fk":18.78,"ease":27.9,"asl":37.88,"i":10.63,"we":10.63,"you":2.06,"tone":14.1,"short":3.8},{"y":1795,"d":"17951208","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":1988,"fk":19.99,"ease":21.1,"asl":38.98,"i":11.57,"we":28.17,"you":4.53,"tone":32.5,"short":3.8},{"y":1796,"d":"17961207","p":"George Washington","party":"Unaffiliated","dv":"spoken","w":2869,"fk":18.15,"ease":28.8,"asl":35.86,"i":9.4,"we":9.75,"you":2.44,"tone":36.0,"short":3.8},{"y":1797,"d":"17971122","p":"John Adams","party":"Federalist","dv":"spoken","w":2063,"fk":17.56,"ease":31.4,"asl":34.97,"i":10.2,"we":13.12,"you":3.89,"tone":23.6,"short":0.0},{"y":1798,"d":"17981208","p":"John Adams","party":"Federalist","dv":"spoken","w":2218,"fk":18.97,"ease":27.2,"asl":38.24,"i":6.31,"we":21.19,"you":4.96,"tone":32.7,"short":3.4},{"y":1799,"d":"17991203","p":"John Adams","party":"Federalist","dv":"spoken","w":1505,"fk":20.99,"ease":19.0,"asl":41.81,"i":13.29,"we":14.62,"you":4.65,"tone":41.9,"short":2.8},{"y":1800,"d":"18001111","p":"John Adams","party":"Federalist","dv":"spoken","w":1372,"fk":17.83,"ease":28.3,"asl":34.3,"i":7.28,"we":24.03,"you":8.74,"tone":49.7,"short":2.5},{"y":1801,"d":"18011208","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":3224,"fk":17.89,"ease":30.6,"asl":35.82,"i":6.52,"we":23.91,"you":7.14,"tone":25.9,"short":5.6},{"y":1802,"d":"18021215","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2203,"fk":17.16,"ease":35.3,"asl":35.53,"i":2.73,"we":28.19,"you":6.37,"tone":20.2,"short":6.5},{"y":1803,"d":"18031017","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2279,"fk":22.31,"ease":17.9,"asl":46.51,"i":3.53,"we":26.9,"you":6.61,"tone":34.9,"short":6.2},{"y":1804,"d":"18041108","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2103,"fk":20.04,"ease":26.2,"asl":42.06,"i":3.34,"we":23.36,"you":7.63,"tone":36.6,"short":4.0},{"y":1805,"d":"18051203","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2943,"fk":17.55,"ease":35.6,"asl":37.25,"i":4.77,"we":27.96,"you":4.09,"tone":21.3,"short":2.6},{"y":1806,"d":"18061202","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2870,"fk":18.32,"ease":30.9,"asl":37.76,"i":4.19,"we":17.47,"you":5.24,"tone":26.0,"short":5.2},{"y":1807,"d":"18071027","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2394,"fk":18.7,"ease":29.8,"asl":38.61,"i":5.02,"we":27.21,"you":3.77,"tone":17.7,"short":4.8},{"y":1808,"d":"18081108","p":"Thomas Jefferson","party":"Democratic-Republican","dv":"written","w":2690,"fk":17.98,"ease":30.9,"asl":36.35,"i":8.58,"we":20.51,"you":2.61,"tone":20.7,"short":9.7},{"y":1809,"d":"18091129","p":"James Madison","party":"Democratic-Republican","dv":"written","w":1831,"fk":22.03,"ease":18.6,"asl":45.77,"i":4.37,"we":18.56,"you":2.73,"tone":32.8,"short":0.0},{"y":1810,"d":"18101205","p":"James Madison","party":"Democratic-Republican","dv":"written","w":2446,"fk":19.45,"ease":23.7,"asl":38.22,"i":4.1,"we":9.42,"you":3.28,"tone":29.1,"short":1.6},{"y":1811,"d":"18111105","p":"James Madison","party":"Democratic-Republican","dv":"written","w":2275,"fk":23.24,"ease":14.6,"asl":48.4,"i":3.96,"we":21.56,"you":4.84,"tone":36.5,"short":2.2},{"y":1812,"d":"18121104","p":"James Madison","party":"Democratic-Republican","dv":"written","w":3244,"fk":18.33,"ease":28.5,"asl":36.45,"i":1.85,"we":12.93,"you":0.92,"tone":10.4,"short":1.1},{"y":1813,"d":"18131207","p":"James Madison","party":"Democratic-Republican","dv":"written","w":3258,"fk":22.07,"ease":19.8,"asl":46.54,"i":0.92,"we":14.42,"you":0.61,"tone":15.3,"short":2.9},{"y":1814,"d":"18140920","p":"James Madison","party":"Democratic-Republican","dv":"written","w":2114,"fk":20.32,"ease":24.7,"asl":42.28,"i":0.95,"we":16.08,"you":0.95,"tone":21.0,"short":2.0},{"y":1815,"d":"18151205","p":"James Madison","party":"Democratic-Republican","dv":"written","w":3156,"fk":24.66,"ease":8.9,"asl":50.9,"i":1.59,"we":8.27,"you":0.32,"tone":57.9,"short":0.0},{"y":1816,"d":"18161203","p":"James Madison","party":"Democratic-Republican","dv":"written","w":3368,"fk":22.58,"ease":16.5,"asl":46.78,"i":9.22,"we":9.22,"you":0.0,"tone":32.1,"short":1.4},{"y":1817,"d":"18171212","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":4429,"fk":16.85,"ease":35.4,"asl":34.33,"i":5.22,"we":14.51,"you":0.68,"tone":41.9,"short":1.6},{"y":1818,"d":"18181116","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":4379,"fk":18.33,"ease":29.7,"asl":37.11,"i":2.06,"we":11.89,"you":0.91,"tone":27.6,"short":2.5},{"y":1819,"d":"18191207","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":4711,"fk":17.0,"ease":35.8,"asl":35.16,"i":3.19,"we":7.87,"you":1.7,"tone":34.1,"short":3.0},{"y":1820,"d":"18201114","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":3451,"fk":18.78,"ease":31.0,"asl":39.67,"i":2.91,"we":17.17,"you":2.33,"tone":36.0,"short":2.4},{"y":1821,"d":"18211203","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":5823,"fk":17.21,"ease":35.3,"asl":35.72,"i":1.21,"we":8.44,"you":0.52,"tone":31.7,"short":1.9},{"y":1822,"d":"18221203","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":4734,"fk":18.21,"ease":31.9,"asl":37.87,"i":6.37,"we":10.61,"you":1.91,"tone":39.1,"short":0.0},{"y":1823,"d":"18231202","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":6384,"fk":16.22,"ease":36.2,"asl":32.24,"i":2.52,"we":12.77,"you":0.79,"tone":27.5,"short":0.5},{"y":1824,"d":"18241207","p":"James Monroe","party":"Democratic-Republican","dv":"written","w":8426,"fk":16.2,"ease":37.5,"asl":32.91,"i":2.26,"we":17.62,"you":0.71,"tone":33.6,"short":0.8},{"y":1825,"d":"18251206","p":"John Quincy Adams","party":"Democratic-Republican","dv":"written","w":9025,"fk":20.17,"ease":24.8,"asl":41.78,"i":2.01,"we":13.06,"you":2.34,"tone":40.6,"short":0.5},{"y":1826,"d":"18261205","p":"John Quincy Adams","party":"Democratic-Republican","dv":"written","w":7754,"fk":20.66,"ease":24.0,"asl":43.32,"i":1.44,"we":14.89,"you":1.7,"tone":35.2,"short":1.7},{"y":1827,"d":"18271204","p":"John Quincy Adams","party":"Democratic-Republican","dv":"written","w":7000,"fk":20.17,"ease":25.1,"asl":41.92,"i":1.59,"we":5.78,"you":0.0,"tone":32.8,"short":4.8},{"y":1828,"d":"18281202","p":"John Quincy Adams","party":"Democratic-Republican","dv":"written","w":7325,"fk":18.22,"ease":29.6,"asl":36.62,"i":2.2,"we":13.49,"you":0.28,"tone":30.7,"short":4.1},{"y":1829,"d":"18291208","p":"Andrew Jackson","party":"Democratic","dv":"written","w":10543,"fk":17.35,"ease":32.2,"asl":34.57,"i":6.66,"we":13.03,"you":2.66,"tone":30.5,"short":1.3},{"y":1830,"d":"18301206","p":"Andrew Jackson","party":"Democratic","dv":"written","w":15122,"fk":18.82,"ease":28.2,"asl":38.28,"i":10.94,"we":11.47,"you":1.99,"tone":34.9,"short":1.0},{"y":1831,"d":"18311206","p":"Andrew Jackson","party":"Democratic","dv":"written","w":7195,"fk":20.49,"ease":24.4,"asl":42.83,"i":10.17,"we":21.72,"you":2.23,"tone":36.6,"short":1.8},{"y":1832,"d":"18321204","p":"Andrew Jackson","party":"Democratic","dv":"written","w":7881,"fk":19.14,"ease":28.0,"asl":39.41,"i":8.52,"we":19.59,"you":4.32,"tone":30.6,"short":0.5},{"y":1833,"d":"18331203","p":"Andrew Jackson","party":"Democratic","dv":"written","w":7907,"fk":20.12,"ease":26.5,"asl":42.51,"i":9.26,"we":8.37,"you":4.19,"tone":33.1,"short":0.0},{"y":1834,"d":"18341201","p":"Andrew Jackson","party":"Democratic","dv":"written","w":13464,"fk":20.24,"ease":25.1,"asl":42.21,"i":9.62,"we":10.59,"you":1.79,"tone":24.3,"short":0.9},{"y":1835,"d":"18351207","p":"Andrew Jackson","party":"Democratic","dv":"written","w":10820,"fk":21.32,"ease":22.5,"asl":45.08,"i":8.62,"we":13.25,"you":1.57,"tone":32.7,"short":1.2},{"y":1836,"d":"18361205","p":"Andrew Jackson","party":"Democratic","dv":"written","w":12377,"fk":19.87,"ease":26.8,"asl":41.67,"i":5.91,"we":9.23,"you":3.08,"tone":23.3,"short":0.7},{"y":1837,"d":"18371205","p":"Martin van Buren","party":"Democratic","dv":"written","w":11466,"fk":19.78,"ease":25.6,"asl":40.66,"i":6.12,"we":7.35,"you":2.8,"tone":32.5,"short":1.1},{"y":1838,"d":"18381203","p":"Martin van Buren","party":"Democratic","dv":"written","w":11504,"fk":21.18,"ease":20.7,"asl":43.58,"i":4.01,"we":6.97,"you":3.05,"tone":32.9,"short":3.0},{"y":1839,"d":"18391202","p":"Martin van Buren","party":"Democratic","dv":"written","w":13447,"fk":18.95,"ease":28.9,"asl":39.2,"i":7.38,"we":12.97,"you":2.09,"tone":19.7,"short":2.3},{"y":1840,"d":"18401205","p":"Martin van Buren","party":"Democratic","dv":"written","w":9009,"fk":23.71,"ease":13.1,"asl":49.5,"i":5.46,"we":6.68,"you":1.45,"tone":31.1,"short":2.2},{"y":1841,"d":"18411207","p":"John Tyler","party":"Whig","dv":"written","w":8242,"fk":19.18,"ease":28.5,"asl":39.82,"i":6.57,"we":7.3,"you":4.38,"tone":30.1,"short":0.5},{"y":1842,"d":"18421206","p":"John Tyler","party":"Whig","dv":"written","w":8434,"fk":19.23,"ease":28.9,"asl":40.35,"i":4.41,"we":5.24,"you":2.03,"tone":29.3,"short":1.0},{"y":1843,"d":"18431206","p":"John Tyler","party":"Whig","dv":"written","w":8046,"fk":19.72,"ease":26.7,"asl":41.05,"i":6.37,"we":7.37,"you":3.37,"tone":28.3,"short":1.6},{"y":1844,"d":"18441203","p":"John Tyler","party":"Whig","dv":"written","w":9323,"fk":17.25,"ease":32.8,"asl":34.53,"i":6.66,"we":9.77,"you":3.22,"tone":29.3,"short":3.3},{"y":1845,"d":"18451202","p":"James Polk","party":"Democratic","dv":"written","w":16130,"fk":17.38,"ease":33.0,"asl":35.14,"i":5.43,"we":11.79,"you":1.12,"tone":26.7,"short":1.6},{"y":1846,"d":"18461208","p":"James Polk","party":"Democratic","dv":"written","w":18237,"fk":18.19,"ease":30.9,"asl":37.22,"i":3.31,"we":12.57,"you":1.65,"tone":16.6,"short":3.0},{"y":1847,"d":"18471207","p":"James Polk","party":"Democratic","dv":"written","w":16426,"fk":17.89,"ease":32.1,"asl":36.67,"i":4.16,"we":16.41,"you":1.1,"tone":15.3,"short":1.2},{"y":1848,"d":"18481205","p":"James Polk","party":"Democratic","dv":"written","w":21333,"fk":17.2,"ease":33.3,"asl":34.58,"i":2.92,"we":11.39,"you":0.94,"tone":24.9,"short":1.7},{"y":1849,"d":"18491204","p":"Zachary Taylor","party":"Whig","dv":"written","w":7620,"fk":18.1,"ease":28.7,"asl":35.61,"i":10.51,"we":13.53,"you":1.84,"tone":31.3,"short":4.8},{"y":1850,"d":"18501202","p":"Millard Fillmore","party":"Whig","dv":"written","w":8326,"fk":17.53,"ease":31.9,"asl":35.13,"i":11.07,"we":9.15,"you":4.09,"tone":32.1,"short":2.6},{"y":1851,"d":"18511202","p":"Millard Fillmore","party":"Whig","dv":"written","w":13248,"fk":17.49,"ease":33.1,"asl":35.61,"i":6.53,"we":7.9,"you":2.58,"tone":24.4,"short":1.1},{"y":1852,"d":"18521206","p":"Millard Fillmore","party":"Whig","dv":"written","w":9936,"fk":17.19,"ease":33.0,"asl":34.38,"i":7.67,"we":12.12,"you":2.83,"tone":28.5,"short":2.1},{"y":1853,"d":"18531205","p":"Franklin Pierce","party":"Democratic","dv":"written","w":9595,"fk":20.12,"ease":24.1,"asl":41.18,"i":7.23,"we":9.54,"you":3.14,"tone":33.0,"short":1.3},{"y":1854,"d":"18541204","p":"Franklin Pierce","party":"Democratic","dv":"written","w":10144,"fk":18.99,"ease":26.3,"asl":37.85,"i":5.94,"we":10.79,"you":1.58,"tone":15.4,"short":1.1},{"y":1855,"d":"18551231","p":"Franklin Pierce","party":"Democratic","dv":"written","w":11614,"fk":20.69,"ease":22.2,"asl":42.39,"i":3.54,"we":5.26,"you":0.78,"tone":24.0,"short":2.2},{"y":1856,"d":"18561202","p":"Franklin Pierce","party":"Democratic","dv":"written","w":10499,"fk":20.36,"ease":22.3,"asl":41.17,"i":3.82,"we":5.06,"you":0.86,"tone":21.2,"short":1.2},{"y":1857,"d":"18571208","p":"James Buchanan","party":"Democratic","dv":"written","w":13657,"fk":16.65,"ease":34.0,"asl":32.75,"i":6.26,"we":12.16,"you":0.29,"tone":18.9,"short":2.4},{"y":1858,"d":"18581206","p":"James Buchanan","party":"Democratic","dv":"written","w":16351,"fk":15.8,"ease":36.0,"asl":30.45,"i":7.56,"we":10.21,"you":0.86,"tone":16.6,"short":4.3},{"y":1859,"d":"18591219","p":"James Buchanan","party":"Democratic","dv":"written","w":12340,"fk":14.91,"ease":39.6,"asl":28.9,"i":8.08,"we":8.9,"you":0.73,"tone":17.2,"short":2.9},{"y":1860,"d":"18601203","p":"James Buchanan","party":"Democratic","dv":"written","w":14051,"fk":14.88,"ease":38.8,"asl":28.33,"i":7.8,"we":9.15,"you":0.79,"tone":14.9,"short":3.8},{"y":1861,"d":"18611203","p":"Abraham Lincoln","party":"Republican","dv":"written","w":6996,"fk":15.85,"ease":37.7,"asl":31.66,"i":10.65,"we":7.91,"you":1.44,"tone":24.8,"short":2.3},{"y":1862,"d":"18621201","p":"Abraham Lincoln","party":"Republican","dv":"written","w":8434,"fk":12.64,"ease":47.5,"asl":24.31,"i":6.63,"we":15.56,"you":2.65,"tone":18.0,"short":8.2},{"y":1863,"d":"18631208","p":"Abraham Lincoln","party":"Republican","dv":"written","w":6114,"fk":14.88,"ease":38.3,"asl":28.05,"i":7.4,"we":7.24,"you":3.13,"tone":20.4,"short":5.5},{"y":1864,"d":"18641206","p":"Abraham Lincoln","party":"Republican","dv":"written","w":5993,"fk":13.8,"ease":42.3,"asl":26.17,"i":4.8,"we":9.26,"you":1.2,"tone":20.6,"short":5.8},{"y":1865,"d":"18651204","p":"Andrew Johnson","party":"Democratic","dv":"written","w":9244,"fk":16.49,"ease":36.4,"asl":33.49,"i":6.07,"we":13.77,"you":1.74,"tone":31.0,"short":1.1},{"y":1866,"d":"18661203","p":"Andrew Johnson","party":"Democratic","dv":"written","w":7141,"fk":18.02,"ease":28.2,"asl":35.0,"i":2.69,"we":10.47,"you":0.42,"tone":28.1,"short":0.5},{"y":1867,"d":"18671203","p":"Andrew Johnson","party":"Democratic","dv":"written","w":12023,"fk":15.75,"ease":37.7,"asl":31.23,"i":4.28,"we":13.84,"you":0.67,"tone":17.3,"short":1.8},{"y":1868,"d":"18681209","p":"Andrew Johnson","party":"Democratic","dv":"written","w":9850,"fk":17.2,"ease":30.9,"asl":33.28,"i":2.89,"we":11.35,"you":0.21,"tone":23.1,"short":3.1},{"y":1869,"d":"18691206","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":7716,"fk":15.7,"ease":37.9,"asl":31.11,"i":7.83,"we":7.31,"you":2.87,"tone":26.3,"short":6.0},{"y":1870,"d":"18701205","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":8756,"fk":15.54,"ease":38.1,"asl":30.62,"i":6.66,"we":11.14,"you":1.03,"tone":26.1,"short":5.8},{"y":1871,"d":"18711204","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":6466,"fk":15.94,"ease":35.1,"asl":30.5,"i":9.59,"we":4.64,"you":2.32,"tone":30.6,"short":5.7},{"y":1872,"d":"18721202","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":3992,"fk":16.91,"ease":32.9,"asl":33.27,"i":9.32,"we":6.55,"you":1.76,"tone":33.1,"short":4.3},{"y":1873,"d":"18731201","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":10033,"fk":17.27,"ease":32.8,"asl":34.6,"i":9.05,"we":5.13,"you":2.91,"tone":26.9,"short":6.9},{"y":1874,"d":"18741207","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":9246,"fk":16.72,"ease":34.6,"asl":33.5,"i":10.47,"we":5.78,"you":1.09,"tone":23.5,"short":5.1},{"y":1875,"d":"18751207","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":12225,"fk":17.58,"ease":32.5,"asl":35.64,"i":7.98,"we":8.15,"you":0.49,"tone":27.4,"short":6.1},{"y":1876,"d":"18761205","p":"Ulysses S. Grant","party":"Republican","dv":"written","w":6811,"fk":17.37,"ease":32.6,"asl":34.93,"i":9.51,"we":3.42,"you":0.59,"tone":25.2,"short":4.2},{"y":1877,"d":"18771203","p":"Rutherford B. Hayes","party":"Republican","dv":"written","w":8019,"fk":17.93,"ease":29.7,"asl":35.48,"i":10.81,"we":5.53,"you":1.13,"tone":30.9,"short":2.8},{"y":1878,"d":"18781202","p":"Rutherford B. Hayes","party":"Republican","dv":"written","w":7884,"fk":16.44,"ease":32.9,"asl":31.29,"i":3.6,"we":5.52,"you":0.77,"tone":29.4,"short":6.8},{"y":1879,"d":"18791201","p":"Rutherford B. Hayes","party":"Republican","dv":"written","w":11639,"fk":17.59,"ease":29.5,"asl":34.03,"i":5.2,"we":3.73,"you":0.61,"tone":33.1,"short":1.9},{"y":1880,"d":"18801206","p":"Rutherford B. Hayes","party":"Republican","dv":"written","w":6708,"fk":17.57,"ease":28.1,"asl":33.21,"i":6.88,"we":10.77,"you":1.35,"tone":36.7,"short":3.6},{"y":1881,"d":"18811206","p":"Chester A. Arthur","party":"Republican","dv":"written","w":3827,"fk":14.29,"ease":36.1,"asl":24.69,"i":7.48,"we":10.95,"you":1.87,"tone":36.2,"short":3.3},{"y":1882,"d":"18821204","p":"Chester A. Arthur","party":"Republican","dv":"written","w":3073,"fk":13.16,"ease":40.4,"asl":22.6,"i":9.78,"we":8.43,"you":4.38,"tone":21.7,"short":2.1},{"y":1883,"d":"18831204","p":"Chester A. Arthur","party":"Republican","dv":"written","w":3788,"fk":13.14,"ease":39.2,"asl":22.02,"i":6.39,"we":10.84,"you":0.56,"tone":20.6,"short":2.7},{"y":1884,"d":"18841201","p":"Chester A. Arthur","party":"Republican","dv":"written","w":8953,"fk":15.64,"ease":34.5,"asl":29.07,"i":8.06,"we":9.65,"you":1.93,"tone":25.6,"short":5.8},{"y":1885,"d":"18851208","p":"Grover Cleveland","party":"Democratic","dv":"written","w":19752,"fk":17.59,"ease":29.9,"asl":34.23,"i":4.48,"we":9.31,"you":0.81,"tone":26.6,"short":2.8},{"y":1886,"d":"18861206","p":"Grover Cleveland","party":"Democratic","dv":"written","w":15152,"fk":17.81,"ease":29.2,"asl":34.75,"i":5.99,"we":9.65,"you":0.47,"tone":27.7,"short":3.3},{"y":1887,"d":"18871206","p":"Grover Cleveland","party":"Democratic","dv":"written","w":5291,"fk":19.79,"ease":26.8,"asl":41.34,"i":2.1,"we":14.86,"you":0.76,"tone":27.3,"short":0.8},{"y":1888,"d":"18881203","p":"Grover Cleveland","party":"Democratic","dv":"written","w":9028,"fk":17.99,"ease":28.5,"asl":35.13,"i":5.85,"we":11.93,"you":0.9,"tone":24.3,"short":2.1},{"y":1889,"d":"18891203","p":"Benjamin Harrison","party":"Republican","dv":"written","w":13017,"fk":15.13,"ease":38.2,"asl":28.99,"i":6.66,"we":10.29,"you":0.15,"tone":26.2,"short":4.8},{"y":1890,"d":"18901201","p":"Benjamin Harrison","party":"Republican","dv":"written","w":11526,"fk":15.57,"ease":37.2,"asl":30.17,"i":5.69,"we":9.63,"you":0.88,"tone":31.3,"short":3.8},{"y":1891,"d":"18911209","p":"Benjamin Harrison","party":"Republican","dv":"written","w":16321,"fk":16.59,"ease":36.0,"asl":33.65,"i":6.45,"we":7.56,"you":0.43,"tone":23.1,"short":2.2},{"y":1892,"d":"18921206","p":"Benjamin Harrison","party":"Republican","dv":"written","w":13686,"fk":15.07,"ease":41.0,"asl":30.28,"i":7.6,"we":13.54,"you":0.08,"tone":27.9,"short":4.4},{"y":1893,"d":"18931203","p":"Grover Cleveland","party":"Democratic","dv":"written","w":12285,"fk":16.2,"ease":32.3,"asl":29.96,"i":4.97,"we":9.03,"you":0.0,"tone":23.2,"short":2.7},{"y":1894,"d":"18941202","p":"Grover Cleveland","party":"Democratic","dv":"written","w":15897,"fk":15.96,"ease":34.5,"asl":30.28,"i":5.37,"we":7.93,"you":0.06,"tone":20.1,"short":2.5},{"y":1895,"d":"18951207","p":"Grover Cleveland","party":"Democratic","dv":"written","w":14671,"fk":19.97,"ease":23.7,"asl":40.3,"i":4.2,"we":17.54,"you":0.07,"tone":27.0,"short":3.3},{"y":1896,"d":"18961204","p":"Grover Cleveland","party":"Democratic","dv":"written","w":15467,"fk":17.01,"ease":32.6,"asl":33.41,"i":3.28,"we":11.34,"you":0.07,"tone":25.0,"short":2.4},{"y":1897,"d":"18971206","p":"William McKinley","party":"Republican","dv":"written","w":12116,"fk":16.58,"ease":34.2,"asl":32.57,"i":5.06,"we":8.96,"you":0.25,"tone":19.0,"short":7.7},{"y":1898,"d":"18981205","p":"William McKinley","party":"Republican","dv":"written","w":20241,"fk":16.87,"ease":31.3,"asl":32.13,"i":5.31,"we":7.67,"you":0.7,"tone":19.7,"short":9.2},{"y":1899,"d":"18991205","p":"William McKinley","party":"Republican","dv":"written","w":15143,"fk":17.31,"ease":29.3,"asl":32.78,"i":3.81,"we":9.09,"you":0.4,"tone":34.0,"short":5.5},{"y":1900,"d":"19001203","p":"William McKinley","party":"Republican","dv":"written","w":19140,"fk":16.45,"ease":32.1,"asl":30.87,"i":4.92,"we":7.46,"you":1.37,"tone":30.8,"short":11.7},{"y":1901,"d":"19011203","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":19630,"fk":14.67,"ease":41.0,"asl":28.74,"i":1.37,"we":17.11,"you":0.3,"tone":20.6,"short":3.4},{"y":1902,"d":"19021202","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":9780,"fk":14.9,"ease":40.2,"asl":29.19,"i":2.45,"we":16.93,"you":0.41,"tone":21.9,"short":5.1},{"y":1903,"d":"19031207","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":14957,"fk":15.22,"ease":37.3,"asl":28.87,"i":2.16,"we":10.18,"you":0.34,"tone":20.8,"short":16.5},{"y":1904,"d":"19041206","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":17424,"fk":16.29,"ease":35.9,"asl":32.39,"i":3.89,"we":12.24,"you":0.57,"tone":21.9,"short":3.8},{"y":1905,"d":"19051205","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":25109,"fk":15.71,"ease":38.3,"asl":31.43,"i":5.38,"we":10.56,"you":0.56,"tone":20.7,"short":4.6},{"y":1906,"d":"19061203","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":23644,"fk":16.95,"ease":36.0,"asl":35.13,"i":3.94,"we":9.32,"you":0.93,"tone":13.9,"short":3.7},{"y":1907,"d":"19071203","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":27420,"fk":15.76,"ease":38.3,"asl":31.59,"i":4.45,"we":8.06,"you":0.4,"tone":16.9,"short":7.1},{"y":1908,"d":"19081208","p":"Theodore Roosevelt","party":"Republican","dv":"written","w":19452,"fk":16.0,"ease":37.3,"asl":32.05,"i":3.7,"we":9.0,"you":0.21,"tone":12.4,"short":8.7},{"y":1909,"d":"19091207","p":"William H. Taft","party":"Republican","dv":"written","w":13898,"fk":18.75,"ease":25.8,"asl":36.57,"i":8.02,"we":3.32,"you":0.43,"tone":33.1,"short":10.0},{"y":1910,"d":"19101206","p":"William H. Taft","party":"Republican","dv":"written","w":6770,"fk":18.25,"ease":25.3,"asl":35.26,"i":4.06,"we":3.6,"you":0.16,"tone":40.0,"short":13.8},{"y":1911,"d":"19111205","p":"William H. Taft","party":"Republican","dv":"written","w":23713,"fk":16.93,"ease":32.4,"asl":32.98,"i":7.99,"we":4.0,"you":1.06,"tone":26.2,"short":15.8},{"y":1912,"d":"19121203","p":"William H. Taft","party":"Republican","dv":"written","w":25156,"fk":17.74,"ease":29.0,"asl":34.37,"i":6.54,"we":8.41,"you":0.2,"tone":29.2,"short":7.3},{"y":1913,"d":"19131202","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":3552,"fk":15.7,"ease":40.6,"asl":32.59,"i":14.87,"we":25.25,"you":3.93,"tone":35.4,"short":9.2},{"y":1914,"d":"19141208","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":4535,"fk":12.19,"ease":54.1,"asl":26.06,"i":9.23,"we":53.2,"you":1.76,"tone":30.3,"short":14.4},{"y":1915,"d":"19151207","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":7688,"fk":16.32,"ease":38.9,"asl":34.17,"i":8.43,"we":28.8,"you":3.63,"tone":22.4,"short":12.1},{"y":1916,"d":"19161205","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":2117,"fk":19.74,"ease":24.7,"asl":39.94,"i":14.12,"we":8.0,"you":4.71,"tone":27.9,"short":1.9},{"y":1917,"d":"19171204","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":3917,"fk":13.4,"ease":49.9,"asl":28.59,"i":11.19,"we":28.99,"you":2.03,"tone":10.0,"short":8.8},{"y":1918,"d":"19181202","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":5467,"fk":15.59,"ease":43.0,"asl":33.54,"i":16.64,"we":18.83,"you":3.11,"tone":19.5,"short":7.4},{"y":1919,"d":"19191202","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":4755,"fk":15.28,"ease":37.8,"asl":29.35,"i":7.77,"we":9.45,"you":1.89,"tone":15.5,"short":7.5},{"y":1920,"d":"19201207","p":"Woodrow Wilson","party":"Democratic","dv":"spoken","w":2707,"fk":18.12,"ease":32.1,"asl":37.6,"i":14.46,"we":8.9,"you":3.71,"tone":29.8,"short":1.4},{"y":1921,"d":"19211206","p":"Warren Harding","party":"Republican","dv":"spoken","w":5604,"fk":15.1,"ease":34.8,"asl":26.94,"i":6.6,"we":26.76,"you":3.75,"tone":17.8,"short":10.0},{"y":1922,"d":"19221208","p":"Warren Harding","party":"Republican","dv":"spoken","w":5752,"fk":14.47,"ease":36.6,"asl":25.45,"i":4.69,"we":26.06,"you":1.91,"tone":9.2,"short":4.9},{"y":1923,"d":"19231206","p":"Calvin Coolidge","party":"Republican","dv":"spoken","w":6703,"fk":11.62,"ease":44.5,"asl":18.41,"i":5.23,"we":18.52,"you":0.45,"tone":19.4,"short":18.4},{"y":1924,"d":"19241203","p":"Calvin Coolidge","party":"Republican","dv":"written","w":6966,"fk":14.29,"ease":37.4,"asl":25.15,"i":7.77,"we":18.43,"you":0.0,"tone":26.8,"short":4.7},{"y":1925,"d":"19251208","p":"Calvin Coolidge","party":"Republican","dv":"written","w":10843,"fk":13.06,"ease":41.3,"asl":22.4,"i":3.24,"we":18.06,"you":0.28,"tone":23.5,"short":8.7},{"y":1926,"d":"19261207","p":"Calvin Coolidge","party":"Republican","dv":"written","w":10308,"fk":13.42,"ease":40.6,"asl":23.43,"i":4.49,"we":20.49,"you":0.39,"tone":22.0,"short":8.1},{"y":1927,"d":"19271206","p":"Calvin Coolidge","party":"Republican","dv":"written","w":8777,"fk":11.98,"ease":44.0,"asl":19.59,"i":0.69,"we":16.39,"you":0.11,"tone":17.1,"short":11.1},{"y":1928,"d":"19281204","p":"Calvin Coolidge","party":"Republican","dv":"written","w":8060,"fk":12.89,"ease":40.8,"asl":21.44,"i":4.63,"we":15.27,"you":0.25,"tone":22.1,"short":6.6},{"y":1929,"d":"19291203","p":"Herbert Hoover","party":"Republican","dv":"written","w":11007,"fk":15.25,"ease":33.5,"asl":26.85,"i":6.24,"we":13.32,"you":0.09,"tone":21.7,"short":4.4},{"y":1930,"d":"19301202","p":"Herbert Hoover","party":"Republican","dv":"written","w":4552,"fk":16.11,"ease":28.9,"asl":27.76,"i":7.15,"we":11.39,"you":0.0,"tone":9.2,"short":2.5},{"y":1931,"d":"19311208","p":"Herbert Hoover","party":"Republican","dv":"written","w":5690,"fk":14.32,"ease":32.6,"asl":22.58,"i":7.42,"we":20.51,"you":0.0,"tone":16.2,"short":8.7},{"y":1932,"d":"19321206","p":"Herbert Hoover","party":"Republican","dv":"written","w":4218,"fk":13.37,"ease":38.5,"asl":22.08,"i":7.37,"we":15.97,"you":0.0,"tone":10.7,"short":6.8},{"y":1934,"d":"19340103","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":2237,"fk":15.91,"ease":35.3,"asl":30.64,"i":13.45,"we":26.0,"you":6.28,"tone":25.2,"short":16.5},{"y":1935,"d":"19350104","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3535,"fk":13.86,"ease":41.2,"asl":25.62,"i":11.93,"we":24.42,"you":3.69,"tone":28.1,"short":3.6},{"y":1936,"d":"19360103","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3842,"fk":11.83,"ease":51.8,"asl":23.43,"i":11.78,"we":20.16,"you":11.0,"tone":22.9,"short":16.2},{"y":1937,"d":"19370106","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":2737,"fk":14.5,"ease":37.5,"asl":26.07,"i":6.93,"we":18.23,"you":1.46,"tone":17.3,"short":9.4},{"y":1938,"d":"19380103","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":4725,"fk":14.28,"ease":41.3,"asl":27.47,"i":9.14,"we":15.95,"you":1.49,"tone":4.0,"short":7.0},{"y":1939,"d":"19390104","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3806,"fk":12.21,"ease":47.2,"asl":22.52,"i":3.97,"we":38.91,"you":0.79,"tone":16.8,"short":11.2},{"y":1940,"d":"19400103","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3230,"fk":13.24,"ease":46.9,"asl":26.48,"i":4.98,"we":34.53,"you":1.87,"tone":13.6,"short":5.0},{"y":1941,"d":"19410106","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3348,"fk":11.89,"ease":49.7,"asl":22.62,"i":4.81,"we":40.9,"you":2.11,"tone":19.3,"short":8.1},{"y":1942,"d":"19420106","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3558,"fk":10.22,"ease":58.3,"asl":20.81,"i":4.02,"we":42.17,"you":0.57,"tone":-3.2,"short":15.0},{"y":1943,"d":"19430107","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":4645,"fk":11.41,"ease":54.1,"asl":23.23,"i":8.29,"we":39.03,"you":2.62,"tone":-0.2,"short":10.9},{"y":1944,"d":"19440111","p":"Franklin D. Roosevelt","party":"Democratic","dv":"spoken","w":3860,"fk":11.67,"ease":51.5,"asl":22.84,"i":9.16,"we":27.49,"you":0.52,"tone":-2.3,"short":14.5},{"y":1945,"d":"19450106","p":"Franklin D. Roosevelt","party":"Democratic","dv":"written","w":8303,"fk":13.03,"ease":44.9,"asl":24.57,"i":3.9,"we":35.62,"you":0.49,"tone":4.9,"short":5.4},{"y":1946,"d":"19460121","p":"Harry S. Truman","party":"Democratic","dv":"written","w":27882,"fk":13.29,"ease":38.7,"asl":21.92,"i":5.8,"we":15.97,"you":0.04,"tone":13.0,"short":13.1},{"y":1947,"d":"19470106","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":6063,"fk":12.56,"ease":41.9,"asl":20.76,"i":8.1,"we":28.44,"you":1.98,"tone":14.8,"short":9.9},{"y":1948,"d":"19480107","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":5127,"fk":10.79,"ease":50.1,"asl":18.25,"i":6.1,"we":51.34,"you":0.0,"tone":30.4,"short":8.7},{"y":1949,"d":"19490105","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":3415,"fk":11.32,"ease":46.7,"asl":18.46,"i":7.05,"we":45.86,"you":0.88,"tone":27.8,"short":15.6},{"y":1950,"d":"19500104","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":5138,"fk":12.15,"ease":46.7,"asl":21.77,"i":6.62,"we":52.02,"you":0.58,"tone":37.1,"short":5.1},{"y":1951,"d":"19510108","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":4016,"fk":9.0,"ease":60.0,"asl":16.6,"i":5.25,"we":60.02,"you":1.0,"tone":24.7,"short":13.1},{"y":1952,"d":"19520109","p":"Harry S. Truman","party":"Democratic","dv":"spoken","w":5399,"fk":9.16,"ease":61.9,"asl":18.36,"i":8.21,"we":54.68,"you":0.75,"tone":22.6,"short":12.5},{"y":1953,"d":"19530107","p":"Harry S. Truman","party":"Democratic","dv":"written","w":9758,"fk":11.65,"ease":51.3,"asl":22.54,"i":6.71,"we":38.8,"you":1.14,"tone":16.3,"short":11.4},{"y":1953,"d":"19530202","p":"Dwight D. Eisenhower","party":"Republican","dv":"written","w":7003,"fk":13.09,"ease":37.9,"asl":20.66,"i":6.33,"we":28.36,"you":1.44,"tone":26.7,"short":10.0},{"y":1954,"d":"19540107","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":6011,"fk":13.35,"ease":37.1,"asl":21.24,"i":9.18,"we":30.03,"you":0.17,"tone":27.6,"short":8.0},{"y":1955,"d":"19550106","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":7282,"fk":13.99,"ease":33.2,"asl":21.67,"i":10.45,"we":33.01,"you":0.14,"tone":34.2,"short":8.3},{"y":1956,"d":"19560105","p":"Dwight D. Eisenhower","party":"Republican","dv":"written","w":8291,"fk":13.6,"ease":36.5,"asl":21.93,"i":7.61,"we":28.61,"you":0.12,"tone":25.8,"short":8.8},{"y":1957,"d":"19570110","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":4157,"fk":13.59,"ease":37.1,"asl":22.23,"i":7.22,"we":32.23,"you":0.96,"tone":33.8,"short":9.1},{"y":1958,"d":"19580109","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":4935,"fk":12.39,"ease":42.5,"asl":20.39,"i":8.7,"we":36.03,"you":0.4,"tone":24.7,"short":16.7},{"y":1959,"d":"19590109","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":4915,"fk":11.73,"ease":44.5,"asl":18.9,"i":6.53,"we":39.4,"you":0.2,"tone":28.3,"short":13.3},{"y":1960,"d":"19600107","p":"Dwight D. Eisenhower","party":"Republican","dv":"spoken","w":5674,"fk":13.34,"ease":38.8,"asl":22.25,"i":10.6,"we":34.27,"you":0.71,"tone":27.2,"short":8.0},{"y":1961,"d":"19610112","p":"Dwight D. Eisenhower","party":"Republican","dv":"written","w":6235,"fk":14.44,"ease":31.6,"asl":22.59,"i":4.08,"we":17.31,"you":0.65,"tone":29.6,"short":4.5},{"y":1961,"d":"19610130","p":"John F. Kennedy","party":"Democratic","dv":"written","w":5383,"fk":13.84,"ease":41.4,"asl":26.13,"i":9.7,"we":38.21,"you":0.57,"tone":16.7,"short":16.3},{"y":1962,"d":"19620111","p":"John F. Kennedy","party":"Democratic","dv":"spoken","w":6735,"fk":13.36,"ease":43.5,"asl":25.42,"i":7.29,"we":42.51,"you":1.37,"tone":24.4,"short":11.3},{"y":1963,"d":"19630114","p":"John F. Kennedy","party":"Democratic","dv":"spoken","w":5456,"fk":12.26,"ease":48.7,"asl":23.62,"i":5.21,"we":30.7,"you":0.93,"tone":22.5,"short":12.8},{"y":1964,"d":"19640108","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":3234,"fk":12.42,"ease":49.3,"asl":24.5,"i":7.53,"we":46.77,"you":2.51,"tone":20.4,"short":15.7},{"y":1965,"d":"19650104","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":4463,"fk":9.45,"ease":58.3,"asl":17.57,"i":15.6,"we":45.43,"you":3.16,"tone":24.2,"short":15.7},{"y":1966,"d":"19660112","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":5375,"fk":11.06,"ease":55.0,"asl":22.3,"i":13.06,"we":37.29,"you":7.38,"tone":13.5,"short":14.3},{"y":1967,"d":"19670110","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":7285,"fk":10.63,"ease":54.8,"asl":20.46,"i":13.35,"we":48.62,"you":4.22,"tone":17.4,"short":10.7},{"y":1968,"d":"19680117","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":5041,"fk":10.14,"ease":56.1,"asl":19.39,"i":16.04,"we":40.5,"you":4.32,"tone":12.2,"short":15.6},{"y":1969,"d":"19690114","p":"Lyndon B. Johnson","party":"Democratic","dv":"spoken","w":4184,"fk":10.23,"ease":57.8,"asl":20.51,"i":28.92,"we":31.86,"you":5.64,"tone":18.2,"short":16.8},{"y":1970,"d":"19700122","p":"Richard Nixon","party":"Republican","dv":"spoken","w":4491,"fk":11.34,"ease":53.8,"asl":22.57,"i":11.26,"we":42.1,"you":0.9,"tone":20.3,"short":10.6},{"y":1971,"d":"19710122","p":"Richard Nixon","party":"Republican","dv":"spoken","w":4581,"fk":11.5,"ease":54.6,"asl":23.86,"i":13.07,"we":28.8,"you":3.54,"tone":30.7,"short":12.6},{"y":1972,"d":"19720120","p":"Richard Nixon","party":"Republican","dv":"spoken","w":4022,"fk":11.82,"ease":51.4,"asl":23.25,"i":9.81,"we":42.02,"you":1.26,"tone":23.5,"short":14.4},{"y":1973,"d":"19730202","p":"Richard Nixon","party":"Republican","dv":"written","w":1685,"fk":14.24,"ease":42.5,"asl":28.08,"i":10.19,"we":38.37,"you":0.0,"tone":34.1,"short":5.0},{"y":1974,"d":"19740130","p":"Richard Nixon","party":"Republican","dv":"spoken","w":5188,"fk":12.4,"ease":50.8,"asl":25.18,"i":18.76,"we":39.87,"you":2.74,"tone":26.8,"short":8.3},{"y":1975,"d":"19750115","p":"Gerald R. Ford","party":"Republican","dv":"spoken","w":4143,"fk":11.2,"ease":47.4,"asl":18.41,"i":18.24,"we":31.54,"you":1.97,"tone":14.3,"short":13.3},{"y":1976,"d":"19760119","p":"Gerald R. Ford","party":"Republican","dv":"spoken","w":5003,"fk":10.78,"ease":50.2,"asl":18.26,"i":19.62,"we":39.45,"you":1.21,"tone":17.0,"short":13.5},{"y":1977,"d":"19770112","p":"Gerald R. Ford","party":"Republican","dv":"spoken","w":4677,"fk":12.59,"ease":43.8,"asl":21.96,"i":23.74,"we":34.32,"you":4.1,"tone":26.6,"short":8.4},{"y":1978,"d":"19780119","p":"Jimmy Carter","party":"Democratic","dv":"spoken","w":4580,"fk":10.11,"ease":55.1,"asl":18.25,"i":12.72,"we":51.32,"you":3.51,"tone":21.5,"short":12.0},{"y":1979,"d":"19790125","p":"Jimmy Carter","party":"Democratic","dv":"spoken","w":3273,"fk":11.62,"ease":47.8,"asl":20.33,"i":8.32,"we":55.13,"you":1.23,"tone":28.1,"short":8.8},{"y":1980,"d":"19800121","p":"Jimmy Carter","party":"Democratic","dv":"spoken","w":3428,"fk":11.72,"ease":48.1,"asl":20.9,"i":7.93,"we":47.28,"you":4.99,"tone":25.9,"short":12.3},{"y":1981,"d":"19810116","p":"Jimmy Carter","party":"Democratic","dv":"written","w":33764,"fk":14.97,"ease":29.4,"asl":23.55,"i":9.9,"we":22.35,"you":0.06,"tone":27.2,"short":7.7},{"y":1982,"d":"19820126","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":5243,"fk":11.11,"ease":51.1,"asl":20.17,"i":8.71,"we":38.5,"you":3.29,"tone":19.2,"short":15.8},{"y":1983,"d":"19830125","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":5638,"fk":11.53,"ease":49.6,"asl":21.04,"i":9.46,"we":42.5,"you":1.79,"tone":21.9,"short":10.9},{"y":1984,"d":"19840125","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":5003,"fk":9.65,"ease":55.5,"asl":16.68,"i":9.87,"we":46.95,"you":5.44,"tone":27.6,"short":19.6},{"y":1985,"d":"19850206","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":4280,"fk":10.43,"ease":53.4,"asl":18.69,"i":5.65,"we":50.62,"you":4.0,"tone":29.6,"short":14.5},{"y":1986,"d":"19860204","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":3535,"fk":10.3,"ease":55.5,"asl":19.32,"i":11.66,"we":45.21,"you":9.38,"tone":26.2,"short":17.5},{"y":1987,"d":"19870127","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":3861,"fk":9.88,"ease":56.6,"asl":18.3,"i":16.01,"we":46.71,"you":7.61,"tone":20.2,"short":12.6},{"y":1988,"d":"19880125","p":"Ronald Reagan","party":"Republican","dv":"spoken","w":4941,"fk":11.23,"ease":52.0,"asl":21.21,"i":13.15,"we":39.46,"you":6.58,"tone":25.7,"short":15.5},{"y":1989,"d":"19890209","p":"George H.W. Bush","party":"Republican","dv":"spoken","w":4821,"fk":8.89,"ease":60.5,"asl":16.45,"i":26.07,"we":41.51,"you":8.55,"tone":22.8,"short":19.6},{"y":1990,"d":"19900131","p":"George H.W. Bush","party":"Republican","dv":"spoken","w":3782,"fk":8.53,"ease":62.4,"asl":16.03,"i":15.37,"we":43.47,"you":6.89,"tone":22.8,"short":24.0},{"y":1991,"d":"19910129","p":"George H.W. Bush","party":"Republican","dv":"spoken","w":3822,"fk":9.62,"ease":55.2,"asl":16.47,"i":8.13,"we":47.19,"you":2.62,"tone":20.8,"short":23.2},{"y":1992,"d":"19920128","p":"George H.W. Bush","party":"Republican","dv":"spoken","w":4738,"fk":7.75,"ease":67.6,"asl":15.85,"i":29.31,"we":33.52,"you":12.44,"tone":13.8,"short":27.3},{"y":1993,"d":"19930217","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":7007,"fk":11.35,"ease":56.2,"asl":23.91,"i":19.98,"we":44.12,"you":8.19,"tone":20.6,"short":13.4},{"y":1994,"d":"19940125","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":7456,"fk":9.84,"ease":60.2,"asl":20.1,"i":15.81,"we":42.3,"you":10.54,"tone":14.4,"short":17.3},{"y":1995,"d":"19950124","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":9229,"fk":9.81,"ease":61.1,"asl":20.55,"i":16.99,"we":45.86,"you":8.28,"tone":12.6,"short":17.5},{"y":1996,"d":"19960123","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":6341,"fk":9.55,"ease":58.3,"asl":17.91,"i":17.31,"we":45.43,"you":7.78,"tone":16.3,"short":20.6},{"y":1997,"d":"19970204","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":6805,"fk":10.16,"ease":56.9,"asl":19.55,"i":12.59,"we":52.74,"you":5.63,"tone":20.8,"short":20.3},{"y":1998,"d":"19980127","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":7344,"fk":10.37,"ease":56.2,"asl":20.01,"i":15.08,"we":42.64,"you":8.23,"tone":21.4,"short":12.9},{"y":1999,"d":"19990119","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":7521,"fk":10.34,"ease":55.2,"asl":19.28,"i":15.64,"we":48.13,"you":9.09,"tone":23.3,"short":15.8},{"y":2000,"d":"20000127","p":"William J. Clinton","party":"Democratic","dv":"spoken","w":7521,"fk":10.12,"ease":54.5,"asl":18.17,"i":12.81,"we":45.85,"you":4.59,"tone":21.7,"short":17.2},{"y":2001,"d":"20010227","p":"George W. Bush","party":"Republican","dv":"spoken","w":4395,"fk":9.0,"ease":59.0,"asl":16.04,"i":17.72,"we":47.18,"you":7.83,"tone":23.8,"short":22.0},{"y":2001,"d":"20010920","p":"George W. Bush","party":"Republican","dv":"spoken","w":2969,"fk":9.25,"ease":57.0,"asl":15.88,"i":10.09,"we":40.38,"you":10.09,"tone":-1.2,"short":20.4},{"y":2002,"d":"20020129","p":"George W. Bush","party":"Republican","dv":"spoken","w":3836,"fk":10.04,"ease":55.0,"asl":17.93,"i":13.33,"we":45.21,"you":4.18,"tone":7.5,"short":12.3},{"y":2003,"d":"20030128","p":"George W. Bush","party":"Republican","dv":"spoken","w":5381,"fk":10.39,"ease":52.6,"asl":18.0,"i":7.3,"we":33.71,"you":6.55,"tone":2.9,"short":15.8},{"y":2004,"d":"20040120","p":"George W. Bush","party":"Republican","dv":"spoken","w":5177,"fk":10.34,"ease":54.2,"asl":18.69,"i":8.92,"we":34.13,"you":10.47,"tone":11.3,"short":10.2},{"y":2005,"d":"20050202","p":"George W. Bush","party":"Republican","dv":"spoken","w":5055,"fk":11.74,"ease":48.3,"asl":20.98,"i":9.53,"we":36.74,"you":7.94,"tone":29.1,"short":4.7},{"y":2006,"d":"20060131","p":"George W. Bush","party":"Republican","dv":"spoken","w":5321,"fk":11.2,"ease":49.2,"asl":19.35,"i":7.91,"we":47.86,"you":3.77,"tone":16.3,"short":9.1},{"y":2007,"d":"20070123","p":"George W. Bush","party":"Republican","dv":"spoken","w":5598,"fk":10.14,"ease":56.8,"asl":19.3,"i":7.01,"we":40.24,"you":4.49,"tone":10.0,"short":9.2},{"y":2008,"d":"20080128","p":"George W. Bush","party":"Republican","dv":"spoken","w":5752,"fk":10.44,"ease":53.4,"asl":18.61,"i":8.17,"we":47.11,"you":6.95,"tone":21.1,"short":12.2},{"y":2009,"d":"20090224","p":"Barack Obama","party":"Democratic","dv":"spoken","w":5940,"fk":10.39,"ease":57.3,"asl":20.77,"i":15.02,"we":44.88,"you":8.1,"tone":10.6,"short":13.3},{"y":2010,"d":"20100127","p":"Barack Obama","party":"Democratic","dv":"spoken","w":7106,"fk":9.22,"ease":60.0,"asl":17.5,"i":16.09,"we":44.74,"you":3.53,"tone":8.6,"short":22.9},{"y":2011,"d":"20110125","p":"Barack Obama","party":"Democratic","dv":"spoken","w":6940,"fk":8.67,"ease":62.9,"asl":16.97,"i":11.34,"we":51.77,"you":6.11,"tone":16.9,"short":22.1},{"y":2012,"d":"20120124","p":"Barack Obama","party":"Democratic","dv":"spoken","w":6987,"fk":8.86,"ease":61.2,"asl":16.72,"i":14.79,"we":31.45,"you":8.62,"tone":12.1,"short":22.7},{"y":2013,"d":"20130212","p":"Barack Obama","party":"Democratic","dv":"spoken","w":6467,"fk":10.47,"ease":54.8,"asl":19.72,"i":9.62,"we":49.81,"you":3.26,"tone":18.8,"short":15.0},{"y":2014,"d":"20140128","p":"Barack Obama","party":"Democratic","dv":"spoken","w":6778,"fk":10.32,"ease":56.1,"asl":19.7,"i":12.75,"we":40.74,"you":4.4,"tone":19.8,"short":18.1},{"y":2015,"d":"20150120","p":"Barack Obama","party":"Democratic","dv":"spoken","w":6727,"fk":9.37,"ease":60.4,"asl":18.28,"i":15.96,"we":53.24,"you":6.41,"tone":19.0,"short":27.4},{"y":2016,"d":"20160112","p":"Barack Obama","party":"Democratic","dv":"spoken","w":5438,"fk":9.52,"ease":59.7,"asl":18.5,"i":12.48,"we":49.37,"you":4.96,"tone":12.3,"short":18.9},{"y":2017,"d":"20170228","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":5036,"fk":9.31,"ease":58.2,"asl":16.84,"i":11.57,"we":49.45,"you":5.98,"tone":19.4,"short":24.6},{"y":2018,"d":"20180130","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":5190,"fk":9.29,"ease":57.3,"asl":16.32,"i":8.4,"we":47.66,"you":5.66,"tone":11.7,"short":20.1},{"y":2019,"d":"20190205","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":5247,"fk":10.09,"ease":54.1,"asl":17.79,"i":12.0,"we":44.71,"you":3.68,"tone":10.1,"short":16.9},{"y":2020,"d":"20200204","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":5879,"fk":10.43,"ease":51.6,"asl":17.55,"i":14.89,"we":32.0,"you":9.41,"tone":18.8,"short":16.0},{"y":2021,"d":"20210428","p":"Joseph R. Biden","party":"Democratic","dv":"spoken","w":6172,"fk":7.9,"ease":62.6,"asl":13.87,"i":17.93,"we":41.39,"you":4.02,"tone":5.2,"short":36.7},{"y":2022,"d":"20220301","p":"Joseph R. Biden","party":"Democratic","dv":"spoken","w":7831,"fk":8.35,"ease":62.9,"asl":15.79,"i":18.39,"we":36.13,"you":14.61,"tone":11.0,"short":31.5},{"y":2023,"d":"20230207","p":"Joseph R. Biden","party":"Democratic","dv":"spoken","w":9396,"fk":7.33,"ease":67.5,"asl":14.32,"i":22.24,"we":39.54,"you":14.79,"tone":6.9,"short":36.1},{"y":2024,"d":"20240307","p":"Joseph R. Biden","party":"Democratic","dv":"spoken","w":8267,"fk":7.61,"ease":65.3,"asl":14.25,"i":34.1,"we":19.61,"you":13.99,"tone":6.1,"short":38.3},{"y":2025,"d":"20250304","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":9873,"fk":7.79,"ease":64.7,"asl":14.39,"i":17.76,"we":37.47,"you":14.37,"tone":10.8,"short":39.4},{"y":2026,"d":"20260224","p":"Donald J. Trump","party":"Republican","dv":"spoken","w":10588,"fk":7.7,"ease":66.4,"asl":15.0,"i":19.52,"we":28.22,"you":13.39,"tone":10.7,"short":37.7}],"presidents":[{"president":"Joseph R. Biden","party":"Democratic","n_addresses":4,"years":[2021,2022,2023,2024],"avg_fk_grade":7.8,"avg_words":7916,"avg_sentence_len":14.56,"avg_i":23.16,"avg_we":34.17,"avg_you":11.85,"avg_tone":7.3,"avg_short":35.6,"sample_sentence":"That will be the fastest pace of economic growth in this country in nearly four decades."},{"president":"George H.W. Bush","party":"Republican","n_addresses":4,"years":[1989,1990,1991,1992],"avg_fk_grade":8.7,"avg_words":4291,"avg_sentence_len":16.2,"avg_i":19.72,"avg_we":41.42,"avg_you":7.62,"avg_tone":20.1,"avg_short":23.5,"sample_sentence":"There are singular moments in history, dates that divide all that goes before from all that comes after."},{"president":"Donald J. Trump","party":"Republican","n_addresses":6,"years":[2017,2018,2019,2020,2025,2026],"avg_fk_grade":9.1,"avg_words":6969,"avg_sentence_len":16.32,"avg_i":14.02,"avg_we":39.92,"avg_you":8.75,"avg_tone":13.6,"avg_short":25.8,"sample_sentence":"But through it all, we have seen the beauty of America's soul, and the steel in America's spine."},{"president":"Barack Obama","party":"Democratic","n_addresses":8,"years":[2009,2010,2011,2012,2013,2014,2015,2016],"avg_fk_grade":9.6,"avg_words":6548,"avg_sentence_len":18.52,"avg_i":13.51,"avg_we":45.75,"avg_you":5.67,"avg_tone":14.8,"avg_short":20.1,"sample_sentence":"We made change work for us, always extending America's promise outward, to the next frontier, to more and more people."},{"president":"William J. Clinton","party":"Democratic","n_addresses":8,"years":[1993,1994,1995,1996,1997,1998,1999,2000],"avg_fk_grade":10.19,"avg_words":7403,"avg_sentence_len":19.94,"avg_i":15.78,"avg_we":45.88,"avg_you":7.79,"avg_tone":18.9,"avg_short":16.9,"sample_sentence":"Let us at least agree we should not pass any measure, no measure should be passed that threatens Social Security."},{"president":"George W. Bush","party":"Republican","n_addresses":9,"years":[2001,2001,2002,2003,2004,2005,2006,2007,2008],"avg_fk_grade":10.28,"avg_words":4832,"avg_sentence_len":18.31,"avg_i":10.0,"avg_we":41.4,"avg_you":6.92,"avg_tone":13.4,"avg_short":12.9,"sample_sentence":"Twenty-eight months have passed since September the 11th, 2001 -- over 2 years without an attack on American soil."},{"president":"Ronald Reagan","party":"Republican","n_addresses":7,"years":[1982,1983,1984,1985,1986,1987,1988],"avg_fk_grade":10.59,"avg_words":4643,"avg_sentence_len":19.34,"avg_i":10.64,"avg_we":44.28,"avg_you":5.44,"avg_tone":24.3,"avg_short":15.2,"sample_sentence":"In Europe, they're calling it \"the American Miracle.\" Day by day, we're shattering accepted notions of what is possible."},{"president":"Lyndon B. Johnson","party":"Democratic","n_addresses":6,"years":[1964,1965,1966,1967,1968,1969],"avg_fk_grade":10.65,"avg_words":4930,"avg_sentence_len":20.79,"avg_i":15.75,"avg_we":41.74,"avg_you":4.54,"avg_tone":17.6,"avg_short":14.8,"sample_sentence":"I have come here tonight to discuss with you five ways of carrying forward the progress of these last 3 years."},{"president":"Harry S. Truman","party":"Democratic","n_addresses":8,"years":[1946,1947,1948,1949,1950,1951,1952,1953],"avg_fk_grade":11.24,"avg_words":8350,"avg_sentence_len":19.83,"avg_i":6.73,"avg_we":43.39,"avg_you":0.8,"avg_tone":23.3,"avg_short":11.2,"sample_sentence":"The Government must see that every American has a chance to obtain his fair share of our increasing abundance."},{"president":"Gerald R. Ford","party":"Republican","n_addresses":3,"years":[1975,1976,1977],"avg_fk_grade":11.52,"avg_words":4608,"avg_sentence_len":19.54,"avg_i":20.53,"avg_we":35.1,"avg_you":2.43,"avg_tone":19.3,"avg_short":11.7,"sample_sentence":"Therefore, it is more important than ever that we take steps to control the growth of Federal expenditures."},{"president":"Jimmy Carter","party":"Democratic","n_addresses":4,"years":[1978,1979,1980,1981],"avg_fk_grade":12.11,"avg_words":11261,"avg_sentence_len":20.76,"avg_i":9.72,"avg_we":44.02,"avg_you":2.45,"avg_tone":25.7,"avg_short":10.2,"sample_sentence":"And tonight, as throughout our own generation, freedom and peace in the world depend on the state of our Union."},{"president":"Richard Nixon","party":"Republican","n_addresses":5,"years":[1970,1971,1972,1973,1974],"avg_fk_grade":12.26,"avg_words":3993,"avg_sentence_len":24.59,"avg_i":12.62,"avg_we":38.23,"avg_you":1.69,"avg_tone":27.1,"avg_short":10.2,"sample_sentence":"We meet at a time when we face great problems at home and abroad that will test the strength of our fiber as a nation."},{"president":"Franklin D. Roosevelt","party":"Democratic","n_addresses":12,"years":[1934,1935,1936,1937,1938,1939,1940,1941,1942,1943,1944,1945],"avg_fk_grade":12.84,"avg_words":3986,"avg_sentence_len":24.69,"avg_i":7.7,"avg_we":30.28,"avg_you":2.74,"avg_tone":12.2,"avg_short":10.2,"sample_sentence":"In this, the same cooperation and the same harmony existed between the American, French, and other Allied forces based in North Africa and Italy."},{"president":"Calvin Coolidge","party":"Republican","n_addresses":6,"years":[1923,1924,1925,1926,1927,1928],"avg_fk_grade":12.88,"avg_words":8610,"avg_sentence_len":21.74,"avg_i":4.34,"avg_we":17.86,"avg_you":0.25,"avg_tone":21.8,"avg_short":9.6,"sample_sentence":"The advancement of world civilization likewise is dependent upon that order among the people of different countries which we term peace."},{"president":"John F. Kennedy","party":"Democratic","n_addresses":3,"years":[1961,1962,1963],"avg_fk_grade":13.15,"avg_words":5858,"avg_sentence_len":25.06,"avg_i":7.4,"avg_we":37.14,"avg_you":0.96,"avg_tone":21.2,"avg_short":13.5,"sample_sentence":"At home, we began the year in the valley of recession -- we completed it on the high road of recovery and growth."},{"president":"Dwight D. Eisenhower","party":"Republican","n_addresses":9,"years":[1953,1954,1955,1956,1957,1958,1959,1960,1961],"avg_fk_grade":13.28,"avg_words":6056,"avg_sentence_len":21.32,"avg_i":7.86,"avg_we":31.03,"avg_you":0.53,"avg_tone":28.7,"avg_short":9.6,"sample_sentence":"With both sides of this divided world in possession of unbelievably destructive weapons, mankind approaches a state where mutual annihilation becomes a possibility."},{"president":"Chester A. Arthur","party":"Republican","n_addresses":4,"years":[1881,1882,1883,1884],"avg_fk_grade":14.06,"avg_words":4910,"avg_sentence_len":24.59,"avg_i":7.93,"avg_we":9.97,"avg_you":2.19,"avg_tone":26.0,"avg_short":3.5,"sample_sentence":"The participation of Americans in the exhibitions at Melbourne and Sydney will be approvingly mentioned in the reports of the two exhibitions, soon to be presented to Congress."},{"president":"Abraham Lincoln","party":"Republican","n_addresses":4,"years":[1861,1862,1863,1864],"avg_fk_grade":14.29,"avg_words":6884,"avg_sentence_len":27.55,"avg_i":7.37,"avg_we":9.99,"avg_you":2.1,"avg_tone":20.9,"avg_short":5.4,"sample_sentence":"The national system will create a reliable and permanent influence in support of the national credit and protect the people against losses in the use of paper money."},{"president":"Herbert Hoover","party":"Republican","n_addresses":4,"years":[1929,1930,1931,1932],"avg_fk_grade":14.76,"avg_words":6367,"avg_sentence_len":24.82,"avg_i":7.04,"avg_we":15.3,"avg_you":0.02,"avg_tone":14.4,"avg_short":5.6,"sample_sentence":"Within two years there have been revolutions or acute social disorders in 19 countries, embracing more than half the population of the world."},{"president":"Warren Harding","party":"Republican","n_addresses":2,"years":[1921,1922],"avg_fk_grade":14.79,"avg_words":5678,"avg_sentence_len":26.2,"avg_i":5.64,"avg_we":26.41,"avg_you":2.83,"avg_tone":13.5,"avg_short":7.5,"sample_sentence":"They must themselves turn to the heroic remedies for the menacing conditions under which they are struggling, then we can help, and we mean to help."},{"president":"James Buchanan","party":"Democratic","n_addresses":4,"years":[1857,1858,1859,1860],"avg_fk_grade":15.56,"avg_words":14100,"avg_sentence_len":30.11,"avg_i":7.42,"avg_we":10.11,"avg_you":0.67,"avg_tone":16.9,"avg_short":3.3,"sample_sentence":"Its admission could have inflicted no possible injury on any human being, whilst it would within a brief period have restored peace to Kansas and harmony to the Union."},{"president":"Benjamin Harrison","party":"Republican","n_addresses":4,"years":[1889,1890,1891,1892],"avg_fk_grade":15.59,"avg_words":13638,"avg_sentence_len":30.77,"avg_i":6.6,"avg_we":10.25,"avg_you":0.39,"avg_tone":27.1,"avg_short":3.8,"sample_sentence":"Only the more important incidents and results, and chiefly such as may be the foundation of the recommendations I shall submit, will be referred to in this annual message."},{"president":"Theodore Roosevelt","party":"Republican","n_addresses":8,"years":[1901,1902,1903,1904,1905,1906,1907,1908],"avg_fk_grade":15.69,"avg_words":19677,"avg_sentence_len":31.17,"avg_i":3.42,"avg_we":11.68,"avg_you":0.47,"avg_tone":18.6,"avg_short":6.6,"sample_sentence":"If this proves impossible, it will certainly be necessary ultimately to confer in fullest form such power upon the National Government by a proper amendment of the Constitution."},{"president":"Woodrow Wilson","party":"Democratic","n_addresses":8,"years":[1913,1914,1915,1916,1917,1918,1919,1920],"avg_fk_grade":15.79,"avg_words":4342,"avg_sentence_len":32.73,"avg_i":12.09,"avg_we":22.68,"avg_you":3.1,"avg_tone":23.9,"avg_short":7.8,"sample_sentence":"You have but to look about you in any rural district to see the result, the handicap and embarrassment which have been put upon those who produce our food."},{"president":"Ulysses S. Grant","party":"Republican","n_addresses":8,"years":[1869,1870,1871,1872,1873,1874,1875,1876],"avg_fk_grade":16.63,"avg_words":8156,"avg_sentence_len":33.02,"avg_i":8.8,"avg_we":6.51,"avg_you":1.63,"avg_tone":27.4,"avg_short":5.5,"sample_sentence":"But even these, I believe, would be disappointed in the result if a course should be pursued which will keep in doubt the value of the legal-tender medium of exchange."},{"president":"William McKinley","party":"Republican","n_addresses":4,"years":[1897,1898,1899,1900],"avg_fk_grade":16.8,"avg_words":16660,"avg_sentence_len":32.09,"avg_i":4.77,"avg_we":8.29,"avg_you":0.68,"avg_tone":25.9,"avg_short":8.5,"sample_sentence":"No tangible relief was afforded the vast numbers of unhappy reconcentrados, despite the reiterated professions made in that regard and the amount appropriated by Spain to that end."},{"president":"Andrew Johnson","party":"Democratic","n_addresses":4,"years":[1865,1866,1867,1868],"avg_fk_grade":16.86,"avg_words":9564,"avg_sentence_len":33.25,"avg_i":3.98,"avg_we":12.36,"avg_you":0.76,"avg_tone":24.9,"avg_short":1.6,"sample_sentence":"It may, therefore, be of interest to compare the expenditures of the three war periods -- the war with Great Britain, the Mexican War, and the War of the Rebellion."},{"president":"James Monroe","party":"Democratic-Republican","n_addresses":8,"years":[1817,1818,1819,1820,1821,1822,1823,1824],"avg_fk_grade":17.35,"avg_words":5292,"avg_sentence_len":35.63,"avg_i":3.22,"avg_we":12.61,"avg_you":1.19,"avg_tone":33.9,"avg_short":1.6,"sample_sentence":"In those relating to foreign powers, I am happy to state that peace and amity are preserved with all by a strict observance on both sides of the rights of each."},{"president":"Rutherford B. Hayes","party":"Republican","n_addresses":4,"years":[1877,1878,1879,1880],"avg_fk_grade":17.38,"avg_words":8562,"avg_sentence_len":33.5,"avg_i":6.62,"avg_we":6.39,"avg_you":0.96,"avg_tone":32.5,"avg_short":3.8,"sample_sentence":"The importance and interest attached to the reports of consular officers are witnessed by the general demand for them by all classes of merchants and manufacturers engaged in our foreign trade."},{"president":"Millard Fillmore","party":"Whig","n_addresses":3,"years":[1850,1851,1852],"avg_fk_grade":17.4,"avg_words":10503,"avg_sentence_len":35.04,"avg_i":8.42,"avg_we":9.72,"avg_you":3.17,"avg_tone":28.3,"avg_short":1.9,"sample_sentence":"Before the expedition set out, and probably before it was organized, a slight insurrectionary movement, which appears to have been soon suppressed, had taken place in the eastern quarter of Cuba."},{"president":"James Polk","party":"Democratic","n_addresses":4,"years":[1845,1846,1847,1848],"avg_fk_grade":17.66,"avg_words":18032,"avg_sentence_len":35.9,"avg_i":3.96,"avg_we":13.04,"avg_you":1.2,"avg_tone":20.9,"avg_short":1.9,"sample_sentence":"Upper California is bounded on the north by our Oregon possessions, and if held by the United States would soon be settled by a hardy, enterprising, and intelligent portion of our population."},{"president":"Grover Cleveland","party":"Democratic","n_addresses":8,"years":[1885,1886,1887,1888,1893,1894,1895,1896],"avg_fk_grade":17.79,"avg_words":13443,"avg_sentence_len":34.92,"avg_i":4.53,"avg_we":11.45,"avg_you":0.39,"avg_tone":25.1,"avg_short":2.5,"sample_sentence":"The questions involved are of long standing, of grave consequence, and from time to time for nearly three-quarters of a century have given rise to earnest international discussions, not unaccompanied by irritation."},{"president":"William H. Taft","party":"Republican","n_addresses":4,"years":[1909,1910,1911,1912],"avg_fk_grade":17.92,"avg_words":17384,"avg_sentence_len":34.8,"avg_i":6.65,"avg_we":4.83,"avg_you":0.46,"avg_tone":32.1,"avg_short":11.7,"sample_sentence":"Indeed, it is high time that the dignity and power of this great Nation should be fittingly signalized by proper buildings for the occupancy of the Nation's representatives everywhere abroad."},{"president":"Zachary Taylor","party":"Whig","n_addresses":1,"years":[1849],"avg_fk_grade":18.1,"avg_words":7620,"avg_sentence_len":35.61,"avg_i":10.51,"avg_we":13.53,"avg_you":1.84,"avg_tone":31.3,"avg_short":4.8,"sample_sentence":"For this purpose I invested an agent then in Europe with power to declare our willingness promptly to recognize her independence in the event of her ability to sustain it."},{"president":"Thomas Jefferson","party":"Democratic-Republican","n_addresses":8,"years":[1801,1802,1803,1804,1805,1806,1807,1808],"avg_fk_grade":18.74,"avg_words":2588,"avg_sentence_len":38.74,"avg_i":4.83,"avg_we":24.44,"avg_you":5.43,"avg_tone":25.4,"avg_short":5.6,"sample_sentence":"The Senate and House of Representatives of the United States: Circumstances, fellow citizens, which seriously threatened the peace of our country have made it a duty to convene you at an earlier period than usual."},{"president":"John Adams","party":"Federalist","n_addresses":4,"years":[1797,1798,1799,1800],"avg_fk_grade":18.84,"avg_words":1790,"avg_sentence_len":37.33,"avg_i":9.27,"avg_we":18.24,"avg_you":5.56,"avg_tone":37.0,"avg_short":2.2,"sample_sentence":"The course of the transactions in relation to the United States and France which have come to my knowledge during your recess will be made the subject of a future communication."},{"president":"John Tyler","party":"Whig","n_addresses":4,"years":[1841,1842,1843,1844],"avg_fk_grade":18.84,"avg_words":8511,"avg_sentence_len":38.94,"avg_i":6.0,"avg_we":7.42,"avg_you":3.25,"avg_tone":29.2,"avg_short":1.6,"sample_sentence":"Many of the States composing this Union had made appeals to the civilized world for its suppression long before the moral sense of other nations had become shocked by the iniquities of the traffic."},{"president":"George Washington","party":"Unaffiliated","n_addresses":8,"years":[1790,1790,1791,1792,1793,1794,1795,1796],"avg_fk_grade":19.04,"avg_words":2080,"avg_sentence_len":38.2,"avg_i":10.69,"avg_we":12.8,"avg_you":8.33,"avg_tone":35.1,"avg_short":3.9,"sample_sentence":"It is well known that Congress did not hesitate to examine the complaints which were presented, and to relieve them as far as justice dictated or general convenience would permit."},{"president":"Andrew Jackson","party":"Democratic","n_addresses":8,"years":[1829,1830,1831,1832,1833,1834,1835,1836],"avg_fk_grade":19.67,"avg_words":10664,"avg_sentence_len":40.82,"avg_i":8.71,"avg_we":13.41,"avg_you":2.73,"avg_tone":30.8,"avg_short":0.9,"sample_sentence":"With an undiminished confidence in the sincere desire of His Britannic Majesty's Government to adjust that question, I am not yet in possession of the precise grounds upon which it proposes a satisfactory adjustment."},{"president":"John Quincy Adams","party":"Democratic-Republican","n_addresses":4,"years":[1825,1826,1827,1828],"avg_fk_grade":19.8,"avg_words":7776,"avg_sentence_len":40.91,"avg_i":1.81,"avg_we":11.8,"avg_you":1.08,"avg_tone":34.8,"avg_short":2.8,"sample_sentence":"They comprise large and valuable acquisitions of territory, and they secure an adjustment of boundaries and give pledges of permanent peace between several tribes which had been long waging bloody wars against each other."},{"president":"Franklin Pierce","party":"Democratic","n_addresses":4,"years":[1853,1854,1855,1856],"avg_fk_grade":20.04,"avg_words":10463,"avg_sentence_len":40.65,"avg_i":5.13,"avg_we":7.66,"avg_you":1.59,"avg_tone":23.4,"avg_short":1.5,"sample_sentence":"To avoid these irritating and vexatious delays, a proposition has been made to provide for a direct appeal for redress to the Captain-General by our consul in behalf of our injured fellow-citizens."},{"president":"Martin van Buren","party":"Democratic","n_addresses":4,"years":[1837,1838,1839,1840],"avg_fk_grade":20.91,"avg_words":11356,"avg_sentence_len":43.23,"avg_i":5.74,"avg_we":8.49,"avg_you":2.35,"avg_tone":29.1,"avg_short":2.1,"sample_sentence":"All forms of religion have united for the first time to diffuse charity and piety, because for the first time in the history of nations all have been totally untrammeled and absolutely free."},{"president":"James Madison","party":"Democratic-Republican","n_addresses":8,"years":[1809,1810,1811,1812,1813,1814,1815,1816],"avg_fk_grade":21.59,"avg_words":2712,"avg_sentence_len":44.42,"avg_i":3.37,"avg_we":13.81,"avg_you":1.71,"avg_tone":29.4,"avg_short":1.4,"sample_sentence":"In relation to the powers on the coast of Barbary, nothing has occurred which is not of a nature rather to inspire confidence than distrust as to the continuance of the existing amity."}]}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const A = DATA.addresses, P = DATA.presidents;
+document.getElementById('naddr').textContent = A.length;
+
+const PARTY_COLOR = {
+  "Republican":"var(--rep)","Democratic":"var(--dem)","Whig":"var(--whig)",
+  "Federalist":"var(--fed)","Democratic-Republican":"var(--demrep)","Unaffiliated":"var(--unaff)","Other":"#999"
+};
+const PARTY_HEX = {
+  "Republican":"#d64545","Democratic":"#2b6cb0","Whig":"#c99a2e",
+  "Federalist":"#7b54c9","Democratic-Republican":"#2f9e6b","Unaffiliated":"#7a8595","Other":"#999"
+};
+const DELIV_HEX = {"spoken":"#2b6cb0","written":"#b06a2e"};
+
+// ---- geometry ----
+const W=1180,H=640, m={t:28,r:30,b:54,l:74};
+const x0=m.l, x1=W-m.r, y0=H-m.b, y1=m.t;
+const xmin=1788, xmax=2028;
+const sx = y => x0 + (y-xmin)/(xmax-xmin)*(x1-x0);
+const wmax=33764;
+const RMAX=30; // px radius for the largest speech
+const sr = w => Math.sqrt(w/wmax)*RMAX + 2.2;
+
+// ---- selectable Y-axis measures (Tier 1) ----
+const METRICS={
+  fk:   {label:'Reading level (Flesch-Kincaid)', axis:'Flesch-Kincaid reading level',        f:d=>d.fk,   fmt:v=>v.toFixed(1),     tip:'reading level',         floor:6},
+  asl:  {label:'Sentence length',                axis:'Average words per sentence',           f:d=>d.asl,  fmt:v=>v.toFixed(0),     tip:'words / sentence',      floor:0},
+  short:{label:'Short “applause” lines',         axis:'% of sentences with 8 words or fewer', f:d=>d.short,fmt:v=>v.toFixed(0)+'%', tip:'% short sentences',     floor:0},
+  i:    {label:'First person — “I”',             axis:'“I / me / my” per 1,000 words',        f:d=>d.i,    fmt:v=>v.toFixed(1),     tip:'“I” per 1,000 words',   floor:0},
+  we:   {label:'Collective — “we”',              axis:'“we / us / our” per 1,000 words',      f:d=>d.we,   fmt:v=>v.toFixed(1),     tip:'“we” per 1,000 words',  floor:0},
+  you:  {label:'Direct address — “you”',         axis:'“you / your” per 1,000 words',         f:d=>d.you,  fmt:v=>v.toFixed(1),     tip:'“you” per 1,000 words', floor:0},
+  tone: {label:'Tone (positivity)',              axis:'Sentiment / tone  (−100 … +100)',      f:d=>d.tone, fmt:v=>v.toFixed(0),     tip:'tone (−100…100)',       floor:null},
+};
+let metric='fk';
+const acc=d=>METRICS[metric].f(d);
+
+function niceTicks(lo,hi,n){
+  const span=(hi-lo)||1, raw=span/n, mag=Math.pow(10,Math.floor(Math.log10(raw))), norm=raw/mag;
+  const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag;
+  const t=[]; for(let v=Math.ceil(lo/step)*step; v<=hi+1e-9; v+=step) t.push(Math.round(v/step)*step);
+  return {ticks:t, step};
+}
+
+const svg=document.getElementById('chart');
+const NS='http://www.w3.org/2000/svg';
+function el(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+const fy=d=>d.y + (((+d.d.slice(4,6))-1)||0)/12;  // fractional year so same-year speeches separate on x
+let sy=v=>v;                                       // time-view y-scale, rebuilt every render
+let qx=v=>v, qy=v=>v;                              // quadrant-view scales, rebuilt every render
+let colormode='party', showTrend=true, era='all', view='time';
+const DEFAULT=A.find(d=>d.d==='20260224')||A[A.length-1];
+let selected=DEFAULT;
+
+// sequential year ramp (older = pale, recent = deep navy) for the quadrant view
+const RAMP=[[1790,[223,231,239]],[1880,[159,192,214]],[1950,[63,127,166]],[2026,[10,46,77]]];
+function yearColor(yr){
+  let s=RAMP[0],e=RAMP[RAMP.length-1];
+  for(let i=1;i<RAMP.length;i++){ if(yr<=RAMP[i][0]){ s=RAMP[i-1]; e=RAMP[i]; break; } }
+  const t=Math.max(0,Math.min(1,(yr-s[0])/(e[0]-s[0])));
+  const c=s[1].map((v,j)=>Math.round(v+(e[1][j]-v)*t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+// position of an address in the current view
+function pos(d){
+  return view==='quad'
+    ? {cx:qx(d.w), cy:qy(d.fk), r:5.5}
+    : {cx:sx(fy(d)), cy:sy(acc(d)), r:Math.max(sr(d.w),3)};
+}
+
+function fillFor(d){
+  if(colormode==='delivery') return DELIV_HEX[d.dv];
+  if(colormode==='none') return '#7a8595';
+  return PARTY_HEX[d.party];
+}
+function inEra(d){
+  if(era==='all') return true;
+  if(era==='written') return d.dv==='written';
+  if(era==='spoken') return d.dv==='spoken';
+  if(era==='modern') return d.y>=2009;
+}
+
+// gaussian-weighted trend over year, for the current measure
+function trendPoints(){
+  const pts=[]; const bw=14;
+  for(let yr=1792; yr<=2026; yr+=2){
+    let sw=0, sv=0;
+    for(const d of A){ const w=Math.exp(-((d.y-yr)**2)/(2*bw*bw)); sw+=w; sv+=w*acc(d); }
+    pts.push([yr, sv/sw]);
+  }
+  return pts;
+}
+
+function render(){
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  // transparent capture layer so mousemove fires anywhere in the plot, not just over bubbles
+  svg.appendChild(el('rect',{x:x0,y:y1,width:x1-x0,height:y0-y1,fill:'transparent','pointer-events':'all'}));
+  if(view==='quad') renderQuad(); else renderTime();
+  // tracer overlay (filled by drawTracer on hover; never captures the pointer)
+  svg.appendChild(el('g',{id:'tracerG','pointer-events':'none'}));
+  buildLegend(); syncControls();
+}
+
+function renderTime(){
+  // y-domain for the current measure (padded, with nice round ticks)
+  const vals=A.map(acc);
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  const pad=((hi-lo)||1)*0.08; lo-=pad; hi+=pad;
+  const fl=METRICS[metric].floor; if(fl!==null && lo<fl) lo=fl;
+  sy=v=>y0+(v-lo)/(hi-lo)*(y1-y0);
+  const {ticks}=niceTicks(lo,hi,7);
+  const tlab=v=>(+v.toFixed(1)).toString();
+
+  // 1913 "cliff": faint band over the written-message era + a dashed marker
+  const ann=el('g',{});
+  ann.appendChild(el('rect',{x:sx(1801),y:y1,width:sx(1913)-sx(1801),height:y0-y1,fill:'#5b7088','fill-opacity':0.05}));
+  ann.appendChild(el('line',{class:'annot-line',x1:sx(1913),x2:sx(1913),y1:y1,y2:y0}));
+  const al=el('text',{class:'annot-label',x:sx(1913)-4,y:y0-6,'text-anchor':'end'});
+  al.textContent='1913 · Wilson revives the spoken address'; ann.appendChild(al);
+  const al2=el('text',{class:'annot-label',x:sx(1857),y:y1+12,'text-anchor':'middle'});
+  al2.textContent='written messages to Congress'; ann.appendChild(al2);
+  svg.appendChild(ann);
+
+  // gridlines + y ticks
+  const g=el('g',{class:'grid'});
+  for(const v of ticks){ if(v<lo-1e-9||v>hi+1e-9) continue; g.appendChild(el('line',{x1:x0,x2:x1,y1:sy(v),y2:sy(v)})); }
+  svg.appendChild(g);
+  const ax=el('g',{class:'axis'});
+  for(const v of ticks){ if(v<lo-1e-9||v>hi+1e-9) continue;
+    const t=el('text',{x:x0-10,y:sy(v)+4,'text-anchor':'end'}); t.textContent=tlab(v); ax.appendChild(t);
+  }
+  for(let yr=1800; yr<=2020; yr+=20){
+    const t=el('text',{x:sx(yr),y:y0+22,'text-anchor':'middle'}); t.textContent=yr; ax.appendChild(t);
+    ax.appendChild(el('line',{x1:sx(yr),x2:sx(yr),y1:y0,y2:y0+5}));
+  }
+  ax.appendChild(el('line',{x1:x0,x2:x1,y1:y0,y2:y0}));
+  svg.appendChild(ax);
+  const yl=el('text',{class:'axlabel',transform:`translate(20,${(y0+y1)/2}) rotate(-90)`,'text-anchor':'middle'});
+  yl.textContent=METRICS[metric].axis; svg.appendChild(yl);
+  const xl=el('text',{class:'axlabel',x:(x0+x1)/2,y:H-12,'text-anchor':'middle'});
+  xl.textContent='Year of address'; svg.appendChild(xl);
+
+  // trend
+  if(showTrend){
+    const pts=trendPoints();
+    const dpath=pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ');
+    svg.appendChild(el('path',{class:'trend',d:dpath}));
+  }
+
+  // bubbles (large first so small sit on top); selection is handled at the chart level
+  const order=[...A].sort((a,b)=>b.w-a.w);
+  const bg=el('g',{});
+  for(const d of order){
+    const active=inEra(d);
+    bg.appendChild(el('circle',{class:'bub',cx:sx(fy(d)),cy:sy(acc(d)),r:sr(d.w),
+      fill:fillFor(d),'fill-opacity':active?0.42:0.05,
+      stroke:fillFor(d),'stroke-opacity':active?0.5:0.08,'stroke-width':active?0.8:0.4}));
+  }
+  svg.appendChild(bg);
+}
+
+function renderQuad(){
+  // x = words (length), y = reading level
+  const wmaxv=Math.max(...A.map(d=>d.w))*1.04;
+  qx=v=>x0+v/wmaxv*(x1-x0);
+  let flo=Math.min(...A.map(d=>d.fk)), fhi=Math.max(...A.map(d=>d.fk));
+  const pad=(fhi-flo)*0.07; flo=Math.max(0,flo-pad); fhi+=pad;
+  qy=v=>y0+(v-flo)/(fhi-flo)*(y1-y0);
+  const ws=A.map(d=>d.w).sort((a,b)=>a-b), fs=A.map(d=>d.fk).sort((a,b)=>a-b);
+  const med=arr=>arr[Math.floor(arr.length/2)];
+  const medW=med(ws), medF=med(fs);
+
+  // gridlines + ticks
+  const {ticks:yt}=niceTicks(flo,fhi,7);
+  const g=el('g',{class:'grid'});
+  for(const v of yt){ if(v<flo||v>fhi) continue; g.appendChild(el('line',{x1:x0,x2:x1,y1:qy(v),y2:qy(v)})); }
+  for(let w=5000; w<wmaxv; w+=5000) g.appendChild(el('line',{x1:qx(w),x2:qx(w),y1:y1,y2:y0}));
+  svg.appendChild(g);
+  const ax=el('g',{class:'axis'});
+  for(const v of yt){ if(v<flo||v>fhi) continue;
+    const t=el('text',{x:x0-10,y:qy(v)+4,'text-anchor':'end'}); t.textContent=(+v.toFixed(0)); ax.appendChild(t); }
+  for(let w=0; w<wmaxv; w+=5000){
+    const t=el('text',{x:qx(w),y:y0+22,'text-anchor':'middle'}); t.textContent=w?w/1000+'k':'0'; ax.appendChild(t);
+    ax.appendChild(el('line',{x1:qx(w),x2:qx(w),y1:y0,y2:y0+5})); }
+  ax.appendChild(el('line',{x1:x0,x2:x1,y1:y0,y2:y0}));
+  svg.appendChild(ax);
+  const yl=el('text',{class:'axlabel',transform:`translate(20,${(y0+y1)/2}) rotate(-90)`,'text-anchor':'middle'});
+  yl.textContent='Flesch-Kincaid reading level'; svg.appendChild(yl);
+  const xl=el('text',{class:'axlabel',x:(x0+x1)/2,y:H-12,'text-anchor':'middle'});
+  xl.textContent='Words in the address  (length →)'; svg.appendChild(xl);
+
+  // quadrant dividers + corner labels
+  const qd=el('g',{});
+  qd.appendChild(el('line',{class:'quad-div',x1:qx(medW),x2:qx(medW),y1:y1,y2:y0}));
+  qd.appendChild(el('line',{class:'quad-div',x1:x0,x2:x1,y1:qy(medF),y2:qy(medF)}));
+  const corner=(x,y,anc,txt)=>{const t=el('text',{class:'quad-corner',x,y,'text-anchor':anc}); t.textContent=txt; qd.appendChild(t);};
+  corner(x1-6, y1+16, 'end', 'longer · more complex');
+  corner(x0+6, y1+16, 'start', 'shorter · more complex');
+  corner(x0+6, y0-8, 'start', 'shorter · simpler');
+  corner(x1-6, y0-8, 'end', 'longer · simpler');
+  svg.appendChild(qd);
+
+  // points colored by year (time gradient); inactive era first, active on top
+  const pg=el('g',{});
+  for(const d of [...A].sort((a,b)=>(inEra(a)?1:0)-(inEra(b)?1:0))){
+    const active=inEra(d);
+    pg.appendChild(el('circle',{class:'bub',cx:qx(d.w),cy:qy(d.fk),r:5.2,
+      fill:yearColor(d.y),
+      'fill-opacity':active?0.82:0.06,stroke:'#fff','stroke-opacity':active?0.6:0.1,'stroke-width':0.7}));
+  }
+  svg.appendChild(pg);
+}
+
+// Timeline: snap to the address nearest the cursor's x (any y), unless directly over a bubble.
+// Quadrant: nearest point in 2D (there is no time axis to snap along).
+function pick(vx,vy){
+  const cand=A.filter(inEra);
+  if(view==='quad'){
+    let best=null, bd=Infinity;
+    for(const d of cand){ const p=pos(d); const dist=Math.hypot(vx-p.cx,vy-p.cy); if(dist<bd){bd=dist; best=d;} }
+    return best;
+  }
+  let over=null, od=Infinity;
+  for(const d of cand){ const p=pos(d); const dist=Math.hypot(vx-p.cx,vy-p.cy); if(dist<=p.r+1.5 && dist<od){od=dist; over=d;} }
+  if(over) return over;
+  let best=null, bd=Infinity;
+  for(const d of cand){ const dx=Math.abs(pos(d).cx-vx); if(dx<bd){bd=dx; best=d;} }
+  return best;
+}
+
+// Dotted leader line + floating callout pinned to the selected bubble (Guardian style).
+function drawTracer(d){
+  const tg=document.getElementById('tracerG'); if(!tg) return;
+  while(tg.firstChild) tg.removeChild(tg.firstChild);
+  if(!d) return;
+  const p=pos(d), cx=p.cx, cy=p.cy, r=p.r;
+  const efill = view==='quad' ? yearColor(d.y) : fillFor(d);
+  tg.appendChild(el('line',{class:'tracer-guide',x1:cx,x2:cx,y1:y1,y2:y0}));
+  if(view==='quad') tg.appendChild(el('line',{class:'tracer-guide',x1:x0,x2:x1,y1:cy,y2:cy}));
+  // callout box near the top, clamped to the plot; elbow leader from the point up to it
+  const bw2=248, bh2=52, by=y1+2;
+  const bx=Math.max(x0+2, Math.min(cx-bw2/2, x1-bw2-2));
+  const tx=Math.max(bx+14, Math.min(cx, bx+bw2-14)), ey=by+bh2;
+  tg.appendChild(el('path',{class:'tracer-lead',d:`M ${cx} ${cy-r-1} L ${cx} ${ey+13} L ${tx} ${ey+13} L ${tx} ${ey}`}));
+  tg.appendChild(el('circle',{cx,cy,r,fill:efill,'fill-opacity':0.9,stroke:'#fff','stroke-width':1.4}));
+  tg.appendChild(el('circle',{class:'tracer-ring',cx,cy,r:r+3.5,fill:'none'}));
+  tg.appendChild(el('rect',{class:'callout-box',x:bx,y:by,width:bw2,height:bh2,rx:8,ry:8}));
+  const t1=el('text',{class:'callout-meta',x:bx+13,y:by+19}); t1.textContent=`${d.p} · ${fmtDate(d.d)}`;
+  tg.appendChild(t1);
+  const t2=el('text',{x:bx+13,y:by+42});
+  let valTxt, unitTxt;
+  if(view==='quad'){ valTxt=d.fk.toFixed(1); unitTxt=`reading level · ${d.w.toLocaleString()} words`; }
+  else { const M=METRICS[metric]; valTxt=M.fmt(acc(d)); unitTxt=M.tip; }
+  const v=el('tspan',{class:'callout-val'}); v.textContent=valTxt; t2.appendChild(v);
+  const u=el('tspan',{class:'callout-unit',dx:7}); u.textContent=unitTxt; t2.appendChild(u);
+  tg.appendChild(t2);
+}
+function fmtDate(s){const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${mo[+s.slice(4,6)-1]} ${+s.slice(6,8)}, ${s.slice(0,4)}`;}
+
+function spotlight(d){
+  const sp=document.getElementById('spotlight');
+  const pp=d.p.replace(/\./g,'').split(/\s+/); const initials=(pp[0][0]+pp[pp.length-1][0]).toUpperCase();
+  sp.innerHTML=`<div class="medallion" style="background:${PARTY_HEX[d.party]}">${initials}</div>
+    <div>
+      <p class="name">${d.p}</p>
+      <p class="meta">${fmtDate(d.d)} · ${d.party} · ${d.dv} address</p>
+      <div class="row">
+        <div><span>Reading level</span><b class="big">${d.fk.toFixed(1)}</b></div>
+        <div><span>Reading ease</span><b class="big">${d.ease.toFixed(0)}</b></div>
+        <div><span>Words</span><b class="big">${d.w.toLocaleString()}</b></div>
+        <div><span>Avg sentence</span><b class="big">${d.asl}</b></div>
+      </div>
+    </div>`;
+}
+
+function buildLegend(){
+  const L=document.getElementById('legend');
+  let html='';
+  if(view==='quad'){
+    const stops=[1790,1840,1890,1940,1990,2026];
+    const bar=stops.map(y=>`<i class="dot" style="width:15px;height:13px;border-radius:2px;background:${yearColor(y)}"></i>`).join('');
+    L.innerHTML=`<span class="sw">Colour = year&nbsp;&nbsp;1790 ${bar} 2026</span>`+
+      `<span class="sw" style="margin-left:auto">Dashed lines mark the median length &amp; reading level — the four quadrants</span>`;
+    return;
+  }
+  if(colormode==='party'){
+    const items=[["Republican","Republican"],["Democratic","Democratic"],["Whig","Whig"],
+      ["Democratic-Republican","Dem.-Rep."],["Federalist","Federalist"],["Unaffiliated","Unaffiliated"]];
+    html=items.map(([k,lab])=>`<span class="sw"><i class="dot" style="background:${PARTY_HEX[k]}"></i>${lab}</span>`).join('');
+  } else if(colormode==='delivery'){
+    html=`<span class="sw"><i class="dot" style="background:${DELIV_HEX.spoken}"></i>Spoken</span>
+          <span class="sw"><i class="dot" style="background:${DELIV_HEX.written}"></i>Written message</span>`;
+  } else { html=`<span class="sw"><i class="dot" style="background:#7a8595"></i>One address</span>`; }
+  html+=`<span class="sw" style="margin-left:auto">Bubble size = words: `+
+    `<i class="dot" style="width:9px;height:9px;background:#bbb"></i> 3,000 `+
+    `<i class="dot" style="width:26px;height:26px;background:#ccc"></i> 30,000</span>`;
+  L.innerHTML=html;
+}
+
+// cards
+(function(){
+  const c=document.getElementById('cards');
+  c.innerHTML=P.map((p,i)=>{
+    const yrs=`${Math.min(...p.years)}–${Math.max(...p.years)}`;
+    const q=(p.sample_sentence||'').replace(/</g,'&lt;');
+    return `<div class="card">
+      <div class="rk">${i+1}</div>
+      <div class="nm"><span class="pdot" style="background:${PARTY_HEX[p.party]}"></span>${p.president}</div>
+      <div class="fk">${p.avg_fk_grade.toFixed(1)}</div>
+      <div class="yrs">avg reading level · ${p.n_addresses} address${p.n_addresses>1?'es':''} · ${yrs}</div>
+      <div class="ql">Representative sentence</div>
+      <div class="q">${q}</div>
+    </div>`;
+  }).join('');
+})();
+
+// controls
+document.getElementById('colormode').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target));
+  colormode=e.target.dataset.v; buildLegend(); render();
+});
+document.getElementById('trendtog').addEventListener('change',e=>{showTrend=e.target.checked; render();});
+document.getElementById('viewmode').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target));
+  view=e.target.dataset.v; render();
+});
+const ysel=document.getElementById('ymetric');
+ysel.innerHTML=Object.entries(METRICS).map(([k,mm])=>`<option value="${k}">${mm.label}</option>`).join('');
+ysel.value=metric;
+ysel.addEventListener('change',e=>{metric=e.target.value; render();});
+
+// dim controls that don't apply to the current view
+function syncControls(){
+  const q=view==='quad';
+  const dim=(node,off)=>{node.style.opacity=off?0.38:1; node.style.pointerEvents=off?'none':'';};
+  dim(ysel.closest('.grp'), q);
+  dim(document.getElementById('trendtog').parentElement, q);
+  dim(document.getElementById('colormode').closest('.grp'), q);  // quad always colours by year
+}
+
+// chart-level scrubbing: move anywhere -> snap to nearest year's address
+svg.addEventListener('mousemove',ev=>{
+  const r=svg.getBoundingClientRect();
+  const vx=(ev.clientX-r.left)*(W/r.width), vy=(ev.clientY-r.top)*(H/r.height);
+  if(vx<x0||vx>x1||vy<y1||vy>y0){ drawTracer(null); return; }   // outside plot area: hide the callout
+  const d=pick(vx,vy); if(!d) return;
+  selected=d; drawTracer(d); spotlight(d);
+});
+svg.addEventListener('mouseleave',()=>{ drawTracer(null); });   // mouse left the chart: hide the callout
+
+buildLegend(); render();
+spotlight(selected);
+</script>
+</body>
+</html>
