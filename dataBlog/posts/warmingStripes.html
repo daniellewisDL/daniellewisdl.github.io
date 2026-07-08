@@ -39,8 +39,7 @@
   html, body { margin: 0; height: 100%; background: #05070a; color: var(--fg); font-family: var(--sans); }
   #app {
     display: flex; flex-direction: column; height: 100vh;
-    max-width: 1180px; margin: 0 auto; background: var(--bg);
-    box-shadow: 0 0 0 1px #21262d, 0 0 40px rgba(0,0,0,.5);
+    width: 100%; background: var(--bg);
   }
   header {
     display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
@@ -126,6 +125,13 @@
       </div>
     </div>
     <div class="control">
+      <label>Timeline</label>
+      <div class="row">
+        <button id="play">Play</button>
+        <span id="playYear" style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); min-width: 42px; display: none; margin-left: 2px;"></span>
+      </div>
+    </div>
+    <div class="control">
       <label>View</label>
       <div class="row">
         <button id="spin">Spin</button>
@@ -186,6 +192,11 @@ let grid = [];              // current build (filtered by start year)
 let annualMean = [];        // mean anomaly per year in current build
 let T = 0;
 let showGrid = true, spinning = false;
+let isPlaying = false;
+let playK = 1;
+let playProgress = 1;
+let gridLinesVertCounts = [];
+const YEARS_PER_SECOND = 25;
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let hoverActive = false;
@@ -277,6 +288,22 @@ function initThree() {
     spinning = !spinning; e.currentTarget.classList.toggle("on", spinning);
     controls.autoRotate = spinning; controls.autoRotateSpeed = 0.6;
   });
+  document.getElementById("play").addEventListener("click", e => {
+    if (isPlaying) {
+      isPlaying = false;
+      e.currentTarget.classList.remove("on");
+      e.currentTarget.textContent = "Play";
+    } else {
+      if (playK >= T || playProgress >= T) {
+        playProgress = 1;
+        playK = 1;
+        updatePlayProgress();
+      }
+      isPlaying = true;
+      e.currentTarget.classList.add("on");
+      e.currentTarget.textContent = "Pause";
+    }
+  });
   document.getElementById("reset").addEventListener("click", resetView);
 }
 
@@ -295,6 +322,17 @@ function clearWorld() {
 function build(startYear) {
   grid = buildGrid(startYear);
   T = grid.length;
+  isPlaying = false;
+  playK = T;
+  playProgress = T;
+  const playBtn = document.getElementById("play");
+  if (playBtn) {
+    playBtn.classList.remove("on");
+    playBtn.textContent = "Play";
+  }
+  const playYr = document.getElementById("playYear");
+  if (playYr) playYr.style.display = "none";
+
   annualMean = grid.map(r => d3.mean(r.vals));
   // Scale the height axis to the displayed range, padded a touch, with the
   // baseline (0) always inside the range so the zero plane is meaningful.
@@ -306,11 +344,10 @@ function build(startYear) {
   clearWorld();
   buildSurface();
   buildGridLines();
-  buildZeroPlane();
-  buildMeanLine();
   buildFloorAndAxes();
   buildLabels();
   buildSliceHelpers();
+  updatePlayProgress();
   resetView();
 }
 
@@ -351,13 +388,27 @@ function buildSurface() {
 // Faint wire grid: a seasonal profile every few years + every month ridge along time.
 function buildGridLines() {
   const verts = [];
+  gridLinesVertCounts = [];
+  let cumVertices = 0;
   const stepRow = Math.max(1, Math.round(T / 90));   // ~90 year-curves max
-  for (let i = 0; i < T; i += stepRow) {
-    for (let j = 0; j < M - 1; j++) pushSeg(verts, i, j, i, j + 1);
+
+  for (let i = 0; i < T; i++) {
+    // 1. Year curve (month-to-month) at year i
+    if (i % stepRow === 0 || i === T - 1) {
+      for (let j = 0; j < M - 1; j++) {
+        pushSeg(verts, i, j, i, j + 1);
+      }
+    }
+    // 2. Connecting segments from year i to i + 1
+    if (i < T - 1) {
+      for (let j = 0; j < M; j++) {
+        pushSeg(verts, i, j, i + 1, j);
+      }
+    }
+    cumVertices = verts.length / 3;
+    gridLinesVertCounts.push(cumVertices);
   }
-  for (let j = 0; j < M; j++) {
-    for (let i = 0; i < T - 1; i++) pushSeg(verts, i, j, i + 1, j);
-  }
+
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
   gridLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07 }));
@@ -368,9 +419,43 @@ function pushSeg(arr, i1, j1, i2, j2) {
   arr.push(xAt(i1), yAt(grid[i1].vals[j1]) + 0.03, zAt(j1), xAt(i2), yAt(grid[i2].vals[j2]) + 0.03, zAt(j2));
 }
 
-// Translucent plane at the 1961-90 baseline (anomaly = 0): the line between warming and cooling.
-function buildZeroPlane() {
-  const x0 = xAt(0), x1 = xAt(T - 1), z0 = zAt(0), z1 = zAt(M - 1), y = yAt(0);
+function updatePlayProgress() {
+  if (!surfaceMesh) return;
+  if (playK <= 1) {
+    surfaceMesh.geometry.setDrawRange(0, 0);
+  } else {
+    const count = (playK - 1) * (M - 1) * 6;
+    surfaceMesh.geometry.setDrawRange(0, count);
+  }
+  updateGridLinesProgress();
+  updateZeroPlaneProgress(playK);
+  updateMeanLineProgress(playK);
+
+  const playYearEl = document.getElementById("playYear");
+  if (playYearEl && grid[playK - 1]) {
+    playYearEl.textContent = grid[playK - 1].yr;
+    playYearEl.style.display = "inline";
+  }
+}
+
+function updateGridLinesProgress() {
+  if (!gridLines) return;
+  if (playK <= 0) {
+    gridLines.geometry.setDrawRange(0, 0);
+  } else {
+    const count = gridLinesVertCounts[playK - 1] || 0;
+    gridLines.geometry.setDrawRange(0, count);
+  }
+}
+
+function updateZeroPlaneProgress(k) {
+  if (zeroPlane) {
+    world.remove(zeroPlane);
+    zeroPlane.geometry.dispose();
+    zeroPlane = null;
+  }
+  if (k < 2) return;
+  const x0 = xAt(0), x1 = xAt(k - 1), z0 = zAt(0), z1 = zAt(M - 1), y = yAt(0);
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute([
     x0, y, z0, x1, y, z0, x1, y, z1,  x0, y, z0, x1, y, z1, x0, y, z1,
@@ -381,13 +466,20 @@ function buildZeroPlane() {
   world.add(zeroPlane);
 }
 
-// Bold white line tracing the annual-mean anomaly over time — the canonical warming-stripes curve.
-function buildMeanLine() {
+function updateMeanLineProgress(k) {
+  if (meanTube) {
+    world.remove(meanTube);
+    meanTube.geometry.dispose();
+    meanTube = null;
+  }
+  if (k < 2) return;
   const pts = [];
-  for (let i = 0; i < T; i++) pts.push(new THREE.Vector3(xAt(i), yAt(annualMean[i]) + 0.12, zCenter));
+  for (let i = 0; i < k; i++) {
+    pts.push(new THREE.Vector3(xAt(i), yAt(annualMean[i]) + 0.12, zCenter));
+  }
   const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.2);
-  const tube = new THREE.TubeGeometry(curve, Math.max(64, T), 0.3, 8, false);
-  meanTube = new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0xeef4fa }));
+  const tube = new THREE.TubeGeometry(curve, Math.max(64, k), 0.08, 8, false);
+  meanTube = new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.45 }));
   world.add(meanTube);
 }
 
@@ -467,24 +559,25 @@ function buildLabels() {
 
 // Reusable highlight: marker sphere + the hovered year's seasonal profile + that month's history.
 function buildSliceHelpers() {
-  marker = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), new THREE.MeshBasicMaterial({ color: 0xdce8f5 }));
+  marker = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), new THREE.MeshBasicMaterial({ color: 0xdce8f5 }));
   marker.visible = false; world.add(marker);
 
   // Amber tube tracing the hovered month across every year (e.g. "every January since 1850").
-  histTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0xffb347 }));
+  histTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0xffb347, transparent: true, opacity: 0.6 }));
   histTube.frustumCulled = false; histTube.visible = false; world.add(histTube);
 
-  yearTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0x5f93cf }));
+  yearTube = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: 0x8ab4f8, transparent: true, opacity: 0.6 }));
   yearTube.frustumCulled = false; yearTube.visible = false; world.add(yearTube);
   yearDots = new THREE.Group(); yearDots.visible = false; world.add(yearDots);
-  const dotGeo = new THREE.SphereGeometry(0.3, 14, 14);
-  const dotMat = new THREE.MeshBasicMaterial({ color: 0xc3d6ea });
+  const dotGeo = new THREE.SphereGeometry(0.12, 14, 14);
+  const dotMat = new THREE.MeshBasicMaterial({ color: 0xc3d6ea, transparent: true, opacity: 0.8 });
   for (let j = 0; j < M; j++) yearDots.add(new THREE.Mesh(dotGeo, dotMat));
 }
 
 function resetView() {
-  controls.target.set(0, SY * 0.32, 0);
-  camera.position.set(SX * 0.52, SY * 2.7, SZ * 2.7);
+  controls.target.set(0, 0, 0);
+  camera.position.set(0, 220, 5); // directly above, with a tiny Z-offset to prevent OrbitControls gimbal lock
+  camera.up.set(0, 1, 0);
   controls.update();
 }
 
@@ -512,6 +605,7 @@ function updateHover() {
   if (!hit) { hideHover(); return; }
   const p = hit.point;
   let i = Math.max(0, Math.min(T - 1, Math.round((p.x / SX + 0.5) * (T - 1))));
+  if (i >= playK) { hideHover(); return; }
   let j = Math.max(0, Math.min(M - 1, Math.round((0.5 - p.z / SZ) * (M - 1))));
   const v = grid[i].vals[j];
 
@@ -532,10 +626,10 @@ function updateHover() {
 // The prominent highlight: a bright tube through the year's 12-month seasonal profile, node on each month.
 function updateYearTracer(i) {
   const pts = [];
-  for (let j = 0; j < M; j++) pts.push(new THREE.Vector3(xAt(i), yAt(grid[i].vals[j]) + 0.22, zAt(j)));
+  for (let j = 0; j < M; j++) pts.push(new THREE.Vector3(xAt(i), yAt(grid[i].vals[j]) + 0.1, zAt(j)));
   const curve = new THREE.CatmullRomCurve3(pts);
   yearTube.geometry.dispose();
-  yearTube.geometry = new THREE.TubeGeometry(curve, (M - 1) * 10, 0.2, 10, false);
+  yearTube.geometry = new THREE.TubeGeometry(curve, (M - 1) * 10, 0.08, 10, false);
   yearTube.visible = true;
   const dots = yearDots.children;
   for (let j = 0; j < M; j++) dots[j].position.copy(pts[j]);
@@ -544,10 +638,10 @@ function updateYearTracer(i) {
 
 function updateHistory(j) {
   const pts = [];
-  for (let k = 0; k < T; k++) pts.push(new THREE.Vector3(xAt(k), yAt(grid[k].vals[j]) + 0.18, zAt(j)));
+  for (let k = 0; k < T; k++) pts.push(new THREE.Vector3(xAt(k), yAt(grid[k].vals[j]) + 0.1, zAt(j)));
   const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.15);
   histTube.geometry.dispose();
-  histTube.geometry = new THREE.TubeGeometry(curve, Math.max(64, T * 2), 0.22, 10, false);
+  histTube.geometry = new THREE.TubeGeometry(curve, Math.max(64, T * 2), 0.08, 10, false);
   histTube.visible = true;
 }
 
@@ -556,10 +650,51 @@ function resize() {
   const w = wrap.clientWidth, h = wrap.clientHeight;
   if (!w || !h) return;
   renderer.setSize(w, h, false);
-  camera.aspect = w / h; camera.updateProjectionMatrix();
+  camera.aspect = w / h;
+
+  // Dynamically adjust FOV on narrow screens so the diagram fits left-to-right
+  const defaultFov = 42;
+  const refAspect = 1.65;
+  if (camera.aspect < refAspect) {
+    const C = Math.tan((defaultFov / 2) * Math.PI / 180) * refAspect;
+    camera.fov = 2 * Math.atan(C / camera.aspect) * 180 / Math.PI;
+  } else {
+    camera.fov = defaultFov;
+  }
+
+  camera.updateProjectionMatrix();
 }
-function animate() {
+let lastTime = 0;
+function animate(time) {
   requestAnimationFrame(animate);
+
+  const t = time || performance.now();
+  let dt = 0;
+  if (lastTime > 0) {
+    dt = (t - lastTime) / 1000;
+  }
+  lastTime = t;
+
+  if (isPlaying) {
+    playProgress += YEARS_PER_SECOND * dt;
+    if (playProgress >= T) {
+      playProgress = T;
+      isPlaying = false;
+      const playBtn = document.getElementById("play");
+      if (playBtn) {
+        playBtn.classList.remove("on");
+        playBtn.textContent = "Play";
+      }
+      const playYr = document.getElementById("playYear");
+      if (playYr) playYr.style.display = "none";
+    }
+    const nextK = Math.floor(playProgress);
+    if (nextK !== playK) {
+      playK = nextK;
+      updatePlayProgress();
+    }
+  }
+
   updateHover();
   controls.update();
   renderer.render(scene, camera);
