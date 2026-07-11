@@ -1,0 +1,144 @@
+UNWRITTEN
+The video game
+
+Style
+1990s style platformer
+Run in browser
+Serving assets sprites etc
+
+
+It is elegant, melancholic, and carries a brilliant paradox—a game about a man who authored millions of words, focused entirely on the history he actively chose to erase. It immediately sets the thoughtful, mature tone you are aiming for.
+
+Game Pillars: Unwritten
+The Vibe: A relaxed, atmospheric 1990s 2D platformer tailored for a literary-minded audience.
+
+The Mechanics: Evasion over combat. The gameplay is a moody "walking simulator" where the hazards—surreal manifestations of his own fiction and guilt—merely slow him down or obscure the screen, rather than causing a frustrating "Game Over."
+
+The Journey: 20 levels spanning the grimy streets of London, the oppressive halls of Victorian institutions, his foreign travels, and finally, his own backyard.
+
+The Climax: An outdoor bonfire in the fields behind Gad's Hill Place, watching a lifetime of private correspondence turn to ash.
+
+
+
+
+Premise
+
+Main character is a Victorian novelist / gentleman (basically Charles Dickens)
+
+Collecting a lifetime of correspondence only to systematically destroy it adds a brilliant, slightly melancholic psychological layer to standard platforming mechanics.
+
+20-level text outline 
+
+Divided into four distinct thematic acts. The atmosphere remains perpetually moody, cloaked in smog, shadow, and gaslight.
+
+---
+
+## Act I: The Grimy Heart of London
+
+*The game begins in the oppressive, smog-choked streets of London. The color palette is heavy on browns, greys, and sickly gaslamp greens.*
+
+* **Level 1: Pip’s Attic** – A tutorial level. You navigate dusty rafters, jump over rotting floorboards, and avoid aggressive rats in a dilapidated London townhouse at dawn.
+* **Level 2: The Thames Docks** – Thick, scrolling fog obscures the screen (a classic 90s weather effect). You must jump across bobbing barrels, swinging cargo cranes, and slippery cobblestones while avoiding the icy river.
+* **Level 3: Oliver’s Workhouse** – A cold, stone-walled labyrinth. You must use stealth to sneak past the patrolling Beadle, jumping over bubbling vats of gruel and avoiding the grasping hands of hungry orphans.
+* **Level 4: The Old Curiosity Shop** – A densely cluttered, vertical level. You climb towering grandfather clocks, swing from hanging birdcages, and dodge falling antiques in a claustrophobic, dimly lit shop.
+* **Level 5: Fagin’s Rooftops** – A fast-paced chase level. You must pursue nimble pickpockets across slick slate roofs and crumbling chimney stacks beneath a blood-red London moon.
+
+## Act II: Institutions, Injustice, & Ghosts
+
+*The novelist delves into the crumbling institutions of Victorian society and the ghosts of his past creations.*
+
+* **Level 6: Marshalsea Debtors' Prison** – Oppressive and dark. You navigate spiked iron gates, avoid patrolling turnkeys, and collect letters hidden in the bleak, overcrowded cells of the forgotten.
+* **Level 7: The Court of Chancery** – A literal and metaphorical fog permeates this level. You platform across endless, towering stacks of legal documents and leap between swinging gavels in a surreal, decaying courtroom.
+* **Level 8: Fleet Street Printery** – A rhythmic, industrial level. You must time your jumps to avoid slamming printing presses, slide under massive gears, and dodge pools of slippery, toxic black ink.
+* **Level 9: The British Museum Reading Room** – A sprawling, echoing dome. You scale enormous library ladders, jump across floating manuscript pages caught in updrafts, and avoid aggressive, shushing academics.
+* **Level 10: Satis House** – A decaying mansion frozen in time. You navigate cobweb-choked dining rooms, using a massive, rotting wedding cake as a central platform while dodging spectral brides and overgrown thorns.
+
+## Act III: The Novelist Abroad
+
+*Escaping the pressures of London, our protagonist seeks his scattered letters in foreign lands, providing a shift in color palette and hazards.*
+
+* **Level 11: The Calais Packet Boat (The Channel)** – A dynamic, tilting level. The ship rocks heavily back and forth, affecting your jump trajectory. You must dodge swinging masts and rogue waves on your way to France.
+* **Level 12: The Paris Catacombs** – A dark, subterranean maze. You rely on a dim, flickering lantern mechanic to see. Platforms are made of stacked bones, and you must avoid collapsing ceilings and shadowy revolutionaries.
+* **Level 13: A Venice Palazzo** – A beautiful but decaying level set during a bruised sunset. You leap between sinking gondolas, scale crumbling marble pillars, and avoid deep canal waters in a hauntingly quiet city.
+* **Level 14: Five Points, New York City** – A chaotic, snow-covered slum. The mechanics introduce slippery ice physics. You must navigate unpaved, muddy streets and avoid brawling street gangs and feral dogs.
+* **Level 15: The Trans-Atlantic Steamer** – The journey home. A vertical descent into the ship's hellish boiler room. You must navigate roaring furnaces, bursts of hot steam, and conveyor belts of coal.
+
+## Act IV: The Return & The Reckoning
+
+*Returning to England, the novelist must face his final demons and prepare for the end.*
+
+* **Level 16: The London Sewers** – A filthy, claustrophobic maze beneath the city. You navigate tidal flows of polluted water, ride floating debris, and survive swarms of aggressive, oversized rats.
+* **Level 17: A Snowy Christmas Eve** – A nostalgic but treacherous level. Heavy snow obscures your vision. You platform across snow-banked rooftops and icy ledges, with ghostly apparitions (a nod to *A Christmas Carol*) serving as environmental hazards.
+* **Level 18: The Marshes at Dawn** – A bleak, flat, and eerie landscape. You must time your jumps between sinking peat bogs, avoid jagged iron traps, and outrun an escaped convict dragging a heavy chain.
+* **Level 19: The Railway Crash** – A chaotic, high-stakes auto-scrolling level (referencing the Staplehurst rail crash). You must leap between derailed, teetering train carriages suspended over a river gorge to save the final batch of letters.
+* **Level 20: Gad’s Hill Place (The Final Act)** – The final, somber level. You navigate the quiet halls of your own country home, collecting the very last scattered letters. The game culminates in the garden outdoor fire, where a cutscene sequence shows piles of letters you've collected throughout the game into a roaring bonfire, with an onion buried in there, watching them turn to ash as the credits roll.
+
+---
+
+AT THE END OF EACH LEVEL, EXCEPT THE LAST ONE, TRIGGER MINI LETTER CUTSCENE FROM MAIN CHAR'S POV SHOWING A LOST LETTER EXAMPLES BELOW< TODO EXPAND CREATE ONE FOR EACH LEVEL.
+
+
+lausible Fragments: History Meets FictionLevel CompletedImagined RecipientThe Fragment (To be read on screen)Level 2: The Thames DocksJohn Forster (His real-life best friend and biographer)"My Dear Forster, the river air is foul tonight. I walked the docks until three in the morning, unable to sleep. I swear to you, John, I saw him—the waterman from my latest pages, dragging something terrible behind his boat. I am beginning to fear I do not invent these people, but merely report on the phantoms that already stalk me."Level 10: Satis HouseWilkie Collins (His real-life friend and fellow author)"Wilkie, I must confess a strange occurrence. I visited the old ruins we spoke of, and found a scrap of yellowed lace caught upon the briars. It was a bridal veil, quite rotted through. I held it, and felt such a sudden, crushing despair that I had to sit in the dirt. I fear she is becoming too real to me. The clocks here seem to have stopped altogether."Level 14: Five Points, NYCCatherine Dickens (His estranged wife, adding deep personal tragedy)"Catherine, they call this the New World, but the misery is older than time. The mud in these streets is thicker than our London fog. Today I saw a boy, no older than our own Charles, pick a gentleman's pocket with the exact, terrifying grace of the Artful Dodger. Have I somehow willed this wretchedness into being by writing of it so often?"Level 18: The MarshesAngela Burdett-Coutts (Real-life philanthropist he worked with)"Dear Angela, the workhouse project is noble, but the cold out here on the Kent marshes seeps into the bone. A mist rolled in tonight, and through it, I heard the distinct, heavy clank of iron chains. I know they say the prison hulks are empty now, but the ghosts of those chained men refuse to leave my mind—or my manuscript."
+
+
+
+
+ENEMIES THROUGHOUT THE GAME
+
+Shifting the enemies from literal thugs to surreal manifestations of his own psyche and the burden of his creations elevates the game from a standard platformer to a brilliant psychological journey.
+
+Here are some concepts for surreal, guilt-driven hazards based on his literary legacy:
+
+Surreal Manifestations & Psychological Hazards
+The Ticking Faces of Satis House (Great Expectations): Floating, ghostly clock faces permanently frozen at twenty minutes to nine. They emit expanding, circular shockwaves of "stagnant time" that temporarily slow the player's movement and jump physics, representing the paralyzing weight of dwelling on the past.
+
+The Red Tape Swarm (Little Dorrit): Instead of bats or birds, you are swarmed by animated, self-replicating legal documents from the Circumlocution Office. They flutter aggressively and attempt to bind the player in literal red tape, suffocating movement—a manifestation of his frustration with bureaucracy and his own prolonged legal disputes.
+
+The Debtors' Shadows (David Copperfield / Little Dorrit): Emaciated, elongated silhouettes of men in debtors' prison that stretch out from the background walls and floors. If you step on them, skeletal hands try to drag you down through the floorboards, representing his deep-seated childhood trauma of his father's imprisonment in the Marshalsea.
+
+Madame Defarge’s Needles (A Tale of Two Cities): Giant, disembodied, spectral knitting needles that stab down from the ceiling like heavy industrial pistons. They weave a bloody, glowing registry into the fabric of the background, acting as a relentless timing hazard that forces you to keep moving to avoid being "written into the register."
+
+The Mudfog Phantoms (Bleak House): The iconic London fog isn't just a weather effect; it pools into sentient, creeping miasmas. These fog-monsters take the vague shapes of diseased, forgotten children. They don't attack physically but drain the screen's color and light if they get too close, representing his overwhelming guilt over the poverty he documented but could not cure.
+
+The Ghost of the Unfinished (The Mystery of Edwin Drood): A recurring stalker enemy in the later levels. It is a towering, cloaked figure missing its top half, made entirely of swirling, blank parchment. It mimics the player's movements on a five-second delay, representing the anxiety of the work he will inevitably leave behind.
+
+The Crushing Coffin (Oliver Twist / A Christmas Carol): Instead of standard falling blocks, you must dodge spectral, unvarnished pauper’s coffins that drop from the sky or rise from the water, reminding him of the mortality that haunted his work and his personal losses.
+
+
+To push this psychological angle further, how should the player actually defeat or bypass these manifestations—do they use a mechanic tied to writing (like throwing ink to blind them), or is it strictly about evasion and platforming?
+
+That relaxed, "walking simulator" approach translated to a 2D platformer is a wonderful direction. It ensures the game remains an atmospheric, narrative-driven experience rather than a punishing test of reflexes, making it perfectly accessible for an older, literary-minded audience.
+
+In this style, the surreal manifestations wouldn't "damage" or kill the novelist. Instead, running into the Mudfog Phantoms or Madame Defarge’s Needles might just temporarily slow his walking pace, dim the gaslight around him, or cause a flurry of distracting, spectral paper to obscure the screen for a moment. It keeps the melancholy mood intact without the frustration of seeing a "Game Over" screen.
+
+
+SOUNDSCAPE
+
+A classic 16-bit MIDI soundtrack is the perfect choice. It hits exactly the right nostalgia nerve for a 90s-style platformer, and the limitations of the 16-bit sound chip actually force a reliance on strong, emotional melodies—which is exactly what a melancholic game like Unwritten needs.
+
+Here is how a 16-bit MIDI soundtrack could elevate the different acts of the game:
+
+The Soundscape of Unwritten
+Act I: The Grimy Heart of London
+
+Instrumentation: Heavy, rhythmic cello plucks, low bassoons, and the constant, rhythmic tick-tock of a grandfather clock integrated directly into the percussion.
+
+The Vibe: Oppressive, repetitive, and industrial. The music should feel like the grinding gears of the city itself, with occasional sharp, metallic chimes to represent the striking of Big Ben through the fog.
+
+Act II: Institutions, Injustice, & Ghosts
+
+Instrumentation: Pipe organs with heavy reverb, mournful harpsichords, and haunting, synthesized choir pads.
+
+The Vibe: Grand but hollow. The Court of Chancery would feature a slow, dirge-like organ piece that feels like it’s slowly sinking, while Satis House would use a distorted, slightly out-of-tune music box melody playing a warped waltz.
+
+Act III: The Novelist Abroad
+
+Instrumentation: A shift in the MIDI soundbank to include accordions for Paris, synthesized mandolins for Venice, and brisk, driving strings for the Trans-Atlantic Steamer.
+
+The Vibe: A slight lifting of the melancholy. The melodies become more sweeping and romantic, but always underpinned by a solitary, driving piano line that reminds the player of the burden he is carrying.
+
+Act IV: The Return & The Reckoning
+
+Instrumentation: Stripping back the complex orchestration. Just a solitary 16-bit piano and the digital "white noise" sound used for wind and weather effects.
+
+The Vibe: Deeply intimate and quiet. By the time you reach Gad's Hill Place for the final bonfire, the music fades entirely. The only sounds left are his slow footsteps and the deep, crackling roar of the 16-bit fire.
