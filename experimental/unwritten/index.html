@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNWRITTEN</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#0d0b09;overflow:hidden;}
+  body{display:flex;align-items:center;justify-content:center;}
+  canvas{image-rendering:pixelated;image-rendering:crisp-edges;background:#0d0b09;}
+  #hint{position:fixed;bottom:8px;left:0;right:0;text-align:center;
+    font-family:Georgia,serif;color:#5a5248;font-size:13px;letter-spacing:1px;user-select:none;}
+</style>
+</head>
+<body>
+<canvas id="game" width="640" height="360"></canvas>
+<div id="hint">&larr; &rarr; move &nbsp;&middot;&nbsp; space jump &nbsp;&middot;&nbsp; enter confirm &nbsp;&middot;&nbsp; m mute &nbsp;&middot;&nbsp; esc map</div>
+<script src="js/util.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/letters.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
