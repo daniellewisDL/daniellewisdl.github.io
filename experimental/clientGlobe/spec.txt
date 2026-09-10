@@ -1,0 +1,323 @@
+CLIENT REVENUE GLOBE — BUILD SPEC
+================================
+
+Goal: one self-contained HTML file (globe.html) plus one data file (data.csv).
+A dark/light 3D globe animating monthly client revenue flowing from the country
+where a client is MANAGED to the country where the revenue is BOOKED, with side
+charts. Vanilla JS, no build step, no framework.
+
+
+1. DEPENDENCIES  (script tags, in this order, before your own script)
+---------------------------------------------------------------------
+  https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js
+  https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js
+  https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js
+Country geometry fetched at runtime:
+  https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json
+Write your own orbit controls (~60 lines). Do not add OrbitControls.
+
+
+2. DATA
+-------
+data.csv, header row required:
+  month,client,product,managed,booked,revenue
+  2024-01,Client A,Product A,USA,GBR,123456
+  2024-01,All clients,Product A,USA,GBR,655000
+
+  month    YYYY-MM. Any span.
+  client   any label; "All clients" is RESERVED — see below
+  product  any label
+  managed  ISO alpha-3 key into COUNTRIES
+  booked   ISO alpha-3 key into COUNTRIES
+  revenue  number; tolerate $ , and whitespace
+
+THE "All clients" ROWS
+  The named clients are a selected handful out of a book of hundreds, so the
+  aggregate figure CANNOT be derived by summing them. Rows whose client is the
+  reserved label "All clients" carry the whole book and are read as their own
+  series. They must have the same month/product/route detail as named rows so
+  the product filter and the globe work in aggregate view; they will normally
+  cover more corridors and countries than any named client.
+
+  - Exclude the reserved label from CLIENTS; it becomes the "All clients" entry
+    at the top of the picker instead.
+  - Never add named-client revenue to it, and never expect the two to reconcile
+    (in the sample data the book is ~4.8x the named twelve, over 46 countries
+    against 28).
+  - If a file has no such rows, warn once and fall back to summing the named
+    clients so older files still render.
+
+Loading:
+  DATA_URL = ?data= query param, else 'data.csv'.
+  fetch -> d3.csvParse. Error clearly on missing columns. Skip rows with a
+  non-YYYY-MM month or non-finite revenue (count them, warn once). Uppercase
+  and trim country codes. Skip rows naming a code absent from COUNTRIES and
+  console.warn the distinct offenders once.
+
+  CRITICAL: browsers block fetch() on file:// URLs. On failure show an overlay
+  with the error, a <input type=file> picker, and a window-level drop handler;
+  resolve the same promise from either. Treat any non-http(s) protocol as
+  "on disk" and additionally show `python -m http.server 8000`. Without this,
+  double-clicking the HTML gives a blank screen.
+
+Derived from the CSV (nothing hardcoded):
+  MONTHS       = sorted distinct month values (YYYY-MM sorts chronologically)
+  MONTH_LABELS = "Jan 2024";  MONTH_SHORT = "Jan '24"
+  CLIENTS, PRODUCTS = sorted distinct values -> build the pickers from these
+  ROWS_BY_MONTH[i] = rows for MONTHS[i]
+  CYCLE_SECONDS = 30 (whole sweep); MONTH_SECONDS = CYCLE_SECONDS/MONTHS.length
+
+
+3. AGGREGATION
+--------------
+aggregate(client, product) filters ROWS_BY_MONTH once and returns, per month:
+  routes  Map "MGD>BKD" -> revenue
+  mgdTot, bkdTot, prodTot  Map key -> revenue
+  total[], cum[]
+plus byClient (named clients only; respects the product filter but NOT the
+client filter, so the sidebar always shows every client), allTotal, maxRoute,
+maxCountry, maxTotal. Recompute only when a filter changes; cache in state.agg.
+
+Scoping — which rows drive the globe and the charts:
+  client picked  -> rows where client matches (reserved rows excluded for free)
+  "All clients"  -> ONLY the reserved rows; fall back to the named rows if the
+                    file has none
+In one pass also accumulate allSum (reserved rows) and namedSum/byClient (the
+rest), both product-filtered; allTotal = hasAllRows ? allSum : namedSum. The
+sidebar's All row shows allTotal — never a sum of the rows beneath it.
+
+
+4. COUNTRIES TABLE
+------------------
+COUNTRIES = { ISO3: {name, lat, lon}, ... }, ~199 entries.
+  name must equal the world-atlas TopoJSON properties.name for that country's
+  hexes to light up. lat/lon = d3.geoCentroid of the 110m geometry, EXCEPT
+  override to the mainland where overseas territories drag the centroid out to
+  sea: FRA, USA, CAN, NOR, RUS, PRT, CHL, JPN, GBR.
+  Include territories/micro-states absent at 110m (SGP, HKG, MLT, CYM, BMU,
+  JEY, BHR, MAC, ...). They get no hexes; halo marker + tower still work.
+  Generate the table once by fetching the TopoJSON and running d3.geoCentroid.
+
+
+5. GLOBE GEOMETRY
+-----------------
+R = 100 world units. Group `globe` at the origin.
+  Ocean: SphereGeometry(R*0.995, 64, 48), MeshBasicMaterial, theme colour.
+  Atmosphere: SphereGeometry(R*1.19), BackSide, depthWrite false,
+    ShaderMaterial fresnel f = pow(1-|dot(N,V)|, uPow), alpha f*uAlpha.
+    Scale the mesh to move the rim (see themes).
+  Stars: 2600 Points on a shell r=900..2500, additive. Hidden in light mode.
+
+Hex landmass:
+  Rasterise the TopoJSON twice into 4096x2048 offscreen canvases with
+  d3.geoEquirectangular().fitSize([W,H], {type:'Sphere'}):
+    landMask — all land white on black
+    idMap    — only COUNTRIES entries, fill rgb(n&255, (n>>8)&255, 0), n=index+1
+               (two channels so >255 countries work)
+  HEX_SAMPLES = 120000 fibonacci points on the sphere. Keep those whose
+  landMask sample >= 128 (~34,600 hexes). Owner = idMap sample - 1.
+
+  CRITICAL: canvas fills are antialiased, so a pixel on a border blends two ids
+  into a meaningless third. Sample the owner as the MODE of a 5-tap cross at
+  +/-1px. Wider taps vote small countries away; no filter gives speckle.
+
+  Render as one InstancedMesh of CircleGeometry(spacing*0.46, 6) where
+  spacing = sqrt(4*PI/N)*R, each instance positioned at p*R and lookAt(p*2R).
+  Bake a shading factor 0.72+0.28*dot(n, lightDir) per instance; store it and
+  the base RGB in Float32Arrays (not Color objects — there are 34k of them) so
+  a theme switch can re-tint. Keep hexIndexByCountry[ISO3] = Int32Array.
+
+
+6. ARCS AND PARTICLES
+---------------------
+MAX_ARCS = 90 per month, ARC_SEGS = 44, SAMPLES = 45, PARTS_PER_ARC = 7,
+ARC_SLOTS = MAX_ARCS*2 (two months resident in Smooth mode).
+Each month take the top MAX_ARCS routes by revenue.
+
+Curve: quadratic bezier A -> C -> B, A/B = endpoint surface points,
+C = normalize(A+B) * R*(1.16 + angleTo(A,B)*0.46) so long hops arc higher.
+
+  CRITICAL: WebGL ignores gl_LineWidth. Build each arc as a camera-facing
+  triangle ribbon: 2 vertices per sample carrying position, aNext (the next
+  curve point; extrapolate at the last sample), aSide -1/+1. In the vertex
+  shader project position and aNext to screen space using a uRes uniform, take
+  the perpendicular of their difference, and offset by aSide*width/2 converted
+  back through cA.w. Index as quads; Uint16 is enough. setDrawRange to the
+  arcs actually used.
+
+Per-vertex: aT (0..1 along arc), aW = pow(rev/maxRoute, 0.55) for brightness,
+aWLin = rev/maxRoute for width, aT0 = start time in months.
+
+Width (Flow width slider, 0..3, default 1):
+  px = uBase + uScale*uProp*aWLin,  uBase = 1.15, uProp = 11.0
+  0x = uniform hairlines; 1x = width linear in revenue; 2x = twice the slope.
+
+Life: each arc has its own clock. vLp = uNow - aT0 (uNow in months).
+  env  = smoothstep(0,0.20,vLp) * (1 - smoothstep(0.82,1.0,vLp))
+  draw = clamp(vLp/0.40, 0, 1.05)
+  head = 1 - smoothstep(draw-0.06, draw+0.01, vT)        progressive draw-on
+  body = 0.30 + 0.70*sin(vT*PI)                          fade at both ends
+  prof = 1 - 0.55*abs(vSide)                             soft ribbon edges
+  alpha = head*body*prof*env*(uA0 + uA1*aW); discard when env <= 0
+  colour = mix(uA, uB, smoothstep(0.15,0.9,vT))          managed -> booked
+
+Particles: Points, bezier evaluated in the VERTEX shader from aStart/aCtrl/aEnd
+so the CPU does nothing per frame. t = fract(aOff + uTime*aSpeed).
+  aSpeed = (0.85 + 0.40*rand)/MONTH_SECONDS so one trip takes ~1 month at any
+  sweep duration. Count per arc scales with weight. Same aT0/env as its arc.
+  Fragment: round point, core = pow(1-2d, 2.2), life = sin(t*PI).
+
+
+7. SMOOTH MODE (toggle, default on)
+-----------------------------------
+Off: every arc of month m starts at aT0 = m — all flows pulse together and the
+globe is empty at each boundary.
+On:  months m and m+1 are both resident; each arc of month m starts uniformly
+in [m-0.5, m+0.5] and lives exactly 1 month, ending in [m+0.5, m+1.5]. The
+visible arc count stays flat across boundaries instead of dropping to zero.
+
+Implementation: one slab builder, slots = smooth ? [0,1] : [0].
+  aT0 = smooth ? base + slot - 0.5 + rand : base
+Rebuild when key = floor(smooth ? arcClock-0.5 : arcClock) changes, and on any
+filter change or scrub.
+
+  CRITICAL: state.t wraps at the end of the series, which makes start times
+  incomparable across the loop. Keep a second monotonic clock `arcClock` that
+  never wraps; recover the data month with wrapMonth(m) = ((m%L)+L)%L. Seed the
+  random offset on (dataMonth, rank) — NOT on slot index — so an arc keeps the
+  same start time when the slab is rebuilt and it shifts slot; otherwise arcs
+  visibly jump.
+
+In Smooth mode pass env = 1 to the country glow (its own smoothing carries it
+across boundaries); in classic mode pass the month envelope so it pulses.
+
+
+8. TOWERS (toggle, default on)
+------------------------------
+One hexagonal column per BOOKED country. InstancedMesh of
+CylinderGeometry(R*0.020, R*0.028, 1, 6) translated +0.5 in Y so its base sits
+on the surface; orient with quaternion from (0,1,0) to the surface normal;
+scale Y by height. TOWER_MAX = R*0.45.
+
+  height  = (bkdTot/maxCountry) * TOWER_MAX * min(1, frac/0.84)
+  opacity = themeOpacity * (1 - smoothstep(0.84, 1.0, frac))
+
+So a tower reaches its true value at 84% through the month, then HOLDS that
+height and dissolves — the boundary reads as a fade, not a collapse. Towers
+reset every month; they do not participate in Smooth mode.
+
+
+9. COUNTRY GLOW AND MARKERS
+---------------------------
+Per country keep smoothed glowMgd/glowBkd, each easing toward
+pow((tot/maxCountry)*env, 0.55) at rate min(1, dt*5.5).
+  Hexes: tint = mix(managedColour, bookedColour, gb/(gm+gb));
+         colour = base.lerp(tint, g*0.92) * (1 + g*glowBoost)
+  Only rewrite countries whose glow actually changed (keep a dirty Set).
+  Markers: one Points per country at its lat/lon, additive; fragment draws a
+  solid centre plus an expanding radar ring at radius fract(t*0.55+phase).
+  Size and colour from the smoothed intensity and the managed/booked ratio.
+  This is the fallback for countries with no hexes.
+
+
+10. CAMERA
+----------
+State: lon, lat, dist (+ eased targets), pan {x,y} in CSS pixels.
+  HOME = {lon:-30, lat:18}; DIST_MIN 130, DIST_MAX 2000; auto-rotate 2.4 deg/s,
+  paused while dragging. Clamp lat to +/-84.
+  fitDistance = R*1.45 / (tan(fov/2) * min(1, aspect)), fov 38 — frames the
+  whole planet. Recompute on resize unless the user has zoomed.
+
+Pointer down raycasts a Sphere(origin, R): hit -> orbit, miss -> pan.
+  Wheel/pinch zoom; double-click resets.
+
+  CRITICAL: pan must NOT move the camera's look-at point. Doing so makes the
+  orbit pivot drift off the globe and the planet swings in a circle when you
+  rotate after panning. Instead keep lookAt(0,0,0) always and apply pan as
+  camera.setViewOffset(w, h, -pan.x, -pan.y, w, h) — a pure 2D image shift.
+  Pan is then exactly 1:1 in pixels, and raycasting still works because the
+  view offset is inside the projection matrix.
+
+  CRITICAL: a resize at zero height makes fitDistance return Infinity, and
+  Infinity - Infinity permanently poisons the eased distance with NaN (the
+  globe vanishes and never returns). Clamp fitDistance and guard both
+  distances with isFinite each frame.
+
+  CRITICAL: give the canvas explicit width/height in CSS. position:fixed with
+  inset:0 does NOT stretch a replaced element — the canvas keeps its intrinsic
+  size and renders oversized and cropped.
+
+
+11. THEMES (toggle, default LIGHT, persisted in localStorage)
+-------------------------------------------------------------
+One THEMES object holds both palettes; applyTheme(name) is the only place a
+colour changes. It sets the CSS custom properties via a data-theme attribute on
+<html>, plus renderer clear colour, fog, ocean, atmosphere uniforms and scale,
+star visibility, arc/particle/marker colours and alpha ramps, tower opacity,
+chart colours, and re-tints every hex. Call it BEFORE loading data so the
+loading overlay is already in the right palette.
+
+  dark : bg #03070f, land #12365c, managed #22d3ee, booked #a78bfa,
+         additive blending, stars on, glowBoost 0.65, arc alpha 0.18+0.72*w,
+         atmosPow 3.2, atmosScale 1.0 (a wide blue halo).
+  light: white ground, land #aab2bb (fine grey stipple), managed #111111,
+         booked #d92b1c. A drafting-table look: hairlines of black and red.
+         atmosPow 16, atmosScale 1.006/1.19 pulls the fresnel in to a thin
+         black limb. stars off, glowBoost 0, arc alpha 0.30+0.62*w,
+         particle/marker alpha multiplied ~2x.
+
+  CRITICAL: additive blending saturates to white on a white ground — every glow
+  becomes invisible. Light mode must switch all glow materials to
+  NormalBlending, and red-on-white needs a higher alpha floor than
+  cyan-on-black, so the alpha ramps are per-theme values, not constants.
+
+
+12. UI
+------
+CSS grid overlay, pointer-events:none on the container and auto on panels so
+the globe stays draggable everywhere else. Columns 236px / 1fr / 300px,
+rows auto / 1fr / auto. Below 1100px hide the right column.
+Frosted panels: translucent background, 1px border, blur, rounded 12px.
+All colours from CSS custom properties so the theme switch is free.
+
+  top-left     title + KPIs (this month, cumulative)
+  left         client list: "All clients" (ruled off, its own figure) + one row
+               per named client with its own total, and a footnote saying the
+               listed clients are a selection and do not sum to the total
+  top-centre   legend (managed / booked / tower) and a control strip:
+               Flow width slider + readout, Towers, Smooth, theme toggle
+  right        product pills (All + one per product), then three d3 charts
+  bottom-left  top 7 flows this month, "MGD -> BKD  bar  $value"
+  bottom-centre reset, play/pause, month readout ("Jan 2024" + "month 1 of 30"),
+               scrubber with month ticks (label every 6 if >18 months),
+               speed select 0.25/0.5/1/2/4
+
+Charts (d3, plain SVG, redrawn on month change):
+  Revenue by product — horizontal bars, height grows with product count,
+    colours cycle if there are more products than palette entries
+  Monthly trend — area + line over the whole series with a dashed playhead that
+    tracks the sub-month position
+  Top booked countries — top 6 horizontal bars
+
+
+13. FRAME LOOP (order matters)
+------------------------------
+  dt = min(0.1, clock.getDelta())
+  flowTime += dt * speed                      particle clock, follows speed
+  if playing: step = dt/MONTH_SECONDS*speed; state.t += step; arcClock += step
+              wrap state.t at MONTHS.length; sync the scrubber
+  mi = floor(state.t); frac = state.t - mi
+  rebuild the arc slab if its key changed
+  if mi changed: redraw charts, month readout, KPIs
+  set uNow = arcClock on arc and particle materials; uTime = flowTime
+  updateGlow(mi, smooth ? 1 : monthEnvelope, dt)
+  updateTowers(mi, frac)
+  applyCamera(dt); renderer.render
+
+
+14. PERFORMANCE NOTES
+---------------------
+Measured: ~0.37 ms/frame for glow + towers + camera + render at 231k triangles
+in 7 draw calls; land build ~210 ms. Budget is not a concern — the things that
+matter are keeping hex colours in typed arrays, only rewriting dirty countries,
+evaluating particle beziers in the shader, and drawing all arcs in one mesh.

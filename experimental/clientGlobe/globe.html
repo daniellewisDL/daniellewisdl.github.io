@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Client Revenue Globe</title>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+
+<style>
+:root{
+  --bg:#03070f;
+  --panel:rgba(10,18,32,.62);
+  --panel-brd:rgba(120,190,255,.14);
+  --txt:#cfe3f7;
+  --txt-dim:#6d8bab;
+  --cyan:#22d3ee;
+  --teal:#34e0c4;
+  --violet:#a78bfa;
+  --line:rgba(120,190,255,.20);
+  --line-soft:rgba(120,190,255,.09);
+  --hover:rgba(120,190,255,.07);
+  --sel:rgba(34,211,238,.14);
+  --shadow:0 8px 40px rgba(0,0,0,.55);
+  --pill-bg:rgba(167,139,250,.19);
+  --pill-brd:rgba(167,139,250,.55);
+  --pill-txt:#e9e2ff;
+  --opt-bg:#0a1220;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  --sans:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+/* Light mode: a drafting-table read of the same scene — hairlines of black
+   and red on white. Set on <html> by applyTheme(). */
+html[data-theme="light"]{
+  --bg:#ffffff;
+  --panel:rgba(255,255,255,.80);
+  --panel-brd:rgba(17,17,17,.15);
+  --txt:#15181d;
+  --txt-dim:#71767e;
+  --cyan:#111111;
+  --teal:#d92b1c;
+  --violet:#d92b1c;
+  --line:rgba(17,17,17,.17);
+  --line-soft:rgba(17,17,17,.08);
+  --hover:rgba(17,17,17,.05);
+  --sel:rgba(217,43,28,.10);
+  --shadow:0 6px 26px rgba(17,17,17,.09);
+  --pill-bg:rgba(217,43,28,.10);
+  --pill-brd:rgba(217,43,28,.55);
+  --pill-txt:#a8180a;
+  --opt-bg:#ffffff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font-family:var(--sans);overflow:hidden}
+canvas{display:block}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;cursor:move}
+#gl.overGlobe{cursor:grab}
+#gl.dragging{cursor:grabbing}
+#gl.panning{cursor:move}
+
+#ui{position:fixed;inset:0;z-index:10;pointer-events:none;display:grid;
+    grid-template-columns:236px 1fr 300px;
+    grid-template-rows:auto 1fr auto;
+    gap:14px;padding:14px}
+.panel{pointer-events:auto;background:var(--panel);border:1px solid var(--panel-brd);
+       border-radius:12px;padding:12px 13px;backdrop-filter:blur(14px) saturate(1.2);
+       box-shadow:var(--shadow)}
+.hd{font-size:9.5px;letter-spacing:.19em;text-transform:uppercase;color:var(--txt-dim);
+    margin:0 0 9px;font-weight:600}
+
+/* ---- top left : title + kpi ---- */
+#title{grid-column:1;grid-row:1}
+#title h1{margin:0;font-size:15px;letter-spacing:.03em;font-weight:600}
+#title .sub{font-size:10px;color:var(--txt-dim);letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.kpis{display:flex;gap:16px;margin-top:11px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.kpi .v{font-family:var(--mono);font-size:16px;color:var(--txt);line-height:1.1}
+.kpi .v.accent{color:var(--teal)}
+.kpi .l{font-size:8.5px;color:var(--txt-dim);letter-spacing:.13em;text-transform:uppercase;margin-top:3px}
+
+/* ---- left column : clients ---- */
+#clients{grid-column:1;grid-row:2;display:flex;flex-direction:column;min-height:0}
+#clientList{overflow-y:auto;flex:1;margin:-2px -4px -2px -2px;padding-right:4px}
+.crow.all{border-bottom:1px solid var(--line-soft);border-radius:7px 7px 0 0;
+          margin-bottom:3px;padding-bottom:6px}
+.foot{margin:8px 0 0;padding-top:7px;border-top:1px solid var(--line-soft);
+      font-size:9px;line-height:1.5;color:var(--txt-dim);opacity:.85}
+.crow{display:flex;align-items:center;gap:8px;padding:5px 7px;border-radius:7px;cursor:pointer;
+      font-size:11.5px;color:var(--txt-dim);transition:background .12s,color .12s;user-select:none}
+.crow:hover{background:var(--hover);color:var(--txt)}
+.crow.on{background:var(--sel);color:var(--txt)}
+.crow .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.75;flex:none}
+.crow .amt{margin-left:auto;font-family:var(--mono);font-size:10px;opacity:.72}
+.crow.on .amt{color:var(--teal);opacity:1}
+
+/* ---- right column ---- */
+#right{grid-column:3;grid-row:1/3;display:flex;flex-direction:column;gap:14px;min-height:0;
+       overflow-y:auto;overflow-x:hidden;padding-right:2px;scrollbar-gutter:stable}
+#right>.panel{flex:none}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.pill{pointer-events:auto;font-size:10.5px;padding:4px 9px;border-radius:20px;cursor:pointer;
+      border:1px solid var(--line);color:var(--txt-dim);background:transparent;
+      transition:.12s;font-family:inherit;user-select:none}
+.pill:hover{border-color:var(--txt-dim);color:var(--txt)}
+.pill.on{background:var(--pill-bg);border-color:var(--pill-brd);color:var(--pill-txt)}
+
+/* ---- bottom left : routes ---- */
+#routes{grid-column:1;grid-row:3}
+.rrow{display:flex;align-items:center;gap:7px;font-size:10.5px;margin-bottom:5px;font-family:var(--mono)}
+.rrow:last-child{margin-bottom:0}
+.rrow .p{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt)}
+.rrow .p .ar{color:var(--violet);margin:0 3px}
+.rrow .bar{width:46px;height:3px;border-radius:2px;background:var(--line-soft);flex:none;overflow:hidden}
+.rrow .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.rrow .n{width:46px;text-align:right;color:var(--txt-dim);flex:none}
+
+/* ---- bottom center : transport ---- */
+#transport{grid-column:2;grid-row:3;display:flex;align-items:center;gap:14px}
+.btn{pointer-events:auto;width:34px;height:34px;flex:none;border-radius:9px;cursor:pointer;
+     border:1px solid var(--line);background:var(--hover);color:var(--txt);
+     display:grid;place-items:center;transition:.12s}
+.btn:hover{background:var(--sel);border-color:var(--teal)}
+.btn svg{width:14px;height:14px;fill:currentColor}
+#date{font-family:var(--mono);font-size:19px;color:var(--txt);min-width:124px;letter-spacing:.02em}
+#date small{display:block;font-size:8.5px;color:var(--txt-dim);letter-spacing:.16em;margin-top:1px}
+#scrubWrap{flex:1;position:relative;height:34px;display:flex;align-items:center}
+#ticks{position:absolute;inset:0;display:flex;pointer-events:none}
+#ticks span{flex:1;font-size:8px;color:var(--txt-dim);opacity:.7;padding-left:3px;padding-top:2px;
+            letter-spacing:.06em;white-space:nowrap;overflow:hidden}
+#ticks span.t3{border-left:1px solid var(--line-soft)}
+#ticks span.t6{border-left:1px solid var(--line);opacity:1}
+#scrub{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:3px;
+       background:var(--line-soft);outline:none;position:relative;z-index:2;cursor:pointer}
+#scrub::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+       background:var(--teal);box-shadow:0 0 0 4px var(--sel);cursor:pointer}
+#scrub::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:var(--teal);
+       box-shadow:0 0 0 4px var(--sel)}
+#spd{pointer-events:auto;background:transparent;border:1px solid var(--line);color:var(--txt-dim);
+     border-radius:7px;font-size:10px;padding:4px 6px;font-family:var(--mono);cursor:pointer}
+#spd option{background:var(--opt-bg);color:var(--txt)}
+
+/* ---- legend + flow-width control ---- */
+#topbar{grid-column:2;grid-row:1;justify-self:center;align-self:start;display:flex;
+        gap:10px;flex-wrap:wrap;justify-content:center;pointer-events:none}
+#legend{display:flex;gap:18px;padding:7px 14px;font-size:10px;color:var(--txt-dim)}
+#legend b{font-weight:500;color:var(--txt)}
+#widthCtl{display:flex;align-items:center;gap:9px;padding:6px 13px;font-size:10px;
+          color:var(--txt-dim);white-space:nowrap}
+#widthCtl label{letter-spacing:.13em;text-transform:uppercase;font-size:8.5px}
+#widthCtl output{font-family:var(--mono);color:var(--teal);width:34px;text-align:right}
+#widthCtl .sep{width:1px;height:15px;background:var(--line)}
+#flowWidth{-webkit-appearance:none;appearance:none;width:104px;height:3px;border-radius:3px;
+       background:var(--line-soft);outline:none;cursor:pointer}
+#flowWidth::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;
+       background:var(--cyan);box-shadow:0 0 0 3px var(--sel);cursor:pointer}
+#flowWidth::-moz-range-thumb{width:11px;height:11px;border:0;border-radius:50%;background:var(--cyan);
+       box-shadow:0 0 0 3px var(--sel)}
+.sw{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.sw.mgd{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.sw.bkd{background:var(--violet);box-shadow:0 0 8px var(--violet)}
+.sw.twr{background:var(--violet);box-shadow:0 0 8px var(--violet);border-radius:1px;
+        width:5px;height:10px;vertical-align:-2px}
+html[data-theme="light"] .sw{box-shadow:none}
+html[data-theme="light"] .panel{backdrop-filter:blur(10px)}
+
+svg text{font-family:var(--mono);fill:var(--txt-dim)}
+#loading{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--bg);
+         color:var(--txt-dim);font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:opacity .7s}
+#loading.gone{opacity:0;pointer-events:none}
+.lbox{max-width:440px;padding:0 24px}
+#loadHelp{margin-top:18px;text-align:left;letter-spacing:normal;text-transform:none;
+          font-size:12px;line-height:1.55}
+#loadHelp p{margin:9px 0}
+#loadHelp .err{color:var(--teal);font-family:var(--mono);font-size:11px;
+               word-break:break-word;letter-spacing:0}
+#loadHelp code,#loadHelp pre{font-family:var(--mono);font-size:11px;color:var(--txt)}
+#loadHelp pre{background:var(--hover);border:1px solid var(--line);border-radius:7px;
+              padding:8px 10px;margin:9px 0;overflow-x:auto}
+.filebtn{display:inline-block;cursor:pointer;border:1px solid var(--line);border-radius:8px;
+         padding:7px 13px;color:var(--txt);background:var(--hover);transition:.12s}
+.filebtn:hover{border-color:var(--teal);color:var(--teal)}
+.filebtn input{display:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+@media (max-width:1100px){#right{display:none}#ui{grid-template-columns:236px 1fr}
+  #transport{grid-column:2}#topbar{grid-column:2}}
+</style>
+</head>
+<body>
+
+<canvas id="gl"></canvas>
+
+<div id="ui">
+
+  <div class="panel" id="title">
+    <h1>Client Revenue Globe</h1>
+    <div class="sub">Managed → Booked flows</div>
+    <div class="kpis">
+      <div class="kpi"><div class="v accent" id="kpiMonth">—</div><div class="l">This month</div></div>
+      <div class="kpi"><div class="v" id="kpiYtd">—</div><div class="l">Cumulative</div></div>
+    </div>
+  </div>
+
+  <div id="topbar">
+    <div class="panel" id="legend">
+      <span><i class="sw mgd"></i><b>Managed</b> country</span>
+      <span><i class="sw bkd"></i><b>Booked</b> country</span>
+      <span><i class="sw twr"></i><b>Tower</b> = booked revenue</span>
+    </div>
+    <div class="panel" id="widthCtl">
+      <label for="flowWidth" title="Scale arc thickness by revenue">Flow width</label>
+      <input type="range" id="flowWidth" min="0" max="3" step="0.1" value="1" />
+      <output id="flowWidthVal">1.0×</output>
+      <span class="sep"></span>
+      <button class="pill on" id="btnTowers"
+              title="Revenue booked in each market, as a column growing over the month">Towers</button>
+      <button class="pill on" id="btnSmooth"
+              title="Stagger each month's arcs across the month boundary so flows run continuously">Smooth</button>
+      <span class="sep"></span>
+      <button class="pill" id="btnTheme" title="Switch between dark and light">Light</button>
+    </div>
+  </div>
+
+  <div class="panel" id="clients">
+    <p class="hd">Client</p>
+    <div id="clientList"></div>
+    <p class="foot" id="clientNote" hidden></p>
+  </div>
+
+  <div id="right">
+    <div class="panel">
+      <p class="hd">Product · revenue this month</p>
+      <div class="pills" id="productPills"></div>
+      <svg id="chartProduct" width="100%" height="112" style="margin-top:9px"></svg>
+    </div>
+    <div class="panel">
+      <p class="hd">Monthly trend</p>
+      <svg id="chartTrend" width="100%" height="94"></svg>
+    </div>
+    <div class="panel">
+      <p class="hd">Top booked countries</p>
+      <svg id="chartCountry" width="100%" height="128"></svg>
+    </div>
+  </div>
+
+  <div class="panel" id="routes">
+    <p class="hd">Top flows · this month</p>
+    <div id="routeList"></div>
+  </div>
+
+  <div class="panel" id="transport">
+    <button class="btn" id="btnReset" title="Reset timeline and view">
+      <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
+    </button>
+    <button class="btn" id="btnPlay" title="Play / pause">
+      <svg id="icoPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="icoPause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+    </button>
+    <div id="date">—<small id="dateSub">of 12 months</small></div>
+    <div id="scrubWrap">
+      <div id="ticks"></div>
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1" />
+    </div>
+    <select id="spd" title="Playback speed">
+      <option value="0.25">0.25×</option>
+      <option value="0.5">0.5×</option>
+      <option value="1" selected>1×</option>
+      <option value="2">2×</option>
+      <option value="4">4×</option>
+    </select>
+  </div>
+
+</div>
+
+<div id="loading">
+  <div class="lbox">
+    <div id="loadMsg">Loading data…</div>
+    <div id="loadHelp" hidden>
+      <p class="err" id="loadErr"></p>
+      <p id="loadWhyFile">Browsers block <code>fetch()</code> on <code>file://</code> URLs, so a
+         page opened straight from disk can't read the CSV next to it.</p>
+      <p id="loadWhyHttp" hidden>Check that the file exists at that path, alongside this page.</p>
+      <label class="filebtn">Choose CSV…<input type="file" id="loadFile" accept=".csv,text/csv"></label>
+      <p>…or drop the file anywhere on this page.</p>
+      <p id="loadServe">To load it automatically instead, serve the folder:</p>
+      <pre id="loadCmd">python -m http.server 8000</pre>
+      <p id="loadThen">then open <code>http://localhost:8000/globe.html</code></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   CLIENT REVENUE GLOBE
+   Single-file three.js + d3 visualisation of monthly client revenue flowing
+   from the country where a client is MANAGED to the country where revenue is
+   BOOKED.
+
+   ---------------------------------------------------------------------------
+   TO PLUG IN YOUR OWN DATA
+   ---------------------------------------------------------------------------
+   Overwrite data.csv beside this file. Required header row:
+
+     month,client,product,managed,booked,revenue
+     2024-01,Client A,Product A,USA,GBR,123456
+     2024-01,All clients,Product A,USA,GBR,655000
+
+   The reserved client label "All clients" carries the whole book and is read
+   as its own series — the named clients are a selection and are NOT summed to
+   produce it. Give those rows the same month/product/route detail as the named
+   ones so the product filter and the globe work in aggregate view.
+
+   The timeline, client picker and product filter are all built from whatever
+   is in the file — any number of months, clients or products. Load a
+   different file with ?data=other.csv, or drop one onto the page.
+
+   NOTE: opened as file:// the browser will not fetch the CSV; the page then
+   offers a file picker. Serve the folder (python -m http.server 8000) to have
+   it load automatically.
+
+   COUNTRIES below is a full ISO 3166-1 alpha-3 table with lat/lon, so
+   `managed` / `booked` just need alpha-3 codes. Rows naming a code that
+   isn't in the table are skipped and listed once in the console.
+   Everything else — pickers, charts, scales — derives from the rows.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------- constants */
+/* The series, the client list and the product list are all derived from the
+   CSV when it loads — see initSeries(). */
+let MONTHS = [], MONTH_LABELS = [], MONTH_SHORT = [];
+const CYCLE_SECONDS = 30;                       // full sweep duration, any length
+let MONTH_SECONDS = 1;
+
+const COUNTRIES = {
+  /* ---------------------------------------------------------------------
+     Key   : ISO 3166-1 alpha-3. Use these codes in your data's
+             `managed` / `booked` fields.
+     name  : MUST match the country name in the world-atlas TopoJSON for
+             that country's hexagons to light up. Entries whose name is
+             not in the file (micro-states below, absent at 110m detail)
+             still work — they render as a glowing halo marker and tower
+             at their lat/lon, just without a hex cluster.
+     lat/lon: marker position, in degrees. Values below are the true
+             geographic centroids of the 110m geometry, except where
+             marked (*) — those are overridden to the mainland, because
+             overseas territories drag the real centroid out to sea.
+     Add, remove or re-point rows freely; everything else derives from
+     this table.
+     --------------------------------------------------------------------- */
+  AFG:{name:'Afghanistan',            lat: 33.84, lon:  66.00},
+  AGO:{name:'Angola',                 lat:-12.23, lon:  17.47},
+  ALB:{name:'Albania',                lat: 41.13, lon:  20.03},
+  ARE:{name:'United Arab Emirates',   lat: 23.87, lon:  54.20},
+  ARG:{name:'Argentina',              lat:-34.74, lon: -64.75},
+  ARM:{name:'Armenia',                lat: 40.21, lon:  45.01},
+  ATA:{name:'Antarctica',             lat:-82.00, lon:   0.00},
+  ATF:{name:'Fr. S. Antarctic Lands', lat:-49.31, lon:  69.53},
+  AUS:{name:'Australia',              lat:-25.76, lon: 134.31},
+  AUT:{name:'Austria',                lat: 47.62, lon:  14.06},
+  AZE:{name:'Azerbaijan',             lat: 40.22, lon:  47.56},
+  BDI:{name:'Burundi',                lat: -3.38, lon:  29.91},
+  BEL:{name:'Belgium',                lat: 50.65, lon:   4.59},
+  BEN:{name:'Benin',                  lat:  9.64, lon:   2.34},
+  BFA:{name:'Burkina Faso',           lat: 12.31, lon:  -1.78},
+  BGD:{name:'Bangladesh',             lat: 23.83, lon:  90.28},
+  BGR:{name:'Bulgaria',               lat: 42.76, lon:  25.19},
+  BIH:{name:'Bosnia and Herz.',       lat: 44.18, lon:  17.82},
+  BLR:{name:'Belarus',                lat: 53.50, lon:  27.96},
+  BLZ:{name:'Belize',                 lat: 17.19, lon: -88.70},
+  BOL:{name:'Bolivia',                lat:-16.70, lon: -64.65},
+  BRA:{name:'Brazil',                 lat:-10.66, lon: -53.17},
+  BRN:{name:'Brunei',                 lat:  4.69, lon: 114.92},
+  BTN:{name:'Bhutan',                 lat: 27.43, lon:  90.47},
+  BWA:{name:'Botswana',               lat:-22.08, lon:  23.78},
+  CAF:{name:'Central African Rep.',   lat:  6.55, lon:  20.37},
+  CAN:{name:'Canada',                 lat: 58.00, lon:-100.00},   /* (*) */
+  CHE:{name:'Switzerland',            lat: 46.79, lon:   8.12},
+  CHL:{name:'Chile',                  lat:-35.70, lon: -71.50},   /* (*) */
+  CHN:{name:'China',                  lat: 36.68, lon: 103.45},
+  CIV:{name:"Côte d'Ivoire",          lat:  7.55, lon:  -5.61},
+  CMR:{name:'Cameroon',               lat:  5.65, lon:  12.61},
+  COD:{name:'Dem. Rep. Congo',        lat: -2.84, lon:  23.58},
+  COG:{name:'Congo',                  lat: -0.84, lon:  15.14},
+  COL:{name:'Colombia',               lat:  3.92, lon: -73.07},
+  CRI:{name:'Costa Rica',             lat:  9.97, lon: -84.17},
+  CUB:{name:'Cuba',                   lat: 21.65, lon: -78.93},
+  CYP:{name:'Cyprus',                 lat: 34.91, lon:  33.04},
+  CZE:{name:'Czechia',                lat: 49.78, lon:  15.34},
+  DEU:{name:'Germany',                lat: 51.08, lon:  10.27},
+  DJI:{name:'Djibouti',               lat: 11.77, lon:  42.50},
+  DNK:{name:'Denmark',                lat: 56.06, lon:   9.89},
+  DOM:{name:'Dominican Rep.',         lat: 18.89, lon: -70.46},
+  DZA:{name:'Algeria',                lat: 28.09, lon:   2.61},
+  ECU:{name:'Ecuador',                lat: -1.45, lon: -78.38},
+  EGY:{name:'Egypt',                  lat: 26.47, lon:  29.86},
+  ERI:{name:'Eritrea',                lat: 15.43, lon:  38.69},
+  ESH:{name:'W. Sahara',              lat: 24.28, lon: -12.19},
+  ESP:{name:'Spain',                  lat: 40.32, lon:  -3.62},
+  EST:{name:'Estonia',                lat: 58.64, lon:  25.83},
+  ETH:{name:'Ethiopia',               lat:  8.65, lon:  39.56},
+  FIN:{name:'Finland',                lat: 64.26, lon:  26.14},
+  FJI:{name:'Fiji',                   lat:-17.32, lon: 178.57},
+  FLK:{name:'Falkland Is.',           lat:-51.72, lon: -59.42},
+  FRA:{name:'France',                 lat: 46.60, lon:   2.40},   /* (*) */
+  GAB:{name:'Gabon',                  lat: -0.65, lon:  11.69},
+  GBR:{name:'United Kingdom',         lat: 54.00, lon:  -2.40},   /* (*) */
+  GEO:{name:'Georgia',                lat: 42.17, lon:  43.50},
+  GHA:{name:'Ghana',                  lat:  7.92, lon:  -1.24},
+  GIN:{name:'Guinea',                 lat: 10.45, lon: -11.06},
+  GMB:{name:'Gambia',                 lat: 13.48, lon: -15.43},
+  GNB:{name:'Guinea-Bissau',          lat: 12.02, lon: -15.11},
+  GNQ:{name:'Eq. Guinea',             lat:  1.65, lon:  10.37},
+  GRC:{name:'Greece',                 lat: 39.04, lon:  22.72},
+  GRL:{name:'Greenland',              lat: 73.15, lon: -41.96},
+  GTM:{name:'Guatemala',              lat: 15.70, lon: -90.37},
+  GUY:{name:'Guyana',                 lat:  4.79, lon: -58.97},
+  HND:{name:'Honduras',               lat: 14.83, lon: -86.59},
+  HRV:{name:'Croatia',                lat: 45.01, lon:  16.57},
+  HTI:{name:'Haiti',                  lat: 18.90, lon: -72.66},
+  HUN:{name:'Hungary',                lat: 47.20, lon:  19.34},
+  IDN:{name:'Indonesia',              lat: -2.27, lon: 117.36},
+  IND:{name:'India',                  lat: 22.82, lon:  79.54},
+  IRL:{name:'Ireland',                lat: 53.17, lon:  -8.02},
+  IRN:{name:'Iran',                   lat: 32.47, lon:  54.45},
+  IRQ:{name:'Iraq',                   lat: 33.01, lon:  43.79},
+  ISL:{name:'Iceland',                lat: 65.08, lon: -18.77},
+  ISR:{name:'Israel',                 lat: 31.48, lon:  35.00},
+  ITA:{name:'Italy',                  lat: 42.67, lon:  12.27},
+  JAM:{name:'Jamaica',                lat: 18.14, lon: -77.32},
+  JOR:{name:'Jordan',                 lat: 31.24, lon:  36.77},
+  JPN:{name:'Japan',                  lat: 36.20, lon: 138.25},   /* (*) */
+  KAZ:{name:'Kazakhstan',             lat: 48.41, lon:  67.24},
+  KEN:{name:'Kenya',                  lat:  0.60, lon:  37.79},
+  KGZ:{name:'Kyrgyzstan',             lat: 41.52, lon:  74.59},
+  KHM:{name:'Cambodia',               lat: 12.68, lon: 104.87},
+  KOR:{name:'South Korea',            lat: 36.42, lon: 127.82},
+  KWT:{name:'Kuwait',                 lat: 29.31, lon:  47.60},
+  LAO:{name:'Laos',                   lat: 18.43, lon: 103.79},
+  LBN:{name:'Lebanon',                lat: 33.91, lon:  35.87},
+  LBR:{name:'Liberia',                lat:  6.43, lon:  -9.41},
+  LBY:{name:'Libya',                  lat: 26.99, lon:  18.03},
+  LKA:{name:'Sri Lanka',              lat:  7.70, lon:  80.67},
+  LSO:{name:'Lesotho',                lat:-29.62, lon:  28.17},
+  LTU:{name:'Lithuania',              lat: 55.28, lon:  23.89},
+  LUX:{name:'Luxembourg',             lat: 49.76, lon:   5.97},
+  LVA:{name:'Latvia',                 lat: 56.82, lon:  24.84},
+  MAR:{name:'Morocco',                lat: 29.82, lon:  -8.69},
+  MDA:{name:'Moldova',                lat: 47.20, lon:  28.42},
+  MDG:{name:'Madagascar',             lat:-19.30, lon:  46.73},
+  MEX:{name:'Mexico',                 lat: 23.91, lon:-102.22},
+  MKD:{name:'Macedonia',              lat: 41.61, lon:  21.70},
+  MLI:{name:'Mali',                   lat: 17.24, lon:  -3.59},
+  MMR:{name:'Myanmar',                lat: 20.94, lon:  96.51},
+  MNE:{name:'Montenegro',             lat: 42.79, lon:  19.29},
+  MNG:{name:'Mongolia',               lat: 46.95, lon: 103.02},
+  MOZ:{name:'Mozambique',             lat:-17.15, lon:  35.54},
+  MRT:{name:'Mauritania',             lat: 20.18, lon: -10.35},
+  MWI:{name:'Malawi',                 lat:-13.16, lon:  34.19},
+  MYS:{name:'Malaysia',               lat:  3.75, lon: 109.70},
+  NAM:{name:'Namibia',                lat:-22.04, lon:  17.14},
+  NCL:{name:'New Caledonia',          lat:-21.26, lon: 165.53},
+  NER:{name:'Niger',                  lat: 17.34, lon:   9.27},
+  NGA:{name:'Nigeria',                lat:  9.54, lon:   7.99},
+  NIC:{name:'Nicaragua',              lat: 12.85, lon: -85.02},
+  NLD:{name:'Netherlands',            lat: 52.29, lon:   5.50},
+  NOR:{name:'Norway',                 lat: 61.00, lon:   8.50},   /* (*) */
+  NPL:{name:'Nepal',                  lat: 28.25, lon:  84.04},
+  NZL:{name:'New Zealand',            lat:-41.55, lon: 172.95},
+  OMN:{name:'Oman',                   lat: 20.59, lon:  56.07},
+  PAK:{name:'Pakistan',               lat: 29.91, lon:  69.23},
+  PAN:{name:'Panama',                 lat:  8.53, lon: -80.11},
+  PER:{name:'Peru',                   lat: -9.15, lon: -74.43},
+  PHL:{name:'Philippines',            lat: 11.72, lon: 122.94},
+  PNG:{name:'Papua New Guinea',       lat: -6.46, lon: 145.31},
+  POL:{name:'Poland',                 lat: 52.13, lon:  19.34},
+  PRI:{name:'Puerto Rico',            lat: 18.24, lon: -66.48},
+  PRK:{name:'North Korea',            lat: 40.13, lon: 127.13},
+  PRT:{name:'Portugal',               lat: 39.50, lon:  -8.00},   /* (*) */
+  PRY:{name:'Paraguay',               lat:-23.23, lon: -58.43},
+  PSE:{name:'Palestine',              lat: 31.94, lon:  35.27},
+  QAT:{name:'Qatar',                  lat: 25.32, lon:  51.18},
+  ROU:{name:'Romania',                lat: 45.85, lon:  24.95},
+  RUS:{name:'Russia',                 lat: 61.50, lon:  90.00},   /* (*) */
+  RWA:{name:'Rwanda',                 lat: -2.01, lon:  29.92},
+  SAU:{name:'Saudi Arabia',           lat: 24.09, lon:  44.64},
+  SDN:{name:'Sudan',                  lat: 15.97, lon:  29.83},
+  SEN:{name:'Senegal',                lat: 14.35, lon: -14.51},
+  SLB:{name:'Solomon Is.',            lat: -8.85, lon: 159.96},
+  SLE:{name:'Sierra Leone',           lat:  8.53, lon: -11.80},
+  SLV:{name:'El Salvador',            lat: 13.73, lon: -88.87},
+  SOM:{name:'Somalia',                lat:  4.74, lon:  45.70},
+  SRB:{name:'Serbia',                 lat: 44.22, lon:  20.84},
+  SSD:{name:'S. Sudan',               lat:  7.29, lon:  30.20},
+  SUR:{name:'Suriname',               lat:  4.12, lon: -55.91},
+  SVK:{name:'Slovakia',               lat: 48.73, lon:  19.50},
+  SVN:{name:'Slovenia',               lat: 46.13, lon:  14.93},
+  SWE:{name:'Sweden',                 lat: 62.42, lon:  16.11},
+  SWZ:{name:'eSwatini',               lat:-26.49, lon:  31.40},
+  SYR:{name:'Syria',                  lat: 35.01, lon:  38.52},
+  TCD:{name:'Chad',                   lat: 15.28, lon:  18.57},
+  TGO:{name:'Togo',                   lat:  8.43, lon:   1.00},
+  THA:{name:'Thailand',               lat: 14.98, lon: 101.00},
+  TJK:{name:'Tajikistan',             lat: 38.59, lon:  71.05},
+  TKM:{name:'Turkmenistan',           lat: 39.10, lon:  59.35},
+  TLS:{name:'Timor-Leste',            lat: -8.77, lon: 125.97},
+  TTO:{name:'Trinidad and Tobago',    lat: 10.43, lon: -61.33},
+  TUN:{name:'Tunisia',                lat: 34.14, lon:   9.54},
+  TUR:{name:'Turkey',                 lat: 39.15, lon:  35.12},
+  TWN:{name:'Taiwan',                 lat: 23.74, lon: 120.97},
+  TZA:{name:'Tanzania',               lat: -6.25, lon:  34.74},
+  UGA:{name:'Uganda',                 lat:  1.30, lon:  32.36},
+  UKR:{name:'Ukraine',                lat: 49.19, lon:  31.29},
+  URY:{name:'Uruguay',                lat:-32.77, lon: -56.01},
+  USA:{name:'United States of America', lat: 39.50, lon: -98.40}, /* (*) */
+  UZB:{name:'Uzbekistan',             lat: 41.77, lon:  63.37},
+  VEN:{name:'Venezuela',              lat:  7.16, lon: -66.15},
+  VNM:{name:'Vietnam',                lat: 16.56, lon: 106.33},
+  VUT:{name:'Vanuatu',                lat:-15.54, lon: 167.07},
+  XKX:{name:'Kosovo',                 lat: 42.58, lon:  20.90},
+  YEM:{name:'Yemen',                  lat: 15.92, lon:  47.52},
+  ZAF:{name:'South Africa',           lat:-28.92, lon:  25.16},
+  ZMB:{name:'Zambia',                 lat:-13.39, lon:  27.76},
+  ZWE:{name:'Zimbabwe',               lat:-18.90, lon:  29.79},
+
+  /* --- Territories and micro-states below the 110m detail threshold.
+         No hex cluster; they render as halo + tower only. --------------- */
+  ABW:{name:'Aruba',                  lat: 12.52, lon: -69.97},
+  AND:{name:'Andorra',                lat: 42.51, lon:   1.52},
+  ATG:{name:'Antigua and Barbuda',    lat: 17.06, lon: -61.80},
+  BHR:{name:'Bahrain',                lat: 26.07, lon:  50.55},
+  BHS:{name:'Bahamas',                lat: 25.51, lon: -77.93},
+  BMU:{name:'Bermuda',                lat: 32.32, lon: -64.76},
+  BRB:{name:'Barbados',               lat: 13.19, lon: -59.54},
+  CUW:{name:'Curaçao',                lat: 12.17, lon: -68.99},
+  CYM:{name:'Cayman Islands',         lat: 19.31, lon: -81.25},
+  GGY:{name:'Guernsey',               lat: 49.45, lon:  -2.58},
+  GIB:{name:'Gibraltar',              lat: 36.14, lon:  -5.35},
+  HKG:{name:'Hong Kong',              lat: 22.32, lon: 114.17},
+  IMN:{name:'Isle of Man',            lat: 54.24, lon:  -4.55},
+  JEY:{name:'Jersey',                 lat: 49.21, lon:  -2.13},
+  LIE:{name:'Liechtenstein',          lat: 47.14, lon:   9.55},
+  MAC:{name:'Macao',                  lat: 22.16, lon: 113.55},
+  MCO:{name:'Monaco',                 lat: 43.73, lon:   7.42},
+  MDV:{name:'Maldives',               lat:  3.20, lon:  73.22},
+  MHL:{name:'Marshall Islands',       lat:  7.13, lon: 171.18},
+  MLT:{name:'Malta',                  lat: 35.94, lon:  14.38},
+  MUS:{name:'Mauritius',              lat:-20.35, lon:  57.55},
+  SGP:{name:'Singapore',              lat:  1.35, lon: 103.82},
+  SMR:{name:'San Marino',             lat: 43.94, lon:  12.46},
+  SYC:{name:'Seychelles',             lat: -4.68, lon:  55.49},
+  VGB:{name:'British Virgin Islands', lat: 18.42, lon: -64.64}
+};
+const CKEYS = Object.keys(COUNTRIES);
+if (CKEYS.length > 65000) console.error('COUNTRIES: too many entries to id-encode.');
+
+let CLIENTS = [], PRODUCTS = [];                // filled from the CSV
+const R = 100;                                  // globe radius (world units)
+/* Surface samples tested against the landmask. Land keeps ~29% of them, so
+   this is roughly 3.4x the hexagon count. Higher = finer stipple and small
+   countries survive; cost is build time and instance count. At 120k the
+   cell is ~4,300 km², which is small enough for Qatar and Trinidad. */
+const HEX_SAMPLES = 120000;
+
+/* Two complete looks. Everything colour-bearing — WebGL materials, d3 charts,
+   CSS custom properties — reads from the active one, so applyTheme() is the
+   single place a palette change happens. */
+const THEMES = {
+  dark: {
+    dark:true,
+    bg:0x03070f, fog:0.0016,
+    ocean:0x061021, land:'#12365c', hexOpacity:1.0, glowBoost:0.65,
+    managed:'#22d3ee', booked:'#a78bfa',
+    arcA:'#22d3ee', arcB:'#c084fc',
+    partA:'#8ef7ff', partB:'#d8b4fe',
+    atmos:'#2b7dd8', atmosPow:3.2, atmosAlpha:0.85, atmosScale:1.0,
+    blending:THREE.AdditiveBlending,
+    arcA0:0.18, arcA1:0.72, partMul:1.0, markMul:1.0,
+    stars:true, towerOpacity:0.9, towerShade:true,
+    products:['#22d3ee','#34e0c4','#a78bfa','#f472b6','#60a5fa'],
+    area:'#22d3ee', line:'#34e0c4', bar:'#a78bfa', playhead:'#a78bfa',
+    dot:'#ffffff', barBg:'rgba(120,190,255,.07)', valTxt:'#8fb6d8'
+  },
+  light: {
+    dark:false,
+    bg:0xffffff, fog:0.0009,
+    ocean:0xffffff, land:'#aab2bb', hexOpacity:1.0, glowBoost:0.0,
+    managed:'#111111', booked:'#d92b1c',
+    arcA:'#1a1a1a', arcB:'#d92b1c',
+    partA:'#000000', partB:'#c81e0f',
+    atmos:'#111111', atmosPow:16.0, atmosAlpha:0.95, atmosScale:1.006/1.19,
+    blending:THREE.NormalBlending,
+    arcA0:0.30, arcA1:0.62, partMul:2.0, markMul:1.7,
+    stars:false, towerOpacity:0.78, towerShade:false,
+    products:['#111111','#d92b1c','#5a6068','#f0836f','#a4abb3'],
+    area:'#d92b1c', line:'#111111', bar:'#d92b1c', playhead:'#d92b1c',
+    dot:'#111111', barBg:'rgba(17,17,17,.06)', valTxt:'#71767e'
+  }
+};
+let PAL = THEMES.dark;
+const COL_LAND    = new THREE.Color(PAL.land);
+const COL_MANAGED = new THREE.Color(PAL.managed);
+const COL_BOOKED  = new THREE.Color(PAL.booked);
+
+/* ------------------------------------------------------------------ helpers */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rng = mulberry32(20250101);
+const pick = arr => arr[Math.floor(rng()*arr.length)];
+const fmt = n => n>=1e9 ? '$'+(n/1e9).toFixed(2)+'B'
+               : n>=1e6 ? '$'+(n/1e6).toFixed(1)+'M'
+               : n>=1e3 ? '$'+Math.round(n/1e3)+'K' : '$'+Math.round(n);
+const clamp = (v,a,b)=>Math.min(b,Math.max(a,v));
+const smoothstep = (e0,e1,x)=>{const t=clamp((x-e0)/(e1-e0),0,1);return t*t*(3-2*t);};
+
+/** lat/lon (degrees) -> position on a sphere of radius r */
+function llToVec3(lat, lon, r){
+  const phi = (90 - lat) * Math.PI/180, theta = (lon + 180) * Math.PI/180;
+  return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),
+                            r*Math.cos(phi),
+                            r*Math.sin(phi)*Math.sin(theta));
+}
+/** inverse of llToVec3 for a unit vector */
+function vec3ToLL(v){
+  const lat = 90 - Math.acos(clamp(v.y,-1,1)) * 180/Math.PI;
+  let lon = Math.atan2(v.z, -v.x) * 180/Math.PI - 180;
+  if (lon < -180) lon += 360;
+  return [lat, lon];
+}
+
+/* ================================================================= 1. DATA  */
+/* Rows are read from a CSV sitting next to this file. Required header:
+
+     month,client,product,managed,booked,revenue
+
+   month    YYYY-MM (any span; the series is whatever months appear)
+   client   any label; the reserved value "All clients" means the whole book
+   product  any label — likewise
+   managed  ISO alpha-3 from COUNTRIES: where the client is managed
+   booked   ISO alpha-3 from COUNTRIES: where the revenue is booked
+   revenue  number ($ and , are tolerated)
+
+   Point at a different file with ?data=some-other.csv                        */
+const DATA_URL = new URLSearchParams(location.search).get('data') || 'data.csv';
+const CSV_COLUMNS = ['month','client','product','managed','booked','revenue'];
+
+/* Reserved client label. Rows carrying it are the WHOLE book — hundreds of
+   clients — and are read as their own series, never as a rollup of the named
+   clients below them. The named clients are a selected few, so the two do not
+   reconcile and are not meant to. */
+const ALL_CLIENTS = 'All clients';
+
+let ROWS = [], ROWS_BY_MONTH = [], hasAllRows = false;
+
+function parseRows(text){
+  const table = d3.csvParse(text);
+  const missing = CSV_COLUMNS.filter(c => !table.columns.includes(c));
+  if (missing.length) throw new Error('CSV is missing column(s): ' + missing.join(', '));
+
+  const rows = []; let bad = 0;
+  for (const d of table){
+    const month   = (d.month || '').trim();
+    const revenue = +String(d.revenue).replace(/[$,\s]/g, '');
+    if (!/^\d{4}-\d{2}$/.test(month) || !isFinite(revenue)){ bad++; continue; }
+    rows.push({ month,
+                client : (d.client  || '').trim(),
+                product: (d.product || '').trim(),
+                managed: (d.managed || '').trim().toUpperCase(),
+                booked : (d.booked  || '').trim().toUpperCase(),
+                revenue });
+  }
+  if (bad) console.warn(bad + ' CSV row(s) skipped — unreadable month or revenue.');
+  if (!rows.length) throw new Error('CSV parsed, but no usable rows in it.');
+  return rows;
+}
+
+/* Everything downstream — timeline, pickers, scales — derives from these. */
+function initSeries(rows){
+  MONTHS       = [...new Set(rows.map(r=>r.month))].sort();   // YYYY-MM sorts by date
+  MONTH_LABELS = MONTHS.map(m=>{
+    const d = new Date(+m.slice(0,4), +m.slice(5,7)-1, 1);
+    return d.toLocaleString('en-US',{month:'short'}) + ' ' + m.slice(0,4);
+  });
+  MONTH_SHORT   = MONTH_LABELS.map(l=>l.replace(' 20', " '"));  // "Jan '25"
+  MONTH_SECONDS = CYCLE_SECONDS / MONTHS.length;
+  hasAllRows = rows.some(r => r.client === ALL_CLIENTS);
+  CLIENTS  = [...new Set(rows.map(r=>r.client))].filter(c=>c!==ALL_CLIENTS).sort();
+  PRODUCTS = [...new Set(rows.map(r=>r.product))].sort();
+  if (!hasAllRows)
+    console.warn('No "' + ALL_CLIENTS + '" rows in the data — the aggregate view '
+               + 'falls back to summing the ' + CLIENTS.length + ' named clients.');
+
+  /* Index by month, dropping rows that name a country the table doesn't have. */
+  const monthIdx = new Map(MONTHS.map((m,i)=>[m,i]));
+  ROWS = rows;
+  ROWS_BY_MONTH = MONTHS.map(()=>[]);
+  const unknown = new Set();
+  for (const r of rows){
+    if (!COUNTRIES[r.managed]) unknown.add(r.managed);
+    if (!COUNTRIES[r.booked])  unknown.add(r.booked);
+    if (!COUNTRIES[r.managed] || !COUNTRIES[r.booked]) continue;
+    ROWS_BY_MONTH[monthIdx.get(r.month)].push(r);
+  }
+  if (unknown.size)
+    console.warn('Rows skipped — country codes not in COUNTRIES:', [...unknown].join(', '));
+}
+
+function fetchText(url){
+  return fetch(url).then(r=>{
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' fetching ' + url);
+    return r.text();
+  });
+}
+
+/* Opened straight from disk, a browser refuses to fetch a sibling file, so
+   offer the picker instead of dying. Resolves once a readable CSV arrives. */
+function askForFile(err){
+  return new Promise(resolve=>{
+    /* file:, data: and blob: all fail to fetch a sibling file the same way */
+    const onDisk = !/^https?:$/.test(location.protocol);
+    $('loadMsg').textContent = 'Could not load ' + DATA_URL;
+    $('loadErr').textContent = err.message;
+    $('loadWhyFile').hidden = !onDisk;
+    $('loadWhyHttp').hidden =  onDisk;
+    ['loadServe','loadCmd','loadThen'].forEach(id => $(id).hidden = !onDisk);
+    $('loadHelp').hidden = false;
+    const take = file => {
+      if (!file) return;
+      file.text().then(t=>{
+        try { resolve(parseRows(t)); }
+        catch (e){ $('loadErr').textContent = e.message; }
+      });
+    };
+    $('loadFile').onchange = e => take(e.target.files[0]);
+    addEventListener('dragover', e=>e.preventDefault());
+    addEventListener('drop', e=>{ e.preventDefault(); take(e.dataTransfer.files[0]); });
+  });
+}
+
+/* --------------------------------------------------------- filtered summary */
+const state = {
+  client: 'ALL',
+  product: 'ALL',
+  playing: true,
+  smooth: true,          // arcs staggered across the month boundary
+  speed: 1,
+  t: 0,                     // 0..12 continuous position in the year
+  agg: null
+};
+
+function aggregate(client, product){
+  const routes = MONTHS.map(()=>new Map());   // "MGD>BKD" -> value
+  const mgdTot = MONTHS.map(()=>new Map());
+  const bkdTot = MONTHS.map(()=>new Map());
+  const prodTot= MONTHS.map(()=>new Map());
+  const total  = MONTHS.map(()=>0);
+  const byClient = new Map(CLIENTS.map(c=>[c,0]));
+  let allSum = 0, namedSum = 0;
+
+  /* Scope: which rows drive the globe and the charts. "All clients" reads the
+     reserved rows only — it is a figure from the data, not a sum of the named
+     clients. Without those rows, fall back to summing what we do have. */
+  const wantAll = client === 'ALL';
+
+  for (let mi=0; mi<MONTHS.length; mi++){
+    const list = ROWS_BY_MONTH[mi];
+    for (let i=0;i<list.length;i++){
+      const r = list[i];
+      if (product !== 'ALL' && r.product !== product) continue;
+
+      const isAll = r.client === ALL_CLIENTS;
+      /* sidebar totals ignore the client filter */
+      if (isAll) allSum += r.revenue;
+      else { byClient.set(r.client, (byClient.get(r.client)||0) + r.revenue);
+             namedSum += r.revenue; }
+
+      const inScope = wantAll ? (hasAllRows ? isAll : !isAll)
+                              : r.client === client;
+      if (!inScope) continue;
+
+      const k = r.managed + '>' + r.booked;
+      routes[mi].set(k, (routes[mi].get(k)||0) + r.revenue);
+      mgdTot[mi].set(r.managed, (mgdTot[mi].get(r.managed)||0) + r.revenue);
+      bkdTot[mi].set(r.booked,  (bkdTot[mi].get(r.booked) ||0) + r.revenue);
+      prodTot[mi].set(r.product,(prodTot[mi].get(r.product)||0)+ r.revenue);
+      total[mi] += r.revenue;
+    }
+  }
+  let maxRoute = 0, maxCountry = 0;
+  routes.forEach(m => m.forEach(v => { if (v>maxRoute) maxRoute=v; }));
+  mgdTot.forEach(m => m.forEach(v => { if (v>maxCountry) maxCountry=v; }));
+  bkdTot.forEach(m => m.forEach(v => { if (v>maxCountry) maxCountry=v; }));
+
+  const cum = []; let run=0; total.forEach(v=>{run+=v;cum.push(run);});
+  return {routes, mgdTot, bkdTot, prodTot, total, cum, byClient,
+          allTotal: hasAllRows ? allSum : namedSum,
+          maxRoute: maxRoute||1, maxCountry: maxCountry||1,
+          maxTotal: Math.max(...total)||1};
+}
+
+/* ============================================================ 2. THREE SETUP */
+const canvas   = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0x03070f, 1);
+
+const scene  = new THREE.Scene();
+scene.fog    = new THREE.FogExp2(0x03070f, 0.0016);
+const camera = new THREE.PerspectiveCamera(38, 1, 1, 4000);
+
+const globe = new THREE.Group();
+scene.add(globe);
+
+/* --- camera controls (hand rolled — no external dependency) ----------------
+   Drag ON the globe   -> orbit  (change the planet's orientation)
+   Drag OFF the globe  -> pan    (move the planet around the screen)
+   Wheel / pinch       -> zoom;  double-click -> reset the view              */
+const HOME = {lon:-30, lat:18};
+const DIST_MIN = 130, DIST_MAX = 2000;
+const cam = {
+  lon:HOME.lon, lat:HOME.lat, dist:450, tLon:HOME.lon, tLat:HOME.lat, tDist:450,
+  /* Pan is a screen-space offset in CSS pixels, applied as a projection
+     offset. It deliberately does NOT move the camera's look-at point: the
+     orbit centre must stay on the globe's centre, or rotating after a pan
+     swings the planet around an off-centre pivot. */
+  pan:{x:0, y:0}, tPan:{x:0, y:0},
+  drag:false, mode:'orbit', px:0, py:0, autoRotate:true, userZoomed:false
+};
+function panLimit(){ return Math.max(canvas.clientWidth, canvas.clientHeight) * 0.55; }
+
+/** Distance at which the whole planet (plus its halo) fits the viewport.
+    Clamped, because a resize to zero height would otherwise return Infinity
+    and poison the camera lerp with NaN. */
+function fitDistance(){
+  const need = R * 1.45;
+  const tanY = Math.tan(camera.fov * Math.PI/360);
+  const a = (isFinite(camera.aspect) && camera.aspect > 0) ? camera.aspect : 1;
+  return clamp(need / (tanY * Math.min(1, a)), DIST_MIN, DIST_MAX);
+}
+function resetView(){
+  cam.tLon = HOME.lon; cam.tLat = HOME.lat;
+  cam.tDist = fitDistance();
+  cam.tPan.x = cam.tPan.y = 0;
+  cam.userZoomed = false;
+}
+/** Shift the rendered image without touching the camera's orientation. */
+function applyViewOffset(){
+  const w = Math.max(1, canvas.clientWidth), h = Math.max(1, canvas.clientHeight);
+  if (Math.abs(cam.pan.x) < 0.01 && Math.abs(cam.pan.y) < 0.01) camera.clearViewOffset();
+  else camera.setViewOffset(w, h, -cam.pan.x, -cam.pan.y, w, h);
+}
+
+function applyCamera(dt){
+  if (!isFinite(cam.tDist)) cam.tDist = fitDistance();
+  if (!isFinite(cam.dist))  cam.dist  = cam.tDist;
+  const k = Math.min(1, dt*9);
+  cam.lon  += (cam.tLon  - cam.lon ) * k;
+  cam.lat  += (cam.tLat  - cam.lat ) * k;
+  cam.dist += (cam.tDist - cam.dist) * Math.min(1, dt*7);
+  const kp = Math.min(1, dt*18);
+  cam.pan.x += (cam.tPan.x - cam.pan.x) * kp;
+  cam.pan.y += (cam.tPan.y - cam.pan.y) * kp;
+  if (cam.autoRotate && !cam.drag){ cam.tLon += dt*2.4; cam.lon += dt*2.4; }
+  applyViewOffset();
+  camera.position.copy(llToVec3(cam.lat, cam.lon, cam.dist));
+  camera.lookAt(0, 0, 0);            // always the globe's centre
+  camera.updateMatrixWorld();
+}
+
+/* Does this pointer event land on the planet? */
+const _ndc = new THREE.Vector2(), _ray = new THREE.Raycaster();
+const _globeSphere = new THREE.Sphere(new THREE.Vector3(0,0,0), R);
+function hitsGlobe(e){
+  const r = canvas.getBoundingClientRect();
+  _ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+  _ray.setFromCamera(_ndc, camera);
+  return _ray.ray.intersectsSphere(_globeSphere);
+}
+
+canvas.addEventListener('pointerdown', e=>{
+  cam.drag = true;
+  cam.mode = hitsGlobe(e) ? 'orbit' : 'pan';
+  cam.px = e.clientX; cam.py = e.clientY;
+  canvas.classList.add(cam.mode === 'pan' ? 'panning' : 'dragging');
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e=>{
+  if (!cam.drag){ canvas.classList.toggle('overGlobe', hitsGlobe(e)); return; }
+  const dx = e.clientX - cam.px, dy = e.clientY - cam.py;
+  if (cam.mode === 'orbit'){
+    cam.tLon -= dx * 0.28;
+    cam.tLat  = clamp(cam.tLat + dy * 0.24, -84, 84);
+  } else {
+    const lim = panLimit();
+    cam.tPan.x = clamp(cam.tPan.x + dx, -lim, lim);
+    cam.tPan.y = clamp(cam.tPan.y + dy, -lim, lim);
+    cam.pan.x = cam.tPan.x; cam.pan.y = cam.tPan.y;   // 1:1 while dragging
+  }
+  cam.px = e.clientX; cam.py = e.clientY;
+});
+addEventListener('pointerup', ()=>{
+  cam.drag = false;
+  canvas.classList.remove('dragging','panning');
+});
+canvas.addEventListener('wheel', e=>{
+  e.preventDefault();
+  cam.userZoomed = true;
+  cam.tDist = clamp(cam.tDist * (1 + Math.sign(e.deltaY)*0.11), DIST_MIN, DIST_MAX);
+},{passive:false});
+canvas.addEventListener('dblclick', resetView);
+
+/* two-finger pinch to zoom */
+let pinch = null;
+canvas.addEventListener('touchmove', e=>{
+  if (e.touches.length!==2) return;
+  const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX,
+                       e.touches[0].clientY-e.touches[1].clientY);
+  if (pinch){ cam.userZoomed = true;
+              cam.tDist = clamp(cam.tDist * pinch/d, DIST_MIN, DIST_MAX); }
+  pinch = d;
+},{passive:true});
+canvas.addEventListener('touchend', ()=>{pinch=null;});
+
+function resize(){
+  const w = Math.max(1, innerWidth), h = Math.max(1, innerHeight);
+  renderer.setSize(w,h,false);
+  camera.aspect = w/h; camera.updateProjectionMatrix();
+  applyViewOffset();
+  if (!cam.userZoomed) cam.tDist = fitDistance();   // keep the whole planet framed
+  arcMat.uniforms.uRes.value.set(w, h);             // ribbon widths are in CSS px
+  drawAllCharts();
+}
+addEventListener('resize', resize);
+
+/* --- ocean sphere + atmosphere -------------------------------------------- */
+const ocean = new THREE.Mesh(
+  new THREE.SphereGeometry(R*0.995, 64, 48),
+  new THREE.MeshBasicMaterial({color:PAL.ocean})
+);
+globe.add(ocean);
+
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(R*1.19, 64, 48),
+  new THREE.ShaderMaterial({
+    transparent:true, side:THREE.BackSide, depthWrite:false, blending:THREE.AdditiveBlending,
+    uniforms:{uColor:{value:new THREE.Color(PAL.atmos)},
+              uPow:{value:PAL.atmosPow}, uAlpha:{value:PAL.atmosAlpha}},
+    vertexShader:`varying vec3 vN; varying vec3 vP;
+      void main(){ vN=normalize(normalMatrix*normal);
+        vec4 mv=modelViewMatrix*vec4(position,1.); vP=mv.xyz;
+        gl_Position=projectionMatrix*mv; }`,
+    fragmentShader:`uniform vec3 uColor; uniform float uPow; uniform float uAlpha;
+      varying vec3 vN; varying vec3 vP;
+      void main(){ float f=pow(1.0-abs(dot(normalize(vN),normalize(-vP))),uPow);
+        gl_FragColor=vec4(uColor, f*uAlpha); }`
+  })
+);
+scene.add(atmosphere);
+
+/* --- starfield ------------------------------------------------------------ */
+const starField = (function stars(){
+  const N=2600, pos=new Float32Array(N*3), sz=new Float32Array(N);
+  for(let i=0;i<N;i++){
+    const v = new THREE.Vector3(rng()-.5,rng()-.5,rng()-.5).normalize()
+                .multiplyScalar(900 + rng()*1600);
+    pos.set([v.x,v.y,v.z], i*3); sz[i] = 0.8 + rng()*2.4;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('aSize',    new THREE.BufferAttribute(sz,1));
+  const pts = new THREE.Points(g, new THREE.ShaderMaterial({
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+    vertexShader:`attribute float aSize; varying float vS;
+      void main(){ vS=aSize; vec4 mv=modelViewMatrix*vec4(position,1.);
+        gl_PointSize=aSize*(260./-mv.z); gl_Position=projectionMatrix*mv; }`,
+    fragmentShader:`varying float vS;
+      void main(){ float d=length(gl_PointCoord-0.5);
+        if(d>0.5) discard;
+        gl_FragColor=vec4(0.72,0.85,1.0, (1.-d*2.)*0.55); }`
+  }));
+  scene.add(pts);
+  return pts;
+})();
+
+/* ============================================ 3. HEX LANDMASS FROM TOPOJSON */
+let hexMesh = null;
+let hexIndexByCountry = {};     // country key -> Int32Array of instance indices
+let hexBase  = null;            // Float32Array rgb triples — base colour per hex
+let hexShade = null;            // Float32Array — shading factor, kept for re-tinting
+
+async function buildLand(){
+  const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')
+                      .then(r=>r.json());
+  const feats = topojson.feature(world, world.objects.countries).features;
+
+  /* Rasterise the world twice into offscreen canvases:
+     - landCtx: all land, white on black  -> is this sample point on land?
+     - idCtx  : only our COUNTRIES, each filled with rgb(idx+1,0,0) -> which one? */
+  const W=4096, H=2048;         // ~9.8 km per pixel — fine enough for small states
+  const mk = ()=>{const c=document.createElement('canvas');c.width=W;c.height=H;
+                  const x=c.getContext('2d',{willReadFrequently:true});
+                  x.fillStyle='#000';x.fillRect(0,0,W,H);return x;};
+  const landCtx = mk(), idCtx = mk();
+  const proj = d3.geoEquirectangular().fitSize([W,H], {type:'Sphere'});
+
+  const pathLand = d3.geoPath(proj, landCtx);
+  landCtx.fillStyle = '#fff';
+  landCtx.beginPath(); feats.forEach(f=>pathLand(f)); landCtx.fill();
+
+  const pathId = d3.geoPath(proj, idCtx);
+  const nameToKey = {};
+  CKEYS.forEach(k => nameToKey[COUNTRIES[k].name] = k);
+  feats.forEach(f=>{
+    const key = nameToKey[f.properties && f.properties.name];
+    if (!key) return;
+    /* id encoded across two channels so the table can exceed 255 entries */
+    const n = CKEYS.indexOf(key) + 1;
+    idCtx.fillStyle = 'rgb(' + (n & 255) + ',' + ((n >> 8) & 255) + ',0)';
+    idCtx.beginPath(); pathId(f); idCtx.fill();
+  });
+
+  const landData = landCtx.getImageData(0,0,W,H).data;
+  const idData   = idCtx.getImageData(0,0,W,H).data;
+  const sample = (arr, lat, lon, ch) => {
+    const p = proj([lon, lat]); if (!p) return 0;
+    const x = clamp(Math.round(p[0]),0,W-1), y = clamp(Math.round(p[1]),0,H-1);
+    return arr[(y*W+x)*4 + (ch||0)];
+  };
+  /* Canvas fills are antialiased, so a pixel straddling a border blends two
+     ids into a third, meaningless one. Take the mode of a 5-tap cross: the
+     blended outlier loses to its neighbours. */
+  const OFFS = [[0,0],[1,0],[-1,0],[0,1],[0,-1]];
+  const idAt = (lat, lon) => {
+    const seen = {}; let best = 0, bestN = 0;
+    for (let i=0;i<OFFS.length;i++){
+      const p = proj([lon, lat]); if (!p) continue;
+      const x = clamp(Math.round(p[0])+OFFS[i][0],0,W-1),
+            y = clamp(Math.round(p[1])+OFFS[i][1],0,H-1);
+      const o = (y*W+x)*4;
+      const id = idData[o] + (idData[o+1] << 8);
+      const c = (seen[id] = (seen[id]||0) + 1);
+      if (c > bestN){ bestN = c; best = id; }
+    }
+    return best - 1;                       // -1 == not one of ours
+  };
+
+  /* Fibonacci sphere -> keep the points that land on land. */
+  const N = HEX_SAMPLES, GA = Math.PI*(3-Math.sqrt(5));
+  const pts = [], owners = [];
+  for (let i=0;i<N;i++){
+    const y = 1 - (i/(N-1))*2, r = Math.sqrt(Math.max(0,1-y*y)), th = GA*i;
+    const v = new THREE.Vector3(Math.cos(th)*r, y, Math.sin(th)*r);
+    const [lat, lon] = vec3ToLL(v);
+    if (sample(landData, lat, lon) < 128) continue;
+    pts.push(v);
+    owners.push(idAt(lat, lon));
+  }
+
+  /* Instanced hexagons, one per land sample, tangent to the sphere. */
+  const spacing = Math.sqrt(4*Math.PI/N) * R;
+  const geo = new THREE.CircleGeometry(spacing*0.46, 6);
+  const mat = new THREE.MeshBasicMaterial({side:THREE.DoubleSide,
+                transparent:true, opacity:PAL.hexOpacity});
+  hexMesh = new THREE.InstancedMesh(geo, mat, pts.length);
+  const dummy = new THREE.Object3D();
+  const buckets = {}; CKEYS.forEach(k=>buckets[k]=[]);
+  hexBase  = new Float32Array(pts.length*3);
+  hexShade = new Float32Array(pts.length);
+
+  pts.forEach((v,i)=>{
+    dummy.position.copy(v).multiplyScalar(R);
+    dummy.lookAt(v.clone().multiplyScalar(R*2));
+    dummy.updateMatrix();
+    hexMesh.setMatrixAt(i, dummy.matrix);
+    /* very subtle latitude shading so the sphere still reads as a sphere */
+    const shade = 0.72 + 0.28*Math.max(0, v.clone().normalize().dot(new THREE.Vector3(0.4,0.5,0.75)));
+    hexShade[i] = shade;
+    const c = COL_LAND.clone().multiplyScalar(shade);
+    hexBase[i*3] = c.r; hexBase[i*3+1] = c.g; hexBase[i*3+2] = c.b;
+    hexMesh.setColorAt(i, c);
+    if (owners[i] >= 0) buckets[CKEYS[owners[i]]].push(i);
+  });
+  hexMesh.instanceColor.needsUpdate = true;
+  CKEYS.forEach(k => hexIndexByCountry[k] = Int32Array.from(buckets[k]));
+  globe.add(hexMesh);
+}
+
+/* ==================================================== 4. ARCS AND PARTICLES */
+const MAX_ARCS = 90, ARC_SEGS = 44, PARTS_PER_ARC = 7;
+/* In Smooth mode two months' arcs are resident at once — each month's arcs
+   start at a random point in a one-month window centred on that month, and
+   live for one month, so one month's flows are still finishing while the
+   next month's are already launching. */
+const ARC_SLOTS = MAX_ARCS * 2;
+
+/* --- arc ribbons ------------------------------------------------------------
+   WebGL ignores gl_LineWidth, so each arc is a camera-facing triangle strip:
+   two vertices per sample, pushed apart along the screen-space normal of the
+   curve. That lets the width carry revenue (see FLOW_WIDTH / uScale below).   */
+const SAMPLES  = ARC_SEGS + 1;
+const BASE_PX  = 1.15;      // width at slider 0 — the original hairline
+const PROP_PX  = 11.0;      // px added to the largest flow per 1x of slider
+
+const arcGeo = new THREE.BufferGeometry();
+const arcVerts = ARC_SLOTS * SAMPLES * 2;
+arcGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(arcVerts*3),3));
+arcGeo.setAttribute('aNext',    new THREE.BufferAttribute(new Float32Array(arcVerts*3),3));
+arcGeo.setAttribute('aSide',    new THREE.BufferAttribute(new Float32Array(arcVerts),1));
+arcGeo.setAttribute('aT',       new THREE.BufferAttribute(new Float32Array(arcVerts),1));
+arcGeo.setAttribute('aW',       new THREE.BufferAttribute(new Float32Array(arcVerts),1));
+arcGeo.setAttribute('aWLin',    new THREE.BufferAttribute(new Float32Array(arcVerts),1));
+arcGeo.setAttribute('aT0',      new THREE.BufferAttribute(new Float32Array(arcVerts),1));
+(function arcIndices(){
+  const idx = new Uint16Array(ARC_SLOTS * ARC_SEGS * 6);
+  for (let a=0; a<ARC_SLOTS; a++){
+    for (let s=0; s<ARC_SEGS; s++){
+      const b = (a*SAMPLES + s)*2, o = (a*ARC_SEGS + s)*6;
+      idx[o]=b; idx[o+1]=b+1; idx[o+2]=b+2;
+      idx[o+3]=b+1; idx[o+4]=b+3; idx[o+5]=b+2;
+    }
+  }
+  arcGeo.setIndex(new THREE.BufferAttribute(idx,1));
+})();
+
+const arcMat = new THREE.ShaderMaterial({
+  transparent:true, depthWrite:false, side:THREE.DoubleSide,
+  blending:THREE.AdditiveBlending,
+  uniforms:{uNow:{value:0}, uScale:{value:1},
+            uRes:{value:new THREE.Vector2(1,1)},
+            uBase:{value:BASE_PX}, uProp:{value:PROP_PX},
+            uA0:{value:0.18}, uA1:{value:0.72},
+            uA:{value:new THREE.Color('#22d3ee')}, uB:{value:new THREE.Color('#c084fc')}},
+  vertexShader:`
+    attribute vec3 aNext; attribute float aSide; attribute float aT;
+    attribute float aW;   attribute float aWLin; attribute float aT0;
+    uniform vec2 uRes; uniform float uScale; uniform float uBase; uniform float uProp;
+    uniform float uNow;
+    varying float vT; varying float vW; varying float vSide; varying float vLp;
+    void main(){
+      vT = aT; vW = aW; vSide = aSide;
+      vLp = uNow - aT0;             // this arc's own age, in months
+      vec4 cA = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vec4 cB = projectionMatrix * modelViewMatrix * vec4(aNext,    1.0);
+      vec2 sA = (cA.xy / max(1e-6, abs(cA.w))) * uRes * 0.5;
+      vec2 sB = (cB.xy / max(1e-6, abs(cB.w))) * uRes * 0.5;
+      vec2 d  = sB - sA;
+      d = (length(d) > 1e-5) ? normalize(d) : vec2(1.0, 0.0);
+      vec2 nrm = vec2(-d.y, d.x);
+      float wpx = uBase + uScale * uProp * aWLin;      // px, proportional to revenue
+      cA.xy += (nrm * aSide * wpx * 0.5) / (uRes * 0.5) * cA.w;
+      gl_Position = cA;
+    }`,
+  fragmentShader:`uniform vec3 uA; uniform vec3 uB;
+    uniform float uA0; uniform float uA1;
+    varying float vT; varying float vW; varying float vSide; varying float vLp;
+    void main(){
+      /* one arc's life: draw on, hold, fade out — all from its own age */
+      float env  = smoothstep(0.0, 0.20, vLp) * (1.0 - smoothstep(0.82, 1.0, vLp));
+      if (env <= 0.0) discard;
+      float draw = clamp(vLp/0.40, 0.0, 1.05);
+      float head = 1.0 - smoothstep(draw-0.06, draw+0.01, vT);      // progressive draw
+      float body = 0.30 + 0.70*sin(vT*3.14159);                     // fade at the ends
+      float prof = 1.0 - 0.55*abs(vSide);                           // soft ribbon edges
+      float a = head*body*prof*env*(uA0 + uA1*vW);
+      if (a < 0.004) discard;
+      gl_FragColor = vec4(mix(uA, uB, smoothstep(0.15,0.9,vT)), a);
+    }`
+});
+const arcLines = new THREE.Mesh(arcGeo, arcMat);
+arcLines.frustumCulled = false;
+globe.add(arcLines);
+
+/* --- particles: bezier evaluated in the vertex shader ---------------------- */
+const pCount = ARC_SLOTS * PARTS_PER_ARC;
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pCount*3),3)); // unused, required
+pGeo.setAttribute('aStart',   new THREE.BufferAttribute(new Float32Array(pCount*3),3));
+pGeo.setAttribute('aCtrl',    new THREE.BufferAttribute(new Float32Array(pCount*3),3));
+pGeo.setAttribute('aEnd',     new THREE.BufferAttribute(new Float32Array(pCount*3),3));
+pGeo.setAttribute('aOff',     new THREE.BufferAttribute(new Float32Array(pCount),1));
+pGeo.setAttribute('aSpeed',   new THREE.BufferAttribute(new Float32Array(pCount),1));
+pGeo.setAttribute('aSize',    new THREE.BufferAttribute(new Float32Array(pCount),1));
+pGeo.setAttribute('aT0',      new THREE.BufferAttribute(new Float32Array(pCount),1));
+const pMat = new THREE.ShaderMaterial({
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  uniforms:{uTime:{value:0}, uNow:{value:0}, uMul:{value:1},
+            uA:{value:new THREE.Color('#8ef7ff')}, uB:{value:new THREE.Color('#d8b4fe')}},
+  vertexShader:`
+    attribute vec3 aStart; attribute vec3 aCtrl; attribute vec3 aEnd;
+    attribute float aOff; attribute float aSpeed; attribute float aSize;
+    attribute float aT0;
+    uniform float uTime; uniform float uNow;
+    varying float vT; varying float vA; varying float vEnv;
+    void main(){
+      float lp = uNow - aT0;                       // same life as the parent arc
+      vEnv = smoothstep(0.0, 0.20, lp) * (1.0 - smoothstep(0.82, 1.0, lp));
+      float t = fract(aOff + uTime*aSpeed);
+      vT = t;
+      float u = 1.0-t;
+      vec3 p = u*u*aStart + 2.0*u*t*aCtrl + t*t*aEnd;
+      vA = aSize;
+      vec4 mv = modelViewMatrix*vec4(p,1.0);
+      gl_PointSize = (2.0 + aSize*7.0) * (300.0/-mv.z);
+      gl_Position = projectionMatrix*mv;
+    }`,
+  fragmentShader:`uniform float uMul; uniform vec3 uA; uniform vec3 uB;
+    varying float vT; varying float vA; varying float vEnv;
+    void main(){
+      float d = length(gl_PointCoord-0.5);
+      if (d > 0.5) discard;
+      float core = pow(1.0-d*2.0, 2.2);
+      float life = sin(vT*3.14159);                 // fade in at launch, out at landing
+      gl_FragColor = vec4(mix(uA,uB,vT), min(1.0, core*life*vEnv*(0.35+0.65*vA)*uMul));
+    }`
+});
+const particles = new THREE.Points(pGeo, pMat);
+particles.frustumCulled = false;
+globe.add(particles);
+
+/* --- country halo markers (dot + expanding radar ring) --------------------- */
+const mGeo = new THREE.BufferGeometry();
+const mPos = new Float32Array(CKEYS.length*3);
+const mInt = new Float32Array(CKEYS.length);      // 0..1 activity
+const mRole= new Float32Array(CKEYS.length);      // 0 = managed, 1 = booked
+CKEYS.forEach((k,i)=>{
+  const v = llToVec3(COUNTRIES[k].lat, COUNTRIES[k].lon, R*1.004);
+  mPos.set([v.x,v.y,v.z], i*3);
+});
+mGeo.setAttribute('position', new THREE.BufferAttribute(mPos,3));
+mGeo.setAttribute('aInt',     new THREE.BufferAttribute(mInt,1));
+mGeo.setAttribute('aRole',    new THREE.BufferAttribute(mRole,1));
+const mMat = new THREE.ShaderMaterial({
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  uniforms:{uTime:{value:0}, uMul:{value:1},
+            uA:{value:COL_MANAGED.clone()}, uB:{value:COL_BOOKED.clone()}},
+  vertexShader:`attribute float aInt; attribute float aRole;
+    varying float vI; varying float vR;
+    void main(){ vI=aInt; vR=aRole;
+      vec4 mv=modelViewMatrix*vec4(position,1.0);
+      gl_PointSize = (10.0 + aInt*54.0) * (300.0/-mv.z);
+      gl_Position = projectionMatrix*mv; }`,
+  fragmentShader:`uniform float uTime; uniform float uMul; uniform vec3 uA; uniform vec3 uB;
+    varying float vI; varying float vR;
+    void main(){
+      if (vI < 0.01) discard;
+      float d = length(gl_PointCoord-0.5)*2.0;
+      if (d > 1.0) discard;
+      vec3 col = mix(uA,uB,vR);
+      float dot_ = pow(max(0.0,1.0-d*3.2), 2.0);            // solid centre
+      float rr = fract(uTime*0.55 + vR*0.5);                 // expanding ring
+      float ring = exp(-pow((d-rr)*7.0,2.0)) * (1.0-rr);
+      float a = min(1.0, (dot_*0.9 + ring*0.75) * vI * uMul);
+      gl_FragColor = vec4(col, a);
+    }`
+});
+const markers = new THREE.Points(mGeo, mMat);
+markers.frustumCulled = false;
+globe.add(markers);
+
+/* --- revenue towers: one column per BOOKED country ------------------------
+   Height is that month's booked revenue, grown from zero at the start of the
+   month to its full value at the end, then reset by the next month's frac.   */
+const TOWER_MAX = R * 0.45;
+/* A tower reaches its full value at TOWER_GROW through the month, then holds
+   that height and dissolves over the remainder — so the month boundary reads
+   as a fade rather than the columns snapping back to zero. */
+const TOWER_GROW = 0.84, TOWER_FADE = 0.84;
+const towerGeo = new THREE.CylinderGeometry(R*0.020, R*0.028, 1, 6);
+towerGeo.translate(0, 0.5, 0);                    // base sits on the surface
+const towers = new THREE.InstancedMesh(
+  towerGeo,
+  new THREE.MeshBasicMaterial({transparent:true, opacity:0.9, depthWrite:false,
+                               blending:THREE.AdditiveBlending}),
+  CKEYS.length
+);
+towers.frustumCulled = false;
+globe.add(towers);
+
+const TOWER_NORMALS = CKEYS.map(k => llToVec3(COUNTRIES[k].lat, COUNTRIES[k].lon, 1));
+const _tDummy = new THREE.Object3D(), _tUp = new THREE.Vector3(0,1,0),
+      _tCol = new THREE.Color();
+
+function updateTowers(mi, frac){
+  if (!towers.visible) return;
+  const grow = Math.min(1, frac / TOWER_GROW);
+  const fade = 1 - smoothstep(TOWER_FADE, 1.0, frac);
+  towers.material.opacity = PAL.towerOpacity * fade;
+  const agg = state.agg, bb = agg.bkdTot[mi];
+  for (let i=0;i<CKEYS.length;i++){
+    const share = (bb.get(CKEYS[i])||0) / agg.maxCountry;
+    const n = TOWER_NORMALS[i];
+    _tDummy.position.copy(n).multiplyScalar(R*0.99);
+    _tDummy.quaternion.setFromUnitVectors(_tUp, n);
+    _tDummy.scale.set(1, Math.max(1e-4, share*TOWER_MAX*grow), 1);
+    _tDummy.updateMatrix();
+    towers.setMatrixAt(i, _tDummy.matrix);
+    if (PAL.towerShade) _tCol.copy(COL_BOOKED).multiplyScalar(0.40 + 0.60*Math.min(1, share*1.7));
+    else                _tCol.copy(COL_BOOKED);
+    towers.setColorAt(i, _tCol);
+  }
+  towers.instanceMatrix.needsUpdate = true;
+  if (towers.instanceColor) towers.instanceColor.needsUpdate = true;
+}
+
+/* --- rebuild arc + particle buffers for a given month --------------------- */
+const wrapMonth = m => ((m % MONTHS.length) + MONTHS.length) % MONTHS.length;
+
+/* Build the arcs that can be alive around continuous time `base`.
+   Classic : one month, every arc starting together at `base`.
+   Smooth  : months `base` and `base+1`, each arc starting at a random point
+             in the one-month window centred on its own month. */
+function buildArcSlab(base){
+  const agg = state.agg;
+  const slots = state.smooth ? [0, 1] : [0];
+
+  const pos  = arcGeo.attributes.position.array;
+  const nxt  = arcGeo.attributes.aNext.array;
+  const side = arcGeo.attributes.aSide.array;
+  const aT   = arcGeo.attributes.aT.array;
+  const aW   = arcGeo.attributes.aW.array;
+  const aWL  = arcGeo.attributes.aWLin.array;
+  const aTZ  = arcGeo.attributes.aT0.array;
+  const pS = pGeo.attributes.aStart.array, pC = pGeo.attributes.aCtrl.array,
+        pE = pGeo.attributes.aEnd.array,   pO = pGeo.attributes.aOff.array,
+        pV = pGeo.attributes.aSpeed.array, pZ = pGeo.attributes.aSize.array,
+        pTZ= pGeo.attributes.aT0.array;
+  pZ.fill(0);
+
+  const curve = [];
+  let ai = 0;
+  slots.forEach(slot=>{
+    const mi = wrapMonth(base + slot);
+    const entries = [...agg.routes[mi].entries()]
+        .sort((a,b)=>b[1]-a[1]).slice(0, MAX_ARCS);
+    entries.forEach(([key, val], rank)=>{
+    /* seed on (month, rank) so an arc keeps the same start time and particle
+       phases when the slab is rebuilt and it shifts slot */
+    const sd = mi*997 + rank*31;
+    const t0 = state.smooth ? base + slot - 0.5 + rngStable(sd) : base;
+    const [mk, bk] = key.split('>');
+    const A = llToVec3(COUNTRIES[mk].lat, COUNTRIES[mk].lon, R);
+    const B = llToVec3(COUNTRIES[bk].lat, COUNTRIES[bk].lon, R);
+    const ang  = A.angleTo(B);
+    const lift = R * (1 + 0.16 + ang*0.46);            // longer hops arc higher
+    const C = A.clone().add(B).normalize().multiplyScalar(lift);
+    const wLin = val / agg.maxRoute;                   // linear share -> width
+    const w    = Math.pow(wLin, 0.55);                 // compressed -> brightness
+
+    curve.length = 0;
+    for (let s=0; s<SAMPLES; s++){
+      const t = s/ARC_SEGS, u = 1-t;
+      curve.push(new THREE.Vector3(
+        u*u*A.x + 2*u*t*C.x + t*t*B.x,
+        u*u*A.y + 2*u*t*C.y + t*t*B.y,
+        u*u*A.z + 2*u*t*C.z + t*t*B.z));
+    }
+    for (let s=0; s<SAMPLES; s++){
+      const P = curve[s];
+      /* the last sample extrapolates forward so it still has a direction */
+      const N = (s < SAMPLES-1) ? curve[s+1]
+                                : P.clone().multiplyScalar(2).sub(curve[s-1]);
+      for (let j=0; j<2; j++){
+        const vi = (ai*SAMPLES + s)*2 + j;
+        pos[vi*3]=P.x; pos[vi*3+1]=P.y; pos[vi*3+2]=P.z;
+        nxt[vi*3]=N.x; nxt[vi*3+1]=N.y; nxt[vi*3+2]=N.z;
+        side[vi] = j ? 1 : -1;
+        aT[vi] = s/ARC_SEGS; aW[vi] = w; aWL[vi] = wLin; aTZ[vi] = t0;
+      }
+    }
+    for (let k=0;k<PARTS_PER_ARC;k++){
+      const pi = ai*PARTS_PER_ARC + k;
+      pS.set([A.x,A.y,A.z], pi*3);
+      pC.set([C.x,C.y,C.z], pi*3);
+      pE.set([B.x,B.y,B.z], pi*3);
+      pO[pi] = k/PARTS_PER_ARC + rngStable(sd+13+k)*0.08;
+      /* one trip takes ~0.8-1.2 of a month slice, whatever the sweep duration */
+      pV[pi] = (0.85 + 0.40*rngStable(sd+7+k)) / MONTH_SECONDS;
+      pZ[pi] = (k < 2 + Math.round(w*(PARTS_PER_ARC-2))) ? w : 0;   // denser = bigger flow
+      pTZ[pi] = t0;
+    }
+    ai++;
+    });
+  });
+  arcGeo.setDrawRange(0, ai * ARC_SEGS * 6);
+  ['position','aNext','aSide','aT','aW','aWLin','aT0']
+    .forEach(a=>arcGeo.attributes[a].needsUpdate = true);
+  ['aStart','aCtrl','aEnd','aOff','aSpeed','aSize','aT0']
+    .forEach(a=>pGeo.attributes[a].needsUpdate=true);
+}
+/* deterministic pseudo-random so arcs don't reshuffle every rebuild */
+function rngStable(i){ const x = Math.sin(i*127.1 + 311.7)*43758.5453; return x - Math.floor(x); }
+
+/* --- country glow ---------------------------------------------------------- */
+const glowMgd = {}, glowBkd = {};             // country -> smoothed 0..1
+CKEYS.forEach(k=>{glowMgd[k]=0; glowBkd[k]=0;});
+const hexDirty = new Set();
+
+function updateGlow(mi, env, dt){
+  const agg = state.agg;
+  const mm = agg.mgdTot[mi], bb = agg.bkdTot[mi];
+  CKEYS.forEach((k,i)=>{
+    const tm = ((mm.get(k)||0)/agg.maxCountry) * env;
+    const tb = ((bb.get(k)||0)/agg.maxCountry) * env;
+    const s = Math.min(1, dt*5.5);
+    const pm = glowMgd[k], pb = glowBkd[k];
+    glowMgd[k] += (Math.pow(tm,0.55) - pm) * s;
+    glowBkd[k] += (Math.pow(tb,0.55) - pb) * s;
+    if (Math.abs(glowMgd[k]-pm) > 1e-4 || Math.abs(glowBkd[k]-pb) > 1e-4) hexDirty.add(k);
+    const tot = clamp(glowMgd[k] + glowBkd[k], 0, 1.4);
+    mInt[i] = clamp(tot, 0, 1);
+    mRole[i]= (glowMgd[k]+glowBkd[k]) > 1e-4 ? glowBkd[k]/(glowMgd[k]+glowBkd[k]) : 0;
+  });
+  mGeo.attributes.aInt.needsUpdate = true;
+  mGeo.attributes.aRole.needsUpdate = true;
+
+  if (!hexMesh || !hexDirty.size) return;
+  const c = new THREE.Color();
+  hexDirty.forEach(k=>{
+    const idx = hexIndexByCountry[k]; if (!idx || !idx.length) return;
+    const gm = glowMgd[k], gb = glowBkd[k], g = clamp(gm+gb, 0, 1);
+    const tint = gm+gb > 1e-5 ? COL_MANAGED.clone().lerp(COL_BOOKED, gb/(gm+gb)) : COL_LAND;
+    for (let i=0;i<idx.length;i++){
+      const j = idx[i]*3;
+      c.setRGB(hexBase[j], hexBase[j+1], hexBase[j+2])
+       .lerp(tint, g*0.92).multiplyScalar(1 + g*PAL.glowBoost);
+      hexMesh.setColorAt(idx[i], c);
+    }
+  });
+  hexMesh.instanceColor.needsUpdate = true;
+  hexDirty.forEach(k=>{ if (glowMgd[k]<1e-4 && glowBkd[k]<1e-4) hexDirty.delete(k); });
+}
+
+/* ---- theme ---------------------------------------------------------------
+   Swaps every colour-bearing material, uniform and CSS token in one place. */
+function applyTheme(name){
+  PAL = THEMES[name] || THEMES.dark;
+  document.documentElement.dataset.theme = name;
+
+  COL_LAND   .set(PAL.land);
+  COL_MANAGED.set(PAL.managed);
+  COL_BOOKED .set(PAL.booked);
+
+  renderer.setClearColor(PAL.bg, 1);
+  scene.fog.color.set(PAL.bg); scene.fog.density = PAL.fog;
+  ocean.material.color.set(PAL.ocean);
+  starField.visible = PAL.stars;
+
+  const at = atmosphere.material;
+  at.uniforms.uColor.value.set(PAL.atmos);
+  at.uniforms.uPow.value   = PAL.atmosPow;
+  at.uniforms.uAlpha.value = PAL.atmosAlpha;
+  at.blending = PAL.blending; at.needsUpdate = true;
+  atmosphere.scale.setScalar(PAL.atmosScale);
+
+  arcMat.uniforms.uA.value.set(PAL.arcA);
+  arcMat.uniforms.uB.value.set(PAL.arcB);
+  arcMat.uniforms.uA0.value = PAL.arcA0;
+  arcMat.uniforms.uA1.value = PAL.arcA1;
+  arcMat.blending = PAL.blending; arcMat.needsUpdate = true;
+
+  pMat.uniforms.uA.value.set(PAL.partA);
+  pMat.uniforms.uB.value.set(PAL.partB);
+  pMat.uniforms.uMul.value = PAL.partMul;
+  pMat.blending = PAL.blending; pMat.needsUpdate = true;
+
+  mMat.uniforms.uA.value.set(PAL.managed);
+  mMat.uniforms.uB.value.set(PAL.booked);
+  mMat.uniforms.uMul.value = PAL.markMul;
+  mMat.blending = PAL.blending; mMat.needsUpdate = true;
+
+  towers.material.blending = PAL.blending;   // opacity is set per frame by updateTowers
+  towers.material.needsUpdate = true;
+
+  /* re-tint the landmass, then let updateGlow repaint the live countries */
+  if (hexMesh && hexBase){
+    hexMesh.material.opacity = PAL.hexOpacity;
+    const c = new THREE.Color();
+    for (let i=0;i<hexShade.length;i++){
+      c.copy(COL_LAND).multiplyScalar(hexShade[i]);
+      hexBase[i*3] = c.r; hexBase[i*3+1] = c.g; hexBase[i*3+2] = c.b;
+      hexMesh.setColorAt(i, c);
+    }
+    hexMesh.instanceColor.needsUpdate = true;
+    CKEYS.forEach(k=>hexDirty.add(k));
+  }
+
+  const btn = document.getElementById('btnTheme');
+  if (btn){ btn.textContent = PAL.dark ? 'Light' : 'Dark'; btn.classList.toggle('on', !PAL.dark); }
+  try { localStorage.setItem('globeTheme', name); } catch(e){}
+  drawAllCharts();
+}
+
+/* ===================================================== 5. UI / D3 SIDE VIZ */
+const $ = id => document.getElementById(id);
+
+function buildClientList(){
+  const el = $('clientList'); el.innerHTML = '';
+  const rows = [{k:'ALL', label:ALL_CLIENTS}].concat(CLIENTS.map(c=>({k:c,label:c})));
+  rows.forEach(({k,label})=>{
+    const d = document.createElement('div');
+    d.className = 'crow' + (state.client===k?' on':'') + (k==='ALL'?' all':'');
+    d.dataset.k = k;
+    if (k==='ALL' && hasAllRows)
+      d.title = 'The whole book, straight from the data — not the sum of the '
+              + CLIENTS.length + ' clients listed below.';
+    d.innerHTML = '<i class="dot"></i><span>'+label+'</span><span class="amt"></span>';
+    d.onclick = ()=>{ state.client = k; buildClientList(); refilter(); };
+    el.appendChild(d);
+  });
+  updateClientAmounts();
+}
+function updateClientAmounts(){
+  const agg = state.agg; if (!agg) return;
+  document.querySelectorAll('.crow').forEach(d=>{
+    const k = d.dataset.k;
+    d.querySelector('.amt').textContent =
+      fmt(k==='ALL' ? agg.allTotal : (agg.byClient.get(k)||0));
+  });
+}
+function buildProductPills(){
+  const el = $('productPills'); el.innerHTML='';
+  [{k:'ALL',l:'All'}].concat(PRODUCTS.map(p=>({k:p,l:p.replace('Product ','')})))
+    .forEach(({k,l})=>{
+      const b = document.createElement('button');
+      b.className = 'pill' + (state.product===k?' on':'');
+      b.textContent = l;
+      b.onclick = ()=>{ state.product=k; buildProductPills(); refilter(); };
+      el.appendChild(b);
+    });
+}
+
+/* ---- d3 charts ------------------------------------------------------------ */
+function chartProduct(mi){
+  const svg = d3.select('#chartProduct');
+  const w = svg.node().clientWidth || 260, pad = {l:56,r:44,t:2,b:2};
+  const h = Math.max(70, PRODUCTS.length * 22);      // fits however many products
+  svg.attr('height', h);
+  const data = PRODUCTS.map((p,i)=>
+      ({p, v: state.agg.prodTot[mi].get(p)||0, c: PAL.products[i % PAL.products.length]}));
+  const max = Math.max(1, d3.max(state.agg.prodTot, m=>d3.max(PRODUCTS, p=>m.get(p)||0)) || 1);
+  const x = d3.scaleLinear([0,max],[0, w-pad.l-pad.r]);
+  const y = d3.scaleBand(PRODUCTS,[pad.t, h-pad.b]).padding(0.32);
+
+  let g = svg.select('g.body');
+  if (g.empty()) g = svg.append('g').attr('class','body');
+  g.attr('transform', 'translate('+pad.l+',0)');
+
+  const rows = g.selectAll('g.r').data(data, d=>d.p).join(enter=>{
+    const e = enter.append('g').attr('class','r');
+    e.append('rect').attr('class','bg').attr('x',0).attr('height',y.bandwidth()).attr('rx',2)
+       .attr('fill',PAL.barBg);
+    e.append('rect').attr('class','fg').attr('x',0).attr('height',y.bandwidth()).attr('rx',2);
+    e.append('text').attr('class','lb').attr('x',-8).attr('text-anchor','end').attr('font-size',10);
+    e.append('text').attr('class','vl').attr('font-size',9.5);
+    return e;
+  });
+  rows.attr('transform', d=>'translate(0,'+y(d.p)+')');
+  rows.select('.bg').attr('width', w-pad.l-pad.r).attr('height', y.bandwidth())
+      .attr('fill', PAL.barBg);
+  rows.select('.vl').attr('fill', PAL.valTxt);
+  rows.select('.fg').attr('fill', d=>d.c).attr('height', y.bandwidth())
+      .attr('width', d=>Math.max(1.5, x(d.v)))
+      .attr('opacity',.92);
+  rows.select('.lb').attr('y', y.bandwidth()/2+3.5).text(d=>d.p.replace('Product ','Prod '));
+  rows.select('.vl').attr('y', y.bandwidth()/2+3.5)
+      .attr('x', d=>Math.max(1.5,x(d.v))+6).text(d=>fmt(d.v));
+}
+
+function chartTrend(mi, frac){
+  const svg = d3.select('#chartTrend');
+  const w = svg.node().clientWidth || 260, h = 94, pad={l:8,r:8,t:8,b:15};
+  const T = state.agg.total;
+  const x = d3.scaleLinear([0, MONTHS.length-1],[pad.l, w-pad.r]);
+  const y = d3.scaleLinear([0, state.agg.maxTotal*1.12],[h-pad.b, pad.t]);
+  const area = d3.area().x((d,i)=>x(i)).y0(h-pad.b).y1(d=>y(d)).curve(d3.curveMonotoneX);
+  const line = d3.line().x((d,i)=>x(i)).y(d=>y(d)).curve(d3.curveMonotoneX);
+
+  let g = svg.select('g.body');
+  if (g.empty()){
+    g = svg.append('g').attr('class','body');
+    const grad = svg.append('defs').append('linearGradient')
+       .attr('id','tg').attr('x1',0).attr('y1',0).attr('x2',0).attr('y2',1);
+    grad.append('stop').attr('class','s0').attr('offset','0%').attr('stop-opacity',.45);
+    grad.append('stop').attr('class','s1').attr('offset','100%').attr('stop-opacity',0);
+    g.append('path').attr('class','ar').attr('fill','url(#tg)');
+    g.append('path').attr('class','ln').attr('fill','none').attr('stroke-width',1.6);
+    g.append('line').attr('class','ph').attr('stroke-width',1).attr('stroke-dasharray','2 3');
+    g.append('circle').attr('class','pt').attr('r',3.2);
+  }
+  svg.selectAll('#tg stop').attr('stop-color', PAL.area);
+  g.select('.ar').attr('d', area(T));
+  g.select('.ln').attr('d', line(T)).attr('stroke', PAL.line);
+  g.select('.ph').attr('stroke', PAL.playhead);
+  g.select('.pt').attr('fill', PAL.dot);
+  const pos = clamp(mi + frac, 0, MONTHS.length-1);
+  const v = d3.interpolateNumber(T[Math.floor(pos)], T[Math.min(MONTHS.length-1,Math.floor(pos)+1)])(pos%1);
+  g.select('.ph').attr('x1',x(pos)).attr('x2',x(pos)).attr('y1',pad.t).attr('y2',h-pad.b);
+  g.select('.pt').attr('cx',x(pos)).attr('cy',y(v));
+
+  let ax = svg.select('g.ax');
+  if (ax.empty()) ax = svg.append('g').attr('class','ax');
+  const step = Math.max(1, Math.round(MONTHS.length/5));
+  const tk = d3.range(0, MONTHS.length, step), last = MONTHS.length-1;
+  /* land the final tick on the last month without crowding the one before it */
+  if (last - tk[tk.length-1] < step*0.6) tk[tk.length-1] = last; else tk.push(last);
+  ax.selectAll('text').data(tk).join('text')
+    .attr('x', d=>x(d)).attr('y', h-3).attr('font-size',8)
+    .attr('text-anchor', d=>d===0 ? 'start' : d===MONTHS.length-1 ? 'end' : 'middle')
+    .text(d=>MONTH_SHORT[d]);
+}
+
+function chartCountry(mi){
+  const svg = d3.select('#chartCountry');
+  const w = svg.node().clientWidth || 260, h = 128, pad={l:44,r:46,t:2,b:2};
+  const data = [...state.agg.bkdTot[mi].entries()]
+      .sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>({k,v}));
+  const max = Math.max(1, d3.max(data,d=>d.v)||1);
+  const x = d3.scaleLinear([0,max],[0, w-pad.l-pad.r]);
+  const y = d3.scaleBand(data.map(d=>d.k),[pad.t,h-pad.b]).padding(0.34);
+
+  let g = svg.select('g.body');
+  if (g.empty()) g = svg.append('g').attr('class','body');
+  g.attr('transform','translate('+pad.l+',0)');
+  const rows = g.selectAll('g.r').data(data, d=>d.k).join(enter=>{
+    const e = enter.append('g').attr('class','r');
+    e.append('rect').attr('class','fg').attr('x',0).attr('rx',2).attr('opacity',.85);
+    e.append('text').attr('class','lb').attr('x',-8).attr('text-anchor','end').attr('font-size',10);
+    e.append('text').attr('class','vl').attr('font-size',9.5);
+    return e;
+  });
+  rows.attr('transform', d=>'translate(0,'+y(d.k)+')');
+  rows.select('.fg').attr('height', y.bandwidth()).attr('width', d=>Math.max(1.5,x(d.v)))
+      .attr('fill', PAL.bar);
+  rows.select('.vl').attr('fill', PAL.valTxt);
+  rows.select('.lb').attr('y', y.bandwidth()/2+3.5).text(d=>d.k);
+  rows.select('.vl').attr('y', y.bandwidth()/2+3.5)
+      .attr('x', d=>Math.max(1.5,x(d.v))+6).text(d=>fmt(d.v));
+}
+
+function routeList(mi){
+  const el = $('routeList');
+  const top = [...state.agg.routes[mi].entries()].sort((a,b)=>b[1]-a[1]).slice(0,7);
+  const max = top.length ? top[0][1] : 1;
+  el.innerHTML = top.map(([k,v])=>{
+    const [a,b] = k.split('>');
+    return '<div class="rrow"><span class="p">'+a+'<span class="ar">→</span>'+b+'</span>'
+         + '<span class="bar"><i style="width:'+(v/max*100).toFixed(1)+'%"></i></span>'
+         + '<span class="n">'+fmt(v)+'</span></div>';
+  }).join('') || '<div class="rrow"><span class="p" style="color:#41596f">no flows</span></div>';
+}
+
+function drawAllCharts(){
+  if (!state.agg) return;
+  const mi = clamp(Math.floor(state.t), 0, MONTHS.length-1);
+  chartProduct(mi); chartTrend(mi, state.t-mi); chartCountry(mi); routeList(mi);
+}
+
+/* ---- transport ------------------------------------------------------------ */
+function setPlaying(p){
+  state.playing = p;
+  $('icoPlay').style.display  = p ? 'none' : '';
+  $('icoPause').style.display = p ? '' : 'none';
+}
+$('btnPlay').onclick  = ()=>setPlaying(!state.playing);
+$('btnReset').onclick = ()=>{
+  state.t = 0; arcClock = 0; slabKey = null; lastMonth = -1;
+  setPlaying(true); syncScrub(); resetView();
+};
+$('spd').onchange = e => state.speed = +e.target.value;
+/* Flow width: 0x = uniform hairlines (as before), 1x = width linear in revenue,
+   2x = twice that slope, and so on. */
+$('flowWidth').oninput = e =>{
+  const v = +e.target.value;
+  arcMat.uniforms.uScale.value = v;
+  $('flowWidthVal').textContent = v.toFixed(1) + '×';
+};
+$('btnTowers').onclick = ()=>{
+  towers.visible = !towers.visible;
+  $('btnTowers').classList.toggle('on', towers.visible);
+};
+$('btnSmooth').onclick = ()=>{
+  state.smooth = !state.smooth;
+  $('btnSmooth').classList.toggle('on', state.smooth);
+  slabKey = null;                                   // rebuild with new phasing
+};
+$('btnTheme').onclick = ()=> applyTheme(PAL.dark ? 'light' : 'dark');
+$('scrub').oninput = e =>{
+  state.t = (+e.target.value/1000) * MONTHS.length * 0.99999;
+  arcClock = state.t; slabKey = null;
+  setPlaying(false);
+};
+let scrubHeld = false;
+$("scrub").addEventListener("pointerdown",()=>scrubHeld=true);
+addEventListener("pointerup",()=>scrubHeld=false);
+function syncScrub(){ if(!scrubHeld) $("scrub").value = Math.round(state.t/MONTHS.length*1000); }
+function buildTicks(){
+  const every = MONTHS.length > 18 ? 6 : 3;
+  $('ticks').innerHTML = MONTHS.map((m,i)=>{
+    const major = i % every === 0;
+    return '<span class="' + (i%3===0?'t3':'') + (major?' t6':'') + '">'
+         + (major ? MONTH_SHORT[i] : '') + '</span>';
+  }).join('');
+}
+
+/* ---- filter change -------------------------------------------------------- */
+let lastMonth = -1;
+/* state.t wraps at the end of the series; arcClock does not, so an arc's start
+   time stays comparable across the loop point. They differ by a multiple of
+   MONTHS.length, so wrapMonth() recovers the data month from it. */
+let arcClock = 0, slabKey = null;
+function refilter(){
+  state.agg = aggregate(state.client, state.product);
+  lastMonth = -1; slabKey = null;                  // force arc rebuild
+  updateClientAmounts();
+  drawAllCharts();
+}
+
+/* ==================================================== 6. ANIMATION LOOP     */
+const clock = new THREE.Clock();
+let flowTime = 0;                    // particle clock — follows the speed control
+function frame(){
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.1, clock.getDelta());
+  flowTime += dt * state.speed;
+
+  if (state.playing){
+    const step = dt / MONTH_SECONDS * state.speed;
+    state.t += step; arcClock += step;
+    if (state.t >= MONTHS.length) state.t -= MONTHS.length;   // loop
+  }
+  syncScrub();
+  const mi   = clamp(Math.floor(state.t), 0, MONTHS.length-1);
+  const frac = state.t - mi;
+
+  const key = Math.floor(state.smooth ? arcClock - 0.5 : arcClock);
+  if (key !== slabKey){ slabKey = key; buildArcSlab(key); }
+
+  if (mi !== lastMonth){
+    lastMonth = mi;
+    drawAllCharts();
+    $('date').firstChild.nodeValue = MONTH_LABELS[mi];
+    $('dateSub').textContent = 'month ' + (mi+1) + ' of ' + MONTHS.length;
+    $('kpiMonth').textContent = fmt(state.agg.total[mi]);
+    $('kpiYtd').textContent   = fmt(state.agg.cum[mi]);
+  }
+
+  /* Arcs and particles now carry their own start time, so the envelope lives
+     in the shader; this is just the shared clock. */
+  arcMat.uniforms.uNow.value = arcClock;
+  pMat.uniforms.uNow.value   = arcClock;
+  pMat.uniforms.uTime.value  = flowTime;
+  mMat.uniforms.uTime.value  = flowTime;
+
+  /* Country glow pulses with the month in classic mode; in smooth mode it just
+     tracks the data, and its own smoothing carries it across the boundary. */
+  const env = smoothstep(0, 0.20, frac) * (1 - smoothstep(0.82, 1.0, frac));
+  updateGlow(mi, state.smooth ? 1 : env, dt);
+  updateTowers(mi, frac);
+  applyCamera(dt);
+  renderer.render(scene, camera);
+}
+
+/* ======================================================== 7. BOOTSTRAP      */
+(async function init(){
+  resize();
+  resetView(); cam.dist = cam.tDist;          // start framed on the whole planet
+
+  let saved = null;
+  try { saved = localStorage.getItem('globeTheme'); } catch(e){}
+  applyTheme(saved === 'dark' ? 'dark' : 'light');   // before the overlay can show
+
+  let rows;
+  try       { rows = parseRows(await fetchText(DATA_URL)); }
+  catch (e) { rows = await askForFile(e); }   // waits for a picked/dropped file
+  initSeries(rows);
+  $('loadHelp').hidden = true;
+  $('loadMsg').textContent = 'Building globe…';
+
+  buildTicks();
+  refilter();
+  buildClientList();
+  if (hasAllRows){
+    $('clientNote').textContent =
+      ALL_CLIENTS + ' is the full book from the data. The ' + CLIENTS.length
+      + ' below are a selection and do not sum to it.';
+    $('clientNote').hidden = false;
+  }
+  buildProductPills();
+  setPlaying(true);
+  try {
+    await buildLand();
+  } catch (err){
+    console.error('Country geometry failed to load — falling back to markers only.', err);
+    $('loadMsg').textContent = 'Geometry unavailable — flows only';
+  }
+  $('loading').classList.add('gone');
+  setTimeout(()=>$('loading').remove(), 900);
+  frame();
+})();
+</script>
+</body>
+</html>
