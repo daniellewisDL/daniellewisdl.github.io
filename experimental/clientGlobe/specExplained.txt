@@ -1,0 +1,1109 @@
+|
+| ###########################################################################
+| specExplained.txt  —  the annotated twin of spec.txt
+| ###########################################################################
+|
+| Every line of spec.txt is reproduced here untouched. The extra lines, all
+| marked with this "|" gutter, explain WHY each instruction exists, what the
+| jargon means, and what goes wrong if you ignore it. Delete every gutter line
+| and you get spec.txt back exactly.
+|
+| spec.txt is the instruction sheet. This file is the same instruction sheet
+| with a patient colleague sitting next to you.
+|
+| HOW TO READ THIS
+|   Unmarked text = the requirement. Do this.
+|   "|" text      = the reasoning. Understand this, then you can deviate
+|                   sensibly when your situation differs.
+|
+| THE ONE-PARAGRAPH VERSION OF THE WHOLE PROJECT
+|   A company looks after clients in one country and books their revenue in
+|   another. We have a spreadsheet of who, what, where and how much, month by
+|   month. We turn that into a 3D globe where money visibly leaps off one
+|   country and lands on another, month after month, so a person can SEE the
+|   shape of the business instead of reading a pivot table.
+|
+| THE ARCHITECTURE IN FIVE LINES
+|   1. Read a CSV.
+|   2. Pre-chew it into per-month totals ONCE, whenever a filter changes.
+|   3. Build the globe's geometry ONCE at startup.
+|   4. Each frame, send two or three numbers to the graphics card.
+|   5. The graphics card does all the animation.
+|   Step 5 is why this runs at hundreds of frames per second with 35,000
+|   hexagons on screen. Almost nothing moves on the CPU.
+|
+CLIENT REVENUE GLOBE — BUILD SPEC
+================================
+
+Goal: one self-contained HTML file (globe.html) plus one data file (data.csv).
+A dark/light 3D globe animating monthly client revenue flowing from the country
+where a client is MANAGED to the country where the revenue is BOOKED, with side
+charts. Vanilla JS, no build step, no framework.
+
+
+|
+| ===========================================================================
+| SECTION 1 — WHAT WE BORROW, AND WHY THESE THREE
+| ===========================================================================
+|
+| three.js
+|   Drawing 3D in a browser means WebGL, and raw WebGL is brutal: you write
+|   shader source as strings, allocate buffers by hand, and manage matrix
+|   maths yourself. three.js wraps all of that in nouns a human can hold in
+|   their head — scene, camera, mesh, material. We still write our own
+|   shaders here (because we want effects three.js does not ship), but we let
+|   it handle the boring machinery.
+|
+|   Why pinned to 0.128.0 and not "latest"? Around r150 three.js moved to ES
+|   modules, which means a <script src> tag no longer works — you need an
+|   import map or a bundler. Pinning to the last comfortable version keeps
+|   this a single file you can double-click. Pinning also means a CDN update
+|   can never silently break your visualisation at 2am.
+|
+| d3
+|   Two completely unrelated jobs, which is confusing until you see it:
+|     (a) the 2D charts in the side panels — d3's classic use;
+|     (b) MAP PROJECTION MATHS. d3-geo knows how to turn a country's outline
+|         (a list of lat/lon points) into x/y pixels. We need that to work out
+|         which hexagon on the globe belongs to which country.
+|
+| topojson-client
+|   Country border data is huge if you store every border twice (once for
+|   France, once for Germany). TopoJSON stores each shared border ONCE and
+|   references it from both countries, which shrinks the file dramatically.
+|   This library expands it back into ordinary GeoJSON that d3 understands.
+|   It is a decompressor, essentially.
+|
+| "Write your own orbit controls" — why refuse the built-in one?
+|   three.js ships OrbitControls, but it lives in a separate file with its own
+|   module format (another loading headache), and it cannot do the panning
+|   behaviour this project needs. Hand-rolling is about 60 lines, has no
+|   loading problem, and you understand every line of it. See section 10.
+|
+1. DEPENDENCIES  (script tags, in this order, before your own script)
+---------------------------------------------------------------------
+  https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js
+  https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js
+  https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js
+Country geometry fetched at runtime:
+  https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json
+Write your own orbit controls (~60 lines). Do not add OrbitControls.
+
+
+|
+| ===========================================================================
+| SECTION 2 — THE DATA CONTRACT
+| ===========================================================================
+|
+| This is the most important section to get right, because everything else in
+| the program derives from it. Get the data shape wrong and no amount of
+| beautiful rendering saves you.
+|
+| WHY A FLAT CSV RATHER THAN NESTED JSON
+|   Because of where the data comes from. A person exports it from a database
+|   or a spreadsheet, and both of those produce rows. "One fact per row" —
+|   this client, this product, this month, this route, this much money — is
+|   the format a SQL query naturally emits and the format a human can eyeball
+|   in Excel. Nested JSON would be more compact but would require the person
+|   supplying data to write a transformation script, which is exactly the
+|   friction that kills tools like this.
+|
+| WHY month IS A STRING LIKE "2024-01" AND NOT A DATE OBJECT
+|   Three reasons, and the third is the good one:
+|     1. No timezone bugs. A Date is a precise instant, and "January 2024"
+|        is not an instant, it is a bucket. Storing it as a Date invites the
+|        classic bug where a month silently shifts by one in another timezone.
+|     2. It survives a round trip through a spreadsheet unmangled.
+|     3. ZERO-PADDING MAKES ALPHABETICAL SORTING CHRONOLOGICAL. "2024-02" <
+|        "2024-10" as plain text, because the padding keeps the digits
+|        aligned. So we get the timeline in order with a plain .sort() and
+|        never parse a date at all. This is why "2024-1" would be a bug.
+|
+2. DATA
+-------
+data.csv, header row required:
+  month,client,product,managed,booked,revenue
+  2024-01,Client A,Product A,USA,GBR,123456
+  2024-01,All clients,Product A,USA,GBR,655000
+
+|
+| A FIELD-BY-FIELD WALKTHROUGH:
+|   month    which bucket of time. The set of distinct values IS the timeline.
+|   client   who. Just a label — the program never interprets it, it only
+|            groups by it, so "Acme Corp" and "ACCT-4471" work equally well.
+|   product  what. Same deal.
+|   managed  WHERE THE RELATIONSHIP LIVES — the office that looks after this
+|            client. This is the arc's origin.
+|   booked   WHERE THE MONEY LANDS — the legal entity that recognises the
+|            revenue. This is the arc's destination.
+|   revenue  how much. The thickness and brightness of everything.
+|
+| The managed/booked split is the whole point of the visualisation. In a big
+| financial firm these are routinely different countries, and the pattern of
+| WHICH manages for WHOM is genuinely hard to see in a table and obvious on a
+| globe. If your data does not have this split, this tool is the wrong tool.
+|
+  month    YYYY-MM. Any span.
+  client   any label; "All clients" is RESERVED — see below
+  product  any label
+  managed  ISO alpha-3 key into COUNTRIES
+  booked   ISO alpha-3 key into COUNTRIES
+  revenue  number; tolerate $ , and whitespace
+
+|
+| ---------------------------------------------------------------------------
+| The next block is the subtlest requirement in the whole spec. Read it twice.
+| ---------------------------------------------------------------------------
+THE "All clients" ROWS
+  The named clients are a selected handful out of a book of hundreds, so the
+  aggregate figure CANNOT be derived by summing them. Rows whose client is the
+  reserved label "All clients" carry the whole book and are read as their own
+  series. They must have the same month/product/route detail as named rows so
+  the product filter and the globe work in aggregate view; they will normally
+  cover more corridors and countries than any named client.
+
+|
+| WHY YOU CANNOT JUST SUM THE CLIENTS  (the trap this exists to avoid)
+|   The instinct of every developer handed this data is: "All clients" is
+|   obviously the total of the clients, so I will compute it. That instinct is
+|   wrong here and produces a number that is quietly, badly incorrect.
+|
+|   The named clients in the file are a HAND-PICKED SAMPLE — a dozen
+|   interesting accounts out of a book of hundreds. Summing them gives you the
+|   total of the sample, not the total of the business. In the shipped sample
+|   data that would understate the firm by a factor of nearly five.
+|
+|   So the aggregate figure is supplied as DATA, in its own rows, and the
+|   program reads it rather than deriving it. That is the entire rule.
+|
+|   The consequence you must design the UI around: the numbers WILL NOT ADD
+|   UP on screen, and that is correct. The sidebar therefore rules the "All
+|   clients" row off from the list and carries a footnote saying so, because
+|   otherwise every viewer will report it as an arithmetic bug.
+|
+  - Exclude the reserved label from CLIENTS; it becomes the "All clients" entry
+    at the top of the picker instead.
+  - Never add named-client revenue to it, and never expect the two to reconcile
+    (in the sample data the book is ~4.8x the named twelve, over 46 countries
+    against 28).
+  - If a file has no such rows, warn once and fall back to summing the named
+    clients so older files still render.
+
+|
+| ===========================================================================
+| LOADING THE FILE — and the single most annoying gotcha in the project
+| ===========================================================================
+Loading:
+  DATA_URL = ?data= query param, else 'data.csv'.
+  fetch -> d3.csvParse. Error clearly on missing columns. Skip rows with a
+  non-YYYY-MM month or non-finite revenue (count them, warn once). Uppercase
+  and trim country codes. Skip rows naming a code absent from COUNTRIES and
+  console.warn the distinct offenders once.
+
+|
+| WHAT fetch() IS
+|   The browser's function for "go and get me this file/URL". It returns a
+|   Promise — an object representing an answer that has not arrived yet, which
+|   you either .then() or, as here, `await`.
+|
+| ONE WART WORTH KNOWING: fetch() does NOT throw on a 404. A 404 is, as far as
+| fetch is concerned, a perfectly successful conversation in which the server
+| said "no". You must check response.ok yourself, or you will cheerfully try
+| to parse a "404 Not Found" HTML page as if it were CSV and get a baffling
+| error three functions later.
+|
+  CRITICAL: browsers block fetch() on file:// URLs. On failure show an overlay
+  with the error, a <input type=file> picker, and a window-level drop handler;
+  resolve the same promise from either. Treat any non-http(s) protocol as
+  "on disk" and additionally show `python -m http.server 8000`. Without this,
+  double-clicking the HTML gives a blank screen.
+
+|
+| WHY file:// IS BLOCKED — because this WILL happen to you
+|   Double-click an HTML file and it opens on a file:// URL. Browsers treat
+|   every such document as having its own unique, untrusted origin. If they
+|   did not, any HTML file you downloaded could quietly read the rest of your
+|   hard drive and post it somewhere. So a file:// page may not fetch() a
+|   sibling file, even one sitting in the same folder.
+|
+|   There is no flag, no header and no clever workaround. Do not waste an
+|   afternoon looking for one.
+|
+|   The rescue path works because a file the USER hands you — via a picker or
+|   a drag-and-drop — carries explicit permission with it. That is a different
+|   security question with a different answer.
+|
+|   The alternative, "serve the folder", works because a local HTTP server
+|   gives the page a real origin (http://localhost:8000) and normal rules
+|   apply. `python -m http.server` is the shortest incantation that exists on
+|   almost every machine.
+|
+Derived from the CSV (nothing hardcoded):
+  MONTHS       = sorted distinct month values (YYYY-MM sorts chronologically)
+  MONTH_LABELS = "Jan 2024";  MONTH_SHORT = "Jan '24"
+  CLIENTS, PRODUCTS = sorted distinct values -> build the pickers from these
+  ROWS_BY_MONTH[i] = rows for MONTHS[i]
+  CYCLE_SECONDS = 30 (whole sweep); MONTH_SECONDS = CYCLE_SECONDS/MONTHS.length
+
+
+|
+| WHY EVERYTHING IS DERIVED AND NOTHING IS DECLARED
+|   Notice there is no MONTHS constant, no CLIENT_LIST, no PRODUCT_COUNT. The
+|   program looks at the rows and works out what dataset it has been handed.
+|
+|   This is not purity for its own sake — it is the difference between a demo
+|   and a tool. Someone drops in 8 months and 40 clients, and the timeline,
+|   the picker, the pills, the chart heights and the animation timing all
+|   reshape themselves. If any of those were hardcoded, that person's first
+|   experience would be a broken screen.
+|
+|   ROWS_BY_MONTH deserves a note: it is just the rows bucketed by month.
+|   Building it once turns "find me every row in month 7", which would be a
+|   full scan of the dataset, into an array lookup. It is the single cheapest
+|   performance decision in the file.
+|
+| ===========================================================================
+| SECTION 3 — PRE-CHEWING THE NUMBERS
+| ===========================================================================
+|
+| THE GOVERNING IDEA: SEPARATE "WHEN THE DATA CHANGES" FROM "EVERY FRAME"
+|   A frame lasts about 16 milliseconds. In that time you cannot afford to
+|   scan thousands of rows, and you certainly cannot afford to do it sixty
+|   times a second while also drawing a planet.
+|
+|   So the work is split. aggregate() runs ONLY when the user changes a
+|   filter — a few times a session — and computes every total the program
+|   could possibly need, for every month at once. By the time a frame runs,
+|   every number it wants is already sitting in a Map, one lookup away.
+|
+|   This is the classic trade: spend memory and a one-off burst of CPU to make
+|   the hot path trivial. Here the "expensive" pass is a few milliseconds and
+|   the payoff is a permanently smooth animation.
+|
+| WHY THE MAXIMA (maxRoute, maxCountry, maxTotal) MATTER MORE THAN THEY LOOK
+|   Every visual quantity — arc thickness, glow strength, tower height — is a
+|   fraction of one of these. The crucial detail is that they are computed
+|   across the WHOLE SERIES, not per month.
+|
+|   If you normalised per month instead, every month would contain something
+|   at "100%", so every month would look equally busy and the animation would
+|   convey nothing. Normalising against the series maximum is what makes a
+|   quiet month actually look quiet. This is a data-honesty decision disguised
+|   as a scaling constant.
+|
+3. AGGREGATION
+--------------
+aggregate(client, product) filters ROWS_BY_MONTH once and returns, per month:
+  routes  Map "MGD>BKD" -> revenue
+  mgdTot, bkdTot, prodTot  Map key -> revenue
+  total[], cum[]
+plus byClient (named clients only; respects the product filter but NOT the
+client filter, so the sidebar always shows every client), allTotal, maxRoute,
+maxCountry, maxTotal. Recompute only when a filter changes; cache in state.agg.
+
+Scoping — which rows drive the globe and the charts:
+  client picked  -> rows where client matches (reserved rows excluded for free)
+  "All clients"  -> ONLY the reserved rows; fall back to the named rows if the
+                    file has none
+In one pass also accumulate allSum (reserved rows) and namedSum/byClient (the
+rest), both product-filtered; allTotal = hasAllRows ? allSum : namedSum. The
+sidebar's All row shows allTotal — never a sum of the rows beneath it.
+
+
+|
+| A NOTE ON byClient
+|   It deliberately ignores the client filter but respects the product filter.
+|   That sounds inconsistent until you use it: the sidebar should always show
+|   every client (so you can see what you might switch to), but it should
+|   reflect the product slice you are currently looking at. Selecting a client
+|   moves the highlight; it does not rewrite the list.
+|
+| ===========================================================================
+| SECTION 4 — THE COUNTRY TABLE
+| ===========================================================================
+|
+| Each entry does three jobs, and they fail in different ways:
+|
+| THE name FIELD IS A JOIN KEY, NOT A LABEL
+|   This is the single string connecting "the CSV said GBR" to "these
+|   particular polygons in the downloaded map file". If it does not match the
+|   map's own spelling exactly, nothing errors — the country simply never
+|   lights up, and you will stare at it for an hour. The map file uses its own
+|   conventions ("Dem. Rep. Congo", "Bosnia and Herz.", "United States of
+|   America"), so copy them from the file rather than typing what you expect.
+|
+| WHY THE lat/lon NEED HAND OVERRIDES
+|   A centroid is the average position of all a country's territory. That is
+|   the right answer mathematically and the wrong answer for a map pin,
+|   because territory includes distant islands.
+|
+|   France's true centroid sits in the Bay of Biscay, dragged west by French
+|   Guiana in South America. The USA's is pulled north-west by Alaska.
+|   Norway's is out at sea because of Svalbard. For a marker you want the
+|   place a human would point at, which is the mainland — hence the handful of
+|   hand-set values.
+|
+|   The lesson generalises: computed geography is usually right, and the
+|   exceptions are always islands.
+|
+| THE MICRO-STATES
+|   Singapore, Hong Kong, Cayman, Jersey, Malta, Monaco — economically huge in
+|   this dataset, physically too small to appear in a 1:110m map. They have no
+|   polygon, so they get no hexagons. They still work: the halo marker and the
+|   revenue tower are drawn from lat/lon and do not need geometry. Design the
+|   markers so that a country with zero hexagons still reads clearly, or your
+|   busiest booking centres will be invisible.
+|
+4. COUNTRIES TABLE
+------------------
+COUNTRIES = { ISO3: {name, lat, lon}, ... }, ~199 entries.
+  name must equal the world-atlas TopoJSON properties.name for that country's
+  hexes to light up. lat/lon = d3.geoCentroid of the 110m geometry, EXCEPT
+  override to the mainland where overseas territories drag the centroid out to
+  sea: FRA, USA, CAN, NOR, RUS, PRT, CHL, JPN, GBR.
+  Include territories/micro-states absent at 110m (SGP, HKG, MLT, CYM, BMU,
+  JEY, BHR, MAC, ...). They get no hexes; halo marker + tower still work.
+  Generate the table once by fetching the TopoJSON and running d3.geoCentroid.
+
+
+|
+| ===========================================================================
+| SECTION 5 — BUILDING A PLANET
+| ===========================================================================
+|
+| THE OCEAN SPHERE IS NOT DECORATION
+|   Its real job is to be OPAQUE. Without it you would see the hexagons and
+|   arcs on the far side of the planet through the middle, which instantly
+|   destroys the illusion of a solid object. It sits at 99.5% of the radius so
+|   the hexagons rest on top of it rather than fighting it for the same depth.
+|
+| WHAT A "FRESNEL" IS  (the glowing rim)
+|   In the real world, surfaces get more reflective the more edge-on you view
+|   them. Look straight down into a lake and you see the bottom; look across
+|   it and you see sky. That angle-dependence is the Fresnel effect.
+|
+|   In a shader it is one line:
+|       dot(surfaceNormal, directionToCamera)
+|   The dot product of two unit vectors is 1 when they point the same way and
+|   0 when they are perpendicular. So facing you -> 1, at the silhouette
+|   edge -> 0. Invert it and you have "how edge-on am I", which is exactly a
+|   rim glow. Raising it to a power tightens the rim: a low power gives a soft
+|   wide halo, a high power gives a hairline outline. That single exponent is
+|   the difference between the dark theme's atmosphere and the light theme's
+|   inked edge.
+|
+| WHY WE PAINT THE MAP INTO IMAGES INSTEAD OF DOING GEOMETRY
+|   The question we need answered 120,000 times is "which country is at this
+|   lat/lon?". Doing that properly means point-in-polygon tests against 177
+|   complicated multi-part shapes. That is slow and fiddly.
+|
+|   Instead we paint the countries into an off-screen image ONCE, colouring
+|   each one with its own index number, and then just read pixels. The
+|   browser's 2D canvas is a heavily optimised polygon filler — we are
+|   borrowing decades of someone else's work. Reading a pixel is O(1).
+|
+|   The encoding trick: a pixel has red/green/blue channels of 0-255. Put the
+|   low byte of the country index in red and the high byte in green and you
+|   can distinguish 65,535 countries instead of 255. We add 1 first so that
+|   zero can mean "nobody".
+|
+| WHY A FIBONACCI SPHERE
+|   The obvious way to scatter points on a globe — loop over latitude and
+|   longitude in a grid — produces a terrible result: lines of longitude
+|   converge at the poles, so points bunch into a dense knot at the top and
+|   bottom and spread thin at the equator.
+|
+|   The Fibonacci (or golden-angle) sphere fixes it with two ideas:
+|     - Step evenly through HEIGHT, not latitude. A sphere has the property
+|       that equal slices of height contain equal slices of surface area
+|       (Archimedes proved this with a cylinder). So even in height = even in
+|       area. This is the non-obvious half.
+|     - Between points, rotate by the golden angle, about 137.5 degrees. The
+|       golden ratio is the hardest number to approximate with a fraction,
+|       which means successive points never fall into a repeating pattern and
+|       you never see spokes or spirals. It is why sunflower seeds pack the
+|       way they do.
+|   Twenty lines of code, perfectly even coverage, no clumping anywhere.
+|
+| WHAT "INSTANCING" MEANS AND WHY IT IS NON-NEGOTIABLE HERE
+|   Every separate object you draw costs a "draw call" — a round trip of
+|   instructions to the graphics card. A few thousand draw calls per frame
+|   will bring any machine to its knees. 35,000 would be hopeless.
+|
+|   An InstancedMesh says: here is ONE hexagon, and here are 35,000 positions
+|   and colours; stamp it out that many times. One draw call. The GPU is built
+|   for exactly this. It is the difference between this project being possible
+|   and impossible.
+|
+5. GLOBE GEOMETRY
+-----------------
+R = 100 world units. Group `globe` at the origin.
+  Ocean: SphereGeometry(R*0.995, 64, 48), MeshBasicMaterial, theme colour.
+  Atmosphere: SphereGeometry(R*1.19), BackSide, depthWrite false,
+    ShaderMaterial fresnel f = pow(1-|dot(N,V)|, uPow), alpha f*uAlpha.
+    Scale the mesh to move the rim (see themes).
+  Stars: 2600 Points on a shell r=900..2500, additive. Hidden in light mode.
+
+Hex landmass:
+  Rasterise the TopoJSON twice into 4096x2048 offscreen canvases with
+  d3.geoEquirectangular().fitSize([W,H], {type:'Sphere'}):
+    landMask — all land white on black
+    idMap    — only COUNTRIES entries, fill rgb(n&255, (n>>8)&255, 0), n=index+1
+               (two channels so >255 countries work)
+  HEX_SAMPLES = 120000 fibonacci points on the sphere. Keep those whose
+  landMask sample >= 128 (~34,600 hexes). Owner = idMap sample - 1.
+
+|
+| THE ANTIALIASING TRAP EXPLAINED
+|   Antialiasing is the browser smoothing jagged edges by blending colours at
+|   a boundary. Normally a gift. Here it is poison, because we are not storing
+|   COLOURS in those pixels, we are storing NUMBERS. Blend country 5 with
+|   country 12 and you get something like 8 — a real, valid, completely
+|   unrelated country.
+|
+|   The symptom is stray hexagons lighting up in random places whenever a
+|   neighbour is active, which looks like a data bug and is not.
+|
+|   The fix — sample five pixels in a small cross and take the most common
+|   value — works because a blended edge pixel is always a minority of one.
+|   The radius matters in both directions: too small and you do not outvote
+|   the blend; too large and the cross pokes outside a narrow country like
+|   Israel, the "outside" votes win, and the country disappears entirely.
+|
+  CRITICAL: canvas fills are antialiased, so a pixel on a border blends two ids
+  into a meaningless third. Sample the owner as the MODE of a 5-tap cross at
+  +/-1px. Wider taps vote small countries away; no filter gives speckle.
+
+  Render as one InstancedMesh of CircleGeometry(spacing*0.46, 6) where
+  spacing = sqrt(4*PI/N)*R, each instance positioned at p*R and lookAt(p*2R).
+  Bake a shading factor 0.72+0.28*dot(n, lightDir) per instance; store it and
+  the base RGB in Float32Arrays (not Color objects — there are 34k of them) so
+  a theme switch can re-tint. Keep hexIndexByCountry[ISO3] = Int32Array.
+
+
+|
+| ===========================================================================
+| SECTION 6 — THE FLOWS
+| ===========================================================================
+|
+| FIRST, THE FOUR WORDS YOU NEED
+|   A shader is a small program that runs on the graphics card, once per
+|   vertex or once per pixel, massively in parallel. Data reaches it three
+|   ways, and the distinction is the whole mental model:
+|     uniform    one value for the entire draw. "What time is it."
+|     attribute  a different value per VERTEX. "This vertex is 70% along."
+|     varying    the vertex shader computes it, and the GPU smoothly blends it
+|                across the triangle before handing it to the pixel shader.
+|                This is free interpolation, and it is why a gradient along an
+|                arc costs nothing.
+|
+| WHY AN ARC IS A RIBBON AND NOT A LINE
+|   Because WebGL cannot draw thick lines. There is a `linewidth` property, it
+|   is in the specification, and essentially every desktop GPU driver ignores
+|   anything above 1 pixel. This is a famous, permanent limitation.
+|
+|   Since "thickness proportional to revenue" is a headline feature here,
+|   lines were never an option. So each arc is built as a strip of flat quads
+|   that are widened sideways IN SCREEN SPACE by the vertex shader, which
+|   makes them always face the camera. That is what a "ribbon" means.
+|
+|   Doing the widening after projection rather than in 3D matters: widen in
+|   world space and the ribbon gets thinner with distance and twists as it
+|   turns away from you.
+|
+| WHAT A QUADRATIC BEZIER IS
+|   Three points: start, end, and one "control" point that pulls the curve.
+|       p(t) = (1-t)^2*A + 2(1-t)t*C + t^2*B
+|   At t=0 you are exactly at A, at t=1 exactly at B, and in between you are
+|   tugged toward C without ever reaching it. Put C above the midpoint of the
+|   globe's surface and you get an arc that leaps off the planet — which is
+|   the entire visual metaphor.
+|
+|   Scaling the lift by the angular distance means a hop to a neighbour stays
+|   low and a transatlantic route soars, which reads as distance intuitively.
+|
+| WHY TWO DIFFERENT WEIGHTS FOR THE SAME NUMBER
+|   aWLin (linear) drives WIDTH, because "twice the revenue, twice as thick"
+|   is a promise the chart makes and must keep.
+|   aW (compressed by a power of 0.55) drives BRIGHTNESS, because human
+|   perception of brightness is not linear — a small flow at true linear
+|   opacity would be invisible. Compressing lets small flows stay legible
+|   without lying about their size, since size is carried by the width.
+|
+6. ARCS AND PARTICLES
+---------------------
+MAX_ARCS = 90 per month, ARC_SEGS = 44, SAMPLES = 45, PARTS_PER_ARC = 7,
+ARC_SLOTS = MAX_ARCS*2 (two months resident in Smooth mode).
+Each month take the top MAX_ARCS routes by revenue.
+
+Curve: quadratic bezier A -> C -> B, A/B = endpoint surface points,
+C = normalize(A+B) * R*(1.16 + angleTo(A,B)*0.46) so long hops arc higher.
+
+  CRITICAL: WebGL ignores gl_LineWidth. Build each arc as a camera-facing
+  triangle ribbon: 2 vertices per sample carrying position, aNext (the next
+  curve point; extrapolate at the last sample), aSide -1/+1. In the vertex
+  shader project position and aNext to screen space using a uRes uniform, take
+  the perpendicular of their difference, and offset by aSide*width/2 converted
+  back through cA.w. Index as quads; Uint16 is enough. setDrawRange to the
+  arcs actually used.
+
+Per-vertex: aT (0..1 along arc), aW = pow(rev/maxRoute, 0.55) for brightness,
+aWLin = rev/maxRoute for width, aT0 = start time in months.
+
+Width (Flow width slider, 0..3, default 1):
+  px = uBase + uScale*uProp*aWLin,  uBase = 1.15, uProp = 11.0
+  0x = uniform hairlines; 1x = width linear in revenue; 2x = twice the slope.
+
+|
+| THE LIFE OF ONE ARC, IN PLAIN ENGLISH
+|   Every arc knows only one thing about time: how old it is, in months
+|   (vLp = now - birthday). Everything else falls out of that number, computed
+|   independently on the GPU for every arc. The CPU tracks nothing.
+|
+|   env   the whole lifespan. Fade in over the first fifth of its life, hold,
+|         fade out over the last fifth. Outside its life this is zero and the
+|         pixel is discarded — which is the mechanism that lets thousands of
+|         arcs have independent lifetimes for free.
+|   draw  the "shooting out" effect. A wavefront sweeps from origin to
+|         destination over the first 40% of the arc's life; anything beyond
+|         the wavefront is hidden. That is what makes the flow feel directional
+|         rather than just appearing.
+|   body  a sine hump along the length: dim at the ends, bright in the middle.
+|         It hides the exact endpoints and stops the arcs looking bolted on.
+|   prof  across the ribbon's width: bright core, soft edges. Turns a flat
+|         strap into something that looks like light.
+|   Multiply all four together and you have the alpha. Each is a simple curve;
+|   the combination is what looks expensive.
+|
+| WHY THE PARTICLES COST NOTHING
+|   The naive implementation moves each particle on the CPU each frame and
+|   uploads new positions. With ~1,300 particles that is real work, every
+|   frame, forever.
+|
+|   Instead each particle vertex carries its arc's three control points as
+|   attributes, and the VERTEX SHADER evaluates the Bezier itself. The CPU
+|   sends one number per frame — the time — and the GPU works out where 1,300
+|   particles are. `fract()` (keep only the fractional part) turns a
+|   continuously rising number into a repeating 0..1 sweep, which is a one-
+|   token way to write a loop.
+|
+|   Tying speed to MONTH_SECONDS rather than to real seconds is what makes a
+|   particle take about one month to fly regardless of how long you set the
+|   sweep to. Without it, particles barely leave the origin on a fast setting.
+|
+Life: each arc has its own clock. vLp = uNow - aT0 (uNow in months).
+  env  = smoothstep(0,0.20,vLp) * (1 - smoothstep(0.82,1.0,vLp))
+  draw = clamp(vLp/0.40, 0, 1.05)
+  head = 1 - smoothstep(draw-0.06, draw+0.01, vT)        progressive draw-on
+  body = 0.30 + 0.70*sin(vT*PI)                          fade at both ends
+  prof = 1 - 0.55*abs(vSide)                             soft ribbon edges
+  alpha = head*body*prof*env*(uA0 + uA1*aW); discard when env <= 0
+  colour = mix(uA, uB, smoothstep(0.15,0.9,vT))          managed -> booked
+
+Particles: Points, bezier evaluated in the VERTEX shader from aStart/aCtrl/aEnd
+so the CPU does nothing per frame. t = fract(aOff + uTime*aSpeed).
+  aSpeed = (0.85 + 0.40*rand)/MONTH_SECONDS so one trip takes ~1 month at any
+  sweep duration. Count per arc scales with weight. Same aT0/env as its arc.
+  Fragment: round point, core = pow(1-2d, 2.2), life = sin(t*PI).
+
+
+|
+| ===========================================================================
+| SECTION 7 — SMOOTH MODE
+| ===========================================================================
+|
+| THE PROBLEM IT SOLVES
+|   Originally every arc in a month was born at the same instant and died at
+|   the same instant. The result was a heartbeat: the globe filled with
+|   flows, emptied COMPLETELY, filled again. Thirty times per run. Counting
+|   visible arcs across one month gave:
+|         0  80  80  80  80  80  80  80  0
+|   Those zeroes are the entire planet going blank.
+|
+| THE FIX, IN ONE SENTENCE
+|   Stop birthing them together: spread each month's arcs randomly across a
+|   one-month window centred on that month, and let each live exactly one
+|   month. Now one month's flows are still landing while the next month's are
+|   already launching, and the same count reads:
+|        79  82  80  74  78  80  83  83  80
+|   Flat, straight through the boundary.
+|
+| WHY THAT FORCES TWO MONTHS TO BE RESIDENT AT ONCE
+|   If month m's arcs can live as late as m+1.5, then at any instant you may
+|   be showing tail-enders from one month and newcomers from the next. So the
+|   buffers must hold both, which is why capacity is twice the per-month cap.
+|
+| THE ELEGANT PART
+|   Classic mode is not a separate code path. Setting every arc's birthday to
+|   exactly m is algebraically the old behaviour, so one builder produces both
+|   modes and there is no second implementation to keep in sync. Whenever a
+|   feature toggle can be expressed as a different VALUE rather than a
+|   different BRANCH, take that option.
+|
+7. SMOOTH MODE (toggle, default on)
+-----------------------------------
+Off: every arc of month m starts at aT0 = m — all flows pulse together and the
+globe is empty at each boundary.
+On:  months m and m+1 are both resident; each arc of month m starts uniformly
+in [m-0.5, m+0.5] and lives exactly 1 month, ending in [m+0.5, m+1.5]. The
+visible arc count stays flat across boundaries instead of dropping to zero.
+
+Implementation: one slab builder, slots = smooth ? [0,1] : [0].
+  aT0 = smooth ? base + slot - 0.5 + rand : base
+Rebuild when key = floor(smooth ? arcClock-0.5 : arcClock) changes, and on any
+filter change or scrub.
+
+|
+| WHY TWO CLOCKS  (this catches everyone)
+|   The playhead wraps: it runs 0 -> 30 -> back to 0 so the animation loops.
+|   But arcs store their birthday as an absolute number of months. The instant
+|   the playhead wraps, an arc born at 29.7 appears to have been born in the
+|   distant future, its age goes hugely negative, and it vanishes.
+|
+|   So arcs get their own clock that NEVER wraps — it just counts up forever.
+|   Birth times stay comparable across the loop, and wrapMonth() recovers the
+|   real data month whenever we need to look one up. The modulo needs the
+|   "+L" because JavaScript's % keeps the sign of the left operand: -1 % 30
+|   is -1, not 29.
+|
+| WHY THE RANDOM SEED MUST NOT DEPEND ON THE SLOT
+|   A given month sits in slot 1 of one slab and slot 0 of the next. If its
+|   arcs' random birth offsets were seeded on the slot, every arc would be
+|   reborn at a different moment the instant the slab rebuilt, and the whole
+|   population would visibly jump. Seeding on (month, rank) makes the offset a
+|   property of the DATA rather than of the buffer, so it is identical in both
+|   slabs. Verified bit-for-bit, including across the loop point.
+|
+  CRITICAL: state.t wraps at the end of the series, which makes start times
+  incomparable across the loop. Keep a second monotonic clock `arcClock` that
+  never wraps; recover the data month with wrapMonth(m) = ((m%L)+L)%L. Seed the
+  random offset on (dataMonth, rank) — NOT on slot index — so an arc keeps the
+  same start time when the slab is rebuilt and it shifts slot; otherwise arcs
+  visibly jump.
+
+In Smooth mode pass env = 1 to the country glow (its own smoothing carries it
+across boundaries); in classic mode pass the month envelope so it pulses.
+
+
+|
+| ===========================================================================
+| SECTION 8 — THE TOWERS
+| ===========================================================================
+|
+| A bar chart standing up on the globe. Booked revenue only, because a tower
+| means "this much money landed here" — mixing in managed revenue would make
+| the height meaningless.
+|
+| THE GROW / HOLD / DISSOLVE CURVE, AND WHY IT IS NOT OBVIOUS
+|   The first version simply tied height to progress through the month, so at
+|   the boundary every tower snapped back to zero. It read as a glitch.
+|
+|   The fix separates two things that were accidentally tied together:
+|     HEIGHT  grows to its true value at 84% through the month, then HOLDS.
+|     OPACITY fades to nothing over that last 16%.
+|   So the tower reaches its real figure, holds it, and dissolves at full
+|   height while the next month's tower grows from nothing beneath it. You
+|   still read the correct value; you lose the whiplash.
+|
+|   The general lesson: when an animation feels abrupt, look for a property
+|   you can fade INDEPENDENTLY of the one carrying the data. Never distort the
+|   data-bearing property to smooth a transition.
+|
+| THE GEOMETRY DETAIL THAT WILL BITE YOU
+|   A cylinder is created centred on its own middle. Scale its height and it
+|   grows in BOTH directions, so half of it sinks into the planet. Shifting
+|   the geometry up by half its height first, so the base sits at the origin,
+|   makes scaling behave like a bar growing out of the ground.
+|
+8. TOWERS (toggle, default on)
+------------------------------
+One hexagonal column per BOOKED country. InstancedMesh of
+CylinderGeometry(R*0.020, R*0.028, 1, 6) translated +0.5 in Y so its base sits
+on the surface; orient with quaternion from (0,1,0) to the surface normal;
+scale Y by height. TOWER_MAX = R*0.45.
+
+  height  = (bkdTot/maxCountry) * TOWER_MAX * min(1, frac/0.84)
+  opacity = themeOpacity * (1 - smoothstep(0.84, 1.0, frac))
+
+So a tower reaches its true value at 84% through the month, then HOLDS that
+height and dissolves — the boundary reads as a fade, not a collapse. Towers
+reset every month; they do not participate in Smooth mode.
+
+
+|
+| ===========================================================================
+| SECTION 9 — MAKING COUNTRIES LIGHT UP
+| ===========================================================================
+|
+| WHY TWO SEPARATE GLOW VALUES PER COUNTRY
+|   A country can be busy in two different ways at once: managing clients
+|   whose money leaves, and booking money that arrives. Singapore does both
+|   heavily. One combined number would hide that, so we track both and blend
+|   the colours by their ratio — a country that is purely managed reads cyan,
+|   purely booked reads violet, and both reads somewhere between.
+|
+| WHY THE GLOW IS SMOOTHED RATHER THAN SET DIRECTLY
+|   Setting it straight from the data makes countries flick on and off at
+|   month boundaries. Easing toward the target instead means the glow drifts,
+|   which both looks better and — importantly — carries the eye across a month
+|   boundary in Smooth mode without any special handling.
+|
+| THE pow(x, 0.55) AGAIN
+|   Same reason as arc brightness: perception is not linear. Without
+|   compression a country at 10% of the maximum is essentially invisible, so
+|   the globe would show three bright countries and nothing else.
+|
+| THE DIRTY SET IS A REAL OPTIMISATION, NOT TIDINESS
+|   Pushing all 35,000 hexagon colours to the GPU every frame to change maybe
+|   2,000 of them is exactly the kind of waste that turns a smooth app into a
+|   sluggish one. Tracking which countries actually changed and rewriting only
+|   those is a few lines and roughly an order of magnitude.
+|
+9. COUNTRY GLOW AND MARKERS
+---------------------------
+Per country keep smoothed glowMgd/glowBkd, each easing toward
+pow((tot/maxCountry)*env, 0.55) at rate min(1, dt*5.5).
+  Hexes: tint = mix(managedColour, bookedColour, gb/(gm+gb));
+         colour = base.lerp(tint, g*0.92) * (1 + g*glowBoost)
+  Only rewrite countries whose glow actually changed (keep a dirty Set).
+  Markers: one Points per country at its lat/lon, additive; fragment draws a
+  solid centre plus an expanding radar ring at radius fract(t*0.55+phase).
+  Size and colour from the smoothed intensity and the managed/booked ratio.
+  This is the fallback for countries with no hexes.
+
+
+|
+| ===========================================================================
+| SECTION 10 — THE CAMERA
+| ===========================================================================
+|
+| THE MODEL
+|   The camera never has a free-floating position. It always sits on a sphere
+|   around the planet, described by three numbers: how far around (lon), how
+|   far up (lat), how far away (dist). It always looks at the middle. Every
+|   input just nudges one of those three. This is far easier to reason about
+|   and to constrain than storing a position and a rotation.
+|
+| WHY EVERY VALUE HAS A "TARGET" TWIN
+|   Input moves the TARGET instantly; the real value chases it by a fraction
+|   each frame. That is a one-line spring, and it is the entire difference
+|   between controls that feel cheap and controls that feel weighty.
+|
+|   The fraction must be multiplied by the frame time (dt), or the feel
+|   changes with frame rate — smooth on a 144Hz monitor, sluggish on a 60Hz
+|   one. Capping it at 1 stops a long stall (a backgrounded tab) from
+|   overshooting wildly on the first frame back.
+|
+| THE fitDistance TRIGONOMETRY
+|   A perspective camera at distance d sees a half-height of d*tan(fov/2).
+|   Turn that around: to fit something of radius r, stand back r/tan(fov/2).
+|   The min(1, aspect) picks whichever screen direction is the tighter
+|   constraint — vertical on a wide window, horizontal on a tall one.
+|
+10. CAMERA
+----------
+State: lon, lat, dist (+ eased targets), pan {x,y} in CSS pixels.
+  HOME = {lon:-30, lat:18}; DIST_MIN 130, DIST_MAX 2000; auto-rotate 2.4 deg/s,
+  paused while dragging. Clamp lat to +/-84.
+  fitDistance = R*1.45 / (tan(fov/2) * min(1, aspect)), fov 38 — frames the
+  whole planet. Recompute on resize unless the user has zoomed.
+
+Pointer down raycasts a Sphere(origin, R): hit -> orbit, miss -> pan.
+  Wheel/pinch zoom; double-click resets.
+
+|
+| THE THREE CRITICAL BUGS BELOW ARE ALL REAL. Each one cost real time on this
+| project, each produced a symptom that pointed away from its cause, and none
+| of them produce an error message. They are the most valuable paragraphs in
+| this document.
+|
+  CRITICAL: pan must NOT move the camera's look-at point. Doing so makes the
+  orbit pivot drift off the globe and the planet swings in a circle when you
+  rotate after panning. Instead keep lookAt(0,0,0) always and apply pan as
+  camera.setViewOffset(w, h, -pan.x, -pan.y, w, h) — a pure 2D image shift.
+  Pan is then exactly 1:1 in pixels, and raycasting still works because the
+  view offset is inside the projection matrix.
+
+|
+| BUG 1 IN PLAIN ENGLISH: the orbit that wandered off
+|   The natural way to pan is to move the point the camera looks at. It works
+|   perfectly — until you then rotate. Because the camera orbits around
+|   whatever it is looking at, and that point is no longer the planet, the
+|   planet swings around in a wide circle like a conker on a string.
+|
+|   It was reported as "sometimes it does a weird dance", and the "sometimes"
+|   is the clue: it only happened after a pan.
+|
+|   The fix is to stop conflating two different ideas. Rotation is about the
+|   planet; panning is about the IMAGE. setViewOffset() shifts the rendered
+|   image without touching the camera's orientation at all — it exists for
+|   tiled rendering, but "render the whole image, offset by this many pixels"
+|   is exactly a 2D pan. The camera keeps staring at the planet forever.
+|
+  CRITICAL: a resize at zero height makes fitDistance return Infinity, and
+  Infinity - Infinity permanently poisons the eased distance with NaN (the
+  globe vanishes and never returns). Clamp fitDistance and guard both
+  distances with isFinite each frame.
+
+|
+| BUG 2 IN PLAIN ENGLISH: the contagious NaN
+|   NaN ("not a number") is what you get from meaningless arithmetic, and its
+|   defining property is that it INFECTS everything it touches: NaN plus
+|   anything is NaN, forever.
+|
+|   Here, a window momentarily reported as zero pixels high makes the fit
+|   distance Infinity. The easing line then computes (Infinity - Infinity),
+|   which is NaN. From that instant the camera distance is NaN, the camera
+|   position is NaN, and the globe vanishes and NEVER COMES BACK — resizing
+|   the window does not fix it, because NaN is already in the variable.
+|
+|   Silent, unrecoverable, and no error anywhere. Clamping the function and
+|   checking isFinite each frame costs two lines and makes the state
+|   impossible.
+|
+|   The general lesson: any value that is EASED rather than assigned needs a
+|   sanity check, because a single bad frame poisons it permanently.
+|
+  CRITICAL: give the canvas explicit width/height in CSS. position:fixed with
+  inset:0 does NOT stretch a replaced element — the canvas keeps its intrinsic
+  size and renders oversized and cropped.
+
+
+|
+| BUG 3 IN PLAIN ENGLISH: the canvas that would not fit
+|   A <canvas> is a "replaced element" — like an <img>, it has an intrinsic
+|   size of its own. For replaced elements, pinning left AND right with an
+|   automatic width does NOT stretch the element; the browser keeps the
+|   intrinsic size and ignores one of your constraints.
+|
+|   The result was a canvas rendering at 1.5x the window, hanging off the
+|   edges, with the globe permanently cropped — and no camera maths would fix
+|   it, because the camera was fine. Two CSS properties solve it.
+|
+| ===========================================================================
+| SECTION 11 — THE TWO THEMES
+| ===========================================================================
+|
+| THE ARCHITECTURE POINT FIRST
+|   Every colour in the program — CSS, materials, shader uniforms, chart
+|   fills — flows through ONE function reading ONE object. That is what makes
+|   a second theme a data change rather than a rewrite. If you find yourself
+|   writing `if (dark)` anywhere outside that function, the design has leaked.
+|
+| WHY LIGHT MODE IS NOT JUST "SWAP THE COLOURS"
+|   Two things genuinely change behaviour, not just appearance:
+|
+|   1. BLENDING. Additive blending means a pixel's colour ADDS to whatever is
+|      behind it — which is how light actually works, and why overlapping
+|      glows get brighter. On a WHITE background it is useless: white is
+|      already the maximum, so adding to it does nothing and every glow
+|      becomes invisible. Light mode must switch to normal alpha blending —
+|      ink on paper rather than light in the dark.
+|
+|   2. THE ALPHA FLOORS. A faint cyan line on black is clearly visible; a
+|      faint red line on white is not. So the opacity ramps are per-theme
+|      values rather than constants. This is a perceptual fact about
+|      contrast, not a preference.
+|
+|   The atmosphere is the neat one: the SAME Fresnel shader gives a wide soft
+|   halo at a low exponent and full size, and a single hairline outline at a
+|   high exponent with the mesh pulled onto the surface. One effect, two
+|   completely different visual languages, no extra code.
+|
+| WHY applyTheme RUNS BEFORE THE DATA LOADS
+|   Otherwise the loading overlay paints in the default palette and then
+|   flips, which is a visible flash on every load. Set the theme first, then
+|   go and get the data.
+|
+| WHY localStorage IS WRAPPED IN try/catch
+|   It does not merely return null when unavailable — it THROWS. A page opened
+|   from a data: URL, or a browser configured to block site data, will throw
+|   on the very first read, and an unhandled throw there kills startup before
+|   anything renders.
+|
+11. THEMES (toggle, default LIGHT, persisted in localStorage)
+-------------------------------------------------------------
+One THEMES object holds both palettes; applyTheme(name) is the only place a
+colour changes. It sets the CSS custom properties via a data-theme attribute on
+<html>, plus renderer clear colour, fog, ocean, atmosphere uniforms and scale,
+star visibility, arc/particle/marker colours and alpha ramps, tower opacity,
+chart colours, and re-tints every hex. Call it BEFORE loading data so the
+loading overlay is already in the right palette.
+
+  dark : bg #03070f, land #12365c, managed #22d3ee, booked #a78bfa,
+         additive blending, stars on, glowBoost 0.65, arc alpha 0.18+0.72*w,
+         atmosPow 3.2, atmosScale 1.0 (a wide blue halo).
+  light: white ground, land #aab2bb (fine grey stipple), managed #111111,
+         booked #d92b1c. A drafting-table look: hairlines of black and red.
+         atmosPow 16, atmosScale 1.006/1.19 pulls the fresnel in to a thin
+         black limb. stars off, glowBoost 0, arc alpha 0.30+0.62*w,
+         particle/marker alpha multiplied ~2x.
+
+  CRITICAL: additive blending saturates to white on a white ground — every glow
+  becomes invisible. Light mode must switch all glow materials to
+  NormalBlending, and red-on-white needs a higher alpha floor than
+  cyan-on-black, so the alpha ramps are per-theme values, not constants.
+
+
+|
+| ===========================================================================
+| SECTION 12 — THE INTERFACE
+| ===========================================================================
+|
+| THE ONE TRICK THAT MAKES THE WHOLE OVERLAY WORK
+|   The panels float on top of a full-screen 3D canvas. Normally an invisible
+|   full-screen div swallows every mouse event and the globe becomes
+|   undraggable.
+|
+|   `pointer-events: none` on the container makes it transparent to the mouse
+|   — clicks fall straight through to the canvas beneath. Each panel then sets
+|   `pointer-events: auto` to switch itself back on. The result: panels are
+|   interactive, every gap between them is not. Without this the globe simply
+|   does not respond and it is genuinely baffling to debug.
+|
+| WHY A CSS GRID RATHER THAN ABSOLUTE POSITIONING
+|   The grid names regions and the panels claim cells. Nothing has to know the
+|   window size, panels cannot overlap by accident, and the middle column is
+|   deliberately left mostly empty — that emptiness IS the space the globe
+|   lives in. Below 1100px one column is dropped rather than shrinking
+|   everything into illegibility; choosing what to lose beats scaling
+|   everything down.
+|
+| WHY THE CHARTS ARE REDRAWN ONLY ON MONTH CHANGE
+|   They convey a month's numbers, and those change 30 times per run, not 60
+|   times per second. Redrawing DOM elements every frame would be pure waste.
+|   Know which parts of your UI are on the animation clock and which are on
+|   the data clock — here, only the globe is on the animation clock.
+|
+12. UI
+------
+CSS grid overlay, pointer-events:none on the container and auto on panels so
+the globe stays draggable everywhere else. Columns 236px / 1fr / 300px,
+rows auto / 1fr / auto. Below 1100px hide the right column.
+Frosted panels: translucent background, 1px border, blur, rounded 12px.
+All colours from CSS custom properties so the theme switch is free.
+
+  top-left     title + KPIs (this month, cumulative)
+  left         client list: "All clients" (ruled off, its own figure) + one row
+               per named client with its own total, and a footnote saying the
+               listed clients are a selection and do not sum to the total
+  top-centre   legend (managed / booked / tower) and a control strip:
+               Flow width slider + readout, Towers, Smooth, theme toggle
+  right        product pills (All + one per product), then three d3 charts
+  bottom-left  top 7 flows this month, "MGD -> BKD  bar  $value"
+  bottom-centre reset, play/pause, month readout ("Jan 2024" + "month 1 of 30"),
+               scrubber with month ticks (label every 6 if >18 months),
+               speed select 0.25/0.5/1/2/4
+
+Charts (d3, plain SVG, redrawn on month change):
+  Revenue by product — horizontal bars, height grows with product count,
+    colours cycle if there are more products than palette entries
+  Monthly trend — area + line over the whole series with a dashed playhead that
+    tracks the sub-month position
+  Top booked countries — top 6 horizontal bars
+
+
+|
+| ===========================================================================
+| SECTION 13 — THE LOOP
+| ===========================================================================
+|
+| This runs once per screen refresh via requestAnimationFrame, which syncs to
+| the display and pauses entirely in a background tab.
+|
+| WHY THE ORDER IS LOAD-BEARING
+|   Advance the clock first, because everything below reads it. Rebuild the
+|   arcs before rendering or you draw a stale month. Update the charts only on
+|   a month change. Render last, once everything is settled. Shuffle these and
+|   you get a one-frame lag somewhere, which shows up as an intermittent
+|   flicker that is miserable to track down.
+|
+| THE dt CAP IS A CORRECTNESS FIX, NOT A TWEAK
+|   dt is "seconds since the last frame". Leave a tab in the background for a
+|   minute and dt comes back as 60. Every eased value would leap past its
+|   target and every animation would be somewhere absurd. Capping it means you
+|   lose that time rather than corrupting the state — the right trade, because
+|   nobody was watching anyway.
+|
+| THE PER-FRAME COST OF ANIMATING EVERYTHING IS TWO ASSIGNMENTS
+|   Look at what actually happens each frame for the arcs and particles: we
+|   set two uniforms. That is it. Every arc's fade, draw-on, colour and every
+|   particle's position is derived from those numbers on the GPU. This is the
+|   payoff for putting the maths in the shaders, and it is why the frame time
+|   is a fraction of a millisecond.
+|
+13. FRAME LOOP (order matters)
+------------------------------
+  dt = min(0.1, clock.getDelta())
+  flowTime += dt * speed                      particle clock, follows speed
+  if playing: step = dt/MONTH_SECONDS*speed; state.t += step; arcClock += step
+              wrap state.t at MONTHS.length; sync the scrubber
+  mi = floor(state.t); frac = state.t - mi
+  rebuild the arc slab if its key changed
+  if mi changed: redraw charts, month readout, KPIs
+  set uNow = arcClock on arc and particle materials; uTime = flowTime
+  updateGlow(mi, smooth ? 1 : monthEnvelope, dt)
+  updateTowers(mi, frac)
+  applyCamera(dt); renderer.render
+
+
+|
+| ===========================================================================
+| SECTION 14 — PERFORMANCE
+| ===========================================================================
+|
+| The headline is that performance is NOT a concern here, and it is worth
+| understanding why, because the reasons are all structural rather than
+| micro-optimisations. Nothing in this project is fast because of clever code;
+| it is fast because the expensive things happen once.
+|
+|   Data work happens on filter change, not per frame.
+|   Geometry is built at startup, not per frame.
+|   Animation lives in shaders, so the CPU sends numbers, not positions.
+|   35,000 hexagons are one draw call, not 35,000.
+|   Only countries whose glow changed get their colours rewritten.
+|
+| If you are reimplementing this and it runs badly, the cause is almost
+| certainly that one of those five moved into the frame loop.
+|
+14. PERFORMANCE NOTES
+---------------------
+Measured: ~0.37 ms/frame for glow + towers + camera + render at 231k triangles
+in 7 draw calls; land build ~210 ms. Budget is not a concern — the things that
+matter are keeping hex colours in typed arrays, only rewriting dirty countries,
+evaluating particle beziers in the shader, and drawing all arcs in one mesh.
+|
+| ###########################################################################
+| GLOSSARY
+| ###########################################################################
+|
+| aggregate       pre-computing every total the UI needs, in one pass
+| alpha           opacity, 0 transparent to 1 opaque
+| antialiasing    smoothing jagged edges by blending colours at boundaries
+| attribute       shader input that differs per vertex
+| bezier          a curve defined by a few control points
+| blending        how a new pixel combines with what is already there.
+|                 ADDITIVE adds (light); NORMAL covers (ink)
+| centroid        the average position of a shape; not always inside it
+| clip space      the coordinate system after projection, before the screen
+| draw call       one instruction to the GPU to draw something. Fewer = faster
+| easing          moving a value toward a target by a fraction each frame
+| envelope        a curve describing how something fades in and out over time
+| fragment shader the program deciding the colour of one pixel
+| fresnel         surfaces reflecting more at glancing angles; here, a rim glow
+| GLSL            the C-like language shaders are written in
+| instancing      drawing many copies of one shape in a single draw call
+| lerp            linear interpolation; blend smoothly between two values
+| NaN             "not a number"; the result of meaningless arithmetic, and
+|                 contagious — it infects everything it touches
+| normal          the direction a surface faces
+| projection      turning a 3D point into a 2D screen position
+| raycasting      firing a mathematical ray to see what it hits
+| smoothstep      an S-curve from 0 to 1; the standard soft fade
+| TopoJSON        compressed map data storing shared borders once
+| uniform         shader input that is the same for the whole draw
+| varying         a value the vertex shader computes and the GPU interpolates
+|                 across a triangle for the fragment shader
+| vertex shader   the program deciding where a vertex lands on screen
+|
+| ###########################################################################
