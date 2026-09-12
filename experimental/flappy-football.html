@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Flappy Football</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #0b1a0f;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: #fff;
+    overflow: hidden;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #wrap {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas {
+    display: block;
+    image-rendering: auto;
+    box-shadow: 0 0 40px rgba(0,0,0,.6);
+    border-radius: 6px;
+  }
+  #hud {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+  }
+  #hud button {
+    background: rgba(0,0,0,.45);
+    border: 2px solid rgba(255,255,255,.7);
+    color: #fff;
+    font-size: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  #hud button:hover { background: rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="480" height="640"></canvas>
+  <div id="hud">
+    <button id="muteBtn" title="Toggle music (M)">🔊</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* =========================================================
+   CONFIG & LEVELS
+   ========================================================= */
+const W = 480, H = 640;
+const GROUND_H = 80;
+const BALL_R = 16;
+
+const LEVELS = [
+  { name: "Qualifiers",   sub: "Warm up. Easy gaps.",
+    speed: 2.4, gap: 190, spacing: 260, gravity: 0.42, flap: -7.6, target: 5,
+    moveAmp: 0,  moveSpd: 0,     wind: 0,    night: false, tempo: 128, sky: ["#6fc3ff","#bfe7ff"] },
+  { name: "Group Stage",  sub: "Faster play, tighter gaps.",
+    speed: 3.0, gap: 170, spacing: 240, gravity: 0.46, flap: -7.8, target: 8,
+    moveAmp: 0,  moveSpd: 0,     wind: 0,    night: false, tempo: 136, sky: ["#4fb0ff","#a9dcff"] },
+  { name: "Knockout",     sub: "Defenders are on the move!",
+    speed: 3.5, gap: 160, spacing: 230, gravity: 0.50, flap: -8.0, target: 10,
+    moveAmp: 45, moveSpd: 0.025, wind: 0,    night: false, tempo: 144, sky: ["#ff9f5a","#ffd6a3"] },
+  { name: "Semi-Final",   sub: "Swirling wind. Hold your line.",
+    speed: 4.0, gap: 150, spacing: 220, gravity: 0.54, flap: -8.2, target: 12,
+    moveAmp: 55, moveSpd: 0.028, wind: 0.30, night: false, tempo: 152, sky: ["#e0644a","#ffb27a"] },
+  { name: "The Final",    sub: "Floodlights. Everything at once.",
+    speed: 4.6, gap: 140, spacing: 210, gravity: 0.58, flap: -8.4, target: 15,
+    moveAmp: 65, moveSpd: 0.032, wind: 0.45, night: true,  tempo: 162, sky: ["#0a1a3a","#1c3a6e"] },
+];
+
+/* =========================================================
+   AUDIO ENGINE — procedural upbeat soccer-stadium chiptune
+   ========================================================= */
+const Audio = (() => {
+  let ctx = null, master = null, musicGain = null, sfxGain = null;
+  let muted = false, running = false;
+  let tempo = 128, nextNoteTime = 0, step = 0, timer = null;
+  const LOOKAHEAD = 0.12, INTERVAL = 25;
+
+  // Original chant-style melody, 2 bars × 16 sixteenths each (32 steps), values = semitone from C
+  // null = rest. Written for an upbeat "stadium anthem" feel (I–V–vi–IV).
+  const MELODY = [
+    0, null, 4, null, 7, null, 12, null,  7, null, 4, null, 7, 7, null, null,
+    -3, null, 0, null, 4, null, 7, null,  4, null, 0, null, 4, 4, null, null,
+    9, null, 12, null, 16, null, 12, null, 9, null, 7, null, 4, 4, null, null,
+    5, null, 9, null, 12, null, 9, null,   7, null, 4, null, 0, 0, null, null,
+  ];
+  const BASS  = [0,0,7,7, -3,-3,5,5];     // per half-bar (8 eighths per bar → root per 2 beats)
+  const CHORDS = [[0,4,7],[7,11,14],[-3,0,4],[5,9,12]];
+
+  function ensure() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0.7; master.connect(ctx.destination);
+    musicGain = ctx.createGain(); musicGain.gain.value = 0.45; musicGain.connect(master);
+    sfxGain = ctx.createGain(); sfxGain.gain.value = 0.9; sfxGain.connect(master);
+  }
+  const f = st => 261.63 * Math.pow(2, st / 12);
+
+  function osc(type, freq, t, dur, gain, dest, opts = {}) {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (opts.slide) o.frequency.exponentialRampToValueAtTime(opts.slide, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(dest); o.start(t); o.stop(t + dur + 0.02);
+  }
+  function noise(t, dur, gain, dest, hp = 6000) {
+    const len = Math.ceil(ctx.sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const flt = ctx.createBiquadFilter(); flt.type = "highpass"; flt.frequency.value = hp;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(gain, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(flt); flt.connect(g); g.connect(dest); src.start(t); src.stop(t + dur);
+  }
+
+  function scheduleStep(s, t) {
+    const sixteenth = 60 / tempo / 4;
+    const i = s % MELODY.length;
+    const bar = Math.floor(i / 16);
+    const inBar = i % 16;
+
+    // Drums
+    if (inBar % 4 === 0) osc("sine", 150, t, 0.18, 0.9, musicGain, { slide: 45 });   // kick on beats
+    if (inBar === 4 || inBar === 12) noise(t, 0.16, 0.5, musicGain, 1800);            // snare 2 & 4
+    if (inBar % 2 === 0) noise(t, 0.04, 0.18, musicGain, 8000);                        // hats 8ths
+    // Crowd "clap-clap-clap" on last bar every 2nd loop
+    if (Math.floor(s / MELODY.length) % 2 === 1 && bar === 3 && (inBar === 8 || inBar === 10 || inBar === 12))
+      noise(t, 0.1, 0.45, musicGain, 1200);
+
+    // Bass (eighths)
+    if (inBar % 2 === 0) {
+      const b = BASS[(bar * 2 + Math.floor(inBar / 8)) % BASS.length];
+      osc("square", f(b - 24), t, sixteenth * 1.8, 0.16, musicGain);
+    }
+    // Chord stabs off-beat
+    if (inBar === 2 || inBar === 6 || inBar === 10 || inBar === 14) {
+      CHORDS[bar % 4].forEach(n => osc("triangle", f(n), t, sixteenth * 1.5, 0.07, musicGain));
+    }
+    // Melody
+    const m = MELODY[i];
+    if (m !== null) {
+      const len = (MELODY[i + 1] === null || i + 1 >= MELODY.length) ? sixteenth * 1.9 : sixteenth * 0.95;
+      osc("square", f(m + 12), t, len, 0.11, musicGain);
+      osc("triangle", f(m + 12), t, len, 0.09, musicGain);
+    }
+  }
+
+  function tick() {
+    while (nextNoteTime < ctx.currentTime + LOOKAHEAD) {
+      scheduleStep(step, nextNoteTime);
+      nextNoteTime += 60 / tempo / 4;
+      step++;
+    }
+  }
+
+  return {
+    start() {
+      ensure();
+      if (ctx.state === "suspended") ctx.resume();
+      if (running) return;
+      running = true; step = 0; nextNoteTime = ctx.currentTime + 0.05;
+      timer = setInterval(tick, INTERVAL);
+    },
+    stop() { if (timer) clearInterval(timer); timer = null; running = false; },
+    setTempo(t) { tempo = t; },
+    toggleMute() {
+      ensure(); muted = !muted;
+      master.gain.setTargetAtTime(muted ? 0 : 0.7, ctx.currentTime, 0.02);
+      return muted;
+    },
+    isMuted: () => muted,
+    // SFX
+    kick() { ensure(); const t = ctx.currentTime;
+      osc("sine", 220, t, 0.12, 0.5, sfxGain, { slide: 90 }); noise(t, 0.06, 0.35, sfxGain, 900); },
+    whistle() { ensure(); const t = ctx.currentTime;
+      osc("sine", 2200, t, 0.09, 0.35, sfxGain); osc("sine", 2500, t + 0.1, 0.16, 0.35, sfxGain); },
+    crash() { ensure(); const t = ctx.currentTime;
+      noise(t, 0.4, 0.8, sfxGain, 300); osc("sawtooth", 180, t, 0.4, 0.5, sfxGain, { slide: 40 }); },
+    levelUp() { ensure(); const t = ctx.currentTime;
+      [0, 4, 7, 12].forEach((n, k) => osc("square", f(n + 12), t + k * 0.09, 0.25, 0.2, sfxGain));
+      noise(t + 0.4, 0.8, 0.5, sfxGain, 900); },
+    victory() { ensure(); const t = ctx.currentTime;
+      [0, 4, 7, 12, 7, 12, 16, 19].forEach((n, k) => osc("square", f(n + 12), t + k * 0.12, 0.3, 0.22, sfxGain));
+      for (let k = 0; k < 4; k++) noise(t + 0.9 + k * 0.25, 0.5, 0.5, sfxGain, 700); },
+  };
+})();
+
+/* =========================================================
+   GAME
+   ========================================================= */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const muteBtn = document.getElementById("muteBtn");
+
+let state = "title";   // title | playing | levelup | dead | won
+let levelIdx = 0, L = LEVELS[0];
+let ball, pipes, score, levelScore, frame, bg, particles, stateTimer, shake;
+let best = Number(localStorage.getItem("flappyFootballBest") || 0);
+let bestLevel = Number(localStorage.getItem("flappyFootballLevel") || 1);
+let windPhase = 0;
+
+function reset(fullReset = true) {
+  if (fullReset) { levelIdx = 0; score = 0; }
+  L = LEVELS[levelIdx];
+  ball = { x: 130, y: H / 2 - 40, vy: 0, rot: 0 };
+  pipes = [];
+  levelScore = 0;
+  frame = 0;
+  particles = [];
+  shake = 0;
+  bg = { pitch: 0, stands: 0, clouds: 0 };
+  Audio.setTempo(L.tempo);
+}
+
+function spawnPipe() {
+  const minTop = 60, maxTop = H - GROUND_H - L.gap - 60;
+  const top = minTop + Math.random() * (maxTop - minTop);
+  pipes.push({ x: W + 40, top, baseTop: top, scored: false, phase: Math.random() * Math.PI * 2, w: 64 });
+}
+
+function flap() {
+  if (state === "title") { startGame(); return; }
+  if (state === "dead") { if (stateTimer > 30) { reset(true); state = "title"; } return; }
+  if (state === "won")  { if (stateTimer > 30) { reset(true); state = "title"; } return; }
+  if (state === "levelup") return;
+  ball.vy = L.flap;
+  Audio.kick();
+  for (let i = 0; i < 6; i++) particles.push({
+    x: ball.x - 10, y: ball.y + 8, vx: -2 - Math.random() * 2, vy: (Math.random() - 0.5) * 3,
+    life: 20 + Math.random() * 10, col: "#fff", r: 2 + Math.random() * 2 });
+}
+
+function startGame() {
+  reset(true);
+  state = "playing";
+  Audio.start();
+  spawnPipe();
+}
+
+function die() {
+  state = "dead"; stateTimer = 0; shake = 14;
+  Audio.crash();
+  Audio.stop();
+  for (let i = 0; i < 30; i++) particles.push({
+    x: ball.x, y: ball.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.8) * 10,
+    life: 40 + Math.random() * 30, col: Math.random() < 0.5 ? "#fff" : "#222", r: 2 + Math.random() * 3, g: 0.3 });
+  if (score > best) { best = score; localStorage.setItem("flappyFootballBest", best); }
+  if (levelIdx + 1 > bestLevel) { bestLevel = levelIdx + 1; localStorage.setItem("flappyFootballLevel", bestLevel); }
+}
+
+function confetti(n) {
+  const cols = ["#ffd700", "#ff4757", "#2ed573", "#1e90ff", "#fff", "#ff7f50"];
+  for (let i = 0; i < n; i++) particles.push({
+    x: Math.random() * W, y: -10 - Math.random() * 200, vx: (Math.random() - 0.5) * 2, vy: 2 + Math.random() * 3,
+    life: 120 + Math.random() * 60, col: cols[i % cols.length], r: 3 + Math.random() * 3, g: 0.02, conf: true });
+}
+
+function nextLevel() {
+  if (levelIdx >= LEVELS.length - 1) {
+    state = "won"; stateTimer = 0;
+    Audio.stop(); Audio.victory(); confetti(160);
+    if (score > best) { best = score; localStorage.setItem("flappyFootballBest", best); }
+    bestLevel = LEVELS.length; localStorage.setItem("flappyFootballLevel", bestLevel);
+    return;
+  }
+  state = "levelup"; stateTimer = 0;
+  Audio.levelUp(); confetti(60);
+}
+
+function update() {
+  frame++;
+  if (shake > 0) shake *= 0.85;
+  const scroll = (state === "playing" || state === "levelup") ? L.speed : (state === "title" ? 1.2 : 0);
+  bg.pitch = (bg.pitch + scroll) % 80;
+  bg.stands = (bg.stands + scroll * 0.3) % 40;
+  bg.clouds = (bg.clouds + scroll * 0.15) % (W + 200);
+  windPhase += 0.02;
+
+  // particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += p.g || 0; p.life--;
+    if (p.conf) p.vx = Math.sin(p.life * 0.1 + p.x) * 1.5;
+    if (p.life <= 0 || p.y > H) particles.splice(i, 1);
+  }
+
+  if (state === "title") { ball.y = H / 2 - 40 + Math.sin(frame * 0.05) * 12; ball.rot += 0.02; return; }
+  if (state === "dead" || state === "won") {
+    stateTimer++;
+    if (state === "dead" && ball.y < H - GROUND_H - BALL_R) { ball.vy += 0.5; ball.y += ball.vy; ball.rot += 0.3; }
+    return;
+  }
+  if (state === "levelup") {
+    stateTimer++;
+    ball.y += (H / 2 - 40 - ball.y) * 0.05; ball.rot += 0.15;
+    for (let i = pipes.length - 1; i >= 0; i--) { pipes[i].x -= L.speed; if (pipes[i].x + pipes[i].w < -20) pipes.splice(i, 1); }
+    if (stateTimer > 150) {
+      levelIdx++; reset(false); state = "playing"; Audio.start(); spawnPipe();
+    }
+    return;
+  }
+
+  // ---- playing ----
+  ball.vy += L.gravity;
+  if (L.wind) ball.vy += Math.sin(windPhase * 1.7 + Math.cos(windPhase * 0.6)) * L.wind * 0.35;
+  ball.y += ball.vy;
+  ball.rot += 0.08 + Math.abs(ball.vy) * 0.01;
+
+  if (pipes.length === 0 || W - pipes[pipes.length - 1].x >= L.spacing) spawnPipe();
+
+  for (let i = pipes.length - 1; i >= 0; i--) {
+    const p = pipes[i];
+    p.x -= L.speed;
+    if (L.moveAmp) {
+      p.phase += L.moveSpd;
+      p.top = p.baseTop + Math.sin(p.phase) * L.moveAmp;
+      const maxTop = H - GROUND_H - L.gap - 40;
+      p.top = Math.max(40, Math.min(maxTop, p.top));
+    }
+    if (!p.scored && p.x + p.w < ball.x) {
+      p.scored = true; score++; levelScore++; Audio.whistle();
+      if (levelScore >= L.target) nextLevel();
+    }
+    if (p.x + p.w < -20) pipes.splice(i, 1);
+  }
+
+  // collisions
+  const groundY = H - GROUND_H;
+  if (ball.y + BALL_R > groundY) { ball.y = groundY - BALL_R; die(); return; }
+  if (ball.y - BALL_R < 0) { ball.y = BALL_R; ball.vy = 0; }
+  for (const p of pipes) {
+    const inX = ball.x + BALL_R * 0.85 > p.x && ball.x - BALL_R * 0.85 < p.x + p.w;
+    if (inX && (ball.y - BALL_R * 0.85 < p.top || ball.y + BALL_R * 0.85 > p.top + L.gap)) { die(); return; }
+  }
+}
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+function drawBackground() {
+  const [c1, c2] = L.sky;
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, c1); g.addColorStop(1, c2);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  if (L.night) {
+    // stars & floodlights
+    ctx.fillStyle = "rgba(255,255,255,.7)";
+    for (let i = 0; i < 40; i++) { const x = (i * 97) % W, y = (i * 53) % 220; ctx.fillRect(x, y, 2, 2); }
+    for (const fx of [70, W - 70]) {
+      ctx.fillStyle = "#333"; ctx.fillRect(fx - 4, 120, 8, 200);
+      ctx.fillStyle = "#ddd"; ctx.fillRect(fx - 26, 108, 52, 18);
+      const lg = ctx.createRadialGradient(fx, 118, 5, fx, 118, 260);
+      lg.addColorStop(0, "rgba(255,255,220,.35)"); lg.addColorStop(1, "rgba(255,255,220,0)");
+      ctx.fillStyle = lg; ctx.fillRect(fx - 260, 100, 520, 400);
+    }
+  } else {
+    // clouds
+    ctx.fillStyle = "rgba(255,255,255,.75)";
+    for (let k = 0; k < 3; k++) {
+      const cx = ((k * 220 - bg.clouds) % (W + 200) + W + 200) % (W + 200) - 100;
+      const cy = 60 + k * 45;
+      for (const [dx, dy, r] of [[0,0,22],[24,-8,26],[50,0,20],[26,8,18]]) {
+        ctx.beginPath(); ctx.arc(cx + dx, cy + dy, r, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+  }
+
+  // stands (crowd)
+  const standTop = 250, standH = 130;
+  ctx.fillStyle = L.night ? "#1a2230" : "#4a4f5c"; ctx.fillRect(0, standTop, W, standH);
+  const cols = ["#e63946", "#f1faee", "#1d3557", "#ffb703", "#2a9d8f", "#fff"];
+  for (let row = 0; row < 6; row++) {
+    for (let i = -1; i < W / 20 + 1; i++) {
+      const x = i * 20 - bg.stands + (row % 2) * 10;
+      const y = standTop + 14 + row * 20;
+      const bob = (frame + i * 7 + row * 3) % 60 < 30 ? 0 : -2;   // crowd bounce
+      ctx.fillStyle = cols[(i + row * 3 + 6) % cols.length];
+      ctx.beginPath(); ctx.arc(x, y + bob, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillRect(x - 6, y + bob + 5, 12, 10);
+    }
+  }
+  // ad boards
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, standTop + standH, W, 26);
+  ctx.fillStyle = "#c62828"; ctx.font = "bold 16px sans-serif"; ctx.textBaseline = "middle";
+  for (let i = -1; i < 5; i++) {
+    const x = ((i * 160 - bg.pitch * 2) % 800 + 800) % 800 - 160;
+    ctx.fillText("★ FLAPPY FC ★", x, standTop + standH + 13);
+  }
+
+  // pitch
+  const pitchTop = standTop + standH + 26;
+  for (let i = -1; i < W / 80 + 2; i++) {
+    const x = i * 80 - bg.pitch;
+    ctx.fillStyle = (i % 2 === 0) ? (L.night ? "#1f7a3a" : "#3cb043") : (L.night ? "#1a6b33" : "#34a039");
+    ctx.fillRect(x, pitchTop, 80, H - pitchTop);
+  }
+  // pitch lines
+  ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(0, pitchTop + 6); ctx.lineTo(W, pitchTop + 6); ctx.stroke();
+  const cx = ((W / 2 - bg.pitch * 3) % (W * 2) + W * 2) % (W * 2) - W / 2;
+  ctx.beginPath(); ctx.ellipse(cx, H - GROUND_H, 70, 22, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, pitchTop + 6); ctx.lineTo(cx, H); ctx.stroke();
+}
+
+function drawDefender(x, y, w, h, shirt) {
+  // a blocky player: shorts, shirt, head
+  const headR = w * 0.22;
+  ctx.fillStyle = "#f2c9a0"; ctx.beginPath(); ctx.arc(x + w / 2, y + headR + 2, headR, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#3a2410"; ctx.beginPath(); ctx.arc(x + w / 2, y + headR - 2, headR, Math.PI, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = shirt; ctx.fillRect(x + w * 0.15, y + headR * 2 + 2, w * 0.7, h * 0.42);
+  ctx.fillStyle = "#fff"; ctx.font = `bold ${Math.floor(w * 0.3)}px sans-serif`; ctx.textAlign = "center";
+  ctx.fillText("9", x + w / 2, y + headR * 2 + h * 0.24); ctx.textAlign = "left";
+  ctx.fillStyle = "#fff"; ctx.fillRect(x + w * 0.2, y + headR * 2 + 2 + h * 0.42, w * 0.6, h * 0.2);
+  ctx.fillStyle = "#f2c9a0"; ctx.fillRect(x + w * 0.22, y + headR * 2 + 2 + h * 0.62, w * 0.18, h * 0.3);
+  ctx.fillRect(x + w * 0.6, y + headR * 2 + 2 + h * 0.62, w * 0.18, h * 0.3);
+}
+
+function drawGoalpost(p) {
+  const { x, w, top } = p;
+  const bottomY = top + L.gap;
+  // top part: hanging net from crossbar
+  ctx.fillStyle = "#f5f5f5";
+  ctx.fillRect(x, 0, 10, top);
+  ctx.fillRect(x + w - 10, 0, 10, top);
+  ctx.fillRect(x - 6, top - 12, w + 12, 14);
+  ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.lineWidth = 1;
+  for (let yy = 8; yy < top - 12; yy += 12) { ctx.beginPath(); ctx.moveTo(x + 10, yy); ctx.lineTo(x + w - 10, yy); ctx.stroke(); }
+  for (let xx = x + 20; xx < x + w - 10; xx += 12) { ctx.beginPath(); ctx.moveTo(xx, 0); ctx.lineTo(xx, top - 12); ctx.stroke(); }
+  // shadow rim
+  ctx.fillStyle = "rgba(0,0,0,.15)"; ctx.fillRect(x + w - 10, 0, 4, top);
+
+  // bottom part: wall of defenders on a pedestal
+  const groundY = H - GROUND_H;
+  const wallH = groundY - bottomY;
+  ctx.fillStyle = "#e0e0e0"; ctx.fillRect(x - 6, bottomY, w + 12, 14);
+  const cols = ["#1565c0", "#c62828"];
+  const defH = 70, defW = w * 0.9;
+  let dy = bottomY + 14, k = 0;
+  while (dy < groundY - 10) {
+    drawDefender(x + w * 0.05, dy, defW, Math.min(defH, groundY - dy), cols[(k + Math.floor(p.baseTop)) % 2]);
+    dy += defH; k++;
+  }
+  ctx.fillStyle = "rgba(0,0,0,.12)"; ctx.fillRect(x, bottomY + 14, w, wallH - 14);
+  ctx.fillStyle = "rgba(255,255,255,.1)"; ctx.fillRect(x, bottomY + 14, 8, wallH - 14);
+}
+
+function drawBall() {
+  ctx.save();
+  ctx.translate(ball.x, ball.y);
+  ctx.rotate(ball.rot);
+  ctx.beginPath(); ctx.arc(0, 0, BALL_R, 0, Math.PI * 2);
+  ctx.fillStyle = "#fff"; ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = "#222"; ctx.stroke();
+  // pentagons
+  ctx.fillStyle = "#222";
+  const pent = (cx, cy, r, rot) => {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) { const a = rot + i * Math.PI * 2 / 5; ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r); }
+    ctx.closePath(); ctx.fill();
+  };
+  pent(0, 0, 6, 0);
+  for (let i = 0; i < 5; i++) { const a = i * Math.PI * 2 / 5 + Math.PI / 5; pent(Math.cos(a) * 12.5, Math.sin(a) * 12.5, 4, a); }
+  ctx.restore();
+  // shadow
+  ctx.fillStyle = "rgba(0,0,0,.25)";
+  ctx.beginPath(); ctx.ellipse(ball.x, H - GROUND_H - 2, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawText(txt, x, y, size, color = "#fff", align = "center", weight = "bold") {
+  ctx.font = `${weight} ${size}px "Segoe UI", system-ui, sans-serif`;
+  ctx.textAlign = align; ctx.textBaseline = "middle";
+  ctx.lineWidth = Math.max(3, size / 7); ctx.strokeStyle = "rgba(0,0,0,.75)"; ctx.lineJoin = "round";
+  ctx.strokeText(txt, x, y);
+  ctx.fillStyle = color; ctx.fillText(txt, x, y);
+}
+
+function drawPanel(x, y, w, h) {
+  ctx.fillStyle = "rgba(0,0,0,.55)";
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, 16); ctx.fill();
+  ctx.strokeStyle = "rgba(255,255,255,.6)"; ctx.lineWidth = 2; ctx.stroke();
+}
+
+function drawHUD() {
+  drawText(score, W / 2, 60, 52);
+  const progress = Math.min(1, levelScore / L.target);
+  ctx.fillStyle = "rgba(0,0,0,.5)"; ctx.fillRect(16, 16, 200, 22);
+  ctx.fillStyle = "#ffd700"; ctx.fillRect(18, 18, 196 * progress, 18);
+  drawText(`LVL ${levelIdx + 1} · ${L.name}  ${levelScore}/${L.target}`, 20, 27, 13, "#fff", "left");
+  if (L.wind) {
+    const w = Math.sin(windPhase * 1.7 + Math.cos(windPhase * 0.6));
+    drawText(`WIND ${w > 0 ? "▼" : "▲"}`, W - 60, 60, 14, "#cfe8ff");
+  }
+}
+
+function render() {
+  ctx.save();
+  if (shake > 0.5) ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
+
+  drawBackground();
+  for (const p of pipes) drawGoalpost(p);
+  drawBall();
+  for (const p of particles) { ctx.fillStyle = p.col; ctx.fillRect(p.x, p.y, p.r, p.r); }
+
+  if (state === "playing") drawHUD();
+
+  if (state === "title") {
+    drawPanel(40, 110, W - 80, 340);
+    drawText("⚽ FLAPPY", W / 2, 160, 48, "#ffd700");
+    drawText("FOOTBALL", W / 2, 210, 48, "#fff");
+    drawText("Tap / Click / Space to kick", W / 2, 270, 18, "#fff", "center", "normal");
+    drawText("Fly through the goals, dodge the wall!", W / 2, 296, 15, "#ddd", "center", "normal");
+    drawText(`${LEVELS.length} levels · Qualifiers → The Final`, W / 2, 322, 15, "#ddd", "center", "normal");
+    drawText(`Best score: ${best}   Best level: ${bestLevel}`, W / 2, 370, 16, "#ffd700");
+    if (Math.floor(frame / 30) % 2 === 0) drawText("PRESS TO KICK OFF", W / 2, 420, 20, "#2ed573");
+  }
+
+  if (state === "levelup") {
+    const t = stateTimer;
+    const a = Math.min(1, t / 20);
+    ctx.globalAlpha = a;
+    drawPanel(40, 200, W - 80, 180);
+    const nxt = LEVELS[levelIdx + 1];
+    drawText("LEVEL COMPLETE!", W / 2, 240, 30, "#2ed573");
+    drawText(`Next: Level ${levelIdx + 2} — ${nxt.name}`, W / 2, 290, 22, "#ffd700");
+    drawText(nxt.sub, W / 2, 325, 16, "#fff", "center", "normal");
+    drawText("Get ready…", W / 2, 355, 15, "#ccc", "center", "normal");
+    ctx.globalAlpha = 1;
+  }
+
+  if (state === "dead") {
+    drawPanel(50, 150, W - 100, 260);
+    drawText("🟥 FULL TIME", W / 2, 195, 34, "#ff4757");
+    drawText(`Score: ${score}`, W / 2, 250, 28);
+    drawText(`Reached Level ${levelIdx + 1}: ${L.name}`, W / 2, 288, 16, "#ddd", "center", "normal");
+    drawText(`Best: ${best}`, W / 2, 320, 18, "#ffd700");
+    if (stateTimer > 30 && Math.floor(frame / 30) % 2 === 0) drawText("Tap to play again", W / 2, 370, 18, "#2ed573");
+  }
+
+  if (state === "won") {
+    drawPanel(40, 140, W - 80, 290);
+    drawText("🏆 CHAMPIONS!", W / 2, 190, 40, "#ffd700");
+    drawText("You lifted the trophy!", W / 2, 240, 20);
+    drawText(`Final score: ${score}`, W / 2, 285, 28);
+    drawText(`Best: ${best}`, W / 2, 325, 18, "#ffd700");
+    if (stateTimer > 30 && Math.floor(frame / 30) % 2 === 0) drawText("Tap to play again", W / 2, 385, 18, "#2ed573");
+  }
+  ctx.restore();
+}
+
+/* =========================================================
+   LOOP, INPUT, RESIZE
+   ========================================================= */
+let last = 0, acc = 0; const STEP = 1000 / 60;
+function loop(ts) {
+  if (!last) last = ts;
+  acc += Math.min(100, ts - last); last = ts;
+  while (acc >= STEP) { update(); acc -= STEP; }
+  render();
+  requestAnimationFrame(loop);
+}
+
+function onPress(e) {
+  if (e.type === "keydown" && !(e.code === "Space" || e.code === "ArrowUp" || e.code === "KeyW")) return;
+  if (e.type === "keydown" && e.repeat) return;
+  e.preventDefault();
+  flap();
+}
+canvas.addEventListener("pointerdown", onPress);
+window.addEventListener("keydown", e => {
+  if (e.code === "KeyM") { muteBtn.textContent = Audio.toggleMute() ? "🔇" : "🔊"; return; }
+  onPress(e);
+});
+muteBtn.addEventListener("click", e => { e.stopPropagation(); muteBtn.textContent = Audio.toggleMute() ? "🔇" : "🔊"; });
+
+function resize() {
+  const s = Math.min(window.innerWidth / W, window.innerHeight / H);
+  canvas.style.width = Math.floor(W * s) + "px";
+  canvas.style.height = Math.floor(H * s) + "px";
+}
+window.addEventListener("resize", resize);
+resize();
+reset(true);
+requestAnimationFrame(loop);
+
+// Debug hook (read-only view of game state; used for automated testing)
+window.FF = { get state(){return state;}, get ball(){return ball;}, get pipes(){return pipes;},
+  get level(){return levelIdx;}, get score(){return score;}, get L(){return L;}, flap };
+})();
+</script>
+</body>
+</html>
