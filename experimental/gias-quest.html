@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Assurance Quest</title>
+<meta name="description" content="A side-scrolling adventure through the Global Internal Audit Standards: collect jewels, beat quiz bosses, earn your certificate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f5efe2;--paper2:#efe6d3;--card:#fbf7ee;--ink:#1f1b16;--ink2:#4a4238;--ink3:#7a6f61;--rule:#d9cdb5;--gold:#b0862c;--gold2:#d8b25a;--gold3:#8a6516;
+  --grad:linear-gradient(135deg,#8a6516 0%,#d8b25a 35%,#f3dc98 50%,#c49a3c 65%,#8a6516 100%);--d2:#8a3b52;--d3:#2f5d8a;--d4:#3e7a5c;--d5:#a4552f;--good:#3e7a5c;--bad:#a33a2f;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#15120e;overflow:hidden;font-family:var(--sans);color:var(--ink);-webkit-user-select:none;user-select:none;touch-action:manipulation}
+#stage{position:fixed;inset:0;display:grid;place-items:center}
+#cv{display:block;box-shadow:0 0 90px rgba(0,0,0,.7)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.08;margin:0 0 .35em}
+.kicker{font:600 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold3)}
+.gold-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+kbd{font:600 10.5px var(--sans);border:1px solid var(--rule);border-bottom-width:2px;border-radius:5px;padding:1px 5px;background:var(--paper);color:var(--ink3);margin-left:6px}
+.btn{font:600 14px var(--sans);border:1px solid var(--rule);background:var(--paper);color:var(--ink);padding:11px 18px;border-radius:999px;cursor:pointer;transition:transform .12s,border-color .15s,background .15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--gold);transform:translateY(-1px)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.primary kbd{background:transparent;color:#cfc4ae;border-color:#5a5148}
+.btn.gold{background:var(--grad);color:#2a1f0b;border-color:#b0862c}
+.btn.small{padding:7px 12px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:30;display:none;place-items:center;padding:14px;background:rgba(18,14,8,.5);backdrop-filter:blur(3px)}
+.ov.on{display:grid;animation:fade .25s}
+.ov.clear{background:transparent;backdrop-filter:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.45);padding:26px 30px;width:min(760px,100%);max-height:calc(100vh - 28px);overflow:auto;position:relative;animation:pop .3s cubic-bezier(.2,1.4,.4,1)}
+.panel::before{content:"";position:absolute;inset:8px;border:1px solid rgba(176,134,44,.35);border-radius:14px;pointer-events:none}
+@keyframes pop{from{transform:scale(.92) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.panel p{font-size:16px;line-height:1.6;color:var(--ink2);margin:.4em 0 1em}
+.card{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:start}
+.card .owl{width:120px;animation:bob 3s ease-in-out infinite}
+.card .ref{display:inline-block;font:600 11px var(--sans);letter-spacing:.08em;color:var(--gold3);background:var(--paper2);border-radius:999px;padding:4px 10px;margin-bottom:14px}
+.card .lesson-gem{display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:6px}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@media (max-width:640px){.card{grid-template-columns:1fr}.card .owl{width:80px}}
+/* HUD */
+#hud{position:fixed;left:0;right:0;top:0;z-index:10;padding:10px 14px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:start;pointer-events:none}
+#hud.hidden{display:none}
+.pill{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:rgba(251,247,238,.9);border:1px solid var(--rule);border-radius:999px;padding:7px 14px;font:600 13px var(--sans);box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.h-left{justify-self:start}.h-mid{justify-self:center}.h-right{justify-self:end}
+.h-left .lvlname{font-family:var(--serif);font-size:18px;font-weight:600}
+.pill b{font-variant-numeric:tabular-nums}
+.ico{width:18px;height:18px;display:inline-block;vertical-align:-4px}
+.hbtn{pointer-events:auto;border:0;background:transparent;cursor:pointer;font:600 12px var(--sans);color:var(--ink2);padding:2px 4px;border-radius:6px}
+.hbtn:hover{color:var(--ink);background:var(--paper2)}
+.hbtn.off{opacity:.4;text-decoration:line-through}
+#hBar{grid-column:1/-1;justify-self:center;width:min(560px,70vw);height:8px;border-radius:99px;background:rgba(251,247,238,.55);position:relative;margin-top:2px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#hBarFill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--grad);width:0}
+#hBarMarks i{position:absolute;top:-3px;width:10px;height:14px;margin-left:-5px;clip-path:polygon(50% 0,100% 40%,50% 100%,0 40%);background:#7a6f61}
+#hBarMarks i.got{background:#d8b25a}
+#hBarMarks i.boss{background:#a33a2f;clip-path:none;border-radius:3px;width:8px;margin-left:-4px}
+@media (max-width:760px){#hud{grid-template-columns:1fr auto;}.h-mid{grid-column:1/-1;grid-row:2;justify-self:start}.h-left .lvlname{font-size:15px}}
+/* toast */
+#toast{position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:12;pointer-events:none;display:flex;flex-direction:column;gap:6px;align-items:center}
+#toast div{background:rgba(31,27,22,.88);color:#f5efe2;font:600 14px var(--sans);padding:9px 16px;border-radius:999px;animation:tin .3s, tout .4s 2.2s forwards}
+@keyframes tin{from{transform:translateY(-8px);opacity:0}}
+@keyframes tout{to{transform:translateY(-8px);opacity:0}}
+/* touch */
+#touch{position:fixed;inset:auto 0 0 0;z-index:11;display:none;justify-content:space-between;padding:0 18px 22px;pointer-events:none}
+#touch.on{display:flex}
+#touch button{pointer-events:auto;width:74px;height:74px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:rgba(31,27,22,.35);color:#fff;font:700 26px var(--sans);margin-right:12px;backdrop-filter:blur(4px);touch-action:none}
+#touch button.act{background:rgba(176,134,44,.55)}
+/* title */
+.title-panel{text-align:center;width:min(820px,100%);padding:38px 34px}
+.title-panel h1{font-size:clamp(44px,7vw,82px);font-weight:500;margin:.1em 0 .1em}
+.title-panel .sub{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink2)}
+.title-panel .how{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font:13px var(--sans);color:var(--ink3);margin:18px 0 22px}
+/* select */
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0 16px}
+.hero-card{border:2px solid var(--rule);border-radius:16px;background:var(--paper);padding:10px;cursor:pointer;text-align:center;font:600 14px var(--sans);transition:border-color .15s,transform .15s}
+.hero-card:hover{transform:translateY(-2px)}
+.hero-card.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,90,.35)}
+.hero-card canvas{width:100%;max-width:220px;height:auto;display:block;margin:auto}
+.swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 12px}
+.swatches span{font:600 12px var(--sans);color:var(--ink3);min-width:62px}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--rule);cursor:pointer}
+.sw.on{box-shadow:0 0 0 3px var(--gold)}
+.namein{font:600 16px var(--sans);padding:10px 14px;border-radius:12px;border:1px solid var(--rule);background:var(--paper);width:220px;color:var(--ink);user-select:text;-webkit-user-select:text}
+/* map */
+.map-panel{width:min(980px,100%)}
+.map-head{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.map-svg{width:100%;height:auto;display:block}
+.node{cursor:pointer}
+.node.locked{cursor:not-allowed}
+.node circle.base{transition:r .15s}
+.node:hover circle.base{r:34}
+.node:focus{outline:none}
+.node:focus-visible circle.base{stroke:#d8b25a;stroke-width:5}
+/* codex */
+.codex-lv{margin:14px 0}
+.codex-lv h3{font-size:22px;margin-bottom:6px}
+.codex-item{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:8px 0;border-bottom:1px dashed var(--rule);font-size:14.5px;line-height:1.5}
+.codex-item.locked{color:var(--ink3);font-style:italic}
+/* mini-games */
+.mini h2{font-size:30px}
+.mini canvas{width:100%;height:auto;border-radius:12px;display:block;background:#10202c;touch-action:none}
+.choice{display:block;width:100%;text-align:left;border:1px solid var(--rule);background:var(--paper);color:var(--ink);padding:13px 16px;border-radius:12px;cursor:pointer;font:500 15px var(--sans);margin:8px 0;transition:border-color .15s,background .15s}
+.choice:hover{border-color:var(--gold)}
+.choice.right{border-color:var(--good);background:#e7f0e7}
+.choice.wrong{border-color:var(--bad);background:#f6e4e1}
+.choice:disabled{cursor:default}
+.scen{font-family:var(--serif);font-size:22px;line-height:1.35;margin:10px 0 6px}
+.fb{background:var(--paper2);border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.5;margin-top:10px}
+.prog{font:600 12px var(--sans);color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+.scrolls{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:14px 0}
+.scroll{border:1px solid var(--rule);background:linear-gradient(#fbf3de,#f1e4c6);border-radius:10px;padding:14px 12px;cursor:pointer;font:500 14px var(--sans);min-height:74px;display:flex;align-items:center;position:relative;transition:transform .15s}
+.scroll:hover{transform:rotate(-1deg) translateY(-2px)}
+.scroll.on{outline:3px solid var(--gold);background:linear-gradient(#fff6dc,#f6e2a8)}
+.scroll.right{outline:3px solid var(--good)}
+.scroll.wrong{outline:3px solid var(--bad)}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin:12px 0}
+.unit{border:1px solid var(--rule);border-radius:12px;padding:12px;background:var(--paper);cursor:pointer;font:500 14px var(--sans);position:relative}
+.unit.on{background:#e7f0e7;border-color:var(--good)}
+.unit .rk{font:700 11px var(--sans);letter-spacing:.08em;padding:2px 8px;border-radius:99px;display:inline-block;margin-top:6px}
+.rk.H{background:#f3d9d4;color:#a33a2f}.rk.M{background:#f6e8c8;color:#8a6516}.rk.L{background:#dcebdc;color:#3e7a5c}
+.budget{height:14px;border-radius:99px;background:var(--paper2);overflow:hidden;border:1px solid var(--rule)}
+.budget i{display:block;height:100%;background:var(--grad);transition:width .3s}
+.cc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.cc>div{border-radius:12px;padding:14px;font-size:15px;line-height:1.45}
+.cc .cr{background:#e3efe6;border:1px solid #9cc0a7}.cc .cd{background:#f6e7dc;border:1px solid #d9ae8e}
+.cc b{display:block;font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.mcard{perspective:700px;height:108px;cursor:pointer}
+.mcard .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mcard.up .in,.mcard.done .in{transform:rotateY(180deg)}
+.mcard .f,.mcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font:600 13px var(--sans)}
+.mcard .f{background:var(--grad);color:#2a1f0b;font:700 26px var(--serif)}
+.mcard .b{background:var(--paper);border:1px solid var(--rule);transform:rotateY(180deg);line-height:1.3}
+.mcard.done .b{background:#e7f0e7;border-color:var(--good)}
+@media (max-width:600px){.mem{grid-template-columns:repeat(3,1fr)}.mcard{height:96px}.cc{grid-template-columns:1fr}}
+/* boss */
+.boss-panel{width:min(860px,100%);display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center}
+.boss-svg{width:100%;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 16px 20px rgba(0,0,0,.25))}
+.boss-svg.hit{animation:hit .55s}
+.boss-svg.dead{animation:dead 1.1s forwards}
+.boss-svg .eyes{animation:blink 4.5s infinite;transform-origin:120px 100px}
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes hit{0%{transform:translateX(0)}20%{transform:translateX(-16px) rotate(-6deg);filter:brightness(2)}40%{transform:translateX(12px) rotate(5deg)}60%{transform:translateX(-8px)}100%{transform:none}}
+@keyframes dead{to{transform:scale(.2) rotate(40deg) translateY(160px);opacity:0}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.hp{display:flex;gap:6px;margin:4px 0 12px}
+.hp i{width:26px;height:22px;background:#a33a2f;clip-path:path("M13 21 C 2 13 0 8 3 4 C 6 0 11 1 13 5 C 15 1 20 0 23 4 C 26 8 24 13 13 21 Z");transition:transform .3s,opacity .3s}
+.hp i.gone{opacity:.18;transform:scale(.7)}
+.taunt{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--d2);min-height:1.4em}
+@media (max-width:720px){.boss-panel{grid-template-columns:1fr}.boss-svg{max-width:180px;margin:auto}}
+/* complete */
+.stars{display:flex;gap:10px;justify-content:center;margin:10px 0 6px}
+.stars svg{width:62px;height:62px}
+.stars svg.on{animation:starpop .5s both}
+.stars svg:nth-child(2){animation-delay:.2s}.stars svg:nth-child(3){animation-delay:.4s}
+@keyframes starpop{0%{transform:scale(0) rotate(-90deg)}70%{transform:scale(1.25)}100%{transform:none}}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:10px 12px;text-align:center}
+.stat b{display:block;font:600 28px var(--serif)}
+.stat span{font:600 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.badge{display:inline-flex;align-items:center;gap:10px;background:var(--paper2);border-radius:999px;padding:8px 16px 8px 8px;font:600 14px var(--sans)}
+.badge svg{width:34px;height:34px}
+/* certificate */
+.cert{width:min(900px,100%);text-align:center;padding:48px 40px;background:radial-gradient(circle at 50% 0,#fffaf0,#f6ecd6);border:10px double #b0862c}
+.cert h1{font-size:clamp(34px,5vw,58px);font-weight:500}
+.cert .who{font-family:var(--serif);font-size:clamp(36px,6vw,64px);font-style:italic;border-bottom:1px solid var(--gold);display:inline-block;padding:0 30px;margin:8px 0 14px}
+@media print{body *{visibility:hidden}.cert,.cert *{visibility:visible}.cert{position:fixed;inset:0;margin:auto;box-shadow:none}.cert .row{display:none}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="cv" aria-label="Game view"></canvas></div>
+
+<div id="hud" class="hidden" aria-live="polite">
+  <div class="h-left"><span class="pill"><span class="lvlname" id="hLevel">—</span></span></div>
+  <div class="h-mid"><span class="pill">
+    <span title="Lesson jewels"><svg class="ico" viewBox="0 0 20 20"><path d="M10 1 18 7 10 19 2 7Z" fill="#d8b25a" stroke="#8a6516"/></svg> <b id="hGems">0/0</b></span>
+    <span title="Score"><svg class="ico" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#e3be67" stroke="#8a6516"/><path d="M6 10l3 3 5-6" stroke="#8a6516" stroke-width="2" fill="none"/></svg> <b id="hScore">0</b></span>
+    <span title="Setbacks">↺ <b id="hSet">0</b></span>
+    <span id="hPower"></span>
+  </span></div>
+  <div class="h-right"><span class="pill">
+    <button class="hbtn" id="bMusic" title="Music & sound (M)">♪ Sound</button>
+    <button class="hbtn" id="bVoice" title="Mentor voice (V)">Voice</button>
+    <button class="hbtn" id="bPause" title="Pause (Esc)">❚❚ Pause</button>
+  </span></div>
+  <div id="hBar"><i id="hBarFill"></i><div id="hBarMarks"></div></div>
+</div>
+<div id="toast" aria-live="polite"></div>
+<div id="touch"><div><button data-k="left" aria-label="Left">◀</button><button data-k="right" aria-label="Right">▶</button></div><div><button data-k="jump" class="act" aria-label="Jump">⤒</button></div></div>
+<div id="ov" class="ov" role="dialog" aria-modal="true"></div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+(() => {
+'use strict';
+/* =========================================================================
+   Assurance Quest — a side-scrolling adventure through the
+   Global Internal Audit Standards (IIA, 2024) and the UK Internal Audit
+   Code of Practice (Chartered IIA, 2024). Single file, no dependencies.
+   Lessons are paraphrased study aids, not the authoritative text.
+   ========================================================================= */
+const W = 1280, H = 720, TS = 48, ROWS = 15;
+const GRAV = 2300, JUMP = 860, JUMP2 = 780, RUN = 330;
+const $ = (s) => document.querySelector(s);
+const cv = $('#cv'); let g = cv.getContext('2d');
+let PX = 1;
+function resize() {
+  const s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px';
+  const dpr = Math.min(2, devicePixelRatio || 1);
+  cv.width = Math.round(W * s * dpr); cv.height = Math.round(H * s * dpr);
+  PX = cv.width / W;
+  const cf = $('#confetti'); cf.width = innerWidth; cf.height = innerHeight;
+}
+addEventListener('resize', resize); resize();
+
+const rng = (seed) => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, k) => a + (b - a) * k;
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+/* ============================== SAVE ============================== */
+const SAVE_KEY = 'assuranceQuest.v1';
+const blank = () => ({ hero: null, unlocked: 1, stats: {}, codex: [], muted: false, voice: true, best: 0 });
+let save = (() => { try { return Object.assign(blank(), JSON.parse(localStorage.getItem(SAVE_KEY)) || {}); } catch (e) { return blank(); } })();
+const persist = () => { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) {} };
+
+/* ============================== AUDIO ============================== */
+const AU = {
+  ctx: null,
+  init() {
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    const c = this.ctx = new AC();
+    this.master = c.createGain(); this.master.gain.value = save.muted ? 0 : .8; this.master.connect(c.destination);
+    this.mus = c.createGain(); this.mus.gain.value = .3; this.mus.connect(this.master);
+    this.fx = c.createGain(); this.fx.gain.value = .55; this.fx.connect(this.master);
+    const b = c.createBuffer(1, c.sampleRate * .6, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    this.noise = b;
+    const dl = c.createDelay(); dl.delayTime.value = .3; const fb = c.createGain(); fb.gain.value = .28; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2000;
+    this.mus.connect(dl); dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(this.master);
+  },
+  setMute(m) { save.muted = m; persist(); if (this.master) this.master.gain.setTargetAtTime(m ? 0 : .8, this.ctx.currentTime, .05); },
+  tone(f, t, dur, o = {}) {
+    const c = this.ctx; if (!c) return;
+    const osc = c.createOscillator(); osc.type = o.type || 'square'; osc.frequency.setValueAtTime(f, t);
+    if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.slide, t + dur);
+    const gn = c.createGain(); gn.gain.setValueAtTime(.0001, t); gn.gain.linearRampToValueAtTime(o.vol || .2, t + (o.attack || .006)); gn.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    let node = osc; if (o.filter) { const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = o.filter; osc.connect(fl); node = fl; }
+    node.connect(gn); gn.connect(o.dest || this.fx); osc.start(t); osc.stop(t + dur + .05);
+  },
+  hiss(t, dur, vol = .15, hp = 6000, dest) {
+    const c = this.ctx; if (!c) return;
+    const s = c.createBufferSource(); s.buffer = this.noise; const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp;
+    const gn = c.createGain(); gn.gain.setValueAtTime(vol, t); gn.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    s.connect(f); f.connect(gn); gn.connect(dest || this.fx); s.start(t); s.stop(t + dur + .02);
+  },
+  sfx(n) {
+    if (!this.ctx) return; const t = this.ctx.currentTime, T = (f, at, d, o) => this.tone(f, t + at, d, o);
+    switch (n) {
+      case 'jump': T(330, 0, .16, { vol: .1, slide: 660 }); break;
+      case 'jump2': T(440, 0, .2, { type: 'triangle', vol: .16, slide: 1100 }); break;
+      case 'coin': T(988, 0, .07, { vol: .08 }); T(1319, .06, .14, { vol: .08 }); break;
+      case 'jewel': [784, 988, 1175, 1568, 1976].forEach((f, i) => T(f, i * .07, .4, { type: 'triangle', vol: .15 })); break;
+      case 'stomp': this.hiss(t, .12, .22, 700); T(300, 0, .16, { vol: .14, slide: 90 }); break;
+      case 'die': T(520, 0, .55, { type: 'sawtooth', vol: .12, slide: 70, filter: 1600 }); break;
+      case 'check': [659, 988, 1319].forEach((f, i) => T(f, i * .08, .3, { type: 'triangle', vol: .14 })); break;
+      case 'spring': T(180, 0, .35, { type: 'sine', vol: .25, slide: 950 }); break;
+      case 'power': [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => T(f, i * .055, .35, { type: 'triangle', vol: .13 })); break;
+      case 'door': this.hiss(t, .5, .08, 1000); T(220, 0, .5, { type: 'sine', vol: .16, slide: 440 }); break;
+      case 'right': [523, 659, 784, 1047].forEach((f, i) => T(f, i * .05, .32, { type: 'triangle', vol: .15 })); break;
+      case 'wrong': T(185, 0, .22, { vol: .09, filter: 900 }); T(147, .13, .32, { vol: .09, filter: 900 }); break;
+      case 'hit': this.hiss(t, .25, .25, 400); T(170, 0, .3, { type: 'sawtooth', vol: .14, slide: 55, filter: 1200 }); break;
+      case 'win': [523, 523, 659, 784, 659, 784, 1047].forEach((f, i) => T(f, i * .11, i === 6 ? .9 : .13, { vol: .09, filter: 3200 })); break;
+      case 'click': T(900, 0, .04, { type: 'sine', vol: .07 }); break;
+      case 'shield': T(300, 0, .6, { type: 'sine', vol: .18, slide: 1200 }); break;
+    }
+  }
+};
+const SONGS = {
+  menu:   { root: 60, bpm: 80,  prog: [[0, 4, 7, 11], [-3, 0, 4, 7], [5, 9, 12, 16], [7, 11, 14, 17]] },
+  quay:   { root: 62, bpm: 104, prog: [[0, 4, 7], [7, 11, 14], [-3, 0, 4], [5, 9, 12]], hat: 1 },
+  temple: { root: 57, bpm: 96,  prog: [[0, 3, 7], [-4, 0, 3], [3, 7, 10], [-2, 2, 5]], hat: 1 },
+  tower:  { root: 60, bpm: 112, prog: [[0, 4, 7], [5, 9, 12], [-3, 0, 4], [7, 11, 14]], hat: 1 },
+  plains: { root: 55, bpm: 116, prog: [[0, 4, 7], [5, 9, 12], [7, 11, 14], [5, 9, 12]], hat: 1 },
+  voyage: { root: 64, bpm: 100, prog: [[0, 3, 7], [3, 7, 10], [-2, 2, 5], [-4, 0, 3]], hat: 1 },
+  london: { root: 59, bpm: 98,  prog: [[0, 3, 7], [-4, 0, 3], [-2, 2, 5], [3, 7, 10]], hat: 1 },
+  summit: { root: 62, bpm: 120, prog: [[0, 4, 7], [7, 11, 14], [9, 12, 16], [5, 9, 12]], hat: 1 },
+  boss:   { root: 57, bpm: 138, prog: [[0, 3, 7], [0, 3, 7], [-4, 0, 3], [-2, 2, 5]], hat: 1, drive: 1 },
+  mini:   { root: 65, bpm: 124, prog: [[0, 4, 7], [-3, 0, 4], [5, 9, 12], [7, 11, 14]], hat: 1 }
+};
+const MUS = {
+  song: null, step: 0, next: 0, timer: null,
+  play(name) {
+    if (!AU.ctx) return; const s = SONGS[name]; if (this.song === s) return;
+    this.song = s; this.step = 0; this.next = AU.ctx.currentTime + .08;
+    if (!this.timer) this.timer = setInterval(() => this.tick(), 30);
+  },
+  tick() {
+    const c = AU.ctx; if (!c || !this.song) return;
+    while (this.next < c.currentTime + .15) { this.beat(this.step, this.next); this.next += 60 / this.song.bpm / 4; this.step++; }
+  },
+  beat(st, t) {
+    const s = this.song, spb = 60 / s.bpm, bar = Math.floor(st / 16) % s.prog.length, i = st % 16, ch = s.prog[bar];
+    const mf = (n) => 440 * Math.pow(2, (n + s.root - 69) / 12), D = AU.mus;
+    if (i === 0) ch.slice(0, 3).forEach((n) => AU.tone(mf(n), t, spb * 4.2, { type: 'sine', vol: .045, dest: D, attack: .5 }));
+    if (i % 8 === 0 || (s.drive && i % 4 === 0)) AU.tone(mf(ch[0] - 24), t, spb * .9, { type: 'triangle', vol: .22, dest: D });
+    if (i % 2 === 0) { const n = ch[(i / 2) % ch.length] + (i >= 8 ? 12 : 0); AU.tone(mf(n), t, spb * .45, { type: 'square', vol: .03, dest: D, filter: 2200 }); }
+    if (s.hat && i % 4 === 2) AU.hiss(t, .045, .045, 7000, D);
+    if (s.drive && i % 8 === 4) AU.hiss(t, .1, .08, 1400, D);
+  }
+};
+
+/* ============================== VOICE ============================== */
+const VOICE = {
+  v: null,
+  pick() {
+    if (!('speechSynthesis' in window)) return;
+    const vs = speechSynthesis.getVoices();
+    this.v = vs.find((v) => /en-GB/i.test(v.lang) && /female|libby|sonia|hazel|susan|kate|serena|martha|google uk english female/i.test(v.name))
+      || vs.find((v) => /en-GB/i.test(v.lang)) || vs.find((v) => /^en/i.test(v.lang)) || null;
+  },
+  say(text) {
+    if (!save.voice || !('speechSynthesis' in window)) return;
+    speechSynthesis.cancel(); if (!this.v) this.pick();
+    const u = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, '').replace(/×/g, ' times ').replace(/≥/g, 'at least '));
+    if (this.v) u.voice = this.v; u.rate = 1; u.pitch = 1.08; speechSynthesis.speak(u);
+  },
+  stop() { if ('speechSynthesis' in window) speechSynthesis.cancel(); }
+};
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => VOICE.pick();
+
+/* ============================== CONTENT ============================== */
+const LEVELS = [
+  { title: 'Lighthouse Quay', dom: 'Domain I · Purpose', theme: 'quay', mini: 'catch', power: null, badge: 'Keeper of Purpose',
+    intro: 'Welcome to your first day! I’m Ada, your mentor. This quay is where internal audit shines its light. Collect the five jewels to learn why we exist. Evidence coins add to your score. Jump on Rubber Stamps and Fog Wisps to clear them, and touch a flag to save your place.',
+    walker: { name: 'Rubber Stamp', color: '#a4552f', acc: 'stamp' }, flyer: { name: 'Fog Wisp', kind: 'wisp' },
+    pool: ['A', 'B', 'C', 'D', 'G', 'K'],
+    lessons: [
+      { t: 'The Purpose', x: 'Internal auditing strengthens an organisation’s ability to <b>create, protect and sustain value</b>.', ref: 'GIAS · Domain I' },
+      { t: 'Four gifts', x: 'It gives the board and management <b>assurance, advice, insight and foresight</b>, all of it independent, risk-based and objective.', ref: 'GIAS · Domain I' },
+      { t: 'What it improves', x: 'The organisation’s <b>objectives</b>, its <b>governance, risk management and control</b>, <b>decision-making and oversight</b>, its <b>reputation</b>, and its ability to serve the <b>public interest</b>.', ref: 'GIAS · Domain I' },
+      { t: 'Done by professionals', x: 'Internal auditing works best when <b>competent professionals</b> do it in conformance with the Standards, which are set in the public interest.', ref: 'GIAS · Domain I' },
+      { t: 'Positioned & free', x: 'It also works best when the function is <b>independently positioned</b>, directly accountable to the board, and <b>free from undue influence</b>.', ref: 'GIAS · Domain I' }
+    ],
+    boss: { name: 'The Fog of Doubt', color: '#8fa2b4', acc: 'fog', taunt: 'Nobody knows what internal audit is for… mwa-ha-haze!',
+      qs: [
+        { q: 'Internal auditing strengthens the organisation’s ability to…', o: ['Create, protect and sustain value', 'Cut costs at any price', 'Approve management’s decisions', 'Replace the external auditor'], a: 0, why: 'Domain I: create, protect and sustain value.' },
+        { q: 'Which is NOT one of the four things internal audit provides?', o: ['Assurance', 'Advice', 'Foresight', 'Sign-off of management’s decisions'], a: 3, why: 'Assurance, advice, insight and foresight. Internal audit never takes on management’s responsibilities.' },
+        { q: 'Internal auditing is most effective when the function is…', o: ['Hidden inside the finance team', 'Independently positioned with direct accountability to the board', 'Paid a bonus per finding', 'Rotated into management each year'], a: 1, why: 'Independent positioning and direct accountability to the board.' }
+      ] } },
+  { title: 'Temple of Ethics', dom: 'Domain II · Ethics & Professionalism', theme: 'temple', mini: 'gifts', power: 'lens', badge: 'Guardian of Integrity',
+    intro: 'The Temple of Ethics rests on one foundation: integrity. Watch out for Bias Blobs and Tempting Gifts! Find the <b>Skeptic’s Lens</b>. It reveals hidden platforms, just as professional skepticism reveals hidden facts.',
+    walker: { name: 'Bias Blob', color: '#8a3b52', acc: 'blob' }, flyer: { name: 'Tempting Gift', kind: 'gift' },
+    pool: ['A', 'B', 'C', 'D', 'F', 'G', 'K', 'L'],
+    lessons: [
+      { t: 'Integrity first', x: 'Integrity is the <b>foundation</b> of the other principles. Tell the truth, disclose all material facts, and show <b>professional courage</b> even under pressure.', ref: 'Principle 1 · Standard 1.1' },
+      { t: 'Know your biases', x: 'Objectivity is an unbiased mental attitude. Watch for <b>self-review</b>, <b>familiarity</b> and <b>prejudice or unconscious bias</b>.', ref: 'Standard 2.1' },
+      { t: 'The 12-month rule', x: 'If you give assurance on something you were responsible for in the <b>previous 12 months</b>, your objectivity is presumed impaired. Refuse gifts that may impair your objectivity, or look as if they do.', ref: 'Standard 2.2' },
+      { t: 'Disclose it', x: 'If your objectivity is impaired, in fact or in appearance, <b>disclose it promptly</b>. Internal auditors tell the CAE, and the CAE tells the board.', ref: 'Standard 2.3' },
+      { t: 'Competency & care', x: 'Only take on work you are <b>competent</b> to do, keep up your CPD, and exercise <b>due professional care</b>. That means being prudent, not infallible.', ref: 'Principles 3 & 4' },
+      { t: 'Skeptical & discreet', x: '<b>Professional skepticism</b> means critically assessing how reliable information is, and seeking more evidence when it doesn’t add up. Use information only for professional purposes, and <b>protect it</b>.', ref: 'Standard 4.3 · Principle 5' }
+    ],
+    boss: { name: 'The Undue Influencer', color: '#8a3b52', acc: 'tie', taunt: 'Just soften that finding a little… for me?',
+      qs: [
+        { q: 'Which principle is the foundation of the others in Domain II?', o: ['Competency', 'Integrity', 'Confidentiality', 'Due professional care'], a: 1, why: 'Integrity is the foundation of the other ethics principles.' },
+        { q: 'You ran payroll until 8 months ago. Can you lead the payroll assurance engagement?', o: ['Yes, you know it best', 'No, because objectivity is presumed impaired within 12 months', 'Yes, if the CFO agrees', 'Only on Fridays'], a: 1, why: 'Standard 2.2: presumed impaired within the previous 12 months.' },
+        { q: 'Professional skepticism means…', o: ['Distrusting everyone personally', 'Critically assessing the reliability of information', 'Refusing to talk to management', 'Accepting documents at face value'], a: 1, why: 'Standard 4.3: an inquisitive attitude that critically assesses reliability.' }
+      ] } },
+  { title: 'Boardroom Tower', dom: 'Domain III · Governing', theme: 'tower', mini: 'charter', power: 'shield', badge: 'Friend of the Board',
+    intro: 'Up the Boardroom Tower! The board authorises internal audit, positions it independently, and oversees it. Interference Imps and Scope-Snipping Drones patrol the halls. The <b>Independence Shield</b> protects you for a while.',
+    walker: { name: 'Interference Imp', color: '#6b4c8a', acc: 'horns' }, flyer: { name: 'Scope-Snipping Drone', kind: 'drone' },
+    pool: ['B', 'C', 'D', 'E', 'F', 'J', 'K'],
+    lessons: [
+      { t: 'The mandate', x: 'The board sets the internal audit <b>mandate</b>: its authority, role and responsibilities. The mandate is documented in a <b>charter</b> that the board approves.', ref: 'Standards 6.1–6.2' },
+      { t: 'Charter minimums', x: 'Every charter must include the <b>Purpose</b>, a <b>commitment to the Standards</b>, the <b>mandate</b> (scope, services and board responsibilities), and the function’s <b>organisational position and reporting lines</b>.', ref: 'Standard 6.2' },
+      { t: 'Board support', x: 'The board champions the function and secures <b>unrestricted access</b>. It meets the CAE without management <b>at least annually</b>, and quarterly is leading practice.', ref: 'Standard 6.3' },
+      { t: 'Positioned independently', x: 'The CAE reports <b>functionally to the board</b>, and administratively (ideally) to the CEO. The CAE confirms the function’s independence to the board <b>at least annually</b>.', ref: 'Standard 7.1' },
+      { t: 'Overseen by the board', x: 'The board oversees resources and quality. An <b>external quality assessment</b> happens at least <b>every five years</b>, with at least one active CIA on the assessment team.', ref: 'Standards 8.2–8.4' }
+    ],
+    boss: { name: 'The Scope Limiter', color: '#5a6b82', acc: 'scissors', taunt: 'Snip, snip! You can’t look THERE!',
+      qs: [
+        { q: 'Which is one of the four minimum contents of the charter?', o: ['The detailed annual plan', 'Organisational position and reporting relationships', 'The staff holiday rota', 'The CFO’s bonus scheme'], a: 1, why: 'Standard 6.2 minimums: Purpose, commitment to the Standards, mandate, and position & reporting lines.' },
+        { q: 'How often must the CAE confirm the function’s independence to the board?', o: ['Every five years', 'Only when asked', 'At least annually', 'Never'], a: 2, why: 'Standard 7.1: at least annually.' },
+        { q: 'An external quality assessment must take place at least every…', o: ['Year', 'Three years', 'Five years', 'Decade'], a: 2, why: 'Standard 8.4: at least once every five years.' }
+      ] } },
+  { title: 'Planning Plains', dom: 'Domain IV · Managing', theme: 'plains', mini: 'plan', power: null, badge: 'Master Planner',
+    intro: 'The Planning Plains are a patchwork of risks. The CAE understands the organisation, sets a strategy, and builds a risk-based plan. Risk Gremlins and Surprise Risks roam here, so keep your plan dynamic!',
+    walker: { name: 'Risk Gremlin', color: '#3e7a5c', acc: 'ears' }, flyer: { name: 'Surprise Risk', kind: 'wisp' },
+    pool: ['A', 'B', 'D', 'E', 'F', 'I', 'K', 'L'],
+    lessons: [
+      { t: 'See the whole', x: 'Before planning, the CAE understands how the organisation <b>governs</b> itself, how it <b>manages risk</b>, and how it <b>controls</b> its key risk areas.', ref: 'Standard 9.1' },
+      { t: 'Strategy', x: 'An internal audit strategy has a <b>vision</b>, <b>strategic objectives</b> and <b>supporting initiatives</b>, and the CAE reviews it with the board.', ref: 'Standard 9.2' },
+      { t: 'The risk-based plan', x: 'Base the plan on a risk assessment that is documented and done <b>at least annually</b>. Keep the plan <b>dynamic</b>, and get the <b>board’s approval</b> for it and for any significant changes.', ref: 'Standard 9.4' },
+      { t: 'Coordinate & rely', x: 'Coordinate with other assurance providers and consider <b>relying</b> on their work. Either way, you remain responsible for your own conclusions.', ref: 'Standard 9.5' },
+      { t: 'Right resources', x: 'The team must be <b>appropriate</b> (the right mix of skills), <b>sufficient</b> (enough people) and <b>effectively deployed</b> (the right people on the right work).', ref: 'Standard 10.2' },
+      { t: 'Communicate & escalate', x: 'Communicate in a way that is accurate, objective, clear, concise, constructive, complete and timely. If management accepts risk beyond appetite, <b>escalate</b> to senior management, then to the board.', ref: 'Standards 11.2 & 11.5' }
+    ],
+    boss: { name: 'The Risk Hydra', color: '#3e7a5c', acc: 'hydra', taunt: 'Cut one risk and two more grow back!',
+      qs: [
+        { q: 'The organisation-wide risk assessment behind the plan must be done at least…', o: ['Annually', 'Every five years', 'Once, at set-up', 'When the auditor feels like it'], a: 0, why: 'Standard 9.4: at least annually, and the plan stays dynamic.' },
+        { q: 'Management accepts a risk beyond appetite and senior management won’t resolve it. The CAE…', o: ['Fixes the risk personally', 'Escalates to the board', 'Drops the matter', 'Tells the press'], a: 1, why: 'Standard 11.5: escalate to the board. Resolving the risk is not the CAE’s job.' },
+        { q: 'Which is NOT one of the qualities of effective communication?', o: ['Accurate', 'Concise', 'Timely', 'Lengthy'], a: 3, why: 'Accurate, objective, clear, concise, constructive, complete and timely.' }
+      ] } },
+  { title: 'Engagement Expedition', dom: 'Domain V · Performing', theme: 'voyage', mini: 'gap', power: 'lens', badge: 'Engagement Navigator',
+    intro: 'Set sail on an engagement! First plan, then gather evidence, evaluate findings, and communicate the results. Scope Creepers and Misleading Memos lurk. Pick up the Skeptic’s Lens again to spot hidden evidence.',
+    walker: { name: 'Scope Creeper', color: '#5f8a3e', acc: 'leaf' }, flyer: { name: 'Misleading Memo', kind: 'memo' },
+    pool: ['B', 'C', 'E', 'F', 'G', 'I', 'J'],
+    lessons: [
+      { t: 'Plan the engagement', x: 'Understand the activity and assess its risks, <b>including fraud</b>. Then set the <b>objectives, scope and evaluation criteria</b>.', ref: 'Standards 13.2–13.4' },
+      { t: 'The evidence triad', x: 'Gather information that is <b>relevant, reliable and sufficient</b>. Sufficient means a competent peer could repeat your work and reach the same conclusion.', ref: 'Standard 14.1' },
+      { t: 'What a finding is', x: 'A finding is the <b>gap between the criteria</b> (what should be) <b>and the condition</b> (what is). If there’s no gap after enough work, you provide assurance.', ref: 'Standard 14.2' },
+      { t: 'Dig to the root', x: 'Evaluate each finding: its <b>root cause</b>, its <b>effect</b>, and its <b>significance</b> (likelihood and impact). Then prioritise it.', ref: 'Standard 14.3' },
+      { t: 'Conclude & communicate', x: 'Conclude on how effective the processes are, and <b>say so when things work</b>. Final communications name an <b>owner and a date</b> for every action.', ref: 'Standards 14.5 & 15.1' },
+      { t: 'Follow through', x: 'Confirm that action plans are <b>implemented</b>. If actions stall, management may have accepted the risk, and the CAE must decide.', ref: 'Standard 15.2' }
+    ],
+    boss: { name: 'The Root-Cause Golem', color: '#8a8378', acc: 'golem', taunt: 'Blame the clerk! Never ask WHY!',
+      qs: [
+        { q: 'A finding is…', o: ['Any mistake you spot', 'The gap between criteria and condition', 'A recommendation', 'Management’s action plan'], a: 1, why: 'Standard 14.2: the gap between criteria and condition.' },
+        { q: 'Evidence is sufficient when…', o: ['It fills a folder', 'Management agrees with it', 'A competent person could repeat the work and reach the same conclusion', 'It covers 100% of the population'], a: 2, why: 'Standard 14.1.' },
+        { q: 'Who is responsible for implementing actions to address findings?', o: ['Internal audit', 'Management', 'The external auditor', 'The regulator'], a: 1, why: 'Standard 14.4: management implements; internal audit follows up.' }
+      ] } },
+  { title: 'London Lanes', dom: 'UK Internal Audit Code of Practice', theme: 'london', mini: 'codeor', power: 'shield', badge: 'Code Champion',
+    intro: 'Night falls over the UK and Ireland. The Chartered IIA’s Code of Practice, effective from January 2025, builds on the Standards. Tick-Box Trolls and Seven-Year Shadows haunt the lanes!',
+    walker: { name: 'Tick-Box Troll', color: '#4a5a3a', acc: 'tick' }, flyer: { name: 'Seven-Year Shadow', kind: 'shadow' },
+    pool: ['B', 'D', 'E', 'F', 'I', 'J', 'L'],
+    lessons: [
+      { t: 'One Code', x: 'From January 2025, a single Code covers the <b>financial services, private and third sectors</b>. It has 37 principles and builds on the GIAS.', ref: 'Code of Practice 2024' },
+      { t: 'Unrestricted scope', x: 'Scope is <b>unrestricted</b> and names <b>twelve areas</b>, including culture, climate, financial crime, and technology such as AI.', ref: 'Code · Principles 5 & 8' },
+      { t: 'A seat at the table', x: 'The CAE sits at a senior level, normally the <b>executive committee</b>, and reports primarily to the <b>chair of the audit committee</b>.', ref: 'Code · Principles 15 & 18' },
+      { t: 'Tenure check', x: 'Once the CAE has served more than <b>seven years</b>, the audit committee explicitly discusses their independence and objectivity every year.', ref: 'Code · Principle 21' },
+      { t: 'Never just rely', x: 'Internal audit should <b>never rely exclusively</b> on the work of risk management, compliance, finance or other control functions.', ref: 'Code · Principle 13' },
+      { t: 'Transparent reporting', x: 'The CAE reports <b>annually on how the Code was applied</b>. The audit committee’s annual report concludes on internal audit’s impact and effectiveness.', ref: 'Code · Principles 3 & 4' }
+    ],
+    boss: { name: 'The Tick-Box Troll', color: '#4a5a3a', acc: 'tick', taunt: 'Design looks fine. Tick! Who cares about outcomes?',
+      qs: [
+        { q: 'Under the Code, the CAE’s primary reporting line is to…', o: ['The CFO', 'The chair of the audit committee', 'The external auditor', 'The head of HR'], a: 1, why: 'Code Principle 18.' },
+        { q: 'How many scope areas does Code Principle 8 name?', o: ['Six', 'Nine', 'Twelve', 'Fifty-two'], a: 2, why: 'Twelve, from purpose and strategy to outcomes of processes.' },
+        { q: 'After how many years’ tenure must the audit committee discuss the CAE’s independence every year?', o: ['Two', 'Five', 'Seven', 'Twelve'], a: 2, why: 'Code Principle 21: when tenure exceeds seven years.' }
+      ] } },
+  { title: 'Summit of Assurance', dom: 'The Finale', theme: 'summit', mini: 'memory', power: 'lens', badge: 'Assurance Laureate',
+    intro: 'The final climb! Up here the five great truths of the Standards glitter in the sun. Gather them all, then face the Grand Assessor to earn your certificate.',
+    walker: { name: 'Doubt Goblin', color: '#a4552f', acc: 'ears' }, flyer: { name: 'Stray Assumption', kind: 'wisp' },
+    pool: ['C', 'E', 'F', 'I', 'J', 'K', 'L'],
+    lessons: [
+      { t: 'Value', x: 'Internal audit exists to <b>create, protect and sustain value</b>, in the public interest.', ref: 'Summary · 1' },
+      { t: 'Trust', x: '<b>Integrity and objectivity</b> come first. They are what make the work trusted.', ref: 'Summary · 2' },
+      { t: 'Governance', x: 'The board <b>authorises, positions and oversees</b> the function. Independence cannot be self-declared.', ref: 'Summary · 3' },
+      { t: 'Plan on risk', x: 'Plan on risk, keep the plan <b>dynamic</b>, and communicate with <b>clarity and courage</b>.', ref: 'Summary · 4' },
+      { t: 'Evidence & action', x: 'Every conclusion rests on <b>evidence</b>, and every action needs an <b>owner and a date</b>.', ref: 'Summary · 5' }
+    ],
+    boss: { name: 'The Grand Assessor', color: '#b0862c', acc: 'assessor', taunt: 'Prove you conform, young auditor!',
+      qs: [
+        { q: 'Internal auditing gives the board and management assurance, advice, insight and…', o: ['Foresight', 'Fireworks', 'Forgiveness', 'Forecast accuracy'], a: 0, why: 'Assurance, advice, insight and foresight.' },
+        { q: 'Objectivity is presumed impaired if you assure an activity you ran within the last…', o: ['Week', '12 months', '5 years', 'Decade'], a: 1, why: 'Standard 2.2.' },
+        { q: 'Who approves the internal audit charter?', o: ['The external auditor', 'The board', 'The newest auditor', 'The regulator'], a: 1, why: 'Standards 6.1–6.2.' },
+        { q: 'A finding is the gap between…', o: ['Budget and actual', 'Criteria and condition', 'Opinion and rumour', 'Plan and holiday'], a: 1, why: 'Standard 14.2.' },
+        { q: 'Every action in the final communication needs…', o: ['A slogan', 'An owner and a date', 'A font change', 'A second opinion'], a: 1, why: 'Standard 15.1.' }
+      ] } }
+];
+
+/* ============================== LEVEL CHUNKS (rows 5–14, 16 wide) ============================== */
+const CH = {
+  A: ['................', '................', '................', '................', '................', '....oooo........', '................', '...........w....', '################', '################'],
+  B: ['................', '................', '................', '.......ooo......', '......-----.....', '................', '................', '................', '######...#######', '######...#######'],
+  C: ['................', '................', '..........ooo...', '.........#####..', '................', '....o.....f.....', '...###..........', '................', '################', '################'],
+  D: ['.....oooooo.....', '................', '................', '....-------.....', '................', '................', '................', '..s.........w...', '################', '################'],
+  E: ['................', '................', '................', '......oooo......', '................', '................', '....m...........', '................', '####.......#####', '####.......#####'],
+  F: ['................', '................', '................', '................', '......oooo......', '.....------.....', '................', '......^^^^......', '################', '################'],
+  G: ['................', '................', '.......o........', '.....o...o......', '....o.....o.....', '..........f.....', '................', '................', '################', '################'],
+  H: ['....oooooooo....', '................', '...hhhhhhhhhh...', '................', '................', '..hhh...........', '................', '......w.........', '################', '################'],
+  I: ['................', '................', '................', '................', '...ooo....ooo...', '................', '................', '................', '##...####...####', '##...####...####'],
+  J: ['................', '................', '..........oo....', '.........####...', '................', '.......------...', '................', '...w............', '################', '################'],
+  K: ['................', '................', '................', '................', '..........o.....', '......o..###....', '..o..###.####...', '.###.###.####...', '################', '################'],
+  L: ['................', '................', '................', '....oo....oo....', '................', '...f......f.....', '................', '................', '################', '################'],
+  S: ['................', '................', '................', '................', '................', '................', '........oooo....', '................', '################', '################'],
+  CK: ['................', '................', '................', '................', '.....o....o.....', '................', '................', '........C.......', '################', '################'],
+  DR: ['................', '................', '................', '................', '...o.o....o.o...', '................', '................', '........D.......', '################', '################'],
+  PW: ['................', '................', '................', '................', '................', '........P.......', '................', '................', '################', '################'],
+  X: ['....................', '....................', '....................', '....................', '....................', '..oooo..............', '....................', '............B.......', '####################', '####################']
+};
+
+function buildLevel(L, idx) {
+  const R = rng(9001 + idx * 131);
+  const plan = ['S', 'r', 'r', 'CK', 'r', 'r', 'CK'];
+  if (L.power) plan.push('PW');
+  if (L.power === 'lens') plan.push('H');
+  plan.push('r', 'DR', 'CK', 'r', 'r', 'CK', 'r', 'r', 'CK', 'X');
+  const chunks = []; let last = '';
+  plan.forEach((p) => {
+    if (p === 'r') { let k; do { k = L.pool[Math.floor(R() * L.pool.length)]; } while (k === last && L.pool.length > 1); last = k; chunks.push({ k, reg: true }); }
+    else chunks.push({ k: p, reg: false });
+  });
+  const cols = chunks.reduce((a, c) => a + CH[c.k][0].length, 0) + 2;
+  const grid = Array.from({ length: ROWS }, () => Array(cols).fill('.'));
+  let ox = 0;
+  chunks.forEach((c) => { c.ox = ox; CH[c.k].forEach((line, li) => { for (let x = 0; x < line.length; x++) grid[5 + li][ox + x] = line[x]; }); ox += CH[c.k][0].length; });
+  for (let r = 0; r < ROWS; r++) { grid[r][cols - 1] = '#'; grid[r][cols - 2] = '#'; }
+  // lesson jewels spread over regular chunks
+  const regs = chunks.filter((c) => c.reg), n = L.lessons.length;
+  for (let k = 0; k < n; k++) {
+    const c = regs[Math.min(regs.length - 1, Math.floor((k + .5) * regs.length / n))];
+    let placed = false;
+    for (const dx of [7, 8, 6, 9, 5, 10, 4, 11, 3, 12]) {
+      const x = c.ox + dx;
+      if (grid[13][x] === '#' && [8, 9, 10, 11, 12].every((r) => grid[r][x] === '.')) { grid[10][x] = 'J' + k; placed = true; break; }
+    }
+    if (!placed) grid[7][c.ox + 8] = 'J' + k;
+  }
+  const ents = []; let jewels = 0;
+  for (let r = 0; r < ROWS; r++) for (let x = 0; x < cols; x++) {
+    const ch = grid[r][x]; if ('#-h.'.includes(ch)) continue;
+    const X0 = x * TS, Y0 = r * TS, BOT = (r + 1) * TS;
+    if (ch === 'o') ents.push({ type: 'coin', x: X0 + 24, y: Y0 + 24, r: 12 });
+    else if (ch === 'w') ents.push({ type: 'walker', x: X0 + 6, y: BOT - 38, w: 38, h: 38, vx: -55, alive: true, t: R() * 9, info: L.walker });
+    else if (ch === 'f') ents.push({ type: 'flyer', x0: X0 + 24, y0: Y0 + 24, x: X0 + 6, y: Y0 + 6, w: 38, h: 34, alive: true, t: R() * 9, info: L.flyer });
+    else if (ch === 's') ents.push({ type: 'spring', x: X0 + 6, y: BOT - 20, w: 36, h: 20, k: 0 });
+    else if (ch === 'm') ents.push({ type: 'mover', x0: X0, x: X0, y: Y0 + 10, w: 110, h: 18, t: 0, dx: 0, amp: 2.4 * TS });
+    else if (ch === '^') ents.push({ type: 'spike', x: X0 + 2, y: BOT - 20, w: TS - 4, h: 20 });
+    else if (ch === 'C') ents.push({ type: 'check', x: X0 + 12, y: BOT - 84, w: 26, h: 84, on: false });
+    else if (ch === 'D') ents.push({ type: 'door', x: X0 - 10, y: BOT - 104, w: 68, h: 104, done: false });
+    else if (ch === 'P') ents.push({ type: 'power', x: X0 + 24, y: Y0 + 24, r: 18, kind: L.power });
+    else if (ch === 'B') ents.push({ type: 'gate', x: X0 - 30, y: BOT - 200, w: 108, h: 200, done: false });
+    else if (ch[0] === 'J') { ents.push({ type: 'jewel', x: X0 + 24, y: Y0 + 24, r: 20, lesson: +ch.slice(1) }); jewels++; }
+    grid[r][x] = '.';
+  }
+  return { grid, cols, ents, jewels, spawn: { x: 2 * TS + 11, y: 13 * TS - 46 } };
+}
+
+/* ============================== THEMES & BACKGROUNDS ============================== */
+const THEMES = {
+  quay:   { sky: ['#f7d6b2', '#b9d7ea'], sun: '#fff1c9', far: '#93b2c6', mid: '#5f7d92', ground: '#8c7659', top: '#e9d8b4', edge: '#6e5a41', plat: '#b08a57', accent: '#d8b25a', gem: '#d8b25a' },
+  temple: { sky: ['#fbefd4', '#e3cfa9'], sun: '#fff8e2', far: '#dcc9a6', mid: '#b9a17b', ground: '#c9b699', top: '#f7f1e4', edge: '#a8946f', plat: '#ece2cf', accent: '#8a3b52', gem: '#c9708a' },
+  tower:  { sky: ['#d3dfeb', '#8ea6bf'], sun: '#f5f8fb', far: '#8195ab', mid: '#566a82', ground: '#4a5566', top: '#a3b0bf', edge: '#343d4a', plat: '#788699', accent: '#2f5d8a', gem: '#6f9fd0' },
+  plains: { sky: ['#eaf2dc', '#a8d0d6'], sun: '#fffbe0', far: '#9fbe90', mid: '#6f9a6a', ground: '#6e5738', top: '#84b86f', edge: '#4f3e27', plat: '#9a7a4d', accent: '#3e7a5c', gem: '#74b893' },
+  voyage: { sky: ['#d8f1ef', '#86c1cc'], sun: '#fffbea', far: '#72a8aa', mid: '#3f7f86', ground: '#9d7c52', top: '#e6d2a2', edge: '#6f5535', plat: '#8b6b45', accent: '#a4552f', gem: '#d98a5f' },
+  london: { sky: ['#141c36', '#3b3f69'], sun: '#f2ecd0', far: '#2c3456', mid: '#1d2440', ground: '#3b3b46', top: '#74747f', edge: '#26262e', plat: '#5a5a6d', accent: '#d8b25a', gem: '#f0cf7e', night: true },
+  summit: { sky: ['#fbe4ab', '#f1bd80'], sun: '#fff7da', far: '#d7a860', mid: '#b68341', ground: '#8b6b45', top: '#f5e2a8', edge: '#6a5033', plat: '#c49a3c', accent: '#b0862c', gem: '#f3dc98' }
+};
+const bgCache = {};
+function mkLayer(fn, seed) { const c = document.createElement('canvas'); c.width = 2048; c.height = H; const x = c.getContext('2d'); fn(x, rng(seed)); return c; }
+function hills(x, R, base, amp, color, freq = 1) {
+  x.fillStyle = color; x.beginPath(); x.moveTo(0, H);
+  const p1 = R() * 6, p2 = R() * 6;
+  for (let i = 0; i <= 2048; i += 16) { const k = i / 2048 * Math.PI * 2; x.lineTo(i, base - (Math.sin(k * 2 * freq + p1) * .6 + Math.sin(k * 5 * freq + p2) * .4) * amp); }
+  x.lineTo(2048, H); x.closePath(); x.fill();
+}
+function sea(x, y, c1, c2) {
+  const gr = x.createLinearGradient(0, y, 0, H); gr.addColorStop(0, c1); gr.addColorStop(1, c2); x.fillStyle = gr; x.fillRect(0, y, 2048, H - y);
+  x.strokeStyle = 'rgba(255,255,255,.35)'; x.lineWidth = 2;
+  for (let r = 0; r < 12; r++) for (let i = 0; i < 18; i++) { const xx = (i * 117 + r * 53) % 2048, yy = y + 10 + r * 16; x.beginPath(); x.moveTo(xx, yy); x.quadraticCurveTo(xx + 12, yy - 4, xx + 24, yy); x.stroke(); }
+}
+function windowsGrid(x, bx, by, bw, bh, lit, R, col) {
+  for (let yy = by + 12; yy < by + bh - 10; yy += 18) for (let xx = bx + 8; xx < bx + bw - 10; xx += 14) {
+    x.fillStyle = R() < lit ? col : 'rgba(0,0,0,.18)'; x.fillRect(xx, yy, 7, 9);
+  }
+}
+const PAINT = {
+  quay: {
+    far(x, R) { hills(x, R, 420, 60, THEMES.quay.far); sea(x, 440, '#8fc0d8', '#5d93b3');
+      // lighthouse on headland
+      [300, 1300].forEach((lx) => { x.fillStyle = '#7d9bb0'; x.beginPath(); x.ellipse(lx, 450, 170, 40, 0, Math.PI, 0); x.fill();
+        x.fillStyle = '#f7f3ea'; x.beginPath(); x.moveTo(lx - 22, 430); x.lineTo(lx + 22, 430); x.lineTo(lx + 13, 270); x.lineTo(lx - 13, 270); x.fill();
+        x.fillStyle = '#a33a2f'; [300, 350, 400].forEach((yy) => x.fillRect(lx - 20 + (430 - yy) * .05, yy, 40 - (430 - yy) * .1, 14));
+        x.fillStyle = '#3a3a44'; x.fillRect(lx - 16, 250, 32, 22); x.fillStyle = '#fff1a8'; x.fillRect(lx - 11, 254, 22, 14); x.fillStyle = '#3a3a44'; x.beginPath(); x.moveTo(lx - 18, 250); x.lineTo(lx, 232); x.lineTo(lx + 18, 250); x.fill(); });
+    },
+    mid(x, R) { for (let i = 0; i < 9; i++) { const bx = i * 230 + R() * 80; x.fillStyle = '#6e5a41'; x.fillRect(bx, 560, 12, 70); x.fillRect(bx + 60, 570, 12, 60); x.fillStyle = '#8c7659'; x.fillRect(bx - 10, 556, 90, 10); }
+      for (let i = 0; i < 4; i++) { const bx = 200 + i * 520; x.fillStyle = '#b8563a'; x.beginPath(); x.moveTo(bx, 540); x.lineTo(bx + 120, 540); x.lineTo(bx + 100, 572); x.lineTo(bx + 18, 572); x.fill(); x.fillStyle = '#f5efe2'; x.beginPath(); x.moveTo(bx + 60, 470); x.lineTo(bx + 60, 536); x.lineTo(bx + 110, 536); x.fill(); x.fillStyle = '#6e5a41'; x.fillRect(bx + 57, 462, 4, 76); }
+    }
+  },
+  temple: {
+    far(x, R) { hills(x, R, 470, 50, '#e6d5b4');
+      for (let i = 0; i < 4; i++) { const bx = 80 + i * 520 + R() * 60, w = 300, by = 470; x.fillStyle = THEMES.temple.far;
+        x.fillRect(bx, by - 20, w, 20); for (let c = 0; c < 6; c++) x.fillRect(bx + 16 + c * 52, by - 170, 24, 150);
+        x.fillRect(bx - 10, by - 190, w + 20, 22); x.beginPath(); x.moveTo(bx - 14, by - 190); x.lineTo(bx + w / 2, by - 250); x.lineTo(bx + w + 14, by - 190); x.fill(); }
+    },
+    mid(x, R) { for (let i = 0; i < 14; i++) { const bx = i * 150 + R() * 60, h = 90 + R() * 70; x.fillStyle = '#6f8a55'; x.beginPath(); x.ellipse(bx, 624 - h / 2, 14, h / 2, 0, 0, Math.PI * 2); x.fill(); x.fillStyle = '#5b4a33'; x.fillRect(bx - 3, 610, 6, 16); }
+      for (let i = 0; i < 3; i++) { const bx = 400 + i * 700; x.fillStyle = '#e9e0cf'; x.fillRect(bx - 18, 580, 36, 44); x.beginPath(); x.arc(bx, 552, 16, 0, Math.PI * 2); x.fill(); x.fillRect(bx - 12, 566, 24, 18); }
+    }
+  },
+  tower: {
+    far(x, R) { for (let i = 0; i < 26; i++) { const bw = 60 + R() * 70, bh = 160 + R() * 260, bx = i * 80 + R() * 30; x.fillStyle = THEMES.tower.far; x.fillRect(bx, 560 - bh, bw, bh + 80); windowsGrid(x, bx, 560 - bh, bw, bh, .15, R, 'rgba(255,255,255,.45)'); } },
+    mid(x, R) { for (let i = 0; i < 8; i++) { const bw = 140 + R() * 80, bh = 220 + R() * 160, bx = i * 260 + R() * 40; x.fillStyle = THEMES.tower.mid; x.fillRect(bx, 624 - bh, bw, bh); windowsGrid(x, bx, 624 - bh, bw, bh, .3, R, '#f3e3a8');
+        if (i === 3) { x.fillStyle = '#2f5d8a'; x.fillRect(bx + 10, 624 - bh - 30, bw - 20, 30); x.fillStyle = '#f5efe2'; x.font = '700 18px Inter'; x.textAlign = 'center'; x.fillText('BOARD', bx + bw / 2, 624 - bh - 9); } } }
+  },
+  plains: {
+    far(x, R) { hills(x, R, 430, 70, THEMES.plains.far); hills(x, R, 480, 50, '#8db27e', 1.5); },
+    mid(x, R) { hills(x, R, 560, 40, THEMES.plains.mid, 2);
+      const cols = ['#c9d98a', '#e6c36a', '#e0985f', '#c86a4f', '#9cc08a'];
+      for (let i = 0; i < 40; i++) { const bx = i * 52 + R() * 10, by = 560 + R() * 30; x.fillStyle = cols[Math.floor(R() * cols.length)]; x.globalAlpha = .75; x.beginPath(); x.moveTo(bx, by); x.lineTo(bx + 46, by - 6); x.lineTo(bx + 50, by + 18); x.lineTo(bx + 4, by + 24); x.fill(); x.globalAlpha = 1; }
+      for (let i = 0; i < 4; i++) { const bx = 220 + i * 520; x.fillStyle = '#f5efe2'; x.beginPath(); x.moveTo(bx - 14, 590); x.lineTo(bx + 14, 590); x.lineTo(bx + 8, 470); x.lineTo(bx - 8, 470); x.fill(); x.strokeStyle = '#6e5738'; x.lineWidth = 5; for (let b = 0; b < 4; b++) { const a = b * Math.PI / 2 + i; x.beginPath(); x.moveTo(bx, 470); x.lineTo(bx + Math.cos(a) * 60, 470 + Math.sin(a) * 60); x.stroke(); } }
+    }
+  },
+  voyage: {
+    far(x, R) { sea(x, 420, '#7cc0c8', '#3f8f99'); for (let i = 0; i < 5; i++) { const bx = i * 430 + R() * 100; x.fillStyle = '#5d9a8e'; x.beginPath(); x.ellipse(bx, 426, 110 + R() * 60, 40 + R() * 30, 0, Math.PI, 0); x.fill(); x.fillStyle = '#3e7a5c'; x.fillRect(bx - 4, 360, 6, 40); x.beginPath(); x.ellipse(bx, 356, 26, 10, 0, 0, Math.PI * 2); x.fill(); } },
+    mid(x, R) { for (let i = 0; i < 4; i++) { const bx = 150 + i * 520 + R() * 80, by = 540; x.fillStyle = '#6f4a2e'; x.beginPath(); x.moveTo(bx, by); x.lineTo(bx + 170, by); x.lineTo(bx + 140, by + 34); x.lineTo(bx + 24, by + 34); x.fill(); x.fillStyle = '#4a3322'; x.fillRect(bx + 82, by - 150, 6, 150);
+        x.fillStyle = '#f7f1e2'; x.beginPath(); x.moveTo(bx + 88, by - 145); x.quadraticCurveTo(bx + 150, by - 90, bx + 90, by - 20); x.fill(); x.beginPath(); x.moveTo(bx + 82, by - 130); x.quadraticCurveTo(bx + 30, by - 80, bx + 80, by - 30); x.fill(); x.fillStyle = '#a4552f'; x.fillRect(bx + 86, by - 164, 22, 12); } }
+  },
+  london: {
+    far(x, R) { for (let i = 0; i < 30; i++) { const bw = 50 + R() * 60, bh = 110 + R() * 180, bx = i * 70 + R() * 20; x.fillStyle = THEMES.london.far; x.fillRect(bx, 540 - bh, bw, bh + 100); windowsGrid(x, bx, 540 - bh, bw, bh, .22, R, 'rgba(255,220,140,.7)'); }
+      // clock tower & wheel
+      const cx = 700; x.fillStyle = '#39406a'; x.fillRect(cx - 26, 170, 52, 380); x.beginPath(); x.moveTo(cx - 30, 170); x.lineTo(cx, 90); x.lineTo(cx + 30, 170); x.fill();
+      x.fillStyle = '#f2e3a6'; x.beginPath(); x.arc(cx, 215, 18, 0, Math.PI * 2); x.fill(); x.strokeStyle = '#39406a'; x.lineWidth = 3; x.beginPath(); x.moveTo(cx, 215); x.lineTo(cx, 202); x.moveTo(cx, 215); x.lineTo(cx + 9, 219); x.stroke();
+      const wx = 1500, wy = 380; x.strokeStyle = '#5b6394'; x.lineWidth = 5; x.beginPath(); x.arc(wx, wy, 130, 0, Math.PI * 2); x.stroke(); x.lineWidth = 2; for (let s = 0; s < 16; s++) { const a = s / 16 * Math.PI * 2; x.beginPath(); x.moveTo(wx, wy); x.lineTo(wx + Math.cos(a) * 130, wy + Math.sin(a) * 130); x.stroke(); x.fillStyle = '#f0cf7e'; x.fillRect(wx + Math.cos(a) * 130 - 5, wy + Math.sin(a) * 130 - 4, 10, 8); }
+    },
+    mid(x, R) { for (let i = 0; i < 16; i++) { const bx = i * 130, bh = 150 + R() * 60; x.fillStyle = THEMES.london.mid; x.fillRect(bx, 624 - bh, 124, bh); x.beginPath(); x.moveTo(bx - 4, 624 - bh); x.lineTo(bx + 62, 624 - bh - 40); x.lineTo(bx + 128, 624 - bh); x.fill(); windowsGrid(x, bx, 624 - bh, 124, bh, .45, R, '#ffd986'); }
+      for (let i = 0; i < 10; i++) { const bx = 60 + i * 210; x.fillStyle = '#16192b'; x.fillRect(bx, 520, 5, 104); x.fillStyle = '#ffe7a3'; x.beginPath(); x.arc(bx + 2, 516, 8, 0, Math.PI * 2); x.fill(); const gr = x.createRadialGradient(bx, 520, 2, bx, 520, 70); gr.addColorStop(0, 'rgba(255,220,140,.35)'); gr.addColorStop(1, 'rgba(255,220,140,0)'); x.fillStyle = gr; x.fillRect(bx - 70, 450, 140, 140); } }
+  },
+  summit: {
+    far(x, R) { for (let i = 0; i < 9; i++) { const bx = i * 240 + R() * 60, h = 260 + R() * 180, w = 200 + R() * 120; x.fillStyle = THEMES.summit.far; x.beginPath(); x.moveTo(bx - w, 560); x.lineTo(bx, 560 - h); x.lineTo(bx + w, 560); x.fill(); x.fillStyle = '#fff4d6'; x.beginPath(); x.moveTo(bx - w * .22, 560 - h * .78); x.lineTo(bx, 560 - h); x.lineTo(bx + w * .22, 560 - h * .78); x.lineTo(bx + w * .08, 560 - h * .72); x.lineTo(bx - w * .06, 560 - h * .8); x.fill(); } },
+    mid(x, R) { hills(x, R, 580, 30, THEMES.summit.mid, 2); for (let i = 0; i < 30; i++) { const bx = i * 70 + R() * 30, h = 50 + R() * 50; x.fillStyle = '#5f6e3f'; x.beginPath(); x.moveTo(bx - 16, 600); x.lineTo(bx, 600 - h); x.lineTo(bx + 16, 600); x.fill(); }
+      for (let i = 0; i < 5; i++) { const bx = 180 + i * 420; x.fillStyle = '#6a5033'; x.fillRect(bx, 480, 4, 110); x.fillStyle = ['#8a3b52', '#2f5d8a', '#3e7a5c', '#a4552f', '#b0862c'][i]; x.beginPath(); x.moveTo(bx + 4, 482); x.lineTo(bx + 50, 494); x.lineTo(bx + 4, 506); x.fill(); } }
+  }
+};
+function getBG(theme) {
+  if (!bgCache[theme]) { const p = PAINT[theme], s = theme.length * 997; bgCache[theme] = { far: mkLayer(p.far, s), mid: mkLayer(p.mid, s + 1) }; }
+  return bgCache[theme];
+}
+function drawBackground(theme, cam, t) {
+  const T = THEMES[theme], L = getBG(theme);
+  const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, T.sky[0]); gr.addColorStop(1, T.sky[1]); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  if (T.night) { g.fillStyle = '#fff'; const r = rng(7); for (let i = 0; i < 120; i++) { const sx = (r() * 2600 - cam * .03) % 1300, sy = r() * 380; g.globalAlpha = .3 + .7 * Math.abs(Math.sin(t * 1.5 + i)); g.fillRect((sx + 1300) % 1300, sy, 2, 2); } g.globalAlpha = 1; }
+  // sun / moon with glow
+  const sx = 980, sy = T.night ? 110 : 150;
+  const sg = g.createRadialGradient(sx, sy, 10, sx, sy, 180); sg.addColorStop(0, T.sun); sg.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = sg; g.fillRect(sx - 180, sy - 180, 360, 360);
+  g.fillStyle = T.sun; g.beginPath(); g.arc(sx, sy, T.night ? 36 : 52, 0, Math.PI * 2); g.fill();
+  if (theme === 'summit') { g.save(); g.translate(sx, sy); g.rotate(t * .05); g.fillStyle = 'rgba(255,248,220,.25)'; for (let i = 0; i < 12; i++) { g.rotate(Math.PI / 6); g.beginPath(); g.moveTo(0, 0); g.lineTo(700, -40); g.lineTo(700, 40); g.fill(); } g.restore(); }
+  // clouds
+  if (!T.night) { g.fillStyle = 'rgba(255,255,255,.75)'; for (let i = 0; i < 6; i++) { const cx = ((i * 380 - cam * .08 - t * 12) % 1700 + 1700) % 1700 - 200, cy = 70 + (i * 53) % 150; [[0, 0, 70, 20], [40, -12, 44, 22], [-40, -6, 40, 16]].forEach(([dx, dy, rx, ry]) => { g.beginPath(); g.ellipse(cx + dx, cy + dy, rx, ry, 0, 0, Math.PI * 2); g.fill(); }); } }
+  const tile = (img, par, dy = 0) => { const off = ((-cam * par) % 2048 + 2048) % 2048; g.drawImage(img, off - 2048, dy); g.drawImage(img, off, dy); if (off + 2048 < W) g.drawImage(img, off + 2048, dy); };
+  tile(L.far, .2); tile(L.mid, .5);
+  if (theme === 'quay' || theme === 'voyage') { // shimmering sea overlay
+    g.strokeStyle = 'rgba(255,255,255,.25)'; g.lineWidth = 2; for (let i = 0; i < 10; i++) { const yy = 460 + i * 14, xx = ((i * 211 - cam * .3 + t * 30) % 1400 + 1400) % 1400 - 60; g.beginPath(); g.moveTo(xx, yy); g.lineTo(xx + 40, yy); g.stroke(); }
+  }
+}
+
+/* ============================== DRAWING: HERO ============================== */
+const SKINS = ['#f3d2b3', '#e2ad86', '#b97c55', '#7a4b30'];
+const HAIRS = ['#2a1d15', '#5a3a22', '#a0522d', '#d9b36a'];
+const OUTFITS = ['#2f5d8a', '#8a3b52', '#3e7a5c', '#3a3a44'];
+function rr(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function shade(hex, k) { const n = parseInt(hex.slice(1), 16); let r = n >> 16, gg = n >> 8 & 255, b = n & 255; r = clamp(Math.round(r * k), 0, 255); gg = clamp(Math.round(gg * k), 0, 255); b = clamp(Math.round(b * k), 0, 255); return '#' + ((1 << 24) + (r << 16) + (gg << 8) + b).toString(16).slice(1); }
+function drawHero(x, y, o, ctx) {
+  const prev = g; if (ctx) g = ctx; // allow drawing into preview canvases
+  const hero = o.hero, skin = SKINS[hero.skin], hair = HAIRS[hero.hair], suit = OUTFITS[hero.outfit], dark = shade(suit, .72), female = hero.gender === 'f';
+  const run = o.pose === 'run', air = o.pose === 'jump', t = o.t || 0;
+  const sw = run ? Math.sin(t * 15) * .75 : air ? .55 : Math.sin(t * 2) * .05;
+  const bob = run ? Math.abs(Math.sin(t * 15)) * 2.5 : air ? 0 : Math.sin(t * 2) * .8;
+  g.save(); g.translate(x, y - bob); g.scale((o.facing || 1) * (o.scale || 1), o.scale || 1);
+  const limb = (px, py, len, w, ang, col, end) => { g.save(); g.translate(px, py); g.rotate(ang); g.fillStyle = col; rr(-w / 2, 0, w, len, w / 2); g.fill(); if (end) end(len); g.restore(); };
+  // long hair behind (female)
+  if (female) { g.fillStyle = hair; g.beginPath(); g.ellipse(-2, -50, 11, 13, 0, 0, Math.PI * 2); g.fill(); g.save(); g.translate(-9, -54); g.rotate(-.3 - sw * .25); rr(-5, 0, 10, 22, 5); g.fill(); g.restore(); }
+  // back leg
+  const legCol = female ? shade(skin, .82) : dark;
+  limb(-3, -23, 21, 8, -sw, legCol, (l) => { g.fillStyle = '#1f1b16'; g.beginPath(); g.ellipse(3, l, 6.5, 3.2, 0, 0, Math.PI * 2); g.fill(); });
+  // back arm + briefcase
+  limb(-4, -41, 16, 7, sw * .85, dark, (l) => { g.fillStyle = skin; g.beginPath(); g.arc(0, l, 3.2, 0, Math.PI * 2); g.fill(); g.fillStyle = '#6b4424'; rr(-8, l + 1, 16, 11, 2); g.fill(); g.fillStyle = '#d8b25a'; g.fillRect(-2, l + 4, 4, 3); });
+  // front leg
+  limb(3, -23, 21, 8, sw, legCol, (l) => { g.fillStyle = '#1f1b16'; g.beginPath(); g.ellipse(3, l, 6.5, 3.2, 0, 0, Math.PI * 2); g.fill(); });
+  // lower body
+  if (female) { g.fillStyle = dark; g.beginPath(); g.moveTo(-9, -26); g.lineTo(9, -26); g.lineTo(11, -12); g.lineTo(-11, -12); g.closePath(); g.fill(); }
+  else { g.fillStyle = dark; rr(-8, -27, 16, 6, 2); g.fill(); }
+  // torso
+  g.fillStyle = suit; rr(-9, -46, 18, 22, 6); g.fill();
+  g.fillStyle = '#fbf7ee'; g.beginPath(); g.moveTo(-4, -46); g.lineTo(4, -46); g.lineTo(0, -37); g.closePath(); g.fill();
+  if (!female) { g.fillStyle = '#a33a2f'; g.beginPath(); g.moveTo(-1.5, -44); g.lineTo(1.5, -44); g.lineTo(2.5, -35); g.lineTo(0, -32); g.lineTo(-2.5, -35); g.closePath(); g.fill(); }
+  // lanyard badge
+  g.strokeStyle = '#d8b25a'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(-4, -46); g.lineTo(3, -34); g.stroke(); g.fillStyle = '#fbf7ee'; g.fillRect(1, -35, 6, 7); g.fillStyle = '#b0862c'; g.fillRect(2, -34, 4, 1.5);
+  // front arm
+  limb(4, -41, 16, 7, -sw * .85, suit, (l) => { g.fillStyle = skin; g.beginPath(); g.arc(0, l, 3.2, 0, Math.PI * 2); g.fill(); });
+  // head
+  g.fillStyle = skin; g.fillRect(-2.5, -50, 5, 5);
+  g.beginPath(); g.arc(1, -57, 9.5, 0, Math.PI * 2); g.fill();
+  g.fillStyle = hair;
+  if (female) { g.beginPath(); g.arc(1, -59, 10, Math.PI * .95, Math.PI * 2.05); g.fill(); g.beginPath(); g.ellipse(-6, -58, 5, 8, .3, 0, Math.PI * 2); g.fill(); }
+  else { g.beginPath(); g.arc(0, -59, 10, Math.PI * .9, Math.PI * 2.1); g.fill(); g.fillRect(-9, -60, 5, 7); }
+  g.fillStyle = '#1f1b16'; g.beginPath(); g.arc(6, -57.5, 1.5, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = '#7a3b2f'; g.lineWidth = 1.2; g.beginPath(); g.arc(5, -54, 2.8, .2, Math.PI * .8); g.stroke();
+  g.fillStyle = 'rgba(220,110,110,.35)'; g.beginPath(); g.arc(3, -53.5, 2, 0, Math.PI * 2); g.fill();
+  g.restore();
+  g = prev;
+}
+
+/* ============================== DRAWING: CREATURES & OBJECTS ============================== */
+function drawWalker(e, t, px) {
+  const { x, y, w, h } = e, c = e.info.color, sq = e.dead ? Math.max(.15, 1 - e.deadT * 4) : 1;
+  g.save(); g.translate(x + w / 2, y + h); g.scale(e.vx > 0 ? -1 : 1, sq);
+  const step = Math.sin(t * 10 + e.t) * 3;
+  g.fillStyle = shade(c, .6); g.beginPath(); g.ellipse(-8, -2 + (step > 0 ? -2 : 0), 7, 4, 0, 0, Math.PI * 2); g.ellipse(8, -2 + (step < 0 ? -2 : 0), 7, 4, 0, 0, Math.PI * 2); g.fill();
+  g.fillStyle = c; g.beginPath(); g.moveTo(-w / 2, -4); g.bezierCurveTo(-w / 2, -h - 6, w / 2, -h - 6, w / 2, -4); g.closePath(); g.fill();
+  g.fillStyle = shade(c, 1.35); g.beginPath(); g.ellipse(0, -12, 10, 8, 0, 0, Math.PI * 2); g.fill();
+  const acc = e.info.acc;
+  if (acc === 'stamp') { g.fillStyle = '#6b4424'; g.fillRect(-4, -h - 14, 8, 12); g.beginPath(); g.arc(0, -h - 16, 7, 0, Math.PI * 2); g.fill(); g.fillStyle = '#a33a2f'; g.font = '700 7px Inter'; g.textAlign = 'center'; g.fillText('OK', 0, -10); }
+  if (acc === 'horns') { g.fillStyle = '#3a2440'; g.beginPath(); g.moveTo(-10, -h + 2); g.lineTo(-14, -h - 10); g.lineTo(-4, -h + 4); g.moveTo(10, -h + 2); g.lineTo(14, -h - 10); g.lineTo(4, -h + 4); g.fill(); }
+  if (acc === 'ears') { g.fillStyle = shade(c, .8); g.beginPath(); g.moveTo(-16, -h + 8); g.lineTo(-24, -h - 4); g.lineTo(-10, -h + 2); g.moveTo(16, -h + 8); g.lineTo(24, -h - 4); g.lineTo(10, -h + 2); g.fill(); }
+  if (acc === 'leaf') { g.fillStyle = '#7fb56b'; for (let i = -1; i <= 1; i++) { g.beginPath(); g.ellipse(i * 9, -h - 2, 5, 10, i * .6, 0, Math.PI * 2); g.fill(); } }
+  if (acc === 'tick') { g.strokeStyle = '#f5efe2'; g.lineWidth = 3; g.strokeRect(-7, -18, 14, 12); g.strokeStyle = '#3e7a5c'; g.beginPath(); g.moveTo(-5, -12); g.lineTo(-1, -8); g.lineTo(8, -22); g.stroke(); }
+  if (acc === 'blob') { g.fillStyle = 'rgba(255,255,255,.8)'; g.font = '700 12px Inter'; g.textAlign = 'center'; g.fillText('?', 0, -h - 6); }
+  // eyes looking at player
+  const look = clamp((px - (x + w / 2)) / 200, -1, 1) * (e.vx > 0 ? -1 : 1) * 2;
+  [-6, 6].forEach((ex) => { g.fillStyle = '#fff'; g.beginPath(); g.ellipse(ex, -h + 12, 5, 6, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#1f1b16'; g.beginPath(); g.arc(ex + look, -h + 13, 2.4, 0, Math.PI * 2); g.fill(); });
+  g.strokeStyle = '#1f1b16'; g.lineWidth = 2; g.beginPath(); g.moveTo(-11, -h + 4); g.lineTo(-2, -h + 7); g.moveTo(11, -h + 4); g.lineTo(2, -h + 7); g.stroke();
+  g.restore();
+}
+function drawFlyer(e, t) {
+  const kind = e.info.kind, x = e.x + e.w / 2, y = e.y + e.h / 2;
+  g.save(); g.translate(x, y); if (e.dead) { g.globalAlpha = Math.max(0, 1 - e.deadT * 3); g.rotate(e.deadT * 6); }
+  const flap = Math.sin(t * 18 + e.t) * .6;
+  const wings = (col) => { g.fillStyle = col; g.save(); g.rotate(-.3 + flap); g.beginPath(); g.ellipse(-16, -6, 12, 6, -.4, 0, Math.PI * 2); g.fill(); g.restore(); g.save(); g.rotate(.3 - flap); g.beginPath(); g.ellipse(16, -6, 12, 6, .4, 0, Math.PI * 2); g.fill(); g.restore(); };
+  if (kind === 'gift') { wings('rgba(255,255,255,.85)'); g.fillStyle = '#c9708a'; rr(-13, -10, 26, 22, 3); g.fill(); g.fillStyle = '#f3dc98'; g.fillRect(-2, -10, 4, 22); g.fillRect(-13, -1, 26, 4); g.beginPath(); g.ellipse(-5, -12, 5, 3, -.5, 0, Math.PI * 2); g.ellipse(5, -12, 5, 3, .5, 0, Math.PI * 2); g.fill(); }
+  else if (kind === 'drone') { g.fillStyle = '#44505f'; rr(-16, -6, 32, 12, 6); g.fill(); g.strokeStyle = '#1f1b16'; g.lineWidth = 2; [-18, 18].forEach((dx) => { g.beginPath(); g.moveTo(dx - 10 * Math.cos(t * 40), -10); g.lineTo(dx + 10 * Math.cos(t * 40), -10); g.stroke(); }); g.fillStyle = '#a33a2f'; g.beginPath(); g.arc(0, 0, 3, 0, Math.PI * 2); g.fill(); g.strokeStyle = '#c9ced6'; g.lineWidth = 2; g.beginPath(); g.moveTo(-6, 8); g.lineTo(0, 16); g.lineTo(6, 8); g.stroke(); }
+  else if (kind === 'memo') { wings('rgba(255,255,255,.8)'); g.fillStyle = '#fbf7ee'; g.beginPath(); g.moveTo(-12, -14); g.lineTo(6, -14); g.lineTo(12, -8); g.lineTo(12, 14); g.lineTo(-12, 14); g.closePath(); g.fill(); g.strokeStyle = '#a33a2f'; g.lineWidth = 1.5; for (let i = 0; i < 4; i++) { g.beginPath(); g.moveTo(-8, -6 + i * 5); g.lineTo(8, -6 + i * 5); g.stroke(); } g.fillStyle = '#a33a2f'; g.font = '700 8px Inter'; g.textAlign = 'center'; g.fillText('✗', 0, 12); }
+  else { // wisp / shadow
+    const col = kind === 'shadow' ? 'rgba(30,30,60,.85)' : 'rgba(210,220,230,.9)';
+    g.fillStyle = col; g.beginPath(); g.arc(0, -4, 14, Math.PI, 0); for (let i = 0; i <= 4; i++) g.lineTo(14 - i * 7, 12 + (i % 2 ? -5 : 0) + Math.sin(t * 8 + i) * 2); g.closePath(); g.fill();
+    g.fillStyle = kind === 'shadow' ? '#f0cf7e' : '#2f3b48'; g.beginPath(); g.arc(-5, -5, 2.4, 0, Math.PI * 2); g.arc(5, -5, 2.4, 0, Math.PI * 2); g.fill();
+    if (kind === 'shadow') { g.font = '700 10px Inter'; g.textAlign = 'center'; g.fillText('7', 0, 7); }
+  }
+  g.restore();
+}
+function drawGem(x, y, r, col, t, glow = true) {
+  if (glow) { const gr = g.createRadialGradient(x, y, 2, x, y, r * 2.4); gr.addColorStop(0, 'rgba(255,245,200,.7)'); gr.addColorStop(1, 'rgba(255,245,200,0)'); g.fillStyle = gr; g.fillRect(x - r * 2.4, y - r * 2.4, r * 4.8, r * 4.8); }
+  g.save(); g.translate(x, y); g.scale(Math.cos(t * 2) * .25 + .9, 1);
+  g.fillStyle = col; g.beginPath(); g.moveTo(0, -r); g.lineTo(r * .9, -r * .3); g.lineTo(0, r); g.lineTo(-r * .9, -r * .3); g.closePath(); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.moveTo(0, -r); g.lineTo(r * .9, -r * .3); g.lineTo(0, -r * .1); g.closePath(); g.fill();
+  g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.moveTo(0, r); g.lineTo(-r * .9, -r * .3); g.lineTo(0, -r * .1); g.closePath(); g.fill();
+  g.strokeStyle = 'rgba(80,50,10,.6)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(0, -r); g.lineTo(r * .9, -r * .3); g.lineTo(0, r); g.lineTo(-r * .9, -r * .3); g.closePath(); g.stroke();
+  g.restore();
+  const sp = (t * 3) % 1; g.fillStyle = `rgba(255,255,255,${1 - sp})`; g.beginPath(); g.arc(x + r * .5, y - r * .6 - sp * 8, 2.5, 0, Math.PI * 2); g.fill();
+}
+
+/* ============================== GAME STATE ============================== */
+let state = 'title', lvl = null, P = null, camX = 0, shake = 0, clock = 0, demoCam = 0;
+let parts = [], floats = [];
+const IN = { left: false, right: false, jump: false };
+const T0 = () => THEMES[lvl ? lvl.L.theme : 'quay'];
+
+function newPlayer(x, y) { return { x, y, w: 26, h: 46, vx: 0, vy: 0, onGround: false, coyote: 0, jumpBuf: 0, jumps: 0, facing: 1, t: 0, inv: 0, dead: false, deadT: 0, ride: null, landT: 0 }; }
+
+function startLevel(i) {
+  AU.init();
+  const L = LEVELS[i], b = buildLevel(L, i);
+  lvl = { i, L, grid: b.grid, cols: b.cols, ents: b.ents, Wpx: b.cols * TS, jewelsTotal: b.jewels, jewels: 0, coins: 0, score: 0, setbacks: 0, stomps: 0, miniPct: 0, bossMiss: 0, lens: false, shieldT: 0, cp: { ...b.spawn }, got: [], t: 0 };
+  P = newPlayer(b.spawn.x, b.spawn.y); camX = 0; parts = []; floats = [];
+  getBG(L.theme);
+  $('#hud').classList.remove('hidden'); updateHUD(true); buildBarMarks();
+  MUS.play(L.theme);
+  if (isTouch && innerHeight > innerWidth) setTimeout(() => toast('Tip: turn your phone sideways for a bigger view'), 1500);
+  state = 'overlay';
+  card({ kicker: `Level ${i + 1} · ${L.dom}`, title: L.title, body: L.intro + (i === 0 ? '<br><br><b>Controls:</b> ← → or A/D to move · Space / ↑ / W to jump (press again in mid-air to double-jump) · Esc to pause. On a phone, use the on-screen buttons.' : ''), btn: 'Let’s go!', gem: false }, () => { state = 'play'; });
+}
+
+/* ------------------------------ tiles & collision ------------------------------ */
+const tileAt = (c, r) => { if (c < 0 || c >= lvl.cols) return '#'; if (r < 0 || r >= ROWS) return '.'; return lvl.grid[r][c]; };
+const solid = (c, r) => { const t = tileAt(c, r); return t === '#' || (t === 'h' && lvl.lens); };
+const oneway = (c, r) => tileAt(c, r) === '-';
+const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+
+function movePlayer(dt) {
+  const p = P;
+  // horizontal
+  p.x += (p.vx * dt) + (p.ride ? p.ride.dx : 0);
+  if (p.x < 0) { p.x = 0; p.vx = 0; }
+  const top = Math.floor(p.y / TS), bot = Math.floor((p.y + p.h - 1) / TS);
+  if (p.vx > 0 || (p.ride && p.ride.dx > 0)) { const c = Math.floor((p.x + p.w) / TS); for (let r = top; r <= bot; r++) if (solid(c, r)) { p.x = c * TS - p.w - .01; p.vx = 0; break; } }
+  if (p.vx < 0 || (p.ride && p.ride.dx < 0)) { const c = Math.floor(p.x / TS); for (let r = top; r <= bot; r++) if (solid(c, r)) { p.x = (c + 1) * TS + .01; p.vx = 0; break; } }
+  // vertical
+  const prevBottom = p.y + p.h;
+  p.y += p.vy * dt;
+  const wasGround = p.onGround; p.onGround = false; p.ride = null;
+  const c0 = Math.floor((p.x + 2) / TS), c1 = Math.floor((p.x + p.w - 2) / TS);
+  if (p.vy >= 0) {
+    const r = Math.floor((p.y + p.h) / TS);
+    for (let c = c0; c <= c1; c++) {
+      if (solid(c, r) || (oneway(c, r) && prevBottom <= r * TS + 2)) { p.y = r * TS - p.h; p.vy = 0; p.onGround = true; break; }
+    }
+    if (!p.onGround) for (const e of lvl.ents) if (e.type === 'mover') {
+      if (p.x + p.w > e.x + 4 && p.x < e.x + e.w - 4 && prevBottom <= e.y + 6 && p.y + p.h >= e.y) { p.y = e.y - p.h; p.vy = 0; p.onGround = true; p.ride = e; break; }
+    }
+  } else {
+    const r = Math.floor(p.y / TS);
+    for (let c = c0; c <= c1; c++) if (solid(c, r)) { p.y = (r + 1) * TS; p.vy = 0; break; }
+  }
+  if (p.onGround) { p.jumps = 0; if (!wasGround && p.landT <= 0) { dust(p.x + p.w / 2, p.y + p.h, 6); p.landT = .2; } }
+}
+
+function die(msg) {
+  if (P.dead || P.inv > 0 || lvl.shieldT > 0) return;
+  P.dead = true; P.deadT = 1.0; lvl.setbacks++; shake = 14; AU.sfx('die');
+  burst(P.x + P.w / 2, P.y + P.h / 2, ['#a33a2f', '#f3dc98', '#fff'], 26);
+  toast(msg || ['Setback! Back to your last flag.', 'Don’t worry, auditors learn from setbacks.', 'Regroup, reassess, retry!'][lvl.setbacks % 3]);
+  updateHUD();
+}
+
+function update(dt) {
+  clock += dt;
+  updateParticles(dt);
+  if (state !== 'play') { demoCam += dt * 40; return; }
+  const p = P; lvl.t += dt; p.t += dt;
+  if (lvl.shieldT > 0) { lvl.shieldT -= dt; if (lvl.shieldT <= 0) { toast('Shield faded'); updateHUD(); } }
+  // movers
+  for (const e of lvl.ents) if (e.type === 'mover') { e.t += dt; const nx = e.x0 + Math.sin(e.t * .9) * e.amp; e.dx = nx - e.x; e.x = nx; }
+  if (p.dead) { p.deadT -= dt; if (p.deadT <= 0) { p.dead = false; p.x = lvl.cp.x; p.y = lvl.cp.y; p.vx = 0; p.vy = 0; p.inv = 1.6; } return; }
+  p.inv = Math.max(0, p.inv - dt); p.landT -= dt;
+  // input
+  const ax = (IN.right ? 1 : 0) - (IN.left ? 1 : 0);
+  if (ax) { p.vx += ax * (p.onGround ? 2800 : 1900) * dt; p.facing = ax; }
+  else { const f = (p.onGround ? 2600 : 700) * dt; p.vx = Math.abs(p.vx) <= f ? 0 : p.vx - Math.sign(p.vx) * f; }
+  p.vx = clamp(p.vx, -RUN, RUN);
+  p.coyote = p.onGround ? .12 : p.coyote - dt; p.jumpBuf -= dt;
+  if (p.jumpBuf > 0) {
+    if (p.coyote > 0) { p.vy = -JUMP; p.coyote = 0; p.jumpBuf = 0; p.jumps = 1; p.onGround = false; AU.sfx('jump'); dust(p.x + p.w / 2, p.y + p.h, 5); }
+    else if (p.jumps < 2) { p.vy = -JUMP2; p.jumps = 2; p.jumpBuf = 0; AU.sfx('jump2'); burst(p.x + p.w / 2, p.y + p.h, ['#f3dc98', '#fff'], 10); }
+  }
+  if (!IN.jump && p.vy < -250) p.vy += 2600 * dt;
+  p.vy = Math.min(p.vy + GRAV * dt, 1150);
+  movePlayer(dt);
+  if (p.y > ROWS * TS + 60) { p.inv = 0; lvl.shieldT = 0; die('You fell! Back to your last flag.'); return; }
+  // entities
+  const pb = { x: p.x + 3, y: p.y + 4, w: p.w - 6, h: p.h - 6 };
+  for (const e of lvl.ents) {
+    switch (e.type) {
+      case 'coin': if (!e.taken && Math.abs(e.x - (p.x + p.w / 2)) < 26 && Math.abs(e.y - (p.y + p.h / 2)) < 32) { e.taken = true; lvl.coins++; lvl.score += 10; AU.sfx('coin'); burst(e.x, e.y, ['#f3dc98', '#d8b25a'], 6); updateHUD(); } break;
+      case 'walker': {
+        if (e.dead) { e.deadT += dt; break; } e.t += dt;
+        const nx = e.x + e.vx * dt, frontC = Math.floor((e.vx > 0 ? nx + e.w : nx) / TS), footR = Math.floor((e.y + e.h + 4) / TS), midR = Math.floor((e.y + e.h / 2) / TS);
+        if (solid(frontC, midR) || !(solid(frontC, footR) || oneway(frontC, footR))) e.vx = -e.vx; else e.x = nx;
+        if (overlap(pb, e)) hitEnemy(e);
+        break; }
+      case 'flyer': if (e.dead) { e.deadT += dt; break; } e.t += dt; e.x = e.x0 + Math.sin(e.t * .7) * 70 - e.w / 2; e.y = e.y0 + Math.sin(e.t * 2.1) * 18 - e.h / 2; if (overlap(pb, e)) hitEnemy(e); break;
+      case 'spike': if (overlap(pb, { x: e.x + 4, y: e.y + 6, w: e.w - 8, h: e.h - 6 })) die('Tangled in red tape! Back to your last flag.'); break;
+      case 'spring': e.k = Math.max(0, e.k - dt * 4); if (p.vy > 0 && overlap(pb, e) && p.y + p.h < e.y + 16) { p.vy = -1320; p.jumps = 1; e.k = 1; AU.sfx('spring'); toast('CPD springboard! Continuing development lifts you higher.', 'spring'); } break;
+      case 'check': if (!e.on && overlap(pb, e)) { lvl.ents.forEach((q) => { if (q.type === 'check') q.on = false; }); e.on = true; lvl.cp = { x: e.x - 4, y: e.y + e.h - p.h }; AU.sfx('check'); burst(e.x + 20, e.y + 10, ['#d8b25a', '#fff'], 14); toast('Checkpoint saved ⚑'); } break;
+      case 'jewel': if (!e.taken && Math.hypot(e.x - (p.x + p.w / 2), e.y - (p.y + p.h / 2)) < 36) collectJewel(e); break;
+      case 'power': if (!e.taken && Math.hypot(e.x - (p.x + p.w / 2), e.y - (p.y + p.h / 2)) < 36) collectPower(e); break;
+      case 'door': if (!e.done && overlap(pb, e)) { e.done = true; AU.sfx('door'); openMini(); } break;
+      case 'gate': if (!e.done && overlap(pb, { x: e.x + 30, y: e.y, w: e.w - 30, h: e.h })) { e.done = true; openBoss(); } break;
+    }
+  }
+  // camera
+  const target = clamp(p.x - W * .38 + p.facing * 40, 0, lvl.Wpx - W);
+  camX = lerp(camX, target, 1 - Math.pow(.001, dt));
+  shake = Math.max(0, shake - dt * 40);
+  if (Math.random() < .02) updateHUD();
+}
+function hitEnemy(e) {
+  const p = P;
+  if (lvl.shieldT > 0) { killEnemy(e, true); return; }
+  if (p.vy > 60 && p.y + p.h - e.y < 22) { killEnemy(e); p.vy = -620; p.jumps = 1; return; }
+  die(`${e.info.name}! Back to your last flag.`);
+}
+function killEnemy(e, byShield) {
+  e.dead = true; e.deadT = 0; lvl.stomps++; lvl.score += 50; AU.sfx('stomp'); shake = 5;
+  burst(e.x + e.w / 2, e.y + e.h / 2, [e.info.color || '#8fa2b4', '#fff'], 14);
+  floatText(e.x + e.w / 2, e.y - 10, `${byShield ? 'Shielded from' : 'Cleared'}: ${e.info.name} +50`, '#fbf7ee');
+  updateHUD();
+}
+function collectJewel(e) {
+  e.taken = true; lvl.jewels++; lvl.got.push(e.lesson); lvl.score += 100; AU.sfx('jewel'); shake = 4;
+  burst(e.x, e.y, [T0().gem, '#fff', '#f3dc98'], 30);
+  const key = lvl.i + '-' + e.lesson; if (!save.codex.includes(key)) { save.codex.push(key); persist(); }
+  updateHUD(); buildBarMarks();
+  const ls = lvl.L.lessons[e.lesson];
+  state = 'overlay';
+  setTimeout(() => card({ kicker: `Lesson jewel ${lvl.jewels} of ${lvl.jewelsTotal}`, title: ls.t, body: ls.x, ref: ls.ref, btn: 'Got it', gem: true }, () => { state = 'play'; }), 180);
+}
+function collectPower(e) {
+  e.taken = true; AU.sfx('power'); burst(e.x, e.y, ['#fff', '#f3dc98', '#6f9fd0'], 30); state = 'overlay';
+  if (e.kind === 'lens') {
+    lvl.lens = true; updateHUD();
+    card({ kicker: 'Power-up', title: 'The Skeptic’s Lens', body: 'Hidden platforms are now visible! Professional skepticism means you don’t take information at face value. You seek the evidence that isn’t obvious at first.', ref: 'Standard 4.3', btn: 'See clearly', gem: false }, () => { state = 'play'; });
+  } else {
+    lvl.shieldT = 15; updateHUD();
+    card({ kicker: 'Power-up', title: 'The Independence Shield', body: 'For the next 15 seconds, interference and red tape can’t touch you. Independence is what lets internal audit do its work <b>without interference</b>. Run!', ref: 'Principle 7', btn: 'Shield up!', gem: false }, () => { state = 'play'; AU.sfx('shield'); });
+  }
+}
+
+/* ------------------------------ particles ------------------------------ */
+function burst(x, y, cols, n) { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, s = 80 + Math.random() * 260; parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 120, life: .6 + Math.random() * .5, max: 1, c: cols[i % cols.length], r: 2 + Math.random() * 3, gr: 600 }); } }
+function dust(x, y, n) { for (let i = 0; i < n; i++) parts.push({ x: x + (Math.random() - .5) * 16, y, vx: (Math.random() - .5) * 120, vy: -Math.random() * 80, life: .4, max: .4, c: 'rgba(200,180,150,.8)', r: 3 + Math.random() * 3, gr: 200 }); }
+function floatText(x, y, text, c) { floats.push({ x, y, text, c, life: 1.4 }); }
+function updateParticles(dt) {
+  for (const q of parts) { q.life -= dt; q.vy += q.gr * dt; q.x += q.vx * dt; q.y += q.vy * dt; }
+  parts = parts.filter((q) => q.life > 0);
+  for (const f of floats) { f.life -= dt; f.y -= 40 * dt; }
+  floats = floats.filter((f) => f.life > 0);
+}
+
+/* ------------------------------ render ------------------------------ */
+function render() {
+  g.setTransform(PX, 0, 0, PX, 0, 0);
+  if (!lvl || (state !== 'play' && state !== 'overlay')) { drawBackground(menuTheme(), demoCam, clock); drawDemoGround(); return; }
+  const Th = T0();
+  drawBackground(lvl.L.theme, camX, clock);
+  const sx = (Math.random() - .5) * shake, sy = (Math.random() - .5) * shake;
+  g.save(); g.translate(-Math.round(camX) + sx, sy);
+  const c0 = Math.max(0, Math.floor(camX / TS) - 1), c1 = Math.min(lvl.cols - 1, Math.ceil((camX + W) / TS) + 1);
+  for (let r = 0; r < ROWS; r++) for (let c = c0; c <= c1; c++) {
+    const t = lvl.grid[r][c], x = c * TS, y = r * TS;
+    if (t === '#') {
+      g.fillStyle = Th.ground; g.fillRect(x, y, TS + .5, TS + .5);
+      if (tileAt(c, r - 1) !== '#') { g.fillStyle = Th.top; g.fillRect(x, y, TS + .5, 12); g.fillStyle = Th.edge; g.fillRect(x, y + 12, TS + .5, 3); }
+      g.fillStyle = 'rgba(0,0,0,.08)'; if ((c + r) % 3 === 0) g.fillRect(x + 10, y + 24, 12, 6); if ((c * 7 + r) % 5 === 0) g.fillRect(x + 28, y + 34, 8, 5);
+    } else if (t === '-') {
+      g.fillStyle = Th.plat; rr(x, y, TS, 14, 3); g.fill(); g.fillStyle = 'rgba(255,255,255,.35)'; g.fillRect(x + 3, y + 2, TS - 6, 3); g.fillStyle = 'rgba(0,0,0,.2)'; g.fillRect(x + 3, y + 11, TS - 6, 3);
+    } else if (t === 'h') {
+      if (lvl.lens) { g.fillStyle = 'rgba(111,159,208,.55)'; rr(x + 1, y + 1, TS - 2, TS - 2, 6); g.fill(); g.strokeStyle = 'rgba(255,255,255,.8)'; g.lineWidth = 2; g.stroke(); }
+      else { g.fillStyle = `rgba(255,255,255,${.06 + .05 * Math.sin(clock * 3 + c)})`; g.fillRect(x + 20, y + 20, 6, 6); }
+    }
+  }
+  const vis = (e) => (e.x0 || e.x) > camX - 200 && (e.x0 || e.x) < camX + W + 200;
+  for (const e of lvl.ents) {
+    if (!vis(e)) continue;
+    switch (e.type) {
+      case 'coin': if (!e.taken) { const s = Math.abs(Math.cos(clock * 3 + e.x * .01)); g.fillStyle = '#b0862c'; g.beginPath(); g.ellipse(e.x, e.y + Math.sin(clock * 3 + e.x) * 2, 11 * s + 1, 12, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#f3dc98'; g.beginPath(); g.ellipse(e.x, e.y + Math.sin(clock * 3 + e.x) * 2, 8 * s, 9, 0, 0, Math.PI * 2); g.fill(); if (s > .5) { g.strokeStyle = '#8a6516'; g.lineWidth = 2; g.beginPath(); g.moveTo(e.x - 4, e.y); g.lineTo(e.x - 1, e.y + 3); g.lineTo(e.x + 4, e.y - 3); g.stroke(); } } break;
+      case 'jewel': if (!e.taken) drawGem(e.x, e.y + Math.sin(clock * 2.5 + e.lesson) * 6, e.r, Th.gem, clock); break;
+      case 'power': if (!e.taken) { const y = e.y + Math.sin(clock * 3) * 5; const gr = g.createRadialGradient(e.x, y, 2, e.x, y, 44); gr.addColorStop(0, 'rgba(255,255,255,.9)'); gr.addColorStop(1, 'rgba(111,159,208,0)'); g.fillStyle = gr; g.fillRect(e.x - 44, y - 44, 88, 88); g.fillStyle = e.kind === 'lens' ? '#2f5d8a' : '#b0862c'; g.beginPath(); g.arc(e.x, y, 18, 0, Math.PI * 2); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 3;
+        if (e.kind === 'lens') { g.beginPath(); g.arc(e.x - 3, y - 3, 8, 0, Math.PI * 2); g.moveTo(e.x + 3, y + 3); g.lineTo(e.x + 10, y + 10); g.stroke(); } else { g.beginPath(); g.moveTo(e.x, y - 11); g.lineTo(e.x + 9, y - 6); g.lineTo(e.x + 7, y + 6); g.lineTo(e.x, y + 11); g.lineTo(e.x - 7, y + 6); g.lineTo(e.x - 9, y - 6); g.closePath(); g.stroke(); } } break;
+      case 'walker': if (!e.dead || e.deadT < .3) { drawWalker(e, clock, P.x); nameTag(e); } break;
+      case 'flyer': if (!e.dead || e.deadT < .4) { drawFlyer(e, clock); nameTag(e); } break;
+      case 'spike': for (let i = 0; i < 4; i++) { g.fillStyle = i % 2 ? '#c0392b' : '#e2574c'; g.beginPath(); g.moveTo(e.x + i * 11, e.y + e.h); g.lineTo(e.x + i * 11 + 6, e.y + 2 + Math.sin(clock * 6 + i) * 2); g.lineTo(e.x + i * 11 + 12, e.y + e.h); g.fill(); } g.fillStyle = '#a33a2f'; g.fillRect(e.x, e.y + e.h - 5, e.w, 5); break;
+      case 'spring': { const k = e.k; g.fillStyle = '#6e6e7a'; for (let i = 0; i < 3; i++) g.fillRect(e.x + 8, e.y + 6 + i * 4 - k * 6, e.w - 16, 2); g.fillStyle = '#a33a2f'; rr(e.x, e.y - k * 12, e.w, 8, 3); g.fill(); g.fillStyle = '#3a3a44'; g.fillRect(e.x + 2, e.y + e.h - 4, e.w - 4, 4); break; }
+      case 'mover': g.fillStyle = '#3a3a44'; rr(e.x, e.y, e.w, e.h, 6); g.fill(); g.fillStyle = '#d8b25a'; g.fillRect(e.x + 6, e.y + 3, e.w - 12, 4); g.fillStyle = '#fbf7ee'; g.font = '700 9px Inter'; g.textAlign = 'center'; g.fillText('ESCALATOR', e.x + e.w / 2, e.y + 15); break;
+      case 'check': g.fillStyle = '#6e6e7a'; g.fillRect(e.x, e.y, 5, e.h); { const wave = Math.sin(clock * 5) * 4; g.fillStyle = e.on ? '#d8b25a' : '#b9b3a8'; g.beginPath(); g.moveTo(e.x + 5, e.y + 4); g.quadraticCurveTo(e.x + 22, e.y + 4 + wave, e.x + 40, e.y + 12); g.lineTo(e.x + 5, e.y + 30); g.fill(); if (e.on) { g.fillStyle = '#8a6516'; g.font = '700 12px Inter'; g.fillText('✓', e.x + 18, e.y + 22); } } break;
+      case 'door': { const glow = e.done ? .15 : .5 + .3 * Math.sin(clock * 4); g.fillStyle = `rgba(243,220,152,${glow})`; rr(e.x - 8, e.y - 8, e.w + 16, e.h + 12, 36); g.fill(); g.fillStyle = e.done ? '#7a6f61' : '#5a3a22'; rr(e.x, e.y, e.w, e.h, 32); g.fill(); g.fillStyle = e.done ? '#b9b3a8' : '#d8b25a'; g.beginPath(); g.arc(e.x + e.w - 14, e.y + e.h / 2 + 6, 4, 0, Math.PI * 2); g.fill(); g.fillStyle = '#fbf7ee'; g.font = '700 11px Inter'; g.textAlign = 'center'; g.fillText(e.done ? 'DONE' : 'CHALLENGE', e.x + e.w / 2, e.y - 14); break; }
+      case 'gate': { g.fillStyle = '#3a2f24'; rr(e.x, e.y, e.w, e.h, 50); g.fill(); g.fillStyle = shade(lvl.L.boss.color, .8); rr(e.x + 10, e.y + 12, e.w - 20, e.h - 12, 42); g.fill(); g.strokeStyle = '#d8b25a'; g.lineWidth = 4; rr(e.x, e.y, e.w, e.h, 50); g.stroke(); g.fillStyle = '#f3dc98'; g.font = '700 14px Inter'; g.textAlign = 'center'; g.fillText('BOSS', e.x + e.w / 2, e.y - 16); g.font = '600 12px Inter'; g.fillText(lvl.L.boss.name, e.x + e.w / 2, e.y - 32); g.fillStyle = '#fff'; g.beginPath(); g.arc(e.x + e.w / 2 - 14, e.y + 80, 7 + Math.sin(clock * 3), 0, Math.PI * 2); g.arc(e.x + e.w / 2 + 14, e.y + 80, 7 + Math.sin(clock * 3), 0, Math.PI * 2); g.fill(); g.fillStyle = '#a33a2f'; g.beginPath(); g.arc(e.x + e.w / 2 - 14, e.y + 82, 3, 0, Math.PI * 2); g.arc(e.x + e.w / 2 + 14, e.y + 82, 3, 0, Math.PI * 2); g.fill(); break; }
+    }
+  }
+  // hero
+  if (!P.dead) {
+    const blink = P.inv > 0 && Math.floor(clock * 14) % 2 === 0;
+    if (!blink) drawHero(P.x + P.w / 2, P.y + P.h + 2, { hero: save.hero, pose: !P.onGround ? 'jump' : Math.abs(P.vx) > 30 ? 'run' : 'idle', t: P.t, facing: P.facing, scale: .85 });
+    if (lvl.shieldT > 0) { g.strokeStyle = `rgba(111,159,208,${.5 + .3 * Math.sin(clock * 10)})`; g.lineWidth = 3; g.beginPath(); g.ellipse(P.x + P.w / 2, P.y + P.h / 2 - 4, 32, 40, 0, 0, Math.PI * 2); g.stroke(); g.fillStyle = 'rgba(111,159,208,.12)'; g.fill(); }
+  }
+  for (const q of parts) { g.globalAlpha = clamp(q.life / q.max, 0, 1); g.fillStyle = q.c; g.beginPath(); g.arc(q.x, q.y, q.r, 0, Math.PI * 2); g.fill(); }
+  g.globalAlpha = 1;
+  for (const f of floats) { g.globalAlpha = clamp(f.life, 0, 1); g.font = '700 14px Inter'; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = 'rgba(31,27,22,.7)'; g.strokeText(f.text, f.x, f.y); g.fillStyle = f.c; g.fillText(f.text, f.x, f.y); }
+  g.globalAlpha = 1;
+  g.restore();
+  if (lvl.lens) { const vg = g.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, H * .9); vg.addColorStop(0, 'rgba(111,159,208,0)'); vg.addColorStop(1, 'rgba(47,93,138,.18)'); g.fillStyle = vg; g.fillRect(0, 0, W, H); }
+  if (P.dead) { g.fillStyle = `rgba(31,27,22,${.35 * (1 - Math.abs(P.deadT - .5) * 2)})`; g.fillRect(0, 0, W, H); }
+}
+function nameTag(e) {
+  if (Math.abs(e.x - P.x) > 360 || e.dead) return;
+  g.font = '600 11px Inter'; g.textAlign = 'center'; const tw = g.measureText(e.info.name).width + 12;
+  g.fillStyle = 'rgba(31,27,22,.6)'; rr(e.x + e.w / 2 - tw / 2, e.y - 26, tw, 16, 8); g.fill(); g.fillStyle = '#fbf7ee'; g.fillText(e.info.name, e.x + e.w / 2, e.y - 14);
+}
+function menuTheme() { const n = Object.keys(THEMES); return n[Math.floor(clock / 12) % n.length]; }
+function drawDemoGround() {
+  const th = THEMES[menuTheme()];
+  for (let c = -1; c < W / TS + 2; c++) { const x = c * TS - (demoCam % TS); g.fillStyle = th.ground; g.fillRect(x, 13 * TS, TS + 1, 2 * TS); g.fillStyle = th.top; g.fillRect(x, 13 * TS, TS + 1, 12); g.fillStyle = th.edge; g.fillRect(x, 13 * TS + 12, TS + 1, 3); }
+  if (save.hero || state === 'select') drawHero(420, 13 * TS + 2, { hero: save.hero || selHero, pose: 'run', t: clock, facing: 1, scale: 1.4 });
+  drawGem(640 + ((-demoCam * 1.2) % 900 + 900) % 900, 470 + Math.sin(clock * 2) * 10, 20, th.gem, clock);
+}
+
+/* ============================== HUD ============================== */
+let hudCache = '';
+function updateHUD(force) {
+  if (!lvl) return;
+  const s = `${lvl.i}|${lvl.jewels}|${lvl.score}|${lvl.setbacks}|${lvl.lens}|${lvl.shieldT > 0}|${save.muted}|${save.voice}`;
+  if (s === hudCache && !force) { $('#hBarFill').style.width = clamp(P.x / (lvl.Wpx - 200), 0, 1) * 100 + '%'; return; }
+  hudCache = s;
+  $('#hLevel').textContent = `${lvl.i + 1}. ${lvl.L.title}`;
+  $('#hGems').textContent = `${lvl.jewels}/${lvl.jewelsTotal}`;
+  $('#hScore').textContent = lvl.score;
+  $('#hSet').textContent = lvl.setbacks;
+  $('#hPower').innerHTML = (lvl.lens ? '<span title="Skeptic’s Lens active">🔍 Lens</span>' : '') + (lvl.shieldT > 0 ? ' <span title="Independence Shield">🛡 Shield</span>' : '');
+  $('#bMusic').classList.toggle('off', save.muted); $('#bVoice').classList.toggle('off', !save.voice);
+  $('#hBarFill').style.width = clamp(P.x / (lvl.Wpx - 200), 0, 1) * 100 + '%';
+}
+function buildBarMarks() {
+  if (!lvl) return; const m = $('#hBarMarks'); m.innerHTML = '';
+  lvl.ents.forEach((e) => { if (e.type === 'jewel' || e.type === 'gate') { const i = document.createElement('i'); i.style.left = clamp(e.x / (lvl.Wpx - 200), 0, 1) * 100 + '%'; if (e.type === 'gate') i.className = 'boss'; else if (e.taken) i.className = 'got'; m.appendChild(i); } });
+}
+let toastLast = {};
+function toast(msg, key) { const k = key || msg; const now = performance.now(); if (toastLast[k] && now - toastLast[k] < 3000) return; toastLast[k] = now; const d = document.createElement('div'); d.textContent = msg; $('#toast').appendChild(d); setTimeout(() => d.remove(), 2800); }
+
+/* ============================== OVERLAYS ============================== */
+const OV = $('#ov'); let ovKey = null, ovAt = 0;
+function overlay(html, cls = '') { OV.className = 'ov on ' + cls; OV.innerHTML = html; ovAt = performance.now(); ovKey = null; return OV; }
+function closeOverlay() { OV.className = 'ov'; OV.innerHTML = ''; ovKey = null; }
+const ready = () => performance.now() - ovAt > 380;
+function owlSVG() {
+  return `<svg class="owl" viewBox="0 0 120 130" aria-hidden="true"><ellipse cx="60" cy="82" rx="40" ry="44" fill="#8a6a44"/><ellipse cx="60" cy="92" rx="26" ry="30" fill="#f1e3bd"/>
+  <path d="M40 92 q6 6 12 0 M52 102 q6 6 12 0 M64 92 q6 6 12 0" stroke="#c9b58a" stroke-width="2" fill="none"/>
+  <circle cx="43" cy="62" r="17" fill="#fbf7ee" stroke="#b0862c" stroke-width="4"/><circle cx="77" cy="62" r="17" fill="#fbf7ee" stroke="#b0862c" stroke-width="4"/><path d="M60 62 h0" stroke="#b0862c" stroke-width="4"/><line x1="56" y1="60" x2="64" y2="60" stroke="#b0862c" stroke-width="4"/>
+  <circle cx="45" cy="63" r="7" fill="#1f1b16"/><circle cx="75" cy="63" r="7" fill="#1f1b16"/><circle cx="47" cy="61" r="2" fill="#fff"/><circle cx="77" cy="61" r="2" fill="#fff"/>
+  <path d="M55 74 L60 84 L65 74 Z" fill="#d8a13a"/><path d="M22 36 L60 20 L98 36 L60 50 Z" fill="#1f1b16"/><rect x="48" y="36" width="24" height="10" fill="#1f1b16"/><path d="M96 36 v18" stroke="#d8b25a" stroke-width="3"/><circle cx="96" cy="56" r="4" fill="#d8b25a"/>
+  <path d="M26 96 q-10 16 4 28 M94 96 q10 16 -4 28" stroke="#6e5335" stroke-width="10" fill="none" stroke-linecap="round"/></svg>`;
+}
+function card(o, next) {
+  state = state === 'play' ? 'overlay' : state;
+  overlay(`<div class="panel card"><div>${owlSVG()}</div><div>
+    <div class="kicker">${o.kicker || ''}</div><h2>${o.gem ? '<svg class="lesson-gem" viewBox="0 0 20 20"><path d="M10 1 18 7 10 19 2 7Z" fill="#d8b25a" stroke="#8a6516"/></svg>' : ''}${o.title}</h2>
+    <p>${o.body}</p>${o.ref ? `<div class="ref">${o.ref}</div>` : ''}
+    <div class="row"><button class="btn primary" id="cardGo">${o.btn || 'Continue'}<kbd>Enter</kbd></button>${'speechSynthesis' in window ? '<button class="btn small" id="cardSay" title="Read aloud">🔊 Read aloud</button>' : ''}</div></div></div>`);
+  VOICE.say(o.title + '. ' + o.body);
+  const go = () => { VOICE.stop(); AU.sfx('click'); closeOverlay(); next && next(); };
+  $('#cardGo').onclick = go; if ($('#cardSay')) $('#cardSay').onclick = () => { const v = save.voice; save.voice = true; VOICE.say(o.title + '. ' + o.body); save.voice = v; };
+  ovKey = (e) => { if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') && ready()) { e.preventDefault(); go(); } };
+  setTimeout(() => $('#cardGo') && $('#cardGo').focus({ preventScroll: true }), 30);
+}
+
+/* ------------------------------ title ------------------------------ */
+function showTitle() {
+  state = 'title'; lvl = null; $('#hud').classList.add('hidden'); setTouch(false);
+  overlay(`<div class="panel title-panel">
+    <div class="kicker">A Global Internal Audit Standards adventure</div>
+    <h1>Assurance <span class="gold-text">Quest</span></h1>
+    <div class="sub">Seven lands. Thirty-nine lesson jewels. One certificate.</div>
+    <div class="how"><span>← → move</span><span>Space jump (twice to double-jump)</span><span>Stomp the troublemakers</span><span>Esc pause</span><span>Flags save your place</span></div>
+    <div class="row" style="justify-content:center">
+      ${save.hero ? '<button class="btn gold" id="tContinue">Continue your quest<kbd>Enter</kbd></button>' : ''}
+      <button class="btn ${save.hero ? '' : 'primary'}" id="tNew">${save.hero ? 'New hero' : 'Start your quest'}${save.hero ? '' : '<kbd>Enter</kbd>'}</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink3);margin-top:20px">Sound and your mentor’s voice start when you press a button. Lessons are paraphrased from The IIA’s Global Internal Audit Standards (2024) and the Chartered IIA’s Internal Audit Code of Practice (2024).</p>
+  </div>`, 'clear');
+  const start = () => { AU.init(); MUS.play('menu'); };
+  if (save.hero) $('#tContinue').onclick = () => { start(); showMap(); };
+  $('#tNew').onclick = () => { start(); showSelect(); };
+  ovKey = (e) => { if (e.key === 'Enter' && ready()) { start(); save.hero ? showMap() : showSelect(); } };
+}
+
+/* ------------------------------ character select ------------------------------ */
+let selHero = { gender: 'f', skin: 1, hair: 1, outfit: 0, name: 'Alex' };
+function showSelect() {
+  state = 'select'; if (save.hero) selHero = { ...save.hero };
+  const sw = (arr, key) => arr.map((c, i) => `<button class="sw${selHero[key] === i ? ' on' : ''}" data-k="${key}" data-i="${i}" style="background:${c}" aria-label="${key} ${i + 1}"></button>`).join('');
+  overlay(`<div class="panel" style="width:min(720px,100%)">
+    <div class="kicker">Choose your hero</div><h2>Your new internal auditor</h2>
+    <div class="sel-grid">
+      <button class="hero-card${selHero.gender === 'f' ? ' on' : ''}" data-g="f"><canvas id="pvF" width="220" height="200"></canvas>Young professional (she/her)</button>
+      <button class="hero-card${selHero.gender === 'm' ? ' on' : ''}" data-g="m"><canvas id="pvM" width="220" height="200"></canvas>Young professional (he/him)</button>
+    </div>
+    <div class="swatches"><span>Skin</span>${sw(SKINS, 'skin')}</div>
+    <div class="swatches"><span>Hair</span>${sw(HAIRS, 'hair')}</div>
+    <div class="swatches"><span>Suit</span>${sw(OUTFITS, 'outfit')}</div>
+    <div class="row" style="margin-top:6px"><label for="nm" style="font:600 13px var(--sans);color:var(--ink3)">Name</label><input class="namein" id="nm" maxlength="24" value="${esc(selHero.name)}">
+    <span style="flex:1"></span><button class="btn" id="sBack">Back</button><button class="btn primary" id="sGo">Begin<kbd>Enter</kbd></button></div>
+  </div>`);
+  const draw = () => {
+    ['f', 'm'].forEach((gd) => { const c = $('#pv' + gd.toUpperCase()); const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, 220, 200);
+      const gr = x.createLinearGradient(0, 0, 0, 200); gr.addColorStop(0, '#f7ecd4'); gr.addColorStop(1, '#e6d5b4'); x.fillStyle = gr; x.fillRect(0, 0, 220, 200); x.fillStyle = '#c9b699'; x.fillRect(0, 176, 220, 24);
+      drawHero(110, 178, { hero: { ...selHero, gender: gd }, pose: 'idle', t: clock, facing: 1, scale: 2.4 }, x); });
+  };
+  const loop = () => { if (state !== 'select') return; draw(); requestAnimationFrame(loop); }; loop();
+  OV.querySelectorAll('.hero-card').forEach((b) => b.onclick = () => { selHero.gender = b.dataset.g; OV.querySelectorAll('.hero-card').forEach((x) => x.classList.toggle('on', x === b)); AU.sfx('click'); });
+  OV.querySelectorAll('.sw').forEach((b) => b.onclick = () => { selHero[b.dataset.k] = +b.dataset.i; OV.querySelectorAll(`.sw[data-k="${b.dataset.k}"]`).forEach((x) => x.classList.toggle('on', x === b)); AU.sfx('click'); });
+  const go = () => { selHero.name = ($('#nm').value || 'Alex').trim().slice(0, 24) || 'Alex'; save.hero = { ...selHero }; persist(); AU.sfx('right'); showMap(true); };
+  $('#sGo').onclick = go; $('#sBack').onclick = showTitle;
+  ovKey = (e) => { if (e.key === 'Enter' && ready()) { e.preventDefault(); go(); } };
+}
+
+/* ------------------------------ world map ------------------------------ */
+const NODES = [[110, 400], [250, 250], [410, 360], [560, 200], [700, 340], [840, 210], [920, 400]];
+function starSVG(on, size = 18) { return `<svg width="${size}" height="${size}" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21l1.5-7L2 9.3l7-.8z" fill="${on ? '#d8b25a' : '#d9cdb5'}" stroke="${on ? '#8a6516' : '#b9ad96'}"/></svg>`; }
+function totalStars() { return Object.values(save.stats).reduce((a, s) => a + (s.stars || 0), 0); }
+function showMap(fresh) {
+  state = 'map'; lvl = null; VOICE.stop(); $('#hud').classList.add('hidden'); setTouch(false); MUS.play('menu');
+  const path = 'M' + NODES.map((n) => n.join(',')).join(' L');
+  const nodes = NODES.map(([x, y], i) => {
+    const L = LEVELS[i], st = save.stats[i] || {}, locked = i + 1 > save.unlocked, col = THEMES[L.theme].gem;
+    return `<g class="node${locked ? ' locked' : ''}" data-i="${i}" tabindex="${locked ? -1 : 0}" role="button" aria-label="Level ${i + 1}: ${L.title}${locked ? ' (locked)' : ''}">
+      <circle class="base" cx="${x}" cy="${y}" r="30" fill="${locked ? '#d9cdb5' : col}" stroke="${locked ? '#b9ad96' : '#8a6516'}" stroke-width="3"/>
+      <text x="${x}" y="${y + 9}" text-anchor="middle" font-family="Cormorant Garamond" font-size="28" font-weight="700" fill="${locked ? '#7a6f61' : '#1f1b16'}">${locked ? '🔒' : i + 1}</text>
+      <text x="${x}" y="${y + 56}" text-anchor="middle" font-family="Inter" font-size="14" font-weight="600" fill="#1f1b16">${L.title}</text>
+      <text x="${x}" y="${y + 74}" text-anchor="middle" font-family="Inter" font-size="11" fill="#7a6f61">${i === 5 ? 'UK Code' : L.dom.split('·')[0].trim()}</text>
+      <g transform="translate(${x - 30},${y - 58})">${[0, 1, 2].map((k) => `<g transform="translate(${k * 21},0)">${starSVG((st.stars || 0) > k)}</g>`).join('')}</g></g>`;
+  }).join('');
+  const done = Object.keys(save.stats).length;
+  overlay(`<div class="panel map-panel">
+    <div class="map-head"><div><div class="kicker">The world of assurance</div><h2 style="margin:0">${esc(save.hero.name)}’s quest</h2></div>
+      <div class="row"><span class="badge">${starSVG(true, 24)} ${totalStars()} / 21 stars</span><span class="badge"><svg viewBox="0 0 20 20" width="24"><path d="M10 1 18 7 10 19 2 7Z" fill="#d8b25a" stroke="#8a6516"/></svg> ${save.codex.length} / 39 jewels</span></div></div>
+    <svg class="map-svg" viewBox="0 0 1000 500" role="group" aria-label="Level map">
+      <defs><pattern id="pp" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#b89a62" opacity=".25"/></pattern></defs>
+      <rect x="0" y="0" width="1000" height="500" rx="18" fill="#f3e6c8"/><rect width="1000" height="500" rx="18" fill="url(#pp)"/>
+      <path d="${path}" fill="none" stroke="#b0862c" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>
+      ${nodes}
+      ${done === 7 ? '<text x="500" y="470" text-anchor="middle" font-family="Cormorant Garamond" font-size="24" font-style="italic" fill="#8a6516">Quest complete: view your certificate below</text>' : ''}
+    </svg>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="mCodex">📜 Jewel codex</button><button class="btn" id="mHero">Change hero</button>
+      ${done === 7 ? '<button class="btn gold" id="mCert">🏅 Certificate</button>' : ''}
+      <span style="flex:1"></span><button class="btn small" id="mReset">Reset progress</button>
+      <button class="btn primary" id="mPlay">Play level ${Math.min(7, save.unlocked)}<kbd>Enter</kbd></button></div>
+  </div>`);
+  OV.querySelectorAll('.node').forEach((n) => {
+    const i = +n.dataset.i; const go = () => { if (i + 1 <= save.unlocked) { AU.sfx('door'); closeOverlay(); startLevel(i); } else { AU.sfx('wrong'); toast('Finish the previous level to unlock this one'); } };
+    n.onclick = go; n.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
+  });
+  $('#mPlay').onclick = () => { closeOverlay(); startLevel(Math.min(7, save.unlocked) - 1); };
+  $('#mCodex').onclick = showCodex; $('#mHero').onclick = showSelect;
+  if ($('#mCert')) $('#mCert').onclick = showCertificate;
+  $('#mReset').onclick = () => { if (confirm('Reset all progress, stars and jewels?')) { const h = save.hero; save = blank(); save.hero = h; persist(); showMap(); } };
+  ovKey = (e) => { if (e.key === 'Enter' && ready() && !(document.activeElement && document.activeElement.classList.contains('node'))) { e.preventDefault(); $('#mPlay').click(); } };
+  if (fresh) VOICE.say(`Welcome, ${save.hero.name}! I'm Ada, your mentor. Seven lands of assurance await. Choose your first level.`);
+}
+function showCodex() {
+  const lv = LEVELS.map((L, i) => `<div class="codex-lv"><div class="kicker">Level ${i + 1} · ${L.dom}</div><h3>${L.title}</h3>${L.lessons.map((ls, k) => {
+    const has = save.codex.includes(i + '-' + k);
+    return `<div class="codex-item${has ? '' : ' locked'}"><svg viewBox="0 0 20 20" width="20"><path d="M10 1 18 7 10 19 2 7Z" fill="${has ? THEMES[L.theme].gem : '#d9cdb5'}" stroke="#8a6516"/></svg><div>${has ? `<b>${ls.t}.</b> ${ls.x} <span style="color:var(--gold3);font-size:12px">(${ls.ref})</span>` : `Jewel not yet found. It’s hidden somewhere in ${L.title}.`}</div></div>`;
+  }).join('')}</div>`).join('');
+  overlay(`<div class="panel" style="width:min(820px,100%)"><div class="kicker">Your study notes</div><h2>The jewel codex</h2><p>Every jewel you collect is saved here, so you can revise any time.</p>${lv}<div class="row"><button class="btn primary" id="cxBack">Back to map<kbd>Esc</kbd></button></div></div>`);
+  $('#cxBack').onclick = () => showMap(); ovKey = (e) => { if ((e.key === 'Escape' || e.key === 'Enter') && ready()) showMap(); };
+}
+
+/* ------------------------------ pause ------------------------------ */
+function pause() {
+  if (state !== 'play') return; state = 'overlay'; AU.sfx('click');
+  overlay(`<div class="panel" style="width:min(460px,100%);text-align:center"><div class="kicker">Paused</div><h2>${lvl.L.title}</h2>
+    <p>Jewels ${lvl.jewels}/${lvl.jewelsTotal} · Score ${lvl.score} · Setbacks ${lvl.setbacks}</p>
+    <div style="display:grid;gap:10px"><button class="btn primary" id="pRes" style="justify-content:center">Resume<kbd>Esc</kbd></button><button class="btn" id="pCp" style="justify-content:center">Return to last flag</button><button class="btn" id="pRe" style="justify-content:center">Restart level</button><button class="btn" id="pMap" style="justify-content:center">World map</button></div></div>`);
+  const res = () => { closeOverlay(); state = 'play'; };
+  $('#pRes').onclick = res; $('#pCp').onclick = () => { res(); P.x = lvl.cp.x; P.y = lvl.cp.y; P.vx = P.vy = 0; P.inv = 1; };
+  $('#pRe').onclick = () => { closeOverlay(); startLevel(lvl.i); }; $('#pMap').onclick = () => showMap();
+  ovKey = (e) => { if ((e.key === 'Escape' || e.key === 'p') && ready()) res(); };
+}
+
+/* ============================== MINI-GAMES ============================== */
+const MINI = {
+  catch: { title: 'Lantern Catch', how: 'Catch the four gifts of internal audit, plus value and the public interest, in your lantern basket. Dodge the imposters! Use ← → or your mouse or finger.', fn: miniCatch },
+  gifts: { title: 'Gift, Decline or Disclose?', how: 'Objectivity dilemmas! For each situation, choose what a good internal auditor does.', fn: miniGifts },
+  charter: { title: 'Draft the Charter', how: 'Choose the four scrolls that every internal audit charter must contain at a minimum (Standard 6.2).', fn: miniCharter },
+  plan: { title: 'Plan the Year', how: 'You have 1,000 audit hours. Build a risk-based plan: cover the high-risk areas first, and stay within your hours.', fn: miniPlan },
+  gap: { title: 'Mind the Gap', how: 'Compare the criteria (what should be) with the condition (what is). Is it a finding, or should you provide assurance?', fn: miniGap },
+  codeor: { title: 'Code or Standards?', how: 'Is each rule from the UK Code of Practice, the Global Standards, or both?', fn: miniCodeOr },
+  memory: { title: 'The Memory Vault', how: 'Flip the cards to match each term with its meaning. Fewer flips earn more points.', fn: miniMemory }
+};
+function openMini() {
+  state = 'overlay'; const m = MINI[lvl.L.mini];
+  card({ kicker: 'Challenge door', title: m.title, body: m.how, btn: 'Start challenge', gem: false }, () => {
+    state = 'overlay'; MUS.play('mini');
+    const el = overlay(`<div class="panel mini" style="width:min(820px,100%)"><div class="kicker">Challenge · ${lvl.L.title}</div><h2>${m.title}</h2><div id="mg"></div></div>`);
+    m.fn($('#mg'), (pct, note) => {
+      lvl.miniPct = pct; const pts = Math.round(pct * 500); lvl.score += pts; updateHUD(); MUS.play(lvl.L.theme);
+      AU.sfx(pct >= .7 ? 'right' : 'click');
+      card({ kicker: 'Challenge complete', title: `${Math.round(pct * 100)}%, +${pts} points`, body: (note || '') + (pct >= .7 ? ' Excellent work. That counts towards your third star.' : ' Good effort! Every challenge teaches something.'), btn: 'Back to the adventure', gem: false }, () => { state = 'play'; P.inv = 1; });
+    });
+  });
+}
+function miniCatch(host, done) {
+  host.innerHTML = `<p class="prog" id="cInfo">Caught 0 · Time 22</p><canvas id="cCv" width="760" height="380"></canvas><p style="font-size:13px;color:var(--ink3)">Good: Assurance · Advice · Insight · Foresight · Value · Public interest. Avoid: Blame · Rubber stamp · Guesswork · Hearsay.</p>`;
+  const c = $('#cCv'), x = c.getContext('2d'); let bx = 380, caught = 0, missed = 0, t = 22, spawn = 0, items = [], keys = {}, last = performance.now(), sparks = [];
+  const GOOD = ['Assurance', 'Advice', 'Insight', 'Foresight', 'Value', 'Public interest'], BAD = ['Blame', 'Rubber stamp', 'Guesswork', 'Hearsay'];
+  const kd = (e) => { keys[e.key] = true; if (['ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault(); }, ku = (e) => { keys[e.key] = false; };
+  addEventListener('keydown', kd); addEventListener('keyup', ku);
+  const pm = (e) => { const r = c.getBoundingClientRect(); bx = (e.clientX - r.left) / r.width * 760; };
+  c.addEventListener('pointermove', pm); c.addEventListener('pointerdown', pm);
+  let fin = false;
+  const loop = (now) => {
+    if (fin) return; const dt = Math.min(.05, (now - last) / 1000); last = now; t -= dt; spawn -= dt;
+    if (keys.ArrowLeft || keys.a) bx -= 520 * dt; if (keys.ArrowRight || keys.d) bx += 520 * dt; bx = clamp(bx, 60, 700);
+    if (spawn <= 0) { spawn = .55; const good = Math.random() < .66; items.push({ x: 60 + Math.random() * 640, y: -20, v: 120 + Math.random() * 90, good, w: good ? GOOD[Math.floor(Math.random() * GOOD.length)] : BAD[Math.floor(Math.random() * BAD.length)] }); }
+    const sky = x.createLinearGradient(0, 0, 0, 380); sky.addColorStop(0, '#1b2f45'); sky.addColorStop(1, '#3d6680'); x.fillStyle = sky; x.fillRect(0, 0, 760, 380);
+    x.fillStyle = 'rgba(255,241,168,.12)'; x.beginPath(); x.moveTo(bx, 340); x.lineTo(bx - 120, 0); x.lineTo(bx + 120, 0); x.fill();
+    for (const it of items) { it.y += it.v * dt;
+      x.font = '600 15px Inter'; const tw = x.measureText(it.w).width + 18; x.fillStyle = it.good ? '#f3dc98' : '#e8a598'; rr2(x, it.x - tw / 2, it.y - 14, tw, 28, 14); x.fill(); x.fillStyle = '#1f1b16'; x.textAlign = 'center'; x.fillText(it.w, it.x, it.y + 5);
+      if (!it.done && it.y > 318 && it.y < 350 && Math.abs(it.x - bx) < 70) { it.done = true; if (it.good) { caught++; AU.sfx('coin'); for (let i = 0; i < 12; i++) sparks.push({ x: it.x, y: 330, vx: (Math.random() - .5) * 300, vy: -Math.random() * 300, l: .6 }); } else { missed++; AU.sfx('wrong'); } }
+    }
+    items = items.filter((it) => !it.done && it.y < 400);
+    for (const s of sparks) { s.l -= dt; s.vy += 600 * dt; s.x += s.vx * dt; s.y += s.vy * dt; x.fillStyle = `rgba(243,220,152,${s.l / .6})`; x.fillRect(s.x, s.y, 4, 4); } sparks = sparks.filter((s) => s.l > 0);
+    // lantern basket
+    x.fillStyle = '#8a6516'; rr2(x, bx - 60, 336, 120, 26, 10); x.fill(); x.fillStyle = '#d8b25a'; rr2(x, bx - 56, 332, 112, 10, 5); x.fill(); x.fillStyle = '#fff1a8'; x.beginPath(); x.arc(bx, 330, 8 + Math.sin(now / 150) * 2, 0, Math.PI * 2); x.fill();
+    $('#cInfo').textContent = `Caught ${caught} · Imposters ${missed} · Time ${Math.max(0, Math.ceil(t))}`;
+    if (t <= 0) { fin = true; removeEventListener('keydown', kd); removeEventListener('keyup', ku); done(clamp((caught - missed * .5) / 10, 0, 1), `You caught ${caught} gifts of assurance.`); return; }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+function rr2(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+function quizRounds(host, rounds, labels, done, note) {
+  let i = 0, score = 0;
+  const show = () => {
+    if (i >= rounds.length) { done(score / rounds.length, note ? note(score) : `${score} of ${rounds.length} correct.`); return; }
+    const r = rounds[i];
+    host.innerHTML = `<div class="prog">${i + 1} of ${rounds.length}</div>${r.html || `<div class="scen">${r.q}</div>`}
+      <div class="row" style="margin-top:8px">${labels.map((l, k) => `<button class="btn${k === 0 ? ' primary' : ''}" data-k="${k}">${l}<kbd>${k + 1}</kbd></button>`).join('')}</div><div class="fb" id="fb" style="display:none"></div>`;
+    let answered = false;
+    const pick = (k) => {
+      if (answered) return; answered = true; const ok = k === r.a; if (ok) score++;
+      AU.sfx(ok ? 'right' : 'wrong');
+      host.querySelectorAll('.row .btn').forEach((b, j) => { b.disabled = true; if (j === r.a) b.style.background = '#e7f0e7'; if (j === k && !ok) b.style.background = '#f6e4e1'; b.classList.remove('primary'); });
+      const fb = $('#fb'); fb.style.display = 'block'; fb.innerHTML = `<b>${ok ? '✓ Correct.' : '✗ Not quite: ' + labels[r.a] + '.'}</b> ${r.why} <div style="margin-top:8px"><button class="btn primary small" id="nx">Next →<kbd>Enter</kbd></button></div>`;
+      $('#nx').onclick = () => { i++; show(); }; ovKey = (e) => { if (e.key === 'Enter') { e.preventDefault(); i++; show(); } };
+    };
+    host.querySelectorAll('.row .btn').forEach((b) => b.onclick = () => pick(+b.dataset.k));
+    ovKey = (e) => { const n = +e.key; if (n >= 1 && n <= labels.length) pick(n - 1); };
+  };
+  show();
+}
+function miniGifts(host, done) {
+  quizRounds(host, [
+    { q: 'You ran the payroll team until 8 months ago. You’re asked to lead the payroll assurance engagement.', a: 1, why: 'Standard 2.2: objectivity is presumed impaired when assuring an activity you were responsible for within the previous 12 months. Ask the CAE to reassign.' },
+    { q: 'A supplier whose contracts you are auditing offers you two concert tickets.', a: 1, why: 'Standard 2.2: don’t accept any gift, reward or favour that may impair objectivity, or be presumed to.' },
+    { q: 'Your sister-in-law manages the warehouse you’re about to audit.', a: 2, why: 'Standard 2.3: disclose the potential impairment to the CAE or your supervisor so they can manage it, for example by reassigning you.' },
+    { q: 'Last year you advised on designing a new process. Now you’re asked to advise on rolling it out.', a: 2, why: 'Standard 2.2: for advisory work on activities you were previously responsible for, disclose the potential impairment before accepting.' },
+    { q: 'Management offers you a coffee at the start of the opening meeting.', a: 0, why: 'Trivial hospitality is unlikely to impair objectivity, but always follow your function’s gift policy, which may be stricter than the organisation’s.' },
+    { q: 'You notice management’s board paper leaves out a material fact from your audit.', a: 2, why: 'Standard 1.1: disclose all material facts that, if not disclosed, could affect decisions. That takes professional courage.' }
+  ], ['Proceed', 'Decline / avoid', 'Disclose / raise it'], done, (s) => `${s} of 6 dilemmas handled well. Objectivity protected!`);
+}
+function miniCharter(host, done) {
+  const S = [['Purpose of Internal Auditing', 1], ['The detailed engagement work programs', 0], ['Commitment to the Global Internal Audit Standards', 1], ['The CAE’s holiday allowance', 0], ['Mandate: scope, types of services and board responsibilities', 1], ['Every finding from last year', 0], ['Organisational position and reporting relationships', 1], ['Management’s sign-off on each audit report', 0]];
+  const sel = new Set();
+  host.innerHTML = `<p>Pick exactly four scrolls. Selected: <b id="chN">0</b>/4</p><div class="scrolls">${S.map((s, i) => `<button class="scroll" data-i="${i}">📜&nbsp; ${s[0]}</button>`).join('')}</div><div class="row"><button class="btn primary" id="chGo" disabled>Seal the charter</button></div><div class="fb" id="chFb" style="display:none"></div>`;
+  host.querySelectorAll('.scroll').forEach((b) => b.onclick = () => { const i = +b.dataset.i; if (sel.has(i)) sel.delete(i); else if (sel.size < 4) sel.add(i); b.classList.toggle('on', sel.has(i)); AU.sfx('click'); $('#chN').textContent = sel.size; $('#chGo').disabled = sel.size !== 4; });
+  $('#chGo').onclick = () => {
+    let right = 0; sel.forEach((i) => { if (S[i][1]) right++; });
+    host.querySelectorAll('.scroll').forEach((b) => { const i = +b.dataset.i; b.disabled = true; if (S[i][1]) b.classList.add('right'); else if (sel.has(i)) b.classList.add('wrong'); });
+    AU.sfx(right === 4 ? 'win' : 'wrong'); const fb = $('#chFb'); fb.style.display = 'block';
+    fb.innerHTML = `<b>${right}/4 correct.</b> The four minimums are the Purpose, a commitment to the Standards, the mandate, and the organisational position and reporting lines. The board approves the charter. <div style="margin-top:8px"><button class="btn primary small" id="chDone">Finish</button></div>`;
+    $('#chGo').disabled = true; $('#chDone').onclick = () => done(right / 4, `Charter sealed with ${right} of 4 minimum contents.`);
+  };
+}
+function miniPlan(host, done) {
+  const U = [['Cybersecurity', 'H', 250], ['Fraud risk', 'H', 200], ['Third-party management', 'H', 220], ['Ethics & conduct', 'H', 180], ['Payroll', 'M', 150], ['IT access management', 'M', 160], ['Travel expenses', 'L', 120], ['Office supplies', 'L', 80]];
+  const sel = new Set(); const cap = 1000;
+  host.innerHTML = `<div class="row" style="justify-content:space-between"><b>Hours used: <span id="plH">0</span> / ${cap}</b><span class="prog">Hint: high-risk first</span></div><div class="budget"><i id="plBar" style="width:0"></i></div>
+    <div class="units">${U.map((u, i) => `<button class="unit" data-i="${i}"><b>${u[0]}</b><br><span style="color:var(--ink3);font-size:12.5px">${u[2]} hrs</span><br><span class="rk ${u[1]}">${{ H: 'HIGH', M: 'MEDIUM', L: 'LOW' }[u[1]]} RISK</span></button>`).join('')}</div>
+    <div class="row"><button class="btn primary" id="plGo">Submit plan to the board</button></div><div class="fb" id="plFb" style="display:none"></div>`;
+  const used = () => [...sel].reduce((a, i) => a + U[i][2], 0);
+  host.querySelectorAll('.unit').forEach((b) => b.onclick = () => { const i = +b.dataset.i; if (sel.has(i)) sel.delete(i); else if (used() + U[i][2] <= cap) sel.add(i); else { AU.sfx('wrong'); toast('Not enough hours: tell the board about resource limits (9.4)'); return; } b.classList.toggle('on', sel.has(i)); AU.sfx('click'); $('#plH').textContent = used(); $('#plBar').style.width = used() / cap * 100 + '%'; });
+  $('#plGo').onclick = () => {
+    const highs = U.filter((u, i) => u[1] === 'H' && sel.has(i)).length, lows = U.filter((u, i) => u[1] === 'L' && sel.has(i)).length;
+    const pct = clamp(highs / 4 - lows * .1, 0, 1); const left = U.filter((u, i) => u[1] === 'H' && !sel.has(i)).map((u) => u[0]);
+    AU.sfx(pct >= .75 ? 'win' : 'wrong'); host.querySelectorAll('.unit').forEach((b) => b.disabled = true); $('#plGo').disabled = true;
+    const fb = $('#plFb'); fb.style.display = 'block';
+    fb.innerHTML = `<b>${highs}/4 high-risk areas covered.</b> ${left.length ? `You must tell the board why ${left.join(', ')} ${left.length > 1 ? 'are' : 'is'} not in the plan. ` : 'All high-risk areas are covered. '}The Standards also say to consider IT governance, fraud risk, and compliance and ethics programmes, and the board approves the plan (9.4). <div style="margin-top:8px"><button class="btn primary small" id="plDone">Finish</button></div>`;
+    $('#plDone').onclick = () => done(pct, `Plan approved with ${highs} of 4 high-risk areas.`);
+  };
+}
+function miniGap(host, done) {
+  const R = [
+    ['All supplier bank-detail changes are independently verified.', '9 of 40 changes tested were paid without verification.', 0, 'A finding. Likely root cause: nobody owns the control in the new system. Ask “why?” until you reach it.'],
+    ['Access reviews are performed every quarter.', 'All four quarterly reviews were completed and signed off.', 1, 'No gap: provide assurance, and acknowledge when processes are effective (14.5).'],
+    ['Expense claims over £500 need director approval.', '3 claims over £500 were approved only by the claimant’s peer.', 0, 'A finding. The effect: unauthorised spend. Rate its significance by likelihood and impact.'],
+    ['Data backups are restore-tested monthly.', 'Restore tests passed for all 12 months, evidenced in system logs.', 1, 'No gap, and the evidence is reliable because it comes from a well-controlled system. Provide assurance.'],
+    ['Contracts above £100k are competitively tendered.', 'Two £150k contracts were single-sourced without a waiver.', 0, 'A finding. Recommend an action plan with an owner and a date (15.1).']
+  ];
+  quizRounds(host, R.map((r) => ({ html: `<div class="cc"><div class="cr"><b>Criteria · what should be</b>${r[0]}</div><div class="cd"><b>Condition · what is</b>${r[1]}</div></div>`, a: r[2], why: r[3] })), ['Finding (a gap)', 'No finding: assurance'], done, (s) => `${s} of 5 judged correctly. Mind the gap!`);
+}
+function miniCodeOr(host, done) {
+  const R = [
+    ['External quality assessment at least every five years.', 2, 'Both: GIAS Standard 8.4 and Code Principle 34.'],
+    ['At least one external assessor must hold an active CIA.', 1, 'GIAS Standard 8.4.'],
+    ['Twelve named scope areas, including culture and AI.', 0, 'Code Principle 8.'],
+    ['The CAE normally sits at executive-committee level.', 0, 'Code Principle 15.'],
+    ['Engagement risk assessments must consider fraud.', 1, 'GIAS Standard 13.2.'],
+    ['An annual independence discussion once the CAE’s tenure passes seven years.', 0, 'Code Principle 21.'],
+    ['Integrity, objectivity, competency, due care and confidentiality.', 1, 'GIAS Domain II, Principles 1–5.'],
+    ['The audit committee’s annual report concludes on internal audit’s effectiveness.', 0, 'Code Principle 4.']
+  ];
+  quizRounds(host, R.map((r) => ({ q: r[0], a: r[1], why: r[2] })), ['UK Code', 'Global Standards', 'Both'], done, (s) => `${s} of 8 sorted correctly.`);
+}
+function miniMemory(host, done) {
+  const P2 = [['Finding', 'Gap between criteria and condition'], ['Assurance', 'Confidence, measured against criteria'], ['Objectivity', 'An unbiased mental attitude'], ['Root cause', 'The underlying reason for the gap'], ['Risk appetite', 'Risk the organisation will accept'], ['Charter', 'Formal document holding the mandate']];
+  const cards = []; P2.forEach((p, i) => { cards.push({ i, txt: p[0], term: 1 }); cards.push({ i, txt: p[1] }); });
+  for (let k = cards.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [cards[k], cards[j]] = [cards[j], cards[k]]; }
+  host.innerHTML = `<p class="prog" id="mmInfo">Flips 0 · Pairs 0/6</p><div class="mem">${cards.map((c, k) => `<button class="mcard" data-k="${k}" aria-label="Card ${k + 1}"><div class="in"><div class="f">✦</div><div class="b">${c.term ? '<b style="font:700 18px var(--serif)">' + c.txt + '</b>' : c.txt}</div></div></button>`).join('')}</div>`;
+  let open = [], flips = 0, pairs = 0, lock = false;
+  host.querySelectorAll('.mcard').forEach((b) => b.onclick = () => {
+    const k = +b.dataset.k; if (lock || b.classList.contains('up') || b.classList.contains('done')) return;
+    b.classList.add('up'); open.push(k); AU.sfx('click');
+    if (open.length === 2) { flips++; lock = true; const [a, c] = open, A = cards[a], C = cards[c], ba = host.querySelector(`[data-k="${a}"]`), bc = host.querySelector(`[data-k="${c}"]`);
+      if (A.i === C.i && A.term !== C.term) { setTimeout(() => { ba.classList.add('done'); bc.classList.add('done'); AU.sfx('right'); pairs++; open = []; lock = false; $('#mmInfo').textContent = `Flips ${flips} · Pairs ${pairs}/6`; if (pairs === 6) setTimeout(() => done(clamp(1 - (flips - 6) / 14, .3, 1), `All pairs matched in ${flips} flips.`), 600); }, 350); }
+      else setTimeout(() => { ba.classList.remove('up'); bc.classList.remove('up'); open = []; lock = false; $('#mmInfo').textContent = `Flips ${flips} · Pairs ${pairs}/6`; }, 900);
+    }
+  });
+}
+
+/* ============================== BOSS ============================== */
+function bossSVG(B) {
+  const c = B.color, d = shade(c, .7), l = shade(c, 1.3);
+  const acc = {
+    fog: `<g opacity=".7" fill="#dfe6ec"><ellipse cx="40" cy="180" rx="50" ry="18"/><ellipse cx="200" cy="170" rx="50" ry="16"/><ellipse cx="120" cy="205" rx="80" ry="14"/></g>`,
+    tie: `<path d="M110 150 L130 150 L136 196 L120 212 L104 196 Z" fill="#d8b25a"/><path d="M70 58 Q120 20 170 58 Q150 44 120 46 Q92 46 70 58Z" fill="#1f1b16"/>`,
+    scissors: `<g transform="translate(190,70) rotate(20)"><circle cx="0" cy="40" r="12" fill="none" stroke="#c9ced6" stroke-width="6"/><circle cx="26" cy="40" r="12" fill="none" stroke="#c9ced6" stroke-width="6"/><path d="M6 30 L30 -30 M20 30 L-4 -30" stroke="#c9ced6" stroke-width="7" stroke-linecap="round"/></g>`,
+    hydra: `<g fill="${c}"><path d="M40 120 Q10 60 30 40 Q50 30 56 60 Q58 90 70 120Z"/><path d="M200 120 Q230 60 210 40 Q190 30 184 60 Q182 90 170 120Z"/></g><g fill="#fff"><circle cx="34" cy="46" r="6"/><circle cx="206" cy="46" r="6"/></g><g fill="#1f1b16"><circle cx="35" cy="47" r="3"/><circle cx="205" cy="47" r="3"/></g>`,
+    golem: `<path d="M80 80 L100 110 L90 140 M160 90 L140 120 L150 150 M110 170 L130 150" stroke="${d}" stroke-width="4" fill="none"/>`,
+    tick: `<rect x="95" y="140" width="50" height="44" rx="6" fill="#fbf7ee" stroke="#1f1b16" stroke-width="3"/><path d="M103 162 L116 176 L140 146" stroke="#3e7a5c" stroke-width="7" fill="none" stroke-linecap="round"/>`,
+    assessor: `<path d="M60 70 Q120 10 180 70 Q170 40 120 34 Q70 40 60 70Z" fill="#f5efe2"/><g transform="translate(190,120) rotate(-30)"><rect x="-6" y="0" width="12" height="60" fill="#6b4424"/><rect x="-22" y="-14" width="44" height="22" rx="4" fill="#8a6516"/></g>`
+  }[B.acc] || '';
+  return `<svg class="boss-svg" id="bossSvg" viewBox="0 0 240 230" aria-label="${esc(B.name)}">
+    <ellipse cx="120" cy="218" rx="80" ry="10" fill="rgba(0,0,0,.18)"/>
+    ${B.acc === 'hydra' ? acc : ''}
+    <path d="M36 205 C10 120 50 40 120 40 C190 40 230 120 204 205 Z" fill="${c}"/>
+    <ellipse cx="120" cy="160" rx="56" ry="40" fill="${l}" opacity=".7"/>
+    <path d="M86 26 L98 44 L110 18 L122 44 L134 18 L146 44 L158 26 L154 52 L90 52 Z" fill="#d8b25a" stroke="#8a6516" stroke-width="2"/>
+    <g class="eyes"><ellipse cx="96" cy="98" rx="16" ry="18" fill="#fff"/><ellipse cx="144" cy="98" rx="16" ry="18" fill="#fff"/><circle cx="100" cy="102" r="7" fill="#1f1b16"/><circle cx="140" cy="102" r="7" fill="#1f1b16"/></g>
+    <path d="M76 78 L110 88 M164 78 L130 88" stroke="#1f1b16" stroke-width="6" stroke-linecap="round"/>
+    <path d="M90 132 Q120 150 150 132 Q120 140 90 132Z" fill="#1f1b16"/><path d="M100 134 l5 7 l5 -6 M130 134 l5 7 l5 -6" fill="#fff"/>
+    ${B.acc !== 'hydra' ? acc : ''}
+  </svg>`;
+}
+function openBoss() {
+  state = 'overlay'; MUS.play('boss'); AU.sfx('hit'); shake = 10;
+  const B = lvl.L.boss; let qi = 0, hp = B.qs.length, misses = 0;
+  const render = () => {
+    const q = B.qs[qi];
+    overlay(`<div class="panel boss-panel"><div>${bossSVG(B)}</div><div>
+      <div class="kicker">Boss battle · ${lvl.L.title}</div><h2>${B.name}</h2>
+      <div class="hp" aria-label="Boss health ${hp} of ${B.qs.length}">${B.qs.map((_, k) => `<i class="${k < hp ? '' : 'gone'}"></i>`).join('')}</div>
+      <div class="taunt" id="bTaunt">“${B.taunt}”</div>
+      <div class="scen" style="font-size:21px">${q.q}</div>
+      ${q.o.map((o, k) => `<button class="choice" data-k="${k}"><b>${k + 1}.</b> ${o}</button>`).join('')}
+      <div class="fb" id="bFb" style="display:none"></div></div></div>`);
+    VOICE.say(q.q);
+    let locked = false;
+    const pick = (k) => {
+      if (locked) return; const btn = OV.querySelector(`.choice[data-k="${k}"]`); if (!btn || btn.disabled) return;
+      if (k === q.a) {
+        locked = true; btn.classList.add('right'); AU.sfx('hit'); shake = 8; hp--; lvl.score += 200;
+        const sv = $('#bossSvg'); sv.classList.remove('hit'); void sv.getBoundingClientRect(); sv.classList.add(hp <= 0 ? 'dead' : 'hit');
+        OV.querySelectorAll('.hp i')[hp].classList.add('gone');
+        $('#bTaunt').textContent = hp <= 0 ? '“Nooo! The evidence is… sufficient!”' : ['“Ouch! A well-supported point…”', '“Argh! You’ve read the Standards!”', '“Hmph, lucky guess!”'][qi % 3];
+        const fb = $('#bFb'); fb.style.display = 'block'; fb.innerHTML = `<b>✓ Direct hit! +200.</b> ${q.why}`;
+        setTimeout(() => { qi++; if (hp <= 0) bossDefeated(misses); else render(); }, hp <= 0 ? 1500 : 1300);
+      } else {
+        misses++; btn.classList.add('wrong'); btn.disabled = true; AU.sfx('wrong'); $('#bTaunt').textContent = '“Ha! Wrong! Try again, rookie.”';
+        const fb = $('#bFb'); fb.style.display = 'block'; fb.innerHTML = `<b>Ada’s hint:</b> ${q.why.split(':')[0].includes('Standard') || q.why.includes('Code') ? 'Think about ' + q.why.split(':')[0] + '.' : 'Look again. The jewels you collected in this level hold the answer.'}`;
+      }
+    };
+    OV.querySelectorAll('.choice').forEach((b) => b.onclick = () => pick(+b.dataset.k));
+    ovKey = (e) => { const n = +e.key; if (n >= 1 && n <= q.o.length) pick(n - 1); };
+  };
+  card({ kicker: 'A boss blocks the way!', title: B.name, body: `“${B.taunt}” Answer ${B.qs.length} questions correctly to defeat it. A wrong answer doesn’t cost you a life, and Ada will give you a hint.`, btn: 'Fight with knowledge!', gem: false }, render);
+}
+function bossDefeated(misses) {
+  lvl.bossMiss = misses; AU.sfx('win'); confetti();
+  const L = lvl.L, i = lvl.i, allJ = lvl.jewels === lvl.jewelsTotal, good = lvl.miniPct >= .7 && misses <= 1;
+  const stars = 1 + (allJ ? 1 : 0) + (good ? 1 : 0);
+  lvl.score += Math.max(0, 300 - lvl.setbacks * 30);
+  const prev = save.stats[i] || {};
+  save.stats[i] = { stars: Math.max(stars, prev.stars || 0), score: Math.max(lvl.score, prev.score || 0) };
+  save.unlocked = Math.max(save.unlocked, Math.min(7, i + 2)); save.best = Object.values(save.stats).reduce((a, s) => a + s.score, 0); persist();
+  MUS.play('menu'); VOICE.say(`Brilliant! You defeated ${L.boss.name}. You've earned the badge: ${L.badge}.`);
+  const last = i === LEVELS.length - 1;
+  overlay(`<div class="panel" style="text-align:center;width:min(640px,100%)">
+    <div class="kicker">Level ${i + 1} complete</div><h2>${L.boss.name} is defeated!</h2>
+    <div class="stars">${[0, 1, 2].map((k) => starSVG(k < stars, 62).replace('<svg', `<svg class="${k < stars ? 'on' : ''}"`)).join('')}</div>
+    <div class="badge" style="margin:6px auto"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="url(#bg${i})"/><defs><linearGradient id="bg${i}" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#8a6516"/><stop offset=".5" stop-color="#f3dc98"/><stop offset="1" stop-color="#8a6516"/></linearGradient></defs><text x="20" y="26" text-anchor="middle" font-family="Cormorant Garamond" font-size="18" font-weight="700" fill="#2a1f0b">${i + 1}</text></svg>Badge earned: ${L.badge}</div>
+    <div class="statgrid"><div class="stat"><b>${lvl.jewels}/${lvl.jewelsTotal}</b><span>Jewels</span></div><div class="stat"><b>${lvl.score}</b><span>Score</span></div><div class="stat"><b>${Math.round(lvl.miniPct * 100)}%</b><span>Challenge</span></div><div class="stat"><b>${misses}</b><span>Boss misses</span></div><div class="stat"><b>${lvl.setbacks}</b><span>Setbacks</span></div></div>
+    <p style="font-size:13.5px">★ Complete the level · ★ Collect every jewel · ★ Score 70%+ in the challenge with at most one boss miss</p>
+    <div class="row" style="justify-content:center">${allJ ? '' : '<button class="btn" id="cRetry">Replay for all jewels</button>'}<button class="btn" id="cMap">World map</button><button class="btn primary" id="cNext">${last ? 'Claim your certificate' : 'Next level'}<kbd>Enter</kbd></button></div></div>`);
+  const next = () => { if (last) showCertificate(); else { closeOverlay(); startLevel(i + 1); } };
+  $('#cNext').onclick = next; $('#cMap').onclick = () => showMap(); if ($('#cRetry')) $('#cRetry').onclick = () => { closeOverlay(); startLevel(i); };
+  ovKey = (e) => { if (e.key === 'Enter' && ready()) next(); };
+  $('#hud').classList.add('hidden');
+}
+function showCertificate() {
+  state = 'map'; $('#hud').classList.add('hidden'); AU.sfx('win'); confetti();
+  const d = new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+  overlay(`<div class="panel cert"><div class="kicker">Certificate of completion</div><h1>Assurance <span class="gold-text">Quest</span></h1>
+    <p style="font-size:18px;margin:4px 0">This certifies that</p><div class="who">${esc(save.hero.name)}</div>
+    <p style="font-size:18px">has journeyed through all seven lands of the Global Internal Audit Standards and the UK Code of Practice,<br>collected <b>${save.codex.length} of 39</b> lesson jewels, earned <b>${totalStars()} of 21</b> stars, and defeated every boss with knowledge.</p>
+    <div class="row" style="justify-content:center;gap:24px;margin:14px 0 6px">${LEVELS.map((L, i) => `<span title="${L.badge}" style="font:600 12px var(--sans);color:var(--gold3)">★ ${L.badge}</span>`).join('')}</div>
+    <p style="font-family:var(--serif);font-style:italic;font-size:20px">“Internal auditing strengthens the organisation’s ability to create, protect, and sustain value.”</p>
+    <p style="font-size:13px">Awarded ${d} · Mentor: Ada the Assurance Owl</p>
+    <div class="row" style="justify-content:center"><button class="btn" onclick="window.print()">🖨 Print certificate</button><button class="btn primary" id="ctMap">World map</button></div></div>`);
+  $('#ctMap').onclick = () => showMap(); VOICE.say(`Congratulations ${save.hero.name}! You have completed the Assurance Quest.`);
+}
+
+/* ------------------------------ confetti ------------------------------ */
+function confetti() {
+  const c = $('#confetti'), x = c.getContext('2d'), P2 = [];
+  for (let i = 0; i < 160; i++) P2.push({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, vx: (Math.random() - .5) * 120, vy: 120 + Math.random() * 200, r: Math.random() * 6, c: ['#d8b25a', '#8a3b52', '#2f5d8a', '#3e7a5c', '#a4552f', '#f3dc98'][i % 6], s: Math.random() * 6 });
+  let last = performance.now(), t = 0;
+  const loop = (now) => { const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt; x.clearRect(0, 0, c.width, c.height);
+    P2.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; p.s += dt * 6; x.save(); x.translate(p.x, p.y); x.rotate(p.s); x.fillStyle = p.c; x.fillRect(-4, -2, 8 + p.r, 4); x.restore(); });
+    if (t < 4) requestAnimationFrame(loop); else x.clearRect(0, 0, c.width, c.height); };
+  requestAnimationFrame(loop);
+}
+
+/* ============================== INPUT ============================== */
+const JUMPK = [' ', 'ArrowUp', 'w', 'W', 'z', 'Z'];
+addEventListener('keydown', (e) => {
+  if (ovKey && OV.classList.contains('on')) { ovKey(e); return; }
+  if (state !== 'play') return;
+  if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) e.preventDefault();
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') IN.left = true;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') IN.right = true;
+  if (JUMPK.includes(e.key)) { if (!IN.jump) P.jumpBuf = .14; IN.jump = true; }
+  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pause();
+  if (e.key === 'm' || e.key === 'M') $('#bMusic').click();
+  if (e.key === 'v' || e.key === 'V') $('#bVoice').click();
+});
+addEventListener('keyup', (e) => {
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') IN.left = false;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') IN.right = false;
+  if (JUMPK.includes(e.key)) IN.jump = false;
+});
+addEventListener('blur', () => { IN.left = IN.right = IN.jump = false; if (state === 'play') pause(); });
+$('#bMusic').onclick = () => { AU.init(); AU.setMute(!save.muted); updateHUD(true); };
+$('#bVoice').onclick = () => { save.voice = !save.voice; persist(); if (!save.voice) VOICE.stop(); updateHUD(true); toast(save.voice ? 'Mentor voice on' : 'Mentor voice off'); };
+$('#bPause').onclick = pause;
+const isTouch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+function setTouch(on) { $('#touch').classList.toggle('on', on && isTouch); }
+$('#touch').querySelectorAll('button').forEach((b) => {
+  const k = b.dataset.k;
+  const down = (e) => { e.preventDefault(); AU.init(); if (k === 'jump') { if (!IN.jump && P) P.jumpBuf = .14; IN.jump = true; } else IN[k] = true; };
+  const up = (e) => { e.preventDefault(); if (k === 'jump') IN.jump = false; else IN[k] = false; };
+  b.addEventListener('pointerdown', down); b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up); b.addEventListener('pointerleave', up);
+});
+
+/* ============================== LOOP ============================== */
+let last = performance.now(), acc = 0;
+function frame(now) {
+  const dt = Math.min(.1, (now - last) / 1000); last = now; acc += dt;
+  const STEP = 1 / 120; let n = 0;
+  while (acc >= STEP && n < 12) { update(STEP); acc -= STEP; n++; }
+  if (state === 'play') setTouch(true);
+  render();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+showTitle();
+
+// test hooks (harmless in normal play)
+window.__AQ = { get state() { return state; }, get lvl() { return lvl; }, get P() { return P; }, startLevel, showMap, showCertificate, openBoss, openMini, get save() { return save; }, LEVELS };
+})();
+</script>
+</body>
+</html>
