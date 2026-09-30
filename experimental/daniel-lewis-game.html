@@ -1,0 +1,1349 @@
+<title>Daniel Lewis Career Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Silkscreen&family=Chivo+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --ground: #0a0e1d;
+    --panel: rgba(12, 17, 36, 0.92);
+    --panel-edge: #2b3563;
+    --paper: #f4ecd8;
+    --muted: #9ba5cc;
+    --gold: #f4c24d;
+    --tick: #7ee0a0;
+    --risk: #ff5b4f;
+    --ink: #0e1326;
+    --display: "Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+    --label: "Silkscreen", "Courier New", monospace;
+    --body: "Chivo Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body {
+    background: var(--ground);
+    color: var(--paper);
+    font-family: var(--body);
+    font-size: 14px;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    background: #000;
+    border: 2px solid var(--panel-edge);
+    box-shadow: 0 0 0 4px #060913, 0 18px 50px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+    outline: none;
+  }
+  .frame:focus-visible { border-color: var(--gold); }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+  }
+
+  /* HUD */
+  .hud {
+    position: absolute;
+    inset: 0 0 auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: clamp(6px, 1.4vw, 14px) clamp(8px, 1.8vw, 18px);
+    font-family: var(--label);
+    font-size: clamp(8px, 1.15vw, 13px);
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 0 #000, 0 0 6px rgba(0,0,0,.6);
+    pointer-events: none;
+  }
+  .hud .where { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .hud .where b { color: var(--gold); font-weight: 400; }
+  .hud .where span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hud .stats { display: flex; gap: clamp(8px, 1.6vw, 20px); text-align: right; flex-wrap: wrap; justify-content: flex-end; }
+  .hud .stat { display: flex; flex-direction: column; gap: 2px; }
+  .hud .stat small { color: var(--muted); font-size: 0.78em; }
+  .hearts { color: var(--risk); letter-spacing: 0.15em; }
+  .hud [data-val] { font-variant-numeric: tabular-nums; }
+
+  /* Chapter banner */
+  .banner {
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    transform: translate(-50%, -8px);
+    width: min(88%, 640px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s, transform 0.35s;
+    text-shadow: 0 2px 0 #000, 0 0 14px rgba(0,0,0,.7);
+  }
+  .banner.show { opacity: 1; transform: translate(-50%, 0); }
+  .banner .b-years { font-family: var(--label); color: var(--gold); font-size: clamp(9px, 1.3vw, 14px); letter-spacing: 0.2em; }
+  .banner .b-org { font-family: var(--display); font-weight: 700; font-size: clamp(18px, 3.4vw, 40px); line-height: 1.05; text-wrap: balance; }
+  .banner .b-role { font-family: var(--body); font-size: clamp(9px, 1.3vw, 14px); color: var(--paper); text-wrap: balance; }
+
+  /* Achievement toasts */
+  .toasts {
+    position: absolute;
+    left: clamp(6px, 1.6vw, 16px);
+    bottom: clamp(6px, 1.6vw, 16px);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    width: min(46%, 380px);
+    pointer-events: none;
+  }
+  .toast {
+    background: var(--panel);
+    border: 2px solid var(--gold);
+    padding: clamp(5px, 0.9vw, 10px) clamp(7px, 1.1vw, 12px);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    row-gap: 2px;
+    align-items: start;
+    animation: toastIn 0.25s ease-out;
+    font-size: clamp(8px, 1.05vw, 12px);
+    line-height: 1.35;
+  }
+  .toast.power { border-color: var(--tick); }
+  .toast.out { opacity: 0; transform: translateX(-12px); transition: opacity .3s, transform .3s; }
+  .toast .tick {
+    grid-row: span 3;
+    width: clamp(16px, 2vw, 24px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95em;
+  }
+  .toast.power .tick { background: var(--tick); border-radius: 3px; }
+  .toast .eye { font-family: var(--label); color: var(--muted); font-size: 0.8em; letter-spacing: 0.06em; }
+  .toast strong { font-family: var(--display); font-weight: 600; font-size: 1.25em; color: var(--gold); }
+  .toast.power strong { color: var(--tick); }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
+
+  /* Overlay screens */
+  .screen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8,11,25,.55), rgba(8,11,25,.88) 60%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(6px, 1.2vw, 14px);
+    padding: clamp(14px, 4vw, 56px);
+    overflow-y: auto;
+  }
+  .screen.solid { background: rgba(8, 11, 25, 0.94); justify-content: flex-start; }
+  .eyebrow { font-family: var(--label); color: var(--gold); font-size: clamp(8px, 1.2vw, 13px); letter-spacing: 0.18em; }
+  .screen h1, .screen h2 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 0.95;
+    text-wrap: balance;
+    font-size: clamp(28px, 6.6vw, 78px);
+    color: var(--paper);
+    text-shadow: 3px 3px 0 #b8322e, 6px 6px 0 #0a0e1d;
+  }
+  .screen h2 { font-size: clamp(22px, 4.4vw, 52px); }
+  .screen .lead { margin: 0; max-width: 58ch; font-size: clamp(10px, 1.35vw, 15px); line-height: 1.55; color: var(--paper); }
+  .screen .lead em { color: var(--gold); font-style: normal; }
+  .keys { display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--label); font-size: clamp(8px, 1vw, 11px); color: var(--muted); }
+  kbd {
+    font-family: var(--label);
+    background: #1a2244;
+    border: 1px solid #3a4680;
+    border-bottom-width: 3px;
+    padding: 1px 6px;
+    color: var(--paper);
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .btn {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(13px, 1.8vw, 20px);
+    background: var(--gold);
+    color: var(--ink);
+    border: 0;
+    padding: 0.5em 1.1em 0.55em;
+    box-shadow: 0 4px 0 #9a6d12, 0 0 0 2px #0a0e1d;
+    cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #9a6d12, 0 0 0 2px #0a0e1d; }
+  .btn:focus-visible { outline: 3px solid var(--tick); outline-offset: 3px; }
+  .btn.ghost { background: transparent; color: var(--paper); box-shadow: inset 0 0 0 2px var(--panel-edge); }
+  .link { color: var(--tick); font-family: var(--label); font-size: clamp(9px, 1.1vw, 12px); }
+  .blink { animation: blink 1.1s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+
+  .statgrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+  }
+  .statgrid div { border: 2px solid var(--panel-edge); padding: 6px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .statgrid dt { font-family: var(--label); font-size: clamp(7px, 0.9vw, 10px); color: var(--muted); letter-spacing: 0.06em; }
+  .statgrid dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(16px, 2.4vw, 28px); color: var(--gold); font-variant-numeric: tabular-nums; }
+  .ledger { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; font-size: clamp(8px, 0.95vw, 11px); }
+  .ledger section { display: flex; flex-direction: column; gap: 3px; }
+  .ledger h3 { margin: 0; font-family: var(--label); font-weight: 400; font-size: 1em; color: var(--gold); letter-spacing: 0.04em; }
+  .ledger h3 span { color: var(--muted); }
+  .ledger ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+  .ledger li { color: #5d6690; }
+  .ledger li.got { color: var(--paper); }
+  .ledger li::before { content: "○ "; }
+  .ledger li.got::before { content: "✓ "; color: var(--tick); }
+
+  .under { display: flex; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; font-family: var(--label); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+  .under b { color: var(--paper); font-weight: 400; }
+
+  /* Touch controls */
+  .touch { display: none; justify-content: space-between; gap: 12px; user-select: none; -webkit-user-select: none; touch-action: none; }
+  .touch .pad { display: flex; gap: 10px; }
+  .touch button {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 20px;
+    width: 72px;
+    height: 60px;
+    background: #1a2244;
+    color: var(--paper);
+    border: 2px solid #3a4680;
+    border-bottom-width: 5px;
+    touch-action: none;
+  }
+  .touch button.jump { width: 110px; background: var(--gold); color: var(--ink); border-color: #9a6d12; }
+  .touch button.on { transform: translateY(3px); border-bottom-width: 2px; }
+  @media (pointer: coarse) { .touch { display: flex; } }
+
+  @media (max-width: 720px) {
+    .statgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ledger { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hud .stat.opt { display: none; }
+  }
+  @media (max-width: 460px) {
+    .ledger { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .banner, .toast { transition: none; animation: none; }
+    .blink { animation: none; }
+  }
+</style>
+
+<main class="wrap">
+  <div class="frame" id="frame" tabindex="0" aria-label="Game: Daniel Lewis Career Quest">
+    <canvas id="game" width="960" height="540"></canvas>
+
+    <div class="hud" id="hud" hidden>
+      <div class="where">
+        <b id="hudYears">2003</b>
+        <span id="hudOrg">University of Cambridge</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>RESILIENCE</small><span class="hearts" id="hudHearts">♥♥♥</span></div>
+        <div class="stat"><small>ACHIEVEMENTS</small><span data-val id="hudAch">0/0</span></div>
+        <div class="stat opt"><small>RISKS MITIGATED</small><span data-val id="hudRisk">0</span></div>
+        <div class="stat"><small>SCORE</small><span data-val id="hudScore">000000</span></div>
+      </div>
+    </div>
+
+    <div class="banner" id="banner" aria-live="polite">
+      <span class="b-years" id="bYears"></span>
+      <span class="b-org" id="bOrg"></span>
+      <span class="b-role" id="bRole"></span>
+    </div>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <div class="screen" id="titleScreen">
+      <span class="eyebrow">2003 → 2026 · 9 CHAPTERS · 23 YEARS</span>
+      <h1>Making Banking<br>Better</h1>
+      <p class="lead">The career of <em>Daniel Lewis</em> as a side-scroller. Run from Cambridge to Shanghai, Westminster, Canary Wharf and Hong Kong, then back to London as Global Head of Internal Audit. Collect achievements, stomp risks, and pick up Python and AI on the way.</p>
+      <div class="btn-row">
+        <button class="btn" id="startBtn">Start the career</button>
+        <span class="keys"><span class="blink">or press Enter</span></span>
+      </div>
+      <div class="keys">
+        <span><kbd>←</kbd> <kbd>→</kbd> run</span>
+        <span><kbd>Space</kbd> jump</span>
+        <span><kbd>P</kbd> pause</span>
+        <span><kbd>M</kbd> sound</span>
+      </div>
+    </div>
+
+    <div class="screen" id="pauseScreen" hidden>
+      <span class="eyebrow">PAUSED</span>
+      <h2>Taking stock</h2>
+      <p class="lead" id="pauseLead"></p>
+      <div class="btn-row">
+        <button class="btn" id="resumeBtn">Resume</button>
+        <button class="btn ghost" id="restartBtn">Start over</button>
+      </div>
+    </div>
+
+    <div class="screen solid" id="endScreen" hidden>
+      <span class="eyebrow">2026 · CAREER TO DATE</span>
+      <h2>Global Head of Internal Audit</h2>
+      <p class="lead">From a Cambridge Computer Science degree to MD and Global Head of Internal Audit at HSBC Innovation Banking. <em>23 years</em>, 16 of them at HSBC and 8 based in Asia. The run continues.</p>
+      <dl class="statgrid" id="endStats"></dl>
+      <div class="ledger" id="ledger"></div>
+      <div class="btn-row">
+        <button class="btn" id="againBtn">Play again</button>
+        <a class="link" href="https://www.linkedin.com/in/daniel-lewis-a5a96b73/" target="_blank" rel="noopener">Daniel on LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="touch" id="touch" aria-hidden="true">
+    <div class="pad">
+      <button data-key="left">◀</button>
+      <button data-key="right">▶</button>
+    </div>
+    <button class="jump" data-key="jump">JUMP</button>
+  </div>
+
+  <div class="under">
+    <span><b>Daniel Lewis</b> · Banking audit leader, risk professional and former COO</span>
+    <span id="soundLabel">Sound on · M to mute</span>
+  </div>
+</main>
+
+<script>
+(() => {
+  // ---------- Content from the CV ----------
+  const CHAPTERS = [
+    { years: '2003', org: 'University of Cambridge', role: 'BA Computer Science and Linguistics', scene: 'cambridge',
+      power: { type: 'code', name: 'Python + JavaScript', text: 'Hands-on coder. Double jump unlocked: press jump again in mid-air.' },
+      tokens: [
+        ['Cambridge graduate', 'BA Computer Science and Linguistics, University of Cambridge (2003).'],
+        ['Generative artist', 'Codes for fun: JavaScript and d3.js, Python, C, web development and generative art.'],
+      ],
+      risks: ['Exam Nerves'] },
+    { years: '2003–2005', org: 'Shanghai and London', role: 'Teaching in Shanghai, then public service in London', scene: 'shanghai',
+      tokens: [
+        ['Teacher in Shanghai', 'Xingzhi Middle School, Shanghai (2003–2004).'],
+        ['Public service', 'London Borough of Ealing (2004).'],
+        ['Transport for London', 'Transport for London (2004–2005).'],
+      ],
+      risks: ['Culture Shock', 'Jet Lag'] },
+    { years: '2005–2010', org: 'UK National Audit Office', role: 'Audit Principal · Department for Transport and Ministry of Defence', scene: 'westminster',
+      tokens: [
+        ['Parliament', 'Led examinations of government reporting and delivery for a Parliamentary Select Committee.'],
+        ['Transport audits', 'High-impact audits of ERP implementation, rail capacity and road safety.'],
+        ['Chartered Accountant', 'ICAEW Associate Chartered Accountant (2008).'],
+        ['Defence audits', 'Audited Defence Equipment Acquisition and Military Communication Satellite refinancing.'],
+      ],
+      risks: ['Overspend', 'Scope Creep', 'Delay'] },
+    { years: '2010–2014', org: 'HSBC · GBM Internal Audit', role: 'Senior Audit Manager, Global Banking and Markets', scene: 'wharf',
+      tokens: [
+        ['Global audit teams', 'Led audits across DCM, ECM, M&A, Leveraged Finance, FICC and Equities.'],
+        ['Three continents', 'Delivered high-impact audits in the US, Europe and Asia-Pacific.'],
+        ['Coach', 'Built team know-how through one-to-one coaching and whole-team teach-ins.'],
+        ['IIA standards', 'Raised professional practices to IIA standards, supporting Audit Committee reporting.'],
+      ],
+      risks: ['Conduct Risk', 'Control Gap'] },
+    { years: '2014–2017', org: 'HSBC · Global Markets', role: 'Front Office COO, European Sites and Emerging Markets', scene: 'europe',
+      tokens: [
+        ['19 sites', 'COO for 19 European sites: PBT USD400m, c.150 sales and traders.'],
+        ['USD2m a year', 'Core Treasury System upgrade shortened development cycles and saved USD2m a year.'],
+        ['Regulatory change', 'Delivered control improvements for EMIR, MAR, Dodd-Frank and Volcker.'],
+        ['Client protection', 'Upgraded risk metrics, supervision and trade restructuring policies.'],
+      ],
+      risks: ['Reg Change', 'Cost Creep', 'Legacy IT'] },
+    { years: '2017–2021', org: 'HSBC · GBM Internal Audit, Asia-Pacific', role: 'Director, then Regional Head of GBM Audit · Hong Kong', scene: 'harbour', movers: true,
+      tokens: [
+        ['Machine learning', 'Led an ML project for unauthorised-trading risk sensing.'],
+        ['Fellow', 'ICAEW Fellow Chartered Accountant (2018).'],
+        ['Data scientists', 'Built a network of audit data scientists across the region.'],
+        ['HKMA report', 'Delivered a key HKMA mis-selling report, protecting clients and markets.'],
+        ['Covid-ready', 'Innovated with remote working and agile audit plans through Covid-19.'],
+        ['Analytics at scale', 'Automated review of trading P&L and risk during the H1 2020 volatility.'],
+      ],
+      risks: ['Rogue Trade', 'Mis-selling', 'Covid-19', 'IBOR'] },
+    { years: '2021–2025', org: 'HSBC · Internal Audit', role: 'Managing Director · Regional Head for Asia, then Global Head of Commercial Banking Audit', scene: 'peak', movers: true,
+      tokens: [
+        ['One team', 'Merged two audit teams with different ways of working into one unit.'],
+        ['400 careers', 'Designed People Development Days for c.400 audit staff across Asia.'],
+        ['Climate risk', 'GARP Sustainability and Climate Risk certificate (2022).'],
+        ['Mentor', 'Mentored female talent to promotions to Director and MD.'],
+        ['Speaker', 'Presented on AI and Internal Audit to 200+ at an IIA conference in Hong Kong.'],
+        ['ExCo', 'Member of the GIA Executive Committee, attending Global CMB ExCo.'],
+      ],
+      risks: ['Silos', 'Missed KPIs', 'Credit Risk'] },
+    { years: '2025–2026', org: 'HSBC · Internal Audit', role: 'MD, Global Head of Audit for GCOO, People and Comms · Head of Digital Strategy', scene: 'city',
+      power: { type: 'ai', name: 'AI Executive Ambassador', text: 'HSBC AI Executive Ambassador (2024). Nearby achievements now fly to you.' },
+      tokens: [
+        ['Top 150', 'Enterprise Leadership role among HSBC’s top 150 executives.'],
+        ['Risk and AI', 'GARP Risk and Artificial Intelligence certificate (2024).'],
+        ['Digital strategy', 'Led GIA’s Digital Strategy and its use of data and technology.'],
+        ['Board insight', 'Attended the HSBC Group Service Company Board, briefing NEDs on audit coverage.'],
+        ['Data viz patron', 'Patron of the Data Visualization Society (2023), with awards for hobbyist work.'],
+      ],
+      risks: ['Outage', 'Third Party', 'Cyber'] },
+    { years: '2026 – now', org: 'HSBC Innovation Banking', role: 'MD, Global Head of Internal Audit', scene: 'innovation', final: true,
+      tokens: [
+        ['SMF5', 'Senior Manager Function 5 holder for HSBC Innovation Banking Ltd UK.'],
+        ['OpCo', 'Member of the HINV Operating Committee.'],
+      ],
+      risks: ['Disruption'] },
+  ];
+
+  const SCENES = {
+    cambridge:  { top: '#6fa6d8', bot: '#f6d6aa', far: '#b3a3c4', mid: '#8a82a6', win: '#fbe9b4', gTop: '#6cc05a', gBody: '#6d4b34', pit: '#2a1f2e', maxH: 55, clouds: true },
+    shanghai:   { top: '#29285a', bot: '#ec907c', far: '#70508a', mid: '#47376a', win: '#ffd07c', gTop: '#d2ab6d', gBody: '#7c4d3a', pit: '#1c1530', maxH: 90 },
+    westminster:{ top: '#93b1cf', bot: '#e3e5df', far: '#a2a8ba', mid: '#6d7690', win: '#fff2c2', gTop: '#a2a8b0', gBody: '#565e70', pit: '#232833', maxH: 70, clouds: true },
+    wharf:      { top: '#101c40', bot: '#3d5a91', far: '#2c3f6f', mid: '#1b284c', win: '#ffd76a', gTop: '#8a93a6', gBody: '#394157', pit: '#0b1122', maxH: 100, night: true },
+    europe:     { top: '#463a7a', bot: '#ffb46a', far: '#9a6a8c', mid: '#5c4368', win: '#ffe08a', gTop: '#cdb57e', gBody: '#6e5440', pit: '#231a2a', maxH: 70 },
+    harbour:    { top: '#0b0f30', bot: '#43287a', far: '#261c50', mid: '#191440', win: '#ff72b6', win2: '#63e4ff', gTop: '#46d8c8', gBody: '#2a2f4d', pit: '#0b2544', water: true, maxH: 110, night: true },
+    peak:       { top: '#58aee6', bot: '#d3f0f6', far: '#6c9887', mid: '#6a84a2', win: '#eaf6ff', gTop: '#bcc5cf', gBody: '#566273', pit: '#1f6189', water: true, maxH: 100, clouds: true },
+    city:       { top: '#86bbe6', bot: '#f4e7d6', far: '#98a5bc', mid: '#6b7890', win: '#fff0c0', gTop: '#aab0b8', gBody: '#4d5465', pit: '#232733', maxH: 85, clouds: true },
+    innovation: { top: '#191343', bot: '#ff8f6b', far: '#5a3c8a', mid: '#2c245e', win: '#7ef0ff', gTop: '#7ef0c0', gBody: '#2a2956', pit: '#120d2b', maxH: 95, night: true },
+  };
+
+  // ---------- Setup ----------
+  const W = 480, H = 270, GROUND = 230;
+  const frameEl = document.getElementById('frame');
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const $ = id => document.getElementById(id);
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let S = 2;
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    const s = Math.max(1, Math.min(6, Math.ceil((r.width * (window.devicePixelRatio || 1)) / W)));
+    if (s !== S || canvas.width !== W * s) {
+      S = s; canvas.width = W * S; canvas.height = H * S;
+    }
+    ctx.imageSmoothingEnabled = false;
+  }
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  // ---------- World ----------
+  let world;
+  function buildWorld() {
+    const w = { solids: [], tokens: [], bits: [], enemies: [], movers: [], checkpoints: [], powers: [], goal: null };
+    let x = 0;
+    const ground = (x0, len) => w.solids.push({ x: x0, y: GROUND, w: len, h: 60, kind: 'ground' });
+    const plat = (x0, y, len) => w.solids.push({ x: x0, y, w: len, h: 8, kind: 'plat', oneWay: true });
+    const box = (x0, y, bw, bh) => w.solids.push({ x: x0, y, w: bw, h: bh, kind: 'box' });
+    const arc = (x0, x1, y, n, hgt) => {
+      for (let i = 0; i < n; i++) {
+        const t = n === 1 ? 0.5 : i / (n - 1);
+        w.bits.push({ x: x0 + (x1 - x0) * t, y: y - Math.sin(t * Math.PI) * hgt, got: false });
+      }
+    };
+
+    CHAPTERS.forEach((c, ci) => {
+      const rng = mulberry32(ci * 7919 + 13);
+      c.x0 = x;
+      ground(x, 240);
+      w.checkpoints.push({ x: x + 36, ci, on: false });
+      if (c.power) w.powers.push({ x: x + 150, y: GROUND - 44, ci, type: c.power.type, got: false });
+      else arc(x + 110, x + 210, GROUND - 12, 4, 0);
+      x += 240;
+
+      const nt = c.tokens.length, nr = c.risks.length;
+      const seq = [
+        ...c.tokens.map((t, i) => ({ k: 't', v: t, p: (i + 0.5) / nt })),
+        ...c.risks.map((r, i) => ({ k: 'r', v: r, p: (i + 0.8) / nr })),
+      ].sort((a, b) => a.p - b.p);
+
+      let tp = 0;
+      seq.forEach(s => {
+        if (s.k === 'r') {
+          ground(x, 230);
+          const speed = 0.45 + rng() * 0.3 + ci * 0.05;
+          w.enemies.push({ x: x + 140, y: GROUND - 12, w: 14, h: 12, vx: -speed, min: x + 24, max: x + 214, name: s.v, alive: true, squash: 0, ci });
+          plat(x + 80, GROUND - 52, 60);
+          arc(x + 84, x + 136, GROUND - 64, 4, 6);
+          x += 230;
+          return;
+        }
+        const pats = c.movers ? ['mover', 'plat', 'pit', 'mover', 'stairs'] : ['pit', 'plat', 'stairs'];
+        const p = pats[(tp++ + ci) % pats.length];
+        const tok = { x: 0, y: 0, title: s.v[0], text: s.v[1], ci, got: false };
+        if (p === 'pit') {
+          const g = Math.round(38 + rng() * 12 + Math.min(ci, 6) * 2);
+          ground(x, 80);
+          tok.x = x + 80 + g / 2; tok.y = GROUND - 58;
+          arc(x + 48, x + 80 + g + 32, GROUND - 24, 5, 30);
+          ground(x + 80 + g, 100);
+          x += 80 + g + 100;
+        } else if (p === 'plat') {
+          ground(x, 240);
+          plat(x + 60, GROUND - 46, 56);
+          plat(x + 140, GROUND - 88, 48);
+          tok.x = x + 164; tok.y = GROUND - 104;
+          arc(x + 66, x + 110, GROUND - 58, 3, 4);
+          x += 240;
+        } else if (p === 'stairs') {
+          ground(x, 260);
+          box(x + 50, GROUND - 16, 32, 16);
+          box(x + 82, GROUND - 32, 32, 32);
+          box(x + 114, GROUND - 48, 32, 48);
+          plat(x + 168, GROUND - 80, 44);
+          tok.x = x + 190; tok.y = GROUND - 98;
+          arc(x + 56, x + 140, GROUND - 60, 4, 16);
+          x += 260;
+        } else {
+          const g = 150;
+          ground(x, 70);
+          w.movers.push({ x: x + 76, y: GROUND - 10, w: 46, h: 8, min: x + 74, max: x + 70 + g - 50, vx: 0.8 + ci * 0.05, dx: 0, kind: 'mover', oneWay: true });
+          tok.x = x + 70 + g / 2; tok.y = GROUND - 44;
+          arc(x + 90, x + 200, GROUND - 60, 4, 10);
+          ground(x + 70 + g, 90);
+          x += 70 + g + 90;
+        }
+        w.tokens.push(tok);
+      });
+
+      if (c.final) {
+        ground(x, 560);
+        box(x + 90, GROUND - 16, 40, 16);
+        box(x + 130, GROUND - 32, 40, 32);
+        arc(x + 90, x + 220, GROUND - 58, 6, 18);
+        w.goal = { x: x + 330 };
+        x += 560;
+      }
+      c.x1 = x;
+    });
+    w.width = x;
+    // merge touching ground segments so seams only appear at real edges
+    const grounds = w.solids.filter(s => s.kind === 'ground').sort((a, b) => a.x - b.x), merged = [];
+    for (const g of grounds) { const l = merged[merged.length - 1]; if (l && l.x + l.w >= g.x) l.w = Math.max(l.w, g.x + g.w - l.x); else merged.push(g); }
+    w.solids = merged.concat(w.solids.filter(s => s.kind !== 'ground'));
+    return w;
+  }
+
+  // Mid-layer skylines per chapter
+  const SKY = CHAPTERS.map((c, ci) => {
+    const sc = SCENES[c.scene], rng = mulberry32(ci * 31 + 5), out = [];
+    let x = 0;
+    while (x < 640) {
+      const bw = 16 + Math.floor(rng() * 34), bh = 16 + Math.floor(rng() * sc.maxH);
+      const wins = [];
+      for (let wy = GROUND - bh + 5; wy < GROUND - 6; wy += 6)
+        for (let wx = x + 3; wx < x + bw - 4; wx += 5)
+          if (rng() < 0.35) wins.push([wx, wy, rng() < 0.5]);
+      out.push({ x, w: bw, h: bh, wins, spire: rng() < 0.2 });
+      x += bw + 2 + Math.floor(rng() * 8);
+    }
+    const stars = [];
+    for (let i = 0; i < 60; i++) stars.push([rng() * W, rng() * 150, rng()]);
+    return { b: out, period: 640, stars };
+  });
+
+  // ---------- State ----------
+  const G = {
+    state: 'title', t: 0, cam: 0, score: 0, hearts: 3, lessons: 0, stomps: 0, bitsGot: 0, achGot: 0,
+    power: { code: false, ai: false }, cp: null, chapter: 0, startTime: 0, endTime: 0, endTimer: 0,
+    particles: [], popups: [],
+  };
+  const P = { x: 40, y: GROUND - 18, w: 10, h: 18, vx: 0, vy: 0, face: 1, onGround: false, on: null, coyote: 0, buf: 0, jumps: 0, inv: 0, anim: 0, auto: false };
+
+  function reset() {
+    world = buildWorld();
+    Object.assign(G, { t: 0, score: 0, hearts: 3, lessons: 0, stomps: 0, bitsGot: 0, achGot: 0, power: { code: false, ai: false }, chapter: 0, endTimer: 0, particles: [], popups: [] });
+    G.cp = world.checkpoints[0];
+    Object.assign(P, { x: 40, y: GROUND - 18, vx: 0, vy: 0, face: 1, onGround: false, on: null, coyote: 0, buf: 0, jumps: 0, inv: 0, auto: false });
+    G.cam = 0;
+    $('toasts').innerHTML = '';
+  }
+
+  // ---------- Input ----------
+  const keys = { left: false, right: false, jump: false };
+  let jumpPressed = false;
+  const LEFT = ['ArrowLeft', 'a', 'A'], RIGHT = ['ArrowRight', 'd', 'D'], JUMP = [' ', 'ArrowUp', 'w', 'W', 'z', 'Z'];
+  addEventListener('keydown', e => {
+    const k = e.key;
+    if (e.target.tagName === 'BUTTON' && (k === 'Enter' || k === ' ')) return;
+    if (LEFT.includes(k)) { keys.left = true; e.preventDefault(); }
+    if (RIGHT.includes(k)) { keys.right = true; e.preventDefault(); }
+    if (JUMP.includes(k)) {
+      e.preventDefault();
+      if (G.state === 'title' && !e.repeat) { start(); return; }
+      if (!keys.jump) jumpPressed = true;
+      keys.jump = true;
+    }
+    if (k === 'ArrowDown') e.preventDefault();
+    if (k === 'Enter') {
+      if (G.state === 'title') start();
+      else if (G.state === 'paused') resume();
+    }
+    if ((k === 'p' || k === 'P' || k === 'Escape') && !e.repeat) {
+      if (G.state === 'play') pause(); else if (G.state === 'paused') resume();
+    }
+    if ((k === 'm' || k === 'M') && !e.repeat) toggleMute();
+  });
+  addEventListener('keyup', e => {
+    const k = e.key;
+    if (LEFT.includes(k)) keys.left = false;
+    if (RIGHT.includes(k)) keys.right = false;
+    if (JUMP.includes(k)) keys.jump = false;
+  });
+  addEventListener('blur', () => { keys.left = keys.right = keys.jump = false; if (G.state === 'play') pause(); });
+
+  document.querySelectorAll('#touch button').forEach(b => {
+    const k = b.dataset.key;
+    const down = e => {
+      e.preventDefault();
+      if (G.state === 'title') { start(); return; }
+      if (k === 'jump' && !keys.jump) jumpPressed = true;
+      keys[k] = true; b.classList.add('on');
+    };
+    const up = e => { e.preventDefault(); keys[k] = false; b.classList.remove('on'); };
+    b.addEventListener('pointerdown', down);
+    b.addEventListener('pointerup', up);
+    b.addEventListener('pointercancel', up);
+    b.addEventListener('pointerleave', up);
+    b.addEventListener('contextmenu', e => e.preventDefault());
+  });
+
+  // ---------- Audio ----------
+  let AC = null, muted = false;
+  function initAudio() {
+    if (AC) return;
+    try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; }
+  }
+  function tone(f1, f2, dur, type = 'square', vol = 0.06, delay = 0) {
+    if (!AC || muted) return;
+    const t0 = AC.currentTime + delay;
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f1, t0);
+    if (f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+    g.gain.setValueAtTime(vol, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(AC.destination);
+    o.start(t0); o.stop(t0 + dur + 0.02);
+  }
+  const SFX = {
+    jump: () => tone(330, 620, 0.12, 'square', 0.035),
+    djump: () => tone(520, 900, 0.1, 'square', 0.035),
+    bit: () => tone(1320, 1320, 0.05, 'square', 0.025),
+    token: () => { tone(988, 988, 0.08, 'square', 0.05); tone(1319, 1319, 0.2, 'square', 0.05, 0.08); },
+    stomp: () => tone(260, 70, 0.16, 'triangle', 0.12),
+    hurt: () => tone(320, 90, 0.35, 'sawtooth', 0.05),
+    power: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, f, 0.12, 'square', 0.045, i * 0.07)),
+    chapter: () => [392, 523, 659].forEach((f, i) => tone(f, f, 0.14, 'triangle', 0.08, i * 0.09)),
+    win: () => [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, f, 0.2, 'square', 0.05, i * 0.12)),
+  };
+  function toggleMute() {
+    muted = !muted;
+    $('soundLabel').textContent = muted ? 'Sound off · M to unmute' : 'Sound on · M to mute';
+  }
+
+  // ---------- Screens ----------
+  function show(id, on) { $(id).hidden = !on; }
+  function start() {
+    initAudio();
+    if (AC && AC.state === 'suspended') AC.resume();
+    reset();
+    show('titleScreen', false); show('endScreen', false); show('pauseScreen', false); show('hud', true);
+    G.state = 'play';
+    G.startTime = performance.now();
+    world.checkpoints[0].on = true;
+    chapterBanner(0);
+    frameEl.focus({ preventScroll: true });
+  }
+  function pause() {
+    G.state = 'paused';
+    G.pauseAt = performance.now();
+    const c = CHAPTERS[G.chapter];
+    $('pauseLead').textContent = `${c.years} · ${c.org}. ${G.achGot} of ${world.tokens.length} achievements collected so far.`;
+    show('pauseScreen', true);
+    $('resumeBtn').focus({ preventScroll: true });
+  }
+  function resume() {
+    G.startTime += performance.now() - G.pauseAt;
+    G.state = 'play';
+    show('pauseScreen', false);
+    frameEl.focus({ preventScroll: true });
+  }
+  $('startBtn').addEventListener('click', start);
+  $('againBtn').addEventListener('click', start);
+  $('resumeBtn').addEventListener('click', resume);
+  $('restartBtn').addEventListener('click', start);
+
+  let bannerTimer = 0;
+  function chapterBanner(ci) {
+    const c = CHAPTERS[ci];
+    G.chapter = ci;
+    $('bYears').textContent = c.years;
+    $('bOrg').textContent = c.org;
+    $('bRole').textContent = c.role;
+    $('banner').classList.add('show');
+    clearTimeout(bannerTimer);
+    bannerTimer = setTimeout(() => $('banner').classList.remove('show'), 3200);
+    if (ci > 0) SFX.chapter();
+  }
+
+  function toast(eye, title, text, power) {
+    const box = $('toasts');
+    const el = document.createElement('div');
+    el.className = 'toast' + (power ? ' power' : '');
+    el.innerHTML = `<span class="tick">${power ? '+' : '✓'}</span><span class="eye"></span><strong></strong><span class="txt"></span>`;
+    el.querySelector('.eye').textContent = eye;
+    el.querySelector('strong').textContent = title;
+    el.querySelector('.txt').textContent = text;
+    box.prepend(el);
+    while (box.children.length > 2) box.lastElementChild.remove();
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 320); }, power ? 6000 : 4800);
+  }
+
+  function fmtTime(ms) {
+    const s = Math.floor(ms / 1000);
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  function showEnd() {
+    G.state = 'end';
+    show('hud', false);
+    const stats = [
+      ['ACHIEVEMENTS', `${G.achGot}/${world.tokens.length}`],
+      ['RISKS MITIGATED', `${G.stomps}/${world.enemies.length}`],
+      ['INSIGHTS', `${G.bitsGot}`],
+      ['LESSONS LEARNED', `${G.lessons}`],
+      ['TIME', fmtTime(G.endTime - G.startTime)],
+    ];
+    $('endStats').innerHTML = stats.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+    const ledger = $('ledger');
+    ledger.innerHTML = '';
+    CHAPTERS.forEach((c, ci) => {
+      const sec = document.createElement('section');
+      const h = document.createElement('h3');
+      h.innerHTML = `<span></span> `;
+      h.querySelector('span').textContent = c.years;
+      h.append(c.org.replace('HSBC · ', 'HSBC '));
+      sec.append(h);
+      const ul = document.createElement('ul');
+      world.tokens.filter(t => t.ci === ci).forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t.title;
+        if (t.got) li.className = 'got';
+        ul.append(li);
+      });
+      sec.append(ul);
+      ledger.append(sec);
+    });
+    show('endScreen', true);
+    $('endScreen').scrollTop = 0;
+    $('againBtn').focus({ preventScroll: true });
+  }
+
+  // ---------- Simulation ----------
+  const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+
+  function burst(x, y, col, n = 10, spd = 2) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, v = spd * (0.4 + Math.random());
+      G.particles.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, life: 30 + Math.random() * 20, col });
+    }
+  }
+  function popup(x, y, text, col = '#f4c24d') { G.popups.push({ x, y, text, life: 60, col }); }
+
+  function doJump(double) {
+    P.vy = double ? -7.4 : -8.3;
+    P.coyote = 0; P.buf = 0; P.onGround = false; P.on = null;
+    if (double) { SFX.djump(); burst(P.x + 5, P.y + 18, '#7ee0a0', 6, 1.2); }
+    else SFX.jump();
+  }
+
+  function respawn() {
+    const cp = G.cp;
+    Object.assign(P, { x: cp.x + 8, y: GROUND - 40, vx: 0, vy: 0, on: null, inv: 100 });
+    G.cam = Math.max(0, P.x - W * 0.35);
+  }
+
+  function hurt(fell) {
+    if (P.inv > 0 && !fell) return;
+    G.hearts--; G.lessons++;
+    SFX.hurt();
+    if (G.hearts <= 0) {
+      G.hearts = 3;
+      toast('SETBACK', 'Lesson learned', 'Recognising and learning from mistakes. Resilience restored.', true);
+      respawn();
+    } else if (fell) {
+      respawn();
+    } else {
+      P.inv = 90; P.vy = -4.5; P.vx = -P.face * 2.4;
+    }
+  }
+
+  function step() {
+    const L = keys.left && !P.auto, R = keys.right || P.auto;
+    const acc = P.onGround ? 0.38 : 0.26, max = P.auto ? 1.4 : 2.35;
+    if (L && !R) { P.vx = Math.max(P.vx - acc, -max); P.face = -1; }
+    else if (R && !L) { P.vx = Math.min(P.vx + acc, max); P.face = 1; }
+    else { P.vx *= P.onGround ? 0.72 : 0.94; if (Math.abs(P.vx) < 0.05) P.vx = 0; }
+
+    if (jumpPressed && !P.auto) P.buf = 8;
+    const fresh = jumpPressed; jumpPressed = false;
+    if (P.buf > 0) {
+      if (P.coyote > 0) doJump(false);
+      else if (fresh && G.power.code && P.jumps > 0) { P.jumps--; doJump(true); }
+    }
+    P.buf--;
+    if (!keys.jump && P.vy < -3.2) P.vy = -3.2;
+    P.vy = Math.min(P.vy + 0.45, 9);
+
+    // movers
+    world.movers.forEach(m => {
+      const nx = m.x + m.vx;
+      if (nx < m.min || nx > m.max) m.vx = -m.vx;
+      m.dx = m.vx; m.x += m.vx;
+    });
+    if (P.on && P.on.kind === 'mover') P.x += P.on.dx;
+
+    // X
+    P.x += P.vx;
+    for (const s of world.solids) {
+      if (s.oneWay || !overlap(P, s)) continue;
+      if (P.vx > 0 || (P.x + P.w / 2 < s.x + s.w / 2)) P.x = s.x - P.w; else P.x = s.x + s.w;
+      P.vx = 0;
+    }
+    P.x = Math.max(0, Math.min(world.width - P.w, P.x));
+
+    // Y
+    const prevBottom = P.y + P.h;
+    P.y += P.vy;
+    P.onGround = false;
+    const landOn = s => { P.y = s.y - P.h; P.vy = 0; P.onGround = true; P.on = s; };
+    for (const s of world.solids) {
+      if (!overlap(P, s)) continue;
+      if (s.oneWay) { if (P.vy >= 0 && prevBottom <= s.y + 1) landOn(s); continue; }
+      if (P.vy > 0) landOn(s);
+      else if (P.vy < 0) { P.y = s.y + s.h; P.vy = 0; }
+    }
+    for (const m of world.movers) {
+      if (overlap(P, m) && P.vy >= 0 && prevBottom <= m.y + 2) landOn(m);
+    }
+    if (!P.onGround) P.on = null;
+    if (P.onGround) { P.coyote = 6; P.jumps = 1; } else P.coyote--;
+    if (P.inv > 0) P.inv--;
+    P.anim += Math.abs(P.vx) * 0.12;
+
+    if (P.y > H + 30) { hurt(true); return; }
+
+    // enemies
+    for (const e of world.enemies) {
+      if (!e.alive) { if (e.squash > 0) e.squash--; continue; }
+      e.x += e.vx;
+      if (e.x < e.min || e.x + e.w > e.max) e.vx = -e.vx;
+      if (overlap(P, e)) {
+        if (P.vy > 0 && prevBottom <= e.y + 6) {
+          e.alive = false; e.squash = 40;
+          P.vy = keys.jump ? -7 : -5;
+          G.score += 100; G.stomps++;
+          SFX.stomp();
+          burst(e.x + 7, e.y + 6, '#ff5b4f', 12, 2);
+          popup(e.x + 7, e.y - 12, `${e.name} mitigated`, '#7ee0a0');
+        } else hurt(false);
+      }
+    }
+
+    // collectibles
+    const cx = P.x + P.w / 2, cy = P.y + P.h / 2;
+    for (const b of world.bits) {
+      if (b.got) continue;
+      if (G.power.ai) { const dx = cx - b.x, dy = cy - b.y, d = Math.hypot(dx, dy); if (d < 80) { b.x += dx / d * 3; b.y += dy / d * 3; } }
+      if (Math.abs(b.x - cx) < 8 && Math.abs(b.y - cy) < 12) {
+        b.got = true; G.bitsGot++; G.score += 10; SFX.bit();
+      }
+    }
+    for (const t of world.tokens) {
+      if (t.got) continue;
+      if (G.power.ai) { const dx = cx - t.x, dy = cy - t.y, d = Math.hypot(dx, dy); if (d < 110) { t.x += dx / d * 3.2; t.y += dy / d * 3.2; } }
+      if (Math.abs(t.x - cx) < 11 && Math.abs(t.y - cy) < 15) {
+        t.got = true; G.achGot++; G.score += 500; SFX.token();
+        burst(t.x, t.y, '#f4c24d', 16, 2.2);
+        const c = CHAPTERS[t.ci];
+        toast(`${c.years} · ${c.org}`.toUpperCase(), t.title, t.text, false);
+      }
+    }
+    for (const p of world.powers) {
+      if (p.got) continue;
+      if (Math.abs(p.x - cx) < 14 && Math.abs(p.y - cy) < 16) {
+        p.got = true; G.power[p.type] = true; G.score += 1000; SFX.power();
+        burst(p.x, p.y, '#7ee0a0', 24, 2.6);
+        const pw = CHAPTERS[p.ci].power;
+        toast('POWER-UP', pw.name, pw.text, true);
+        popup(p.x, p.y - 20, pw.name, '#7ee0a0');
+      }
+    }
+    for (const cp of world.checkpoints) {
+      if (!cp.on && P.x > cp.x) {
+        cp.on = true; G.cp = cp; chapterBanner(cp.ci);
+        burst(cp.x + 2, GROUND - 40, '#7ee0a0', 10, 1.5);
+      }
+    }
+    if (world.goal && P.x > world.goal.x - 40 && G.state === 'play') {
+      G.state = 'ending'; P.auto = true; G.endTime = performance.now(); G.endTimer = 0;
+      SFX.win();
+    }
+  }
+
+  function endingStep() {
+    step();
+    G.endTimer++;
+    if (G.endTimer % 14 === 0 && G.endTimer < 170) {
+      const cols = ['#f4c24d', '#7ee0a0', '#ff72b6', '#63e4ff', '#f4ecd8'];
+      burst(world.goal.x - 120 + Math.random() * 280, 40 + Math.random() * 80, cols[(G.endTimer / 14) % cols.length | 0], 26, 2.4);
+      tone(200 + Math.random() * 300, 60, 0.3, 'triangle', 0.03);
+    }
+    if (P.x > world.goal.x + 40) { P.auto = false; P.vx = 0; }
+    if (G.endTimer === 210) showEnd();
+  }
+
+  function updateFx() {
+    for (const p of G.particles) { p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life--; }
+    G.particles = G.particles.filter(p => p.life > 0);
+    for (const p of G.popups) { p.y -= 0.4; p.life--; }
+    G.popups = G.popups.filter(p => p.life > 0);
+  }
+
+  function updateCam() {
+    if (G.state === 'title') {
+      G.cam += 0.7;
+      if (G.cam > world.width - W) G.cam = 0;
+      return;
+    }
+    const target = P.x - W * 0.38 + P.face * 24;
+    G.cam += (target - G.cam) * 0.09;
+    G.cam = Math.max(0, Math.min(world.width - W, G.cam));
+  }
+
+  // ---------- HUD ----------
+  const hudCache = {};
+  function setText(id, v) { if (hudCache[id] !== v) { hudCache[id] = v; $(id).textContent = v; } }
+  function updateHud() {
+    const c = CHAPTERS[G.chapter];
+    setText('hudYears', c.years);
+    setText('hudOrg', c.org);
+    setText('hudHearts', '♥'.repeat(G.hearts) + '♡'.repeat(3 - G.hearts));
+    setText('hudAch', `${G.achGot}/${world.tokens.length}`);
+    setText('hudRisk', String(G.stomps));
+    setText('hudScore', String(G.score).padStart(6, '0'));
+  }
+
+  // ---------- Drawing helpers ----------
+  const R = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
+  const TRI = (a, b, c, d, e, f, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(a, b); ctx.lineTo(c, d); ctx.lineTo(e, f); ctx.closePath(); ctx.fill(); };
+  const CIRC = (x, y, r, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
+  const POLY = (pts, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]); ctx.closePath(); ctx.fill(); };
+  const hex = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',')})`; };
+  function winGrid(x, y, w, h, col, seed, dens = 0.45) {
+    const r = mulberry32(seed);
+    ctx.fillStyle = col;
+    for (let yy = y + 4; yy < y + h - 4; yy += 6)
+      for (let xx = x + 3; xx < x + w - 3; xx += 5)
+        if (r() < dens) ctx.fillRect(xx, yy, 2, 3);
+  }
+  function label(text, x, y, fg, bg) {
+    ctx.font = '6px Silkscreen, monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const w = Math.ceil(ctx.measureText(text).width) + 6;
+    R(Math.round(x - w / 2), y - 5, w, 10, bg);
+    ctx.fillStyle = fg; ctx.fillText(text, x, y + 0.5);
+  }
+
+  // ---------- Landmarks ----------
+  const LAND = {
+    cambridge(ax, s) {
+      const c = s.far, lit = 'rgba(255,240,190,.35)';
+      R(ax, 165, 150, 50, c); R(ax - 2, 161, 154, 5, c);
+      for (const px of [ax - 6, ax + 146]) { R(px, 118, 10, 97, c); TRI(px - 1, 119, px + 5, 96, px + 11, 119, c); }
+      for (let k = 1; k < 7; k++) R(ax + k * 21, 153, 3, 9, c);
+      for (let k = 0; k < 7; k++) { R(ax + 9 + k * 20, 176, 8, 28, lit); CIRC(ax + 13 + k * 20, 176, 4, lit); }
+      R(ax + 220, 150, 44, 65, c); TRI(ax + 216, 151, ax + 242, 128, ax + 268, 151, c);
+      CIRC(ax + 242, 170, 7, lit);
+    },
+    shanghai(ax, s) {
+      const c = s.far, pink = '#c9679a';
+      R(ax - 2, 58, 4, 157, c); R(ax - 1, 34, 2, 26, c);
+      TRI(ax - 16, 215, ax - 2, 150, ax + 2, 150, c); TRI(ax + 16, 215, ax + 2, 150, ax - 2, 150, c);
+      CIRC(ax, 172, 14, pink); CIRC(ax, 112, 9, pink); CIRC(ax, 76, 4, pink);
+      for (let i = 0; i < 6; i++) R(ax + 55 + i * 2, 191 - i * 24, 30 - i * 4, 24, c);
+      R(ax + 70, 52, 2, 20, c);
+      POLY([ax + 118, 215, ax + 118, 60, ax + 124, 44, ax + 144, 44, ax + 150, 60, ax + 150, 215], c);
+      R(ax + 126, 50, 16, 8, s.bot);
+      winGrid(ax + 118, 70, 32, 140, 'rgba(255,208,124,.5)', 3, 0.3);
+    },
+    westminster(ax, s) {
+      const c = s.far;
+      R(ax - 70, 168, 186, 47, c);
+      for (let k = 0; k < 12; k++) { R(ax - 66 + k * 15, 160, 3, 10, c); TRI(ax - 67 + k * 15, 161, ax - 64.5 + k * 15, 154, ax - 62 + k * 15, 161, c); }
+      R(ax - 92, 118, 28, 97, c); for (const px of [ax - 94, ax - 70]) R(px, 108, 6, 12, c);
+      R(ax + 118, 96, 20, 119, c); R(ax + 116, 94, 24, 4, c);
+      CIRC(ax + 128, 110, 7, '#f4e3ae'); R(ax + 127.5, 105, 1, 5, c); R(ax + 128, 109.5, 4, 1, c);
+      TRI(ax + 116, 94, ax + 128, 60, ax + 140, 94, c); R(ax + 127, 50, 2, 12, c);
+      winGrid(ax - 70, 172, 186, 40, 'rgba(255,242,194,.35)', 7, 0.25);
+      ctx.strokeStyle = c; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(ax + 236, 160, 42, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 0.7;
+      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + G.t * 0.002; ctx.beginPath(); ctx.moveTo(ax + 236, 160); ctx.lineTo(ax + 236 + Math.cos(a) * 42, 160 + Math.sin(a) * 42); ctx.stroke(); CIRC(ax + 236 + Math.cos(a) * 42, 160 + Math.sin(a) * 42, 2, c); }
+      TRI(ax + 222, 215, ax + 236, 160, ax + 240, 215, c);
+    },
+    wharf(ax, s) {
+      const c = s.far, lit = 'rgba(255,215,106,.55)';
+      R(ax - 46, 100, 34, 115, c); winGrid(ax - 46, 100, 34, 115, lit, 11);
+      R(ax + 46, 92, 38, 123, c); winGrid(ax + 46, 92, 38, 123, lit, 12);
+      R(ax, 70, 34, 145, c); TRI(ax, 70, ax + 17, 50, ax + 34, 70, c); winGrid(ax, 72, 34, 140, lit, 13, 0.55);
+      if ((G.t >> 5) % 2) CIRC(ax + 17, 49, 1.6, '#ff4b4b');
+      R(ax + 110, 120, 50, 95, c); winGrid(ax + 110, 120, 50, 95, lit, 14);
+      R(ax - 110, 130, 50, 85, c); winGrid(ax - 110, 130, 50, 85, lit, 15);
+    },
+    europe(ax, s) {
+      const c = s.far;
+      ctx.strokeStyle = c; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ax - 34, 215); ctx.quadraticCurveTo(ax - 8, 150, ax - 2, 70); ctx.lineTo(ax + 2, 70); ctx.quadraticCurveTo(ax + 8, 150, ax + 34, 215); ctx.stroke();
+      ctx.lineWidth = 1;
+      for (let y = 90; y < 210; y += 10) { const hw = 3 + Math.pow((y - 70) / 145, 2) * 30; ctx.beginPath(); ctx.moveTo(ax - hw, y); ctx.lineTo(ax + hw, y + 10); ctx.moveTo(ax + hw, y); ctx.lineTo(ax - hw, y + 10); ctx.stroke(); }
+      R(ax - 22, 170, 44, 4, c); R(ax - 12, 125, 24, 3, c); R(ax - 1, 50, 2, 22, c);
+      R(ax + 90, 170, 70, 45, c); ctx.fillStyle = c; ctx.beginPath(); ctx.arc(ax + 125, 170, 26, Math.PI, 0); ctx.fill();
+      R(ax + 122, 136, 6, 10, c); TRI(ax + 121, 137, ax + 125, 128, ax + 129, 137, c);
+      R(ax - 130, 120, 30, 95, c); TRI(ax - 132, 121, ax - 115, 70, ax - 98, 121, c);
+      winGrid(ax - 130, 130, 30, 80, 'rgba(255,224,138,.4)', 21, 0.3);
+    },
+    harbour(ax, s) {
+      const c = s.far, lit = s.night ? 'rgba(99,228,255,.55)' : 'rgba(255,255,255,.35)';
+      R(ax - 70, 90, 30, 125, c); winGrid(ax - 70, 90, 30, 125, lit, 31);
+      POLY([ax, 215, ax, 78, ax + 5, 64, ax + 23, 64, ax + 28, 78, ax + 28, 215], c);
+      for (let k = 0; k < 4; k++) R(ax + 4 + k * 6, 56 - (k % 2) * 4, 2, 10, c);
+      winGrid(ax, 80, 28, 130, lit, 32, 0.5);
+      R(ax + 60, 100, 32, 115, c); TRI(ax + 60, 101, ax + 92, 58, ax + 92, 101, c); R(ax + 90, 42, 1.5, 18, c);
+      ctx.strokeStyle = s.night ? 'rgba(255,114,182,.7)' : 'rgba(255,255,255,.5)'; ctx.lineWidth = 0.8;
+      for (let y = 104; y < 210; y += 22) { ctx.beginPath(); ctx.moveTo(ax + 60, y); ctx.lineTo(ax + 92, y + 22); ctx.moveTo(ax + 92, y); ctx.lineTo(ax + 60, y + 22); ctx.stroke(); }
+      R(ax + 130, 120, 40, 95, c); winGrid(ax + 130, 120, 40, 95, lit, 33);
+    },
+    city(ax, s) {
+      const c = s.far;
+      TRI(ax - 24, 215, ax, 36, ax + 24, 215, c); TRI(ax, 36, ax + 24, 215, ax + 4, 215, 'rgba(255,255,255,.12)');
+      ctx.fillStyle = c; ctx.beginPath(); ctx.ellipse(ax + 84, 165, 13, 42, 0, 0, Math.PI * 2); ctx.fill(); R(ax + 71, 170, 26, 45, c);
+      ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 0.8;
+      for (let k = -3; k < 4; k++) { ctx.beginPath(); ctx.moveTo(ax + 84 + k * 5, 125); ctx.quadraticCurveTo(ax + 92 + k * 5, 170, ax + 84 + k * 5, 208); ctx.stroke(); }
+      POLY([ax - 96, 215, ax - 96, 128, ax - 100, 108, ax - 66, 100, ax - 70, 215], c);
+      R(ax + 140, 176, 50, 39, c); ctx.fillStyle = c; ctx.beginPath(); ctx.arc(ax + 165, 176, 18, Math.PI, 0); ctx.fill(); R(ax + 163, 150, 4, 10, c);
+      winGrid(ax - 96, 110, 26, 100, 'rgba(255,240,192,.35)', 41);
+    },
+    innovation(ax, s) {
+      CIRC(ax + 60, 190, 52, '#ffb56b');
+      for (let i = 0; i < 6; i++) R(ax, 178 + i * 7, 120, 1 + i * 0.6, s.bot);
+      const c = s.far, lit = 'rgba(126,240,255,.6)';
+      R(ax - 70, 88, 30, 127, c); winGrid(ax - 70, 88, 30, 127, lit, 51);
+      POLY([ax + 130, 215, ax + 130, 90, ax + 164, 70, ax + 164, 215], c); winGrid(ax + 130, 92, 34, 120, lit, 52);
+      R(ax + 175, 120, 26, 95, c);
+      R(ax - 70, 88, 30, 1, '#7ef0ff'); R(ax + 175, 120, 26, 1, '#7ef0ff');
+      const rt = (G.t % 520) / 520, ry = 200 - rt * 220;
+      if (ry > -20) {
+        R(ax + 230, ry, 4, 10, '#f4ecd8'); TRI(ax + 230, ry, ax + 232, ry - 5, ax + 234, ry, '#ff5b4f');
+        R(ax + 229, ry + 7, 1, 3, '#ff5b4f'); R(ax + 234, ry + 7, 1, 3, '#ff5b4f');
+        R(ax + 231, ry + 10, 2, 3 + Math.random() * 4, '#f4c24d');
+      }
+    },
+  };
+  LAND.peak = LAND.harbour;
+
+  function drawScene(ci, cam) {
+    const c = CHAPTERS[ci], s = SCENES[c.scene], sk = SKY[ci];
+    const lc = cam - c.x0;
+    // sky bands
+    const bands = 14;
+    for (let i = 0; i < bands; i++) R(0, Math.floor(i * GROUND / bands), W, Math.ceil(GROUND / bands) + 1, mix(s.top, s.bot, i / (bands - 1)));
+    if (s.night) for (const [x, y, r] of sk.stars) { if (((G.t >> 4) + r * 10 | 0) % 7) R(x, y, r > 0.8 ? 1.5 : 1, r > 0.8 ? 1.5 : 1, 'rgba(255,255,255,.75)'); }
+    if (s.night && c.scene !== 'innovation') { CIRC(400 - lc * 0.02, 40, 10, '#f4ecd8'); CIRC(404 - lc * 0.02, 37, 9, s.top); }
+    if (s.clouds) {
+      for (let i = 0; i < 5; i++) {
+        const x = ((i * 137 - lc * 0.06 - G.t * 0.05) % 620 + 620) % 620 - 70, y = 30 + (i * 29) % 70;
+        ctx.fillStyle = 'rgba(255,255,255,.7)';
+        ctx.fillRect(x, y, 44, 6); ctx.fillRect(x + 8, y - 5, 24, 6); ctx.fillRect(x + 28, y - 3, 10, 4);
+      }
+    }
+    // hills / mountains
+    if (c.scene === 'harbour' || c.scene === 'peak') {
+      const off = -lc * 0.05;
+      POLY([off - 40, 215, off - 40, 150, off + 40, 118, off + 120, 92, off + 190, 108, off + 270, 78, off + 350, 102, off + 450, 126, off + 560, 140, off + 560, 215], mix(s.far, s.top, 0.35));
+    }
+    // landmark
+    LAND[c.scene](Math.round(250 - lc * 0.12), s);
+    // mid skyline
+    const off = ((lc * 0.35) % sk.period + sk.period) % sk.period;
+    for (let rep = 0; rep < 2; rep++) {
+      for (const b of sk.b) {
+        const bx = Math.round(b.x - off + rep * sk.period);
+        if (bx > W || bx + b.w < 0) continue;
+        R(bx, GROUND - b.h, b.w, b.h, s.mid);
+        if (b.spire) R(bx + (b.w >> 1), GROUND - b.h - 8, 1, 8, s.mid);
+        for (const [wx, wy, alt] of b.wins) R(wx - b.x + bx, wy, 2, 3, alt && s.win2 ? s.win2 : s.win);
+      }
+    }
+    // below-ground void or water
+    R(0, GROUND, W, H - GROUND, s.pit);
+    if (s.water) {
+      for (let y = GROUND + 6; y < H; y += 8) for (let x = ((G.t * 0.3 + y * 7) % 24) - 24; x < W; x += 24) R(x, y, 10, 1, 'rgba(255,255,255,.18)');
+    }
+  }
+
+  function drawBackground(cam) {
+    const center = cam + W / 2;
+    let i = 0;
+    for (let k = CHAPTERS.length - 1; k >= 0; k--) if (center >= CHAPTERS[k].x0) { i = k; break; }
+    drawScene(i, cam);
+    const next = CHAPTERS[i + 1];
+    if (next) {
+      const d = next.x0 - center;
+      if (d < 220) { ctx.globalAlpha = 1 - d / 220; drawScene(i + 1, cam); ctx.globalAlpha = 1; }
+    }
+  }
+
+  function chapterAtX(x) {
+    for (let k = CHAPTERS.length - 1; k >= 0; k--) if (x >= CHAPTERS[k].x0) return SCENES[CHAPTERS[k].scene];
+    return SCENES.cambridge;
+  }
+
+  function drawSolids(cam) {
+    for (const s of world.solids) {
+      if (s.x > cam + W || s.x + s.w < cam) continue;
+      if (s.kind === 'ground') {
+        // draw in per-chapter slices so ground style changes with the era
+        const x0 = Math.max(s.x, cam - 2), x1 = Math.min(s.x + s.w, cam + W + 2);
+        for (let x = Math.floor(x0 / 16) * 16; x < x1; x += 16) {
+          const sc = chapterAtX(x);
+          const a = Math.max(x, s.x), b = Math.min(x + 16, s.x + s.w);
+          if (b <= a) continue;
+          R(a, s.y, b - a, H - s.y, sc.gBody);
+          R(a, s.y, b - a, 4, sc.gTop);
+          R(a, s.y + 4, b - a, 1, 'rgba(0,0,0,.25)');
+          const row = (x / 16) & 1;
+          R(a, s.y + 12, b - a, 1, 'rgba(0,0,0,.18)'); R(a, s.y + 24, b - a, 1, 'rgba(0,0,0,.18)'); R(a, s.y + 36, b - a, 1, 'rgba(0,0,0,.18)');
+          if (a === x) { R(x + (row ? 0 : 8), s.y + 5, 1, 7, 'rgba(0,0,0,.18)'); R(x + (row ? 8 : 0), s.y + 13, 1, 11, 'rgba(0,0,0,.18)'); R(x + (row ? 0 : 8), s.y + 25, 1, 11, 'rgba(0,0,0,.18)'); }
+        }
+        R(s.x, s.y, 1, H - s.y, 'rgba(0,0,0,.35)'); R(s.x + s.w - 1, s.y, 1, H - s.y, 'rgba(0,0,0,.35)');
+      } else if (s.kind === 'plat') {
+        // a stack of audit reports
+        R(s.x, s.y, s.w, s.h, '#f4ecd8');
+        R(s.x, s.y + 2, s.w, 1, '#b9c4e6'); R(s.x, s.y + 4, s.w, 1, '#b9c4e6');
+        R(s.x, s.y + s.h - 2, s.w, 2, '#8d7f62');
+        R(s.x, s.y, 3, s.h, '#d8383f'); R(s.x + s.w - 3, s.y, 3, s.h, '#27335f');
+      } else if (s.kind === 'box') {
+        // archive boxes
+        R(s.x, s.y, s.w, s.h, '#c79a60');
+        for (let y = s.y; y < s.y + s.h; y += 16) {
+          R(s.x, y, s.w, 1, '#8e6534');
+          R(s.x + s.w / 2 - 6, y + 5, 12, 6, '#f4ecd8');
+          R(s.x + s.w / 2 - 4, y + 7, 8, 1, '#8d7f62');
+        }
+        R(s.x, s.y, 1, s.h, '#8e6534'); R(s.x + s.w - 1, s.y, 1, s.h, '#8e6534');
+      }
+    }
+    for (const m of world.movers) {
+      if (m.x > cam + W || m.x + m.w < cam) continue;
+      // Star Ferry
+      R(m.x, m.y + 3, m.w, 5, '#2f8f5b');
+      R(m.x + 2, m.y + 8, m.w - 4, 2, '#1d5e3b');
+      R(m.x + 4, m.y, m.w - 8, 3, '#f4ecd8');
+      for (let k = m.x + 7; k < m.x + m.w - 7; k += 5) R(k, m.y + 1, 2, 1, '#27335f');
+      R(m.x + m.w / 2 - 1, m.y - 5, 2, 5, '#f4ecd8');
+    }
+  }
+
+  const PAL = { H: '#3a2a22', S: '#f0c6a0', G: '#15161c', W: '#f4f4f4', N: '#27335f', R: '#d8383f', P: '#1d2548', B: '#121318' };
+  const TOP = [
+    '...HHHHH....',
+    '..HHHHHHH...',
+    '..HHSSSSSH..',
+    '..HSGGSGGS..',
+    '..HSSSSSSS..',
+    '...SSSSSS...',
+    '....WWWW....',
+    '..NNWRWNNN..',
+    '.NNNWRWNNNN.',
+    '.NNNNRNNNNN.',
+    '.SNNNNNNNNS.',
+    '..NNNNNNNN..',
+  ];
+  const LEGS = {
+    stand: ['..PPPPPPPP..', '..PPP..PPP..', '..PPP..PPP..', '..PP....PP..', '..PP....PP..', '..BBB...BBB.'],
+    runA:  ['..PPPPPPPP..', '.PPP....PPP.', 'PPP......PP.', 'PP.......PP.', 'BB.......BBB', '............'],
+    runB:  ['..PPPPPPPP..', '...PPPPPP...', '...PP.PPP...', '...PP.PP....', '...BB.PP....', '......BBB...'],
+    jump:  ['..PPPPPPPP..', '.PPP...PPPP.', 'PPP.....PPP.', 'BB......BB..', '............', '............'],
+  };
+  function drawPlayer() {
+    if (P.inv > 0 && (P.inv >> 2) % 2) return;
+    let legs = LEGS.stand;
+    if (!P.onGround) legs = LEGS.jump;
+    else if (Math.abs(P.vx) > 0.3) legs = (P.anim | 0) % 2 ? LEGS.runA : LEGS.runB;
+    const rows = TOP.concat(legs);
+    const x0 = Math.round(P.x - 1), y0 = Math.round(P.y);
+    const flip = P.face < 0;
+    for (let j = 0; j < rows.length; j++) {
+      const r = rows[j];
+      for (let i = 0; i < 12; i++) {
+        const ch = r[i];
+        if (ch === '.') continue;
+        ctx.fillStyle = PAL[ch];
+        ctx.fillRect(x0 + (flip ? 11 - i : i), y0 + j, 1, 1);
+      }
+    }
+    if (G.power.ai) {
+      const a = G.t * 0.08;
+      CIRC(P.x + 5 + Math.cos(a) * 11, P.y + 6 + Math.sin(a) * 5, 1.5, '#63e4ff');
+    }
+  }
+
+  function drawEnemy(e) {
+    const x = Math.round(e.x), y = Math.round(e.y);
+    if (!e.alive) {
+      if (e.squash <= 0) return;
+      ctx.globalAlpha = e.squash / 40;
+      R(x, y + 9, 14, 3, '#b8322e');
+      ctx.globalAlpha = 1;
+      return;
+    }
+    const step = (G.t >> 3) % 2;
+    // warning-sign creature
+    TRI(x, y + 10, x + 7, y - 2, x + 14, y + 10, '#ff5b4f');
+    TRI(x + 2, y + 9, x + 7, y + 1, x + 12, y + 9, '#ff7a66');
+    R(x + 6, y + 2, 2, 4, '#1a0d10'); R(x + 6, y + 7, 2, 1.5, '#1a0d10');
+    R(x + (e.vx < 0 ? 3 : 8), y + 5, 3, 2, '#fff'); R(x + (e.vx < 0 ? 3 : 10), y + 5, 1, 2, '#1a0d10');
+    R(x + 2 + step * 2, y + 10, 3, 2, '#5a1a1e'); R(x + 9 - step * 2, y + 10, 3, 2, '#5a1a1e');
+    label(e.name.toUpperCase(), x + 7, y - 9, '#ffd9d4', 'rgba(60,10,16,.8)');
+  }
+
+  function drawToken(t) {
+    const bob = Math.sin(G.t * 0.07 + t.x * 0.05) * 2;
+    const x = t.x, y = t.y + bob;
+    const glow = 9 + Math.sin(G.t * 0.1) * 1.5;
+    CIRC(x, y, glow, 'rgba(244,194,77,.18)');
+    CIRC(x, y, 7, '#9a6d12'); CIRC(x, y, 6, '#f4c24d'); CIRC(x - 1.5, y - 1.5, 3.5, '#ffe08f');
+    ctx.strokeStyle = '#0e1326'; ctx.lineWidth = 1.6; ctx.lineCap = 'square';
+    ctx.beginPath(); ctx.moveTo(x - 3, y); ctx.lineTo(x - 1, y + 2.5); ctx.lineTo(x + 3.2, y - 2.8); ctx.stroke();
+  }
+
+  function drawPower(p) {
+    const bob = Math.sin(G.t * 0.06) * 3, x = p.x, y = p.y + bob;
+    CIRC(x, y, 13 + Math.sin(G.t * 0.12) * 2, 'rgba(126,224,160,.2)');
+    R(x - 9, y - 9, 18, 18, '#0e1326'); R(x - 8, y - 8, 16, 16, '#7ee0a0'); R(x - 7, y - 7, 14, 14, '#12304a');
+    ctx.font = '7px Silkscreen, monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#7ee0a0'; ctx.fillText(p.type === 'code' ? '{}' : 'AI', x, y + 0.5);
+    if (p.type === 'ai') for (let k = -6; k <= 6; k += 4) { R(x + k - 0.5, y - 11, 1, 2, '#7ee0a0'); R(x + k - 0.5, y + 9, 1, 2, '#7ee0a0'); }
+  }
+
+  function drawCheckpoint(cp) {
+    const x = cp.x, c = CHAPTERS[cp.ci];
+    R(x, GROUND - 34, 2, 34, '#3b3226');
+    const col = cp.on ? '#7ee0a0' : '#f4ecd8';
+    R(x + 2, GROUND - 34, 14, 9, col);
+    TRI(x + 16, GROUND - 34, x + 20, GROUND - 29.5, x + 16, GROUND - 25, col);
+    label(c.years.split('–')[0].trim(), x + 1, GROUND - 42, '#0e1326', '#f4c24d');
+  }
+
+  function drawGoal() {
+    const g = world.goal;
+    const bx = g.x + 30;
+    R(bx, 70, 110, 160, '#2c245e');
+    R(bx, 70, 110, 3, '#7ef0ff');
+    winGrid(bx, 76, 110, 130, 'rgba(126,240,255,.7)', 99, 0.5);
+    R(bx + 42, 202, 26, 28, '#0e1326'); R(bx + 54, 202, 1, 28, '#7ef0ff');
+    label('INNOVATION BANKING', bx + 55, 86, '#0e1326', '#7ef0c0');
+    const px = g.x - 12;
+    R(px, 110, 2, 120, '#d9dbe6'); CIRC(px + 1, 109, 2.5, '#f4c24d');
+    const wave = Math.sin(G.t * 0.15) * 1.5;
+    POLY([px + 2, 112, px + 30, 116 + wave, px + 28, 128 + wave, px + 2, 126], '#7ee0a0');
+    ctx.strokeStyle = '#0e1326'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(px + 10, 119); ctx.lineTo(px + 14, 123); ctx.lineTo(px + 21, 115); ctx.stroke();
+  }
+
+  function render() {
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+    const cam = Math.round(G.cam * S) / S;
+    drawBackground(cam);
+    ctx.save();
+    ctx.translate(-cam, 0);
+    if (world.goal && world.goal.x - 60 < cam + W) drawGoal();
+    drawSolids(cam);
+    for (const cp of world.checkpoints) if (cp.x > cam - 30 && cp.x < cam + W + 30) drawCheckpoint(cp);
+    for (const b of world.bits) {
+      if (b.got || b.x < cam - 5 || b.x > cam + W + 5) continue;
+      const tw = (G.t + b.x) % 40 < 20;
+      R(b.x - 1.5, b.y - 1.5, 3, 3, tw ? '#63e4ff' : '#a9f1ff');
+      R(b.x - 0.5, b.y - 3, 1, 6, 'rgba(99,228,255,.45)'); R(b.x - 3, b.y - 0.5, 6, 1, 'rgba(99,228,255,.45)');
+    }
+    for (const t of world.tokens) if (!t.got && t.x > cam - 20 && t.x < cam + W + 20) drawToken(t);
+    for (const p of world.powers) if (!p.got && p.x > cam - 20 && p.x < cam + W + 20) drawPower(p);
+    for (const e of world.enemies) if (e.x > cam - 60 && e.x < cam + W + 60) drawEnemy(e);
+    if (G.state !== 'title') drawPlayer();
+    for (const p of G.particles) R(p.x, p.y, 2, 2, p.col);
+    for (const p of G.popups) {
+      ctx.globalAlpha = Math.min(1, p.life / 20);
+      label(p.text.toUpperCase(), p.x, p.y, '#0e1326', p.col);
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+  }
+
+  // ---------- Loop ----------
+  reset();
+  let last = performance.now(), acc = 0;
+  const DT = 1000 / 60;
+  function tick() {
+    G.t++;
+    if (G.state === 'play') step();
+    else if (G.state === 'ending') endingStep();
+    else if (G.state === 'title' || G.state === 'end') {
+      for (const m of world.movers) { const nx = m.x + m.vx; if (nx < m.min || nx > m.max) m.vx = -m.vx; m.x += m.vx; }
+      for (const e of world.enemies) { if (!e.alive) continue; e.x += e.vx; if (e.x < e.min || e.x + e.w > e.max) e.vx = -e.vx; }
+    }
+    if (G.state !== 'paused') { updateFx(); updateCam(); }
+  }
+  function frame(t) {
+    const dt = Math.min(100, t - last); last = t;
+    acc += dt;
+    while (acc >= DT) { tick(); acc -= DT; }
+    render();
+    if (G.state === 'play' || G.state === 'ending') updateHud();
+    requestAnimationFrame(frame);
+  }
+  const boot = () => requestAnimationFrame(t => { last = t; frame(t); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot, boot); else boot();
+})();
+</script>
