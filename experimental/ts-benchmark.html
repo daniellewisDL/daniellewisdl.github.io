@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Term Sheet Benchmark — UK VC 2026</title>
+<style>
+:root{--paper:#faf8f4;--paper2:#f3efe7;--card:#fff;--ink:#1c1b1a;--ink2:#46433e;--muted:#7a756c;--rule:#e3ddd1;--rule2:#cfc7b8;--teal:#0f6e6e;--rust:#c1502e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+:root{--z:1}
+@media(min-width:1500px) and (min-height:760px){:root{--z:1.15}}
+@media(min-width:1800px) and (min-height:900px){:root{--z:1.3}}
+@media(min-width:2300px) and (min-height:1200px){:root{--z:1.6}}
+
+body{background:var(--paper);color:var(--ink);font:calc(13px*var(--z))/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h3{font-family:"Source Serif 4",Georgia,serif;margin:0;font-weight:600}
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto 1fr;gap:calc(8px*var(--z));padding:calc(8px*var(--z)) calc(14px*var(--z)) calc(10px*var(--z));width:100%}
+.top{display:flex;flex-wrap:wrap;gap:calc(8px*var(--z)) calc(14px*var(--z));align-items:center;background:var(--card);border:1px solid var(--rule);border-radius:calc(10px*var(--z));padding:calc(8px*var(--z)) calc(12px*var(--z))}
+.top h1{font-size:calc(17px*var(--z));margin-right:calc(6px*var(--z));white-space:nowrap}
+.top h1 small{display:block;font:500 calc(10.5px*var(--z)) Inter,sans-serif;color:var(--muted);letter-spacing:.02em}
+.top label{display:flex;align-items:center;gap:calc(6px*var(--z));font-size:calc(11.5px*var(--z));color:var(--muted);white-space:nowrap}
+select,input[type=number]{font:calc(12.5px*var(--z)) Inter,system-ui,sans-serif;padding:calc(4px*var(--z)) calc(6px*var(--z));border:1px solid var(--rule2);border-radius:calc(6px*var(--z));background:#fff;color:var(--ink);max-width:calc(150px*var(--z))}
+input[type=number]{width:calc(68px*var(--z))}
+.sep{width:1px;align-self:stretch;background:var(--rule)}
+.main{display:grid;grid-template-columns:clamp(calc(330px*var(--z)),27vw,calc(520px*var(--z))) minmax(0,1fr);gap:calc(8px*var(--z));min-height:0}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:calc(10px*var(--z));padding:calc(9px*var(--z)) calc(12px*var(--z));min-height:0;min-width:0}
+.left{display:flex;flex-direction:column}
+.left .hd,.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:calc(4px*var(--z))}
+.hd h3{font-size:calc(14px*var(--z))}
+.btns{display:flex;gap:calc(6px*var(--z))}
+.btn{font:600 calc(11px*var(--z)) Inter,sans-serif;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:calc(4px*var(--z)) calc(9px*var(--z));border-radius:calc(7px*var(--z));cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+#terms{display:grid;grid-template-columns:1fr auto;gap:2px calc(8px*var(--z));align-items:center;font-size:calc(12px*var(--z));overflow:auto;min-height:0}
+.cat{grid-column:1/-1;font:700 calc(9.5px*var(--z)) Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:calc(4px*var(--z));border-bottom:1px solid var(--rule)}
+.cat:first-child{margin-top:0}
+.t3{display:inline-flex;border:1px solid var(--rule2);border-radius:calc(6px*var(--z));overflow:hidden}
+.t3 button{font:600 calc(10.5px*var(--z)) Inter,sans-serif;border:0;border-right:1px solid var(--rule);background:#fff;padding:2px calc(8px*var(--z));cursor:pointer;color:var(--ink2)}
+.t3 button:last-child{border:0}
+.t3 button.on[data-v="1"]{background:var(--ink);color:#fff}
+.t3 button.on[data-v="0"]{background:#6b665c;color:#fff}
+.t3 button.on[data-v="-1"]{background:var(--rule2)}
+.right{display:grid;grid-template-rows:auto minmax(0,1fr);gap:calc(8px*var(--z));min-height:0}
+.summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:calc(8px*var(--z))}
+#score{display:flex;gap:calc(14px*var(--z));align-items:center;flex-wrap:wrap}
+.sc span{display:block;font-size:calc(10.5px*var(--z));color:var(--muted)}
+.sc b{font:600 calc(30px*var(--z))/1 "Source Serif 4",Georgia,serif}
+.sc b.mut{color:var(--muted)}
+.gauge{flex:1;min-width:calc(170px*var(--z))}
+.gl{display:flex;justify-content:space-between;font-size:calc(9.5px*var(--z));color:var(--muted)}
+.bar{position:relative;height:calc(10px*var(--z));border-radius:calc(5px*var(--z));margin:3px 0;background:linear-gradient(90deg,#bfe0dd 50%,#f1cbbb 50%)}
+.bar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.bar .dot{position:absolute;top:-3px;width:calc(16px*var(--z));height:calc(16px*var(--z));border-radius:50%;background:var(--ink);transform:translateX(-50%);border:2px solid #fff;transition:left .25s}
+.gv{font-weight:600;font-size:calc(11.5px*var(--z));text-align:center}
+.rt{width:100%;border-collapse:collapse;font-size:calc(12px*var(--z))}
+.rt td,.rt th{padding:3px calc(6px*var(--z));border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+.rt th{font-size:calc(10px*var(--z));color:var(--muted);font-weight:600;text-transform:none;position:sticky;top:0;background:#fff}
+.note,.nt{color:var(--muted);font-size:calc(11px*var(--z))}
+.pill{display:inline-block;font:600 calc(10px*var(--z)) Inter,sans-serif;padding:1px calc(7px*var(--z));border-radius:calc(99px*var(--z));background:var(--paper2);color:var(--ink2);white-space:nowrap}
+.pill.warn{background:#f8e0d6;color:#9a3a1c}.pill.ok{background:#dcefe2;color:#27623b}.pill.mid{background:#f5ecd2;color:#7a5a12}.pill.b{background:#e8e4da;color:#4a463e}
+.negot{display:flex;flex-direction:column}
+#list{overflow:auto;min-height:0;flex:1}
+.empty{color:var(--muted);padding:calc(18px*var(--z)) calc(6px*var(--z));font-size:calc(12.5px*var(--z))}
+.jump{display:none}
+.foot{font-size:calc(10px*var(--z));color:var(--muted);margin-top:calc(4px*var(--z))}
+@media(max-width:900px){
+  :root{--z:1}
+  .jump{display:block;position:fixed;right:calc(12px*var(--z));bottom:calc(14px*var(--z));background:var(--ink);color:#fff;text-decoration:none;font:600 calc(13px*var(--z)) Inter,sans-serif;padding:calc(10px*var(--z)) calc(16px*var(--z));border-radius:calc(99px*var(--z));box-shadow:0 calc(4px*var(--z)) calc(14px*var(--z)) rgba(0,0,0,.25);z-index:5}
+  html,body{height:auto}
+  .app{height:auto;display:block;padding:calc(8px*var(--z))}
+  .top{margin-bottom:calc(8px*var(--z))}.top .sep{display:none}
+  .top label{flex:1 1 44%}.top select,.top input{max-width:none;flex:1;width:100%}
+  .main{display:block}
+  .left,.right{margin-bottom:calc(8px*var(--z))}
+  #terms{overflow:visible}
+  .summary{grid-template-columns:1fr}
+  #list{overflow:visible}
+  .rt.lst thead{display:none}
+  .rt.lst,.rt.lst tbody,.rt.lst tr,.rt.lst td{display:block;width:100%}
+  .rt.lst tr{border:1px solid var(--rule);border-radius:calc(8px*var(--z));margin-bottom:calc(6px*var(--z));padding:calc(6px*var(--z)) calc(8px*var(--z))}
+  .rt.lst td{border:0;padding:1px 0}
+  .t3 button{padding:calc(5px*var(--z)) calc(11px*var(--z));font-size:calc(12px*var(--z))}
+  #terms{gap:calc(5px*var(--z)) calc(8px*var(--z))}
+}
+@media(min-width:901px) and (max-height:700px){ .sc b{font-size:calc(24px*var(--z))} .t3 button{padding:1px calc(7px*var(--z))} #terms{gap:1px calc(8px*var(--z))} }
+</style></head><body>
+<div class="app">
+  <div class="top">
+    <h1>Term Sheet Benchmark<small>UK VC · HSBC Innovation Banking guide 2026 (+ 2024 &amp; 2025 editions)</small></h1>
+    <label>Benchmark by <select id="dim"><option value="stage">Stage</option><option value="investor">Investor type</option><option value="sector">Sector cohort</option></select></label>
+    <label>Cohort <select id="cohort"></select></label>
+    <label id="yrwrap">Year <select id="year"></select></label>
+    <span class="sep"></span>
+    <label>Round <select id="stage"></select></label>
+    <label>Cheque £m <input type="number" id="inv" step="0.1" value="4.5"></label>
+    <label>Post-money £m <input type="number" id="post" step="0.1" value="20"></label>
+  </div>
+  <div class="main">
+    <div class="card left">
+      <div class="hd"><h3>Your term sheet</h3><div class="btns"><button class="btn ghost" id="demo" title="Pre-fill with what is typical for the chosen cohort">Fill typical</button><button class="btn ghost" id="clear">Clear</button></div></div>
+      <div id="terms"></div>
+    </div>
+    <div class="right">
+      <div class="summary">
+        <div class="card"><div id="score"></div></div>
+        <div class="card"><div class="hd"><h3>Round check</h3></div><div id="round"></div></div>
+      </div>
+      <div class="card negot"><div class="hd"><h3>Negotiation list</h3><span class="note">ranked by deviation from market, economic terms weighted ×1.5</span></div><div id="list"></div>
+        <div class="foot">Source: HSBC Innovation Banking / UKBAA Term Sheet Guide 2026 (711 term sheets) plus 2025 and 2024 editions. Indicative benchmarks only — not legal or financial advice.</div></div>
+    </div>
+  </div>
+<a class="jump" href="#score" onclick="document.getElementById('score').scrollIntoView({behavior:'smooth',block:'start'});return false">See results ↓</a>
+</div>
+<script>
+/* ==========================================================================
+   DATA — transcribed from "Term Sheet Guide 2026 Vol.1" (HSBC Innovation Banking / UKBAA)
+   ========================================================================== */
+const D = {};
+
+D.years = [2021, 2022, 2023, 2024, 2025];
+D.stages = ['Seed', 'Series A', 'Series B', 'Series C+'];
+D.stageDef = ['<£2m', '£2–10m', '£10–30m', '>£30m'];
+
+/* 19 term-sheet terms: key, label, category */
+D.terms = [
+  { k: 'pref',    l: 'Preference shares',         c: 'Economic' },
+  { k: 'nonpart', l: '% prefs non-participating', c: 'Economic' },
+  { k: 'pool',    l: 'New option pool',           c: 'Economic' },
+  { k: 'antidil', l: 'Anti-dilution ratchet',     c: 'Economic' },
+  { k: 'conv',    l: 'Convertibles',              c: 'Economic' },
+  { k: 'sec',     l: 'Secondaries',               c: 'Economic' },
+  { k: 'coinv',   l: 'Co-investor / syndicate',   c: 'Economic' },
+  { k: 'board',   l: 'Board representation',      c: 'Control' },
+  { k: 'vest',    l: 'Founder vesting',           c: 'Control' },
+  { k: 'leaver',  l: 'Founder leaver provision',  c: 'Control' },
+  { k: 'drag',    l: 'Drag-along',                c: 'Control' },
+  { k: 'consent', l: 'Investor consent rights',   c: 'Control' },
+  { k: 'fwarr',   l: 'Founder warranties',        c: 'Other' },
+  { k: 'cwarr',   l: 'Company warranties',        c: 'Other' },
+  { k: 'arrfee',  l: 'Arrangement fees',          c: 'Other' },
+  { k: 'monfee',  l: 'Monitoring fees',           c: 'Other' },
+  { k: 'excl',    l: 'Exclusivity period',        c: 'Other' },
+  { k: 'sust',    l: 'Sustainability / ESG',      c: 'Other' },
+  { k: 'dei',     l: 'DEI clause',                c: 'Other' }
+];
+
+/* s12 — % Yes by stage [Seed, A, B, C+] ; 2025 and 2024 */
+D.byStage = {
+  y2025: {
+    pref:[74,89,96,100], nonpart:[86,91,90,93], pool:[68,76,69,69], antidil:[39,66,79,86],
+    conv:[19,34,42,38], sec:[7,14,37,36], coinv:[31,39,40,49],
+    board:[80,85,88,83], vest:[65,63,56,32], leaver:[67,51,40,15], drag:[84,86,87,75], consent:[85,84,80,78],
+    fwarr:[62,42,29,15], cwarr:[87,81,79,63], arrfee:[22,14,4,0], monfee:[21,17,5,0],
+    excl:[61,78,82,74], sust:[28,32,22,12], dei:[9,11,10,5]
+  },
+  y2024: {
+    pref:[67,88,95,98], nonpart:[93,87,83,84], pool:[67,70,75,79], antidil:[36,60,76,90],
+    conv:[22,31,37,37], sec:[6,18,38,41], coinv:[26,35,40,38],
+    board:[77,92,91,92], vest:[64,59,52,43], leaver:[59,62,40,25], drag:[81,86,77,86], consent:[76,81,67,70],
+    fwarr:[46,49,32,13], cwarr:[79,89,85,79], arrfee:[12,18,0,0], monfee:[14,19,2,0],
+    excl:[57,69,63,73], sust:[21,29,27,33], dei:[11,11,12,8]
+  }
+};
+
+/* s18 — sector cohorts, [AI, DeepTech(ex-AI), Life Sci & Bio] 2025 / 2024 */
+D.sectorCohorts = ['AI (pure)', 'DeepTech (ex-AI)', 'Life Sci & BioTech'];
+D.bySector = {
+  y2025: {
+    pref:[87,89,89], nonpart:[97,83,85], pool:[79,76,72], antidil:[64,67,57], conv:[36,39,36], sec:[20,15,4], coinv:[31,42,45],
+    board:[81,83,89], vest:[69,61,53], leaver:[46,56,47], drag:[85,84,85], consent:[74,86,79],
+    fwarr:[37,48,39], cwarr:[76,82,77], arrfee:[6,16,8], monfee:[8,20,15], excl:[80,70,77], sust:[30,39,21], dei:[18,10,4]
+  },
+  y2024: {
+    pref:[88,84,88], nonpart:[95,91,78], pool:[79,71,82], antidil:[68,57,63], conv:[35,30,40], sec:[15,15,17], coinv:[30,39,50],
+    board:[74,76,88], vest:[74,62,49], leaver:[63,65,36], drag:[85,90,83], consent:[71,78,68],
+    fwarr:[38,47,39], cwarr:[85,85,86], arrfee:[17,11,3], monfee:[15,14,8], excl:[73,66,75], sust:[18,39,40], dei:[8,18,10]
+  }
+};
+/* NB: s18 Life-Sci company warranties read as 77 (2025) / 86 (2024) */
+
+/* s30 — investor-type cohorts, [VC, VCT, EIS, CVC, Family Office, Angel] 2025 / 2024 */
+D.investorTypes = ['VC (LP fund)', 'VCT', 'EIS fund', 'CVC', 'Family office', 'Angel'];
+D.investorMeta = [
+  { n: 466, avg: 13.1 }, { n: 98, avg: 8.3 }, { n: 41, avg: 2.4 }, { n: 61, avg: 18.3 }, { n: 25, avg: 13.8 }, { n: 20, avg: 6.2 }
+];
+D.byInvestor = {
+  y2025: {
+    pref:[93,86,68,89,64,35], nonpart:[92,88,79,83,81,100], pool:[75,71,78,61,44,40], antidil:[70,60,0,69,52,15],
+    conv:[33,36,12,26,28,35], sec:[18,20,5,28,36,0], coinv:[39,42,24,44,28,30],
+    board:[83,93,84,78,76,77], vest:[62,63,71,30,40,30], leaver:[48,60,78,34,32,30], drag:[85,93,85,80,72,65], consent:[83,81,90,85,72,90],
+    fwarr:[38,56,61,39,36,40], cwarr:[79,87,88,79,84,80], arrfee:[6,30,51,7,12,15], monfee:[9,32,41,5,8,20],
+    excl:[80,76,61,54,44,35], sust:[27,32,24,30,4,15], dei:[11,11,0,15,0,0]
+  },
+  y2024: {
+    pref:[89,72,67,87,71,37], nonpart:[89,76,71,89,80,80], pool:[75,60,67,62,57,63], antidil:[65,43,0,58,50,19],
+    conv:[30,30,14,31,29,26], sec:[22,13,0,24,14,19], coinv:[33,32,29,27,36,52],
+    board:[87,91,61,92,83,83], vest:[63,40,71,51,36,37], leaver:[55,64,67,42,29,44], drag:[84,81,86,79,64,89], consent:[77,75,71,70,71,78],
+    fwarr:[42,60,62,30,21,30], cwarr:[86,89,86,82,71,78], arrfee:[7,47,33,4,0,11], monfee:[8,43,43,6,0,19],
+    excl:[70,58,62,58,36,33], sust:[31,28,14,13,7,15], dei:[13,6,10,6,0,7]
+  }
+};
+
+/* s26–s29 — five-year (2021-25) term prevalence, % yes overall */
+D.termSeries = {
+  pref:   [84,77,83,84,87],
+  pool:   [62,68,72,71,71],
+  antidil:[65,60,56,58,63],
+  coinv:  [49,35,42,33,38],
+  conv:   [null,null,31,29,32],
+  sec:    [null,null,17,20,19],
+  board:  [94,91,86,87,91],
+  vest:   [56,53,61,58,58],
+  leaver: [47,55,50,54,49],
+  drag:   [92,92,82,83,84],
+  tag:    [83,75,66,66,70],
+  consent:[80,78,78,76,83],
+  fwarr:  [75,69,44,42,42],
+  cwarr:  [93,90,81,84,80],
+  arrfee: [8,14,9,12,13],
+  monfee: [10,20,11,13,14],
+  excl:   [83,75,66,65,74],
+  dei:    [1,8,11,11,10],
+  sust:   [16,16,22,26,27]
+};
+D.termSeriesLabels = {
+  pref:'Preference shares', pool:'New option pool', antidil:'Anti-dilution', coinv:'Co-investors', conv:'Convertibles', sec:'Secondaries',
+  board:'Board representation', vest:'Founder vesting', leaver:'Founder leaver', drag:'Drag-along', tag:'Tag-along', consent:'Investor consents',
+  fwarr:'Founder warranties', cwarr:'Company warranties', arrfee:'Arrangement fees', monfee:'Monitoring fees', excl:'Exclusivity', dei:'DEI rider', sust:'ESG / sustainability'
+};
+/* s26 — liquidation preference type (% of pref deals), 2021-25 */
+D.liqType = { nonpart: [93,86,89,87,90], part: [7,12,10,12,10], partcap: [0,2,1,1,0] };
+D.exclusivityDays = { y2024: 34, y2025: 48 };
+
+/* s29 — ESG and DEI by stage, 2022..2025 */
+D.esg = { years:[2022,2023,2024,2025], All:[16,22,26,27], Seed:[5,17,21,28], 'Series A':[16,24,29,32], 'Series B':[20,21,27,22], 'Series C+':[30,23,33,12] };
+D.dei = { years:[2022,2023,2024,2025], All:[8,11,11,10], Seed:[3,9,11,9], 'Series A':[5,11,11,11], 'Series B':[12,13,12,10], 'Series C+':[19,10,8,5] };
+
+/* s9 — sample */
+D.sample = {
+  total:     [110,245,426,588,711],
+  ukhq:      [103,225,403,532,643],
+  stageN2025:[192,299,135,85],
+  ukMarketDeals: 1518, ukMarketValue: 19.1, coverVol: 42, coverVal: 46, valueCovered: 8.8, valueSampled: 11.2
+};
+
+/* s13 — share of term sheets by stage %, 2021-25 */
+D.stageMix = {
+  Seed:       [14,24,29,32,27],
+  'Series A': [44,45,44,42,42],
+  'Series B': [32,20,20,15,19],
+  'Series C+':[10,11,7,11,12]
+};
+
+/* s13 / s22 — median post-money (£m, Pitchbook) & avg investment £m, 2021-25 */
+D.valuation = {
+  Seed:       [3.2,3.8,4.0,3.9,4.2],
+  'Series A': [16.7,16.0,16.7,17.9,17.1],
+  'Series B': [57.8,60.0,55.2,56.9,58.2],
+  'Series C+':[261.5,249.0,211.0,191.3,258.4]
+};
+D.avgInv = {
+  Seed:       [0.58,0.59,0.63,0.65,0.59],
+  'Series A': [4.3,4.4,4.4,4.6,4.6],
+  'Series B': [17.3,17.5,17.2,16.9,17.7],
+  'Series C+':[91.2,88.6,83.0,93.4,110.0]
+};
+/* s13 — participating pref % & pref dividend %, 2024 -> 2025 */
+D.partPref = { Seed:[7,13], 'Series A':[12,9], 'Series B':[17,10], 'Series C+':[15,6] };
+D.prefDiv  = { Seed:[6,8],  'Series A':[10,11], 'Series B':[20,21], 'Series C+':[32,30] };
+
+/* s14 — lead-investor HQ by stage (volume %) UK/Europe/US/Other; years 2023,24,25 ; n */
+D.leadVol = {
+  all: { n:[403,532,643], UK:[58,54,53], Europe:[22,25,22], US:[15,15,20], Other:[5,6,5] },
+  Seed:       { n:[115,167,180], UK:[70,69,72], Europe:[21,18,18], US:[3,9,7],   Other:[6,4,3] },
+  'Series A': { n:[179,230,269], UK:[59,58,54], Europe:[26,26,23], US:[12,12,18], Other:[3,4,5] },
+  'Series B': { n:[80,84,121],   UK:[41,36,37], Europe:[19,26,23], US:[35,29,36], Other:[5,9,4] },
+  'Series C+':{ n:[29,51,63],    UK:[49,20,24], Europe:[21,43,27], US:[23,27,37], Other:[7,10,12] }
+};
+/* s15 — value of UK-HQ term sheets by lead-investor origin */
+D.leadVal = {
+  totalBn: 8.8, ukBn: 2.9, inboundBn: 5.9,
+  originBn2025: { US:3.1, Europe:2.0, Other:0.8 },
+  originShare2025: { US:52, Europe:34, Other:14 }, originShare2024: { US:36, Europe:48, Other:16 },
+  originBn2024: { US:1.5, Europe:2.1, Other:0.7 },
+  stageBn: [0.1,0.7,1.3,3.8],
+  stageShare: { US:[26,40,59,53], Europe:[65,49,36,30], Other:[9,11,5,17] }
+};
+
+/* s16 — sector share of term sheets % (2022..2025) */
+D.sectors = [
+  { n:'AI',                    s:[4.5,8.9,14.3,17.4] },
+  { n:'FinTech',               s:[15.1,10.1,12.4,11.8] },
+  { n:'Life Sci & BioTech',    s:[9.8,6.1,12.2,10.5] },
+  { n:'Health/MedTech',        s:[11.8,12.2,9.5,8.9] },
+  { n:'Software – Enterprise', s:[9.4,8.0,7.5,8.2] },
+  { n:'Retail & Consumer',     s:[5.7,5.6,6.8,6.2] },
+  { n:'CleanTech',             s:[3.7,6.1,4.9,5.2] },
+  { n:'Cyber',                 s:[4.1,3.5,2.0,4.1] },
+  { n:'Energy',                s:[2.0,4.2,2.7,3.8] },
+  { n:'Hardware',              s:[0.8,1.9,1.7,2.1] }
+];
+D.sectorYears = [2022,2023,2024,2025];
+D.top10Share = [67,67,74,78];
+
+/* s17 — DeepTech share of volume and value, 2021-25 */
+D.deepTech = { vol:[15,15,27,28,35], val:[14,22,31,30,45] };
+
+/* s23 — average post-money (£m) & average cheque (£m) by sector; dt = DeepTech-classified */
+D.sectorVal = [
+  { n:'Hardware',         v:235, i:42.0, dt:1 },
+  { n:'AI',               v:192, i:20.7, dt:1 },
+  { n:'Transport',        v:177, i:41.3, dt:0 },
+  { n:'Robotics',         v:170, i:41.4, dt:1 },
+  { n:'FinTech',          v:146, i:14.3, dt:0 },
+  { n:'Energy',           v:136, i:20.2, dt:1 },
+  { n:'Cyber',            v:73,  i:16.9, dt:1 },
+  { n:'BioTech',          v:66,  i:16.2, dt:0 },
+  { n:'Life Sciences',    v:66,  i:20.0, dt:0 },
+  { n:'Health/MedTech',   v:57,  i:9.6,  dt:0 },
+  { n:'Esports/Gaming',   v:57,  i:10.3, dt:0 },
+  { n:'CleanTech',        v:52,  i:10.2, dt:1 },
+  { n:'Software – Ent.',  v:50,  i:8.5,  dt:0 },
+  { n:'Retail & Consumer',v:44,  i:6.5,  dt:0 },
+  { n:'SpaceTech',        v:44,  i:36.7, dt:1 }
+];
+
+/* s19 — London vs regions: by stage and by sector (UK-HQ term sheets) */
+D.geoStage = [
+  { n:'Seed',      ts:181, lon:49, valM:228,  lonV:53 },
+  { n:'Series A',  ts:274, lon:71, valM:1457, lonV:71 },
+  { n:'Series B',  ts:124, lon:77, valM:2249, lonV:76 },
+  { n:'Series C+', ts:64,  lon:72, valM:3423, lonV:75 }
+];
+D.geoSector = [
+  { n:'AI',                 ts:112, lon:74, valM:1492, lonV:80 },
+  { n:'FinTech',            ts:77,  lon:90, valM:1103, lonV:94 },
+  { n:'Life Sci & BioTech', ts:63,  lon:40, valM:400,  lonV:22 },
+  { n:'Health/MedTech',     ts:57,  lon:54, valM:547,  lonV:70 },
+  { n:'Software – Ent.',    ts:52,  lon:71, valM:467,  lonV:91 },
+  { n:'Retail & Consumer',  ts:43,  lon:63, valM:281,  lonV:80 },
+  { n:'CleanTech',          ts:36,  lon:39, valM:376,  lonV:41 },
+  { n:'Cyber',              ts:23,  lon:74, valM:194,  lonV:90 },
+  { n:'Energy',             ts:25,  lon:44, valM:334,  lonV:36 },
+  { n:'Hardware',           ts:14,  lon:43, valM:230,  lonV:63 }
+];
+D.geoOverall = { lon: 66, reg: 34, regionsDeals: 45 };
+
+/* s20 — region comparison */
+D.investorMix = ['VC (LP fund)','VCT','EIS','CVC','Family office','Angel'];
+D.regions = [
+  { n:'London',           ts:418, avg:15.1, pref:89,  nonpart:93,  liq:1.0, pool:75,  vest:64,   mix:[71,13,4,6,3,2] },
+  { n:'South East',       ts:57,  avg:15.9, pref:83,  nonpart:81,  liq:1.1, pool:62,  vest:52,   mix:[59,10,9,14,5,3] },
+  { n:'South West',       ts:43,  avg:11.3, pref:74,  nonpart:91,  liq:1.0, pool:74,  vest:51,   mix:[65,14,5,9,0,7] },
+  { n:'Scotland',         ts:40,  avg:5.7,  pref:79,  nonpart:82,  liq:1.1, pool:72,  vest:51,   mix:[56,9,9,9,7,9] },
+  { n:'East of England',  ts:28,  avg:11.0, pref:86,  nonpart:92,  liq:1.4, pool:54,  vest:54,   mix:[61,11,11,18,0,0] },
+  { n:'North of England', ts:27,  avg:10.9, pref:81,  nonpart:77,  liq:1.1, pool:59,  vest:52,   mix:[37,33,7,11,11,0] },
+  { n:'Midlands',         ts:18,  avg:5.0,  pref:83,  nonpart:73,  liq:1.1, pool:72,  vest:72,   mix:[33,28,28,6,6,0] },
+  { n:'Northern Ireland', ts:7,   avg:3.5,  pref:100, nonpart:100, liq:1.5, pool:50,  vest:50,   mix:[50,50,0,0,0,0] },
+  { n:'Wales',            ts:5,   avg:0.5,  pref:100, nonpart:20,  liq:1.0, pool:100, vest:null, mix:[100,0,0,0,0,0] }
+];
+
+/* s21 — uni spin-outs */
+D.spinouts = {
+  n: 58,
+  stage: { Seed:24, 'Series A':36, 'Series B':23, 'Series C+':17 },
+  sector: { 'Life Sci & BioTech':31, 'HealthTech':17, AI:10, CleanTech:10, Energy:9, Hardware:5, SpaceTech:2, Cyber:2, Other:14 },
+  terms: [ // [label, all, spinout]
+    ['Participating pref',10,13], ['Anti-dilution',63,50], ['Convertibles',32,19], ['Co-investors',38,48],
+    ['Board appointments',81,79], ['Founder warranties',42,55], ['Company warranties',80,86],
+    ['Secondaries',19,5], ['Investor consents',83,86], ['Founder vesting',55,58]
+  ],
+  unis: [['Oxford',225],['Cambridge',175],['Imperial',132],['Manchester',114],['UCL',99],['Bristol',81],['Royal College of Art',72],['Edinburgh',71],['Swansea',58],['Queen’s Belfast',57]]
+};
+
+/* s24 — Series A >£50m pre-money */
+D.bigA = {
+  shareOfA: [8,12,10], avgPre: [95,130,160], count: { y2024:31, y2025:27 },
+  rows: [ // sector, pre-money band lo (£m), hi, investor, pref, participating, liq multiple
+    ['AI',1000,1000,'CVC','Y','N','1.25x'], ['AI',650,699,'CVC','Y','N','1x'], ['FinTech',350,399,'CVC','Y','N','n/a'],
+    ['FinTech',250,299,'VC','Mixed','N','n/a'], ['EdTech',200,249,'VC','Y','N','1x'], ['Media',150,199,'VC','Y','N','1x'],
+    ['Life sciences',150,199,'CVC','Y','Y','1x'], ['Health/MedTech',100,149,'VC','Y','N','1x'], ['Blockchain',100,149,'VC','Y','N','1x'],
+    ['Software – Ent.',70,79.9,'VC','Y','N','n/a'], ['Health/MedTech',70,79.9,'CVC','Y','N','1x'], ['AI',70,79.9,'VC','Y','N','1x'],
+    ['Digital',60,69.9,'VCT','Y','N','1x'], ['AI',60,69.9,'VC','Y','N','1x'], ['Retail & Consumer',60,69.9,'VCT','Y','N','1x']
+  ]
+};
+
+/* s25 — investor type share of term sheets (volume) and value, 2021-25 */
+D.invVol = { VC:[65,61,63,68,66], VCT:[5,15,13,9,14], EIS:[8,7,5,4,6], CVC:[21,16,14,12,9] };
+D.invVal = { VC:[74,68,60,73,71], VCT:[1,17,8,6,9], EIS:[1,1,1,0,1], CVC:[23,14,29,18,15] };
+D.cvcSector = [ // [sector, 2024, 2025] % of CVC deals
+  ['FinTech',18,20],['AI',11,18],['Retail',7,10],['CleanTech',7,8],['Energy',1,8],['Health/MedTech',13,7],
+  ['Life Sci & Bio',8,5],['Cyber',1,3],['Media',3,3],['Hardware',3,3],['Other',28,15]
+];
+D.cvcStage = { vol:{ Seed:16,'Series A':41,'Series B':20,'Series C+':23 }, val:{ Seed:1,'Series A':8,'Series B':12,'Series C+':79 } };
+
+/* s32 — macro */
+D.macro = {
+  ukVC: { years:[2020,2021,2022,2023,2024,2025], bn:[16.8,27.0,25.1,16.9,18.5,19.1] },
+  conc: { years:[2023,2024,2025], Seed:[1.4,1.3,1.0], 'Series A':[3.8,3.8,2.9], 'Series B':[3.3,3.1,3.1], 'Series C+':[8.4,10.3,12.1] },
+  countries: [
+    ['United States',243.7,42],['China',39.9,-3],['United Kingdom',19.1,5],['India',13.9,12],['Germany',7.4,2],
+    ['France',7.2,1],['Canada',6.3,12],['Israel',4.8,59],['Japan',4.6,-48],['Singapore',3.4,-33]
+  ],
+  exits: { '2024 H1':{ ipo:2, ma:121 }, '2024 H2':{ ipo:0, ma:119 }, '2025 H1':{ ipo:1, ma:132 }, '2025 H2':{ ipo:1, ma:123 } },
+  dryPowder: { global:[169,525], europe:[23,58], mult:{ global:3.1, europe:2.5 }, from:2015, to:2025 }
+};
+
+/* s33–35 — HSBC investor pulse survey (2025: n=52 ; 2026: n=41) — [label, 2025 %, 2026 %] */
+D.pulse = {
+  outlook: [['Extremely positive',3,18],['Somewhat positive',60,53],['Neither',25,25],['Somewhat negative',10,5],['Extremely negative',2,0]],
+  deals:   [['Much less',2,3],['Somewhat less',4,5],['About the same',42,43],['Somewhat more',46,40],['Much more',6,10]],
+  focus:   [['Current portfolio',15,3],['Equal split',65,56],['New investments',20,41]],
+  sectors: [['AI',55,78],['DeepTech',41,71],['Enterprise software',45,56],['FinTech',43,49],['HealthTech',31,46],['ClimateTech',27,32],['BioTech',20,17],['Other',18,12]],
+  founderVal: [['Much more aggressive',3,8],['A little more aggressive',34,47],['About the same',56,29],['A little less aggressive',5,16],['Much less aggressive',2,0]],
+  structure:  [['Much more aggressive',4,3],['A little more aggressive',30,18],['About the same',60,71],['A little less aggressive',6,8],['Much less aggressive',0,0]]
+};
+
+/* s10–11 — headline KPIs (2025 / 2024 / 2023). NB the guide prints B+C+ share as 26% for 2025 but
+   its own stage chart (s13) gives 19%+12% = 31%, which we use. */
+D.kpi = {
+  bc: [31,26,27], seedPart:[14,7,15], usC:[37,27,23], aiDeep:[35,28,27], regions:45,
+  spin:9, cvc:[9,12,14], secC:[36,41,40], esgC:[12,33,23], newDeals:[41,21]
+};
+
+/* ==========================================================================
+   DATA 2 — previous editions (downloaded from hsbcinnovationbanking.com)
+   2025 edition = survey of 2024 deals (588 term sheets); 2024 edition = survey of 2023 deals (426)
+   p## references are PDF pages of those editions.
+   ========================================================================== */
+
+/* 2023 by stage [Seed, A, B, C+]  — 2025 ed. p12 (dark bars) cross-checked with 2024 ed. p14.
+   NB: the source reports identical values for Series B and C+ in 2023 (the stages were pooled). */
+D.byStage.y2023 = {
+  pref:[65,87,97,97], nonpart:[85,89,93,93], pool:[67,74,63,63], antidil:[27,64,73,73],
+  conv:[28,35,40,40], sec:[4,15,40,40], coinv:[41,42,53,53],
+  board:[81,88,90,90], vest:[75,59,30,30], leaver:[59,56,13,13], drag:[83,85,77,77], consent:[83,79,70,70],
+  fwarr:[60,44,13,13], cwarr:[87,84,67,67], arrfee:[13,11,0,0], monfee:[15,11,7,7],
+  excl:[59,67,70,70], sust:[17,24,23,23], dei:[9,11,10,10]
+};
+D.bcPooled2023 = true;
+
+/* 2023 by investor type [VC, VCT, EIS, CVC, Family office, Angel] — 2024 ed. p18 */
+D.byInvestor.y2023 = {
+  pref:[91,79,52,86,60,12], nonpart:[90,78,100,88,100,100], pool:[74,68,57,71,40,0], antidil:[63,54,0,63,40,6],
+  conv:[34,28,29,29,20,18], sec:[18,12,0,25,20,6], coinv:[45,49,52,20,0,59],
+  board:[87,84,90,86,80,71], vest:[66,58,57,44,0,71], leaver:[48,63,57,46,0,65], drag:[84,74,76,83,60,100], consent:[78,79,71,80,80,88],
+  fwarr:[40,51,71,39,60,53], cwarr:[78,84,90,85,80,82], arrfee:[4,32,38,3,0,6], monfee:[5,26,38,8,20,18],
+  excl:[70,72,62,61,40,18], sust:[22,28,19,22,0,6], dei:[12,14,0,8,0,0]
+};
+
+/* extra term series 2021–2025 (2024 & 2025 editions' summary tables; null = not surveyed / not published) */
+Object.assign(D.termSeries, {
+  tranche:  [22,19,17,24,null],
+  cosale:   [67,67,63,63,null],
+  restrict: [49,39,32,36,null],
+  prefdiv:  [12,20,9,12,null],
+  growth:   [5,9,3,4,null],
+  dno:      [null,null,30,27,null],
+  keyman:   [null,null,18,17,null],
+  persguar: [8,1,3,null,null]
+});
+Object.assign(D.termSeriesLabels, {
+  tranche:'Tranched investment', cosale:'Co-sale', restrict:'Restrictive covenants', prefdiv:'Preference dividend', growth:'Growth shares',
+  dno:'D&O insurance', keyman:'Key-person insurance', persguar:'Personal guarantee'
+});
+/* series categories for the "term atlas" */
+D.termCat = {
+  pref:'Economic', pool:'Economic', antidil:'Economic', coinv:'Economic', conv:'Economic', sec:'Economic', tranche:'Economic', prefdiv:'Economic', growth:'Economic',
+  board:'Control', vest:'Control', leaver:'Control', drag:'Control', tag:'Control', cosale:'Control', consent:'Control', restrict:'Control',
+  fwarr:'Other', cwarr:'Other', arrfee:'Other', monfee:'Other', excl:'Other', dei:'Other', sust:'Other', dno:'Other', keyman:'Other', persguar:'Other'
+};
+/* liquidation preference type (non-part) + participation in 2021-25 already in D.liqType.
+   Seed-stage % with participating pref (share of Seed term sheets): 2023 15, 2024 7, 2025 13 — 2025 ed. p13, 2026 ed. p13 */
+D.seedPart = { years:[2023,2024,2025], v:[15,7,13] };
+/* Series C+ comparison (2025 ed. p13) and 2026 ed. p13 */
+D.cplusCycle = {
+  years:[2023,2024,2025],
+  val:[211.0,192.9,258.4], part:[7,15,6], div:[20,32,30], tranche:[27,46,null], vest:[30,43,32], leaver:[13,25,15]
+};
+
+/* AI vs all-other-sector median post-money (£m, Pitchbook) by stage, 2021–2024 — 2025 ed. p16 */
+D.aiVal = {
+  years:[2021,2022,2023,2024],
+  Seed:       { ai:[3.3,4.1,4.0,4.3],     ex:[3.2,3.8,3.9,4.0] },
+  'Series A': { ai:[17.4,18.2,16.7,17.0], ex:[16.4,15.7,16.5,18.1] },
+  'Series B': { ai:[57.8,66.8,52.5,62.3], ex:[55.7,59.6,57.3,54.0] },
+  'Series C+':{ ai:[227.1,234.1,255.3,201.7], ex:[265.4,249.0,179.2,191.2] }
+};
+
+/* average PRE-money valuation & average cheque (£m) by sector in the 2025 edition (2024 deals) — 2025 ed. p17.
+   NB the 2026 edition switched to an implied POST-money (pre-money + cheque), so compare with pre+cheque.  */
+D.sectorVal24 = [
+  { n:'eSports & Gaming', pre:108, i:18.4 }, { n:'FinTech', pre:101, i:12.0 }, { n:'Cyber', pre:101, i:13.6 }, { n:'AI', pre:93, i:18.1 },
+  { n:'Life Sci & BioTech', pre:63, i:29.8 }, { n:'HealthTech', pre:53, i:13.9 }, { n:'Software – Enterprise', pre:46, i:16.2 },
+  { n:'Retail & Consumer', pre:39, i:7.4 }, { n:'CleanTech & Energy', pre:38, i:8.0 }, { n:'Hardware', pre:30, i:11.4 },
+  { n:'Transport', pre:29, i:5.3 }, { n:'Media', pre:26, i:7.7 }, { n:'FoodTech', pre:25, i:6.3 }, { n:'Data analytics', pre:20, i:3.6 }, { n:'Digital', pre:20, i:6.3 }
+];
+
+/* sector × stage: number of term sheets. 2023 (2024 ed. p27) and 2024 (2025 ed. p36). stage order Seed, A, B, C+ */
+D.sectorStage = {
+  y2023: { n:[123,189,84,30], total:426, rows:{
+    'HealthTech & Life Sci':[18,23,13,3], 'CleanTech & Energy':[7,25,8,4], 'FinTech':[10,17,13,3], 'AI':[14,12,9,3],
+    'Software – Enterprise':[15,16,3,0], 'Retail & Consumer':[6,13,2,3], 'Data analytics':[4,10,4,1], 'Digital':[4,7,6,1], 'Cyber':[3,5,5,2] } },
+  y2024: { n:[185,249,91,63], total:588, rows:{
+    'AI':[26,40,8,10], 'FinTech':[17,33,17,6], 'Life Sci & BioTech':[16,19,16,21], 'HealthTech':[14,26,8,8],
+    'CleanTech & Energy':[14,25,4,2], 'Software – Enterprise':[14,16,9,5], 'Retail & Consumer':[12,21,4,3], 'Data analytics':[15,7,2,0],
+    'FoodTech':[4,8,2,0], 'Cyber':[4,5,1,2] } }
+};
+
+/* sector share of term sheets across editions (2022..2025), incl. 2023-ed. groupings (HealthTech & LS combined, ClimateTech incl. Energy) */
+D.sectorShareEd = [
+  { n:'AI', s:[3,9,14,17.4] }, { n:'FinTech', s:[15,10,12,11.8] }, { n:'Life Sci & BioTech', s:[10,6,12,10.5] }, { n:'HealthTech', s:[12,12,10,8.9] },
+  { n:'CleanTech & Energy', s:[6,10,8,9.0] }, { n:'Software – Enterprise', s:[9,8,7,8.2] }, { n:'Retail & Consumer', s:[6,6,7,6.2] }
+];
+
+/* 2023 edition (2024 ed. p11–13): stage mix 2021-23, CVC seed share, lead-investor 2023 already in D.leadVol; seed share by investor */
+D.cvcSeedShare = { y2022:8, y2023:17 };
+
+/* previous editions' headline sample sizes */
+D.editions = [
+  { ed:'2023', cover:'2022 deals', n:245, note:'SVB UK inaugural guide (not downloaded — third-party mirror only)' },
+  { ed:'2024', cover:'2023 deals', n:426, lawFirms:21 },
+  { ed:'2025', cover:'2024 deals', n:588, lawFirms:27 },
+  { ed:'2026', cover:'2025 deals', n:711 }
+];
+
+/* ===== core helpers ===== */
+const C = {
+  seed:'#d9a024', A:'#2a8a86', B:'#3a5aa8', Cp:'#7a3b6e',
+  uk:'#3a7d4f', eu:'#3a5aa8', us:'#b3202a', oth:'#9a9186',
+  up:'#0f6e6e', down:'#c1502e', ink:'#1c1b1a', muted:'#7a756c', rule:'#e3ddd1',
+  eco:'#2f55a4', ctl:'#6b3f7a', oth2:'#c8932f'
+};
+const STAGE_COL = { 'Seed':C.seed, 'Series A':C.A, 'Series B':C.B, 'Series C+':C.Cp };
+const CAT_COL = { Economic:C.eco, Control:C.ctl, Other:C.oth2 };
+const fmt = { pct:v=>v+'%', pp:v=>(v>0?'+':v<0?'−':'')+Math.abs(v)+'pp', m:v=>'£'+(v>=100?Math.round(v):v.toFixed(v<10?2:1))+'m', bn:v=>'£'+v.toFixed(1)+'bn' };
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const tipEl = () => document.getElementById('tip');
+function tip(html, ev){
+  const t = tipEl(); if(!html){ t.style.opacity=0; return; }
+  t.innerHTML = html; t.style.opacity=1;
+  const x = Math.min(ev.clientX+14, innerWidth-t.offsetWidth-8), y = Math.min(ev.clientY+14, innerHeight-t.offsetHeight-8);
+  t.style.left = x+'px'; t.style.top = y+'px';
+}
+function hoverable(sel, htmlFn){
+  sel.on('mousemove', (ev,d)=>tip(htmlFn(d), ev)).on('mouseleave', ()=>tip(null));
+  return sel;
+}
+/* responsive svg: returns {svg,g,w,h} inner dims */
+function mkSvg(id, H, m){
+  m = Object.assign({t:10,r:12,b:26,l:36}, m||{});
+  const host = document.getElementById(id); host.innerHTML='';
+  const W = Math.max(260, host.clientWidth || 500);
+  const svg = d3.select(host).append('svg').attr('viewBox',`0 0 ${W} ${H}`);
+  const g = svg.append('g').attr('transform',`translate(${m.l},${m.t})`);
+  return { host, svg, g, W, H, w: W-m.l-m.r, h: H-m.t-m.b, m };
+}
+function yAxisGrid(g, y, w, fmtFn, n){
+  g.append('g').attr('class','grid').call(d3.axisLeft(y).ticks(n||5).tickSize(-w).tickFormat(''));
+  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(n||5).tickFormat(fmtFn||null).tickSize(0).tickPadding(6)).select('.domain').remove();
+}
+function legend(id, items){
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(([c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('');
+}
+const mean = a => a.reduce((s,v)=>s+v,0)/a.length;
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const termByKey = Object.fromEntries(D.terms.map(t=>[t.k,t]));
+
+/* cohort registry: every cohort family exposes labels + [year][term][i] */
+const COHORT = {
+  stage:    { labels:D.stages,         data:D.byStage,    title:'Stage' },
+  investor: { labels:D.investorTypes,  data:D.byInvestor, title:'Investor type' },
+  sector:   { labels:D.sectorCohorts,  data:D.bySector,   title:'Sector cohort' }
+};
+const val = (fam, yr, term, i) => { const d = COHORT[fam].data['y'+yr] || COHORT[fam].data.y2024; return d[term][i]; };
+const chg = (fam, term, i) => val(fam,2025,term,i) - val(fam,2024,term,i);
+
+/* Investor-Protection Index (our composite): mean of ten protective terms; non-participating inverted */
+const IPI_TERMS = ['pref','nonpart','antidil','board','vest','leaver','drag','consent','fwarr','cwarr'];
+function ipi(fam, yr, i){
+  return mean(IPI_TERMS.map(k=>{ const v = val(fam,yr,k,i); return k==='nonpart' ? 100-v : v; }));
+}
+/* sheet-level protection from tri-state answers (1=yes, 0=no) */
+function protVal(k,v){ return k==='nonpart' ? (v?0:100) : (v?100:0); }
+
+/* derived valuation stats */
+const stageIdx = s => D.stages.indexOf(s);
+const equitySold = (s,y) => D.avgInv[s][y]/D.valuation[s][y]*100;
+
+/* ===== standalone term-sheet benchmark ===== */
+const ADVICE = {
+  pref:'Ask whether a straight equity round is possible; if preference shares stay, cap at 1× non-participating.',
+  nonpart:'Participating prefs let the investor take their money back AND share in the rest — push for 1× non-participating, or a hard cap (≤2–3×).',
+  pool:'Size the pool to the hiring plan; create it pre-money only to the extent it will be used in 18–24 months.',
+  antidil:'Prefer broad-based weighted-average over full ratchet; ask that it falls away at the next priced round.',
+  conv:'Set a valuation cap and a discount, and a maturity of ≥18 months.',
+  sec:'Direct secondaries help staff retention — ask for 10–20% at Series B+.',
+  coinv:'Ask the lead to name syndicate partners up-front; check pro-rata and information rights.',
+  board:'Agree board composition (founders ≥ investors, one independent) and a path for observers.',
+  vest:'Ask for credit for time served (25–50% already vested) and double-trigger acceleration on exit.',
+  leaver:'Negotiate good/bad-leaver definitions; ensure a no-fault departure is a good leaver.',
+  drag:'Set the drag threshold at a majority of investors AND founders, with a minimum price floor.',
+  consent:'Limit consent rights to a short list of fundamental matters; add a de-minimis threshold.',
+  fwarr:'Cap founder warranties (fraud, title, capacity) and push company-level warranties instead.',
+  cwarr:'Make warranties disclosure-letter qualified; cap liability at the purchase price.',
+  arrfee:'Ask the lead to waive the arrangement fee or net it against the investment (≤1–2%).',
+  monfee:'Monitoring fees drain a young company — ask to remove or cap them.',
+  excl:'Negotiate 30 days or less, with automatic release if terms change or the investor delays.',
+  sust:'Accept light ESG reporting; avoid hard KPIs tied to price or control.',
+  dei:'Convert a DEI rider into a time-bound plan rather than a covenant.'
+};
+const LABEL = { nonpart:'Non-participating liq. pref' };
+const SC = { dim:'investor', ci:0, stage:'Series A', year:2025, ans:{} };
+const els = id => document.getElementById(id);
+const years = () => SC.dim==='sector' ? [2024,2025] : [2023,2024,2025];
+
+function bench(){
+  const fam = SC.dim, idx = SC.ci, yr = years().includes(SC.year)?SC.year:2025;
+  return { label: COHORT[fam].labels[idx], yr, prev:k=>val(fam,yr,k,idx), trend:k=>years().map(y=>val(fam,y,k,idx)) };
+}
+
+function init(){
+  els('stage').innerHTML = D.stages.map(s=>`<option ${s===SC.stage?'selected':''}>${s}</option>`).join('');
+  const setCohorts = ()=>{ els('cohort').innerHTML = COHORT[SC.dim].labels.map((l,i)=>`<option value="${i}" ${i===SC.ci?'selected':''}>${l}</option>`).join(''); };
+  els('dim').value = SC.dim; setCohorts();
+  els('dim').onchange = e=>{ SC.dim=e.target.value; SC.ci = SC.dim==='stage'?stageIdx(SC.stage):0; setCohorts(); render(); };
+  els('cohort').onchange = e=>{ SC.ci=+e.target.value; render(); };
+  els('stage').onchange = e=>{ SC.stage=e.target.value; if(SC.dim==='stage'){ SC.ci=stageIdx(SC.stage); setCohorts(); } render(); };
+  els('year').onchange = e=>{ SC.year=+e.target.value; render(); };
+  ['inv','post'].forEach(id=>els(id).oninput = render);
+  let html='', cat='';
+  D.terms.forEach(t=>{
+    if(t.c!==cat){ cat=t.c; html+=`<div class="cat">${cat}</div>`; }
+    html+=`<div class="tn">${LABEL[t.k]||t.l}</div><div class="t3" data-k="${t.k}"><button data-v="1">Yes</button><button data-v="0">No</button><button data-v="-1" class="on">?</button></div>`;
+  });
+  els('terms').innerHTML = html;
+  document.querySelectorAll('#terms .t3').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ SC.ans[g.dataset.k]=+b.dataset.v; g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); render(); }));
+  els('clear').onclick = ()=>{ SC.ans={}; document.querySelectorAll('#terms .t3 button').forEach(x=>x.classList.toggle('on',x.dataset.v==='-1')); render(); };
+  els('demo').onclick = ()=>{ // fill with a typical sheet for the chosen cohort (term present if >=50%)
+    const B = bench(); D.terms.forEach(t=>{ SC.ans[t.k] = B.prev(t.k)>=50?1:0; });
+    document.querySelectorAll('#terms .t3').forEach(g=>g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===SC.ans[g.dataset.k]))); render(); };
+  render();
+}
+
+function render(){
+  const B = bench(), rows = [];
+  D.terms.forEach(t=>{
+    const a = SC.ans[t.k]; if(a==null||a===-1) return;
+    const pp = t.k==='nonpart' ? 100-B.prev(t.k) : B.prev(t.k);
+    const present = t.k==='nonpart' ? (a===1?0:1) : a;
+    const w = t.c==='Economic'?1.5:t.c==='Control'?1.2:1;
+    let status, tone, score;
+    if(present){
+      if(pp<45){ status='Unusual — push back'; tone='warn'; score=w*(100-pp); }
+      else if(pp<75){ status='Common — negotiable'; tone='mid'; score=w*(100-pp)*.4; }
+      else { status='Standard — don’t spend leverage'; tone='ok'; score=0; }
+    } else {
+      if(pp>=80){ status='Missing a near-universal term'; tone='mid'; score=w*10; }
+      else { status='Absent — good for you'; tone='ok'; score=0; }
+    }
+    const lab = t.k==='nonpart' ? (present?'Participating liquidation preference':'Non-participating liq. pref') : t.l;
+    const tr = B.trend(t.k).map(v=>t.k==='nonpart'?100-v:v);
+    rows.push({t,lab,present,pp,status,tone,score,tr});
+  });
+  const ip = rows.filter(r=>IPI_TERMS.includes(r.t.k));
+  const mine = ip.length? mean(ip.map(r=>r.present?100:0)) : null, mkt = ip.length? mean(ip.map(r=>r.pp)) : null;
+  const diff = mine==null?null:mine-mkt;
+  const pos = diff==null?50:(clamp(diff,-40,40)+40)/80*100;
+  els('score').innerHTML = `<div class="sc"><span>Your index</span><b>${mine==null?'–':mine.toFixed(0)}</b></div><div class="sc"><span>${B.label} ${B.yr}</span><b class="mut">${mkt==null?'–':mkt.toFixed(0)}</b></div>
+    <div class="gauge"><div class="gl"><span>founder-friendlier</span><span>more investor-protective</span></div><div class="bar"><i class="mid"></i><i class="dot" style="left:${pos}%"></i></div>
+    <div class="gv">${diff==null?'Mark Yes/No on terms to score your sheet':(diff>0?'+':'')+diff.toFixed(0)+' pts vs market'}</div></div>`;
+
+  /* round check */
+  const inv = +els('inv').value, post = +els('post').value, s = SC.stage;
+  if(inv>0 && post>inv){
+    const sold = inv/post*100, bench = equitySold(s,4), med = D.valuation[s][4], avgI = D.avgInv[s][4], sd = sold-bench, vp = (post/med-1)*100;
+    const p = (t,c)=>`<span class="pill ${c}">${t}</span>`;
+    els('round').innerHTML = `<table class="rt"><tr><th>${s}</th><th>You</th><th>Median</th><th></th></tr>
+      <tr><td>Equity sold</td><td><b>${sold.toFixed(0)}%</b></td><td>${bench.toFixed(0)}%</td><td>${sd>4?p('dilutive','warn'):sd<-4?p('light','ok'):p('in line','mid')}</td></tr>
+      <tr><td>Post-money</td><td><b>£${post}m</b></td><td>£${med}m</td><td>${vp>=10?p('+'+vp.toFixed(0)+'%','ok'):vp<=-10?p(vp.toFixed(0)+'%','warn'):p('near','mid')}</td></tr>
+      <tr><td>Cheque</td><td><b>£${inv}m</b></td><td>£${avgI}m</td><td>${inv>avgI*1.3?p('larger','b'):inv<avgI*.7?p('smaller','b'):p('typical','mid')}</td></tr></table>`;
+  } else els('round').innerHTML = `<div class="note">Enter a cheque and a post-money (post &gt; cheque) to compare with the ${s} median.</div>`;
+
+  rows.sort((a,b)=>b.score-a.score);
+  const yrs = years();
+  els('list').innerHTML = rows.length ? `<table class="rt lst"><thead><tr><th>Term</th><th>Market ${yrs[0]}→${yrs[yrs.length-1]}</th><th>Verdict</th><th class="adv">What to do</th></tr></thead><tbody>${rows.map(r=>`
+    <tr><td><b>${r.lab}</b></td><td>${r.tr.map((v,i)=>i===r.tr.length-1?`<b>${v}%</b>`:v+'%').join(' → ')}<span class="nt"> ${r.t.k==='nonpart'?'participating':'have it'}</span></td>
+    <td><span class="pill ${r.tone}">${r.status}</span></td>
+    <td class="adv note">${r.tone==='warn'||(r.tone==='mid'&&r.present)?ADVICE[r.t.k]:r.tone==='mid'?'Likely in the long-form docs — check you’re getting a better deal than market.':'—'}</td></tr>`).join('')}</tbody></table>`
+    : '<div class="empty">Mark the terms in your term sheet on the left (Yes / No), or press <b>Fill typical sheet</b> to see how it works. “?” terms are ignored.</div>';
+  els('yrwrap').style.display = SC.dim==='sector'?'none':'';
+  els('year').innerHTML = years().slice().reverse().map(y=>`<option ${y===B.yr?'selected':''}>${y}</option>`).join('');
+}
+document.addEventListener('DOMContentLoaded', init);
+
+</script></body></html>

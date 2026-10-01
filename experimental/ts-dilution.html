@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Founder Dilution &amp; Exit Waterfall — UK VC</title>
+<style>
+:root{--z:1;--paper:#faf8f4;--paper2:#f3efe7;--card:#fff;--ink:#1c1b1a;--ink2:#46433e;--muted:#7a756c;--rule:#e3ddd1;--rule2:#cfc7b8;--teal:#0f6e6e;--rust:#c1502e}
+@media(min-width:1500px) and (min-height:760px){:root{--z:1.15}}
+@media(min-width:1800px) and (min-height:900px){:root{--z:1.3}}
+@media(min-width:2300px) and (min-height:1200px){:root{--z:1.6}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font:calc(13px*var(--z))/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h3{font-family:"Source Serif 4",Georgia,serif;margin:0;font-weight:600}
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto 1fr;gap:calc(8px*var(--z));padding:calc(8px*var(--z)) calc(14px*var(--z)) calc(10px*var(--z));width:100%}
+.top{display:flex;flex-wrap:wrap;gap:calc(8px*var(--z)) calc(16px*var(--z));align-items:center;background:var(--card);border:1px solid var(--rule);border-radius:calc(10px*var(--z));padding:calc(8px*var(--z)) calc(12px*var(--z))}
+.top h1{font-size:calc(17px*var(--z));white-space:nowrap}
+.top h1 small{display:block;font:500 calc(10.5px*var(--z)) Inter,sans-serif;color:var(--muted)}
+.top label{display:flex;align-items:center;gap:calc(6px*var(--z));font-size:calc(11.5px*var(--z));color:var(--muted);white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--rule2);border-radius:calc(8px*var(--z));overflow:hidden}
+.seg button{font:500 calc(11.5px*var(--z)) Inter,sans-serif;border:0;border-right:1px solid var(--rule);background:#fff;padding:calc(5px*var(--z)) calc(10px*var(--z));cursor:pointer;color:var(--ink2)}
+.seg button:last-child{border:0}.seg button.on{background:var(--ink);color:#fff}
+select,input[type=number]{font:calc(12.5px*var(--z)) Inter,system-ui,sans-serif;padding:calc(4px*var(--z)) calc(6px*var(--z));border:1px solid var(--rule2);border-radius:calc(6px*var(--z));background:#fff;color:var(--ink)}
+input[type=number]{width:calc(64px*var(--z))}
+input[type=range]{accent-color:var(--teal);width:calc(230px*var(--z))}
+.main{display:grid;grid-template-columns:clamp(calc(360px*var(--z)),30vw,calc(560px*var(--z))) minmax(0,1fr);gap:calc(8px*var(--z));min-height:0}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:calc(10px*var(--z));padding:calc(9px*var(--z)) calc(12px*var(--z));min-height:0;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:calc(4px*var(--z))}
+.hd h3{font-size:calc(14px*var(--z))}
+.note{color:var(--muted);font-size:calc(11px*var(--z))}
+.left{display:flex;flex-direction:column;gap:calc(6px*var(--z));overflow:auto}
+.rounds{width:100%;border-collapse:collapse;font-size:calc(12px*var(--z))}
+.rounds td,.rounds th{padding:3px calc(4px*var(--z));border-bottom:1px solid var(--rule);text-align:left}
+.rounds th{font-size:calc(10px*var(--z));color:var(--muted);font-weight:600}
+.rounds input[type=number]{width:calc(60px*var(--z))}
+.rounds select{max-width:calc(105px*var(--z));padding:3px}
+.steps{display:flex;flex-direction:column;gap:3px;margin-top:2px}
+.step{display:grid;grid-template-columns:calc(78px*var(--z)) 1fr calc(44px*var(--z));gap:calc(6px*var(--z));align-items:center;font-size:calc(11.5px*var(--z))}
+.step .bar{height:calc(12px*var(--z));border-radius:calc(4px*var(--z));background:var(--paper2);overflow:hidden;display:flex}
+.step .bar i{display:block;height:100%}
+.step b{text-align:right}
+.right{display:grid;grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);gap:calc(8px*var(--z));min-height:0}
+.chartcard{display:flex;flex-direction:column}
+#chart{flex:1;min-height:0;position:relative}
+#chart svg{width:100%;height:100%;display:block}
+.bottom{overflow:auto}
+.t{width:100%;border-collapse:collapse;font-size:calc(12px*var(--z))}
+.t th{font-size:calc(10px*var(--z));color:var(--muted);font-weight:600;text-align:left;padding:3px calc(6px*var(--z));border-bottom:1px solid var(--rule2)}
+.t td{padding:3px calc(6px*var(--z));border-bottom:1px solid var(--rule)}
+.t td.n,.t th.n{text-align:right;font-variant-numeric:tabular-nums}
+.up{color:var(--teal)}.down{color:var(--rust)}
+.pill{display:inline-block;font:600 calc(10px*var(--z)) Inter,sans-serif;padding:1px calc(7px*var(--z));border-radius:calc(99px*var(--z))}
+.pill.ok{background:#dcefe2;color:#27623b}.pill.warn{background:#f8e0d6;color:#9a3a1c}
+.read{background:var(--paper2);border-left:3px solid var(--teal);border-radius:0 calc(8px*var(--z)) calc(8px*var(--z)) 0;padding:calc(7px*var(--z)) calc(10px*var(--z));font-size:calc(12px*var(--z));color:var(--ink2);margin-top:calc(6px*var(--z))}
+.btn{font:600 calc(11px*var(--z)) Inter,sans-serif;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:calc(4px*var(--z)) calc(9px*var(--z));border-radius:calc(7px*var(--z));cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:3px calc(12px*var(--z));font-size:calc(10.5px*var(--z));color:var(--ink2)}
+.legend i{display:inline-block;width:calc(9px*var(--z));height:calc(9px*var(--z));border-radius:2px;margin-right:calc(4px*var(--z))}
+@media(max-width:900px){
+  :root{--z:1}
+  html,body{height:auto}
+  .app{height:auto;display:block;padding:calc(8px*var(--z))}
+  .top{margin-bottom:calc(8px*var(--z))}
+  .top label{flex:1 1 100%}.top input[type=range]{width:100%;flex:1}
+  .main{display:block}.left,.right{margin-bottom:calc(8px*var(--z));overflow:visible}
+  .right{display:block}.right .card{margin-bottom:calc(8px*var(--z))}
+  #chart{height:calc(300px*var(--z));flex:none}
+  .bottom{overflow:auto}
+  .rounds input[type=number]{width:calc(54px*var(--z))}
+}
+</style></head><body>
+<div class="app">
+  <div class="top">
+    <h1>Founder Dilution &amp; Exit Waterfall<small>UK VC median defaults · HSBC Innovation Banking guide 2026</small></h1>
+    <div class="seg" id="preset"><button data-p="market" class="on">Market median</button><button data-p="seedpart">Participating Seed</button><button data-p="heavy">Heavy structure</button></div>
+    <label>Option pool % <input type="number" id="pool" value="10" min="0" max="30"></label>
+    <label>Seniority <select id="sen"><option value="std">Latest senior</option><option value="pari">Pari passu</option></select></label>
+    <label>Chart to <select id="scale"><option value="250">£250m</option><option value="500" selected>£500m</option><option value="1000">£1bn</option></select></label>
+    <label>Exit <b id="exitV" style="color:var(--ink);min-width:54px"></b><input type="range" id="exit" min="0" max="500" step="1" value="60"></label>
+  </div>
+  <div class="main">
+    <div class="card left">
+      <div class="hd"><h3>Rounds</h3><span class="note">UK medians pre-loaded</span></div>
+      <div style="overflow-x:auto"><table class="rounds" id="rounds"></table></div>
+      <div class="hd" style="margin-top:6px"><h3>Founder ownership after each round</h3></div>
+      <div class="steps" id="steps"></div>
+      <div class="note" style="margin-top:6px">Assumptions: pool fully granted, created at the first round, no later top-ups; non-participating holders convert when as-converted beats the preference; capped-participating holders get preference plus participation up to a 3× total return, then convert. Illustrative — not legal or financial advice.</div>
+    </div>
+    <div class="right">
+      <div class="card chartcard"><div class="hd"><h3>Who gets what share of the proceeds</h3><span class="note">dashed line = founders’ fully-diluted ownership · marker = chosen exit</span></div><div id="chart"></div><div class="legend" id="legend"></div></div>
+      <div class="card bottom"><div class="hd"><h3>Payout at the selected exit</h3></div><div id="table"></div><div class="read" id="read"></div></div>
+    </div>
+  </div>
+</div>
+<script>
+/* ===== standalone dilution + exit waterfall (no libraries) ===== */
+const $ = id => document.getElementById(id);
+const sum = a => a.reduce((s,v)=>s+v,0);
+const WF = { rounds:[], pool:10, sen:'std', exit:60, maxE:500 };
+const PRESETS = {
+  market:  [['Seed',0.59,4.2,'np',1,1],['Series A',4.6,17.1,'np',1,1],['Series B',17.7,58.2,'np',1,1],['Series C+',110,258.4,'np',1,0]],
+  seedpart:[['Seed',0.59,4.2,'p',1,1],['Series A',4.6,17.1,'np',1,1],['Series B',17.7,58.2,'np',1,1],['Series C+',110,258.4,'np',1,0]],
+  heavy:   [['Seed',0.59,4.2,'p',1,1],['Series A',4.6,17.1,'pc',1.5,1],['Series B',17.7,58.2,'p',1,1],['Series C+',110,258.4,'pc',1,1]]
+};
+const COL = { F:'#0f6e6e', O:'#9db6c7', 'Seed':'#d9a024', 'Series A':'#2a8a86', 'Series B':'#3a5aa8', 'Series C+':'#7a3b6e' };
+
+function load(p){ WF.rounds = PRESETS[p].map(r=>({name:r[0],inv:r[1],post:r[2],type:r[3],mult:r[4],on:!!r[5]})); inputs(); draw(); }
+function inputs(){
+  $('rounds').innerHTML = `<tr><th>On</th><th>Round</th><th>£m in</th><th>Post £m</th><th>Pref</th><th>×</th></tr>` + WF.rounds.map((r,i)=>`
+    <tr><td><input type="checkbox" data-i="${i}" data-f="on" ${r.on?'checked':''}></td><td>${r.name}</td>
+    <td><input type="number" step="0.1" data-i="${i}" data-f="inv" value="${r.inv}"></td>
+    <td><input type="number" step="0.1" data-i="${i}" data-f="post" value="${r.post}"></td>
+    <td><select data-i="${i}" data-f="type"><option value="np" ${r.type==='np'?'selected':''}>Non-part.</option><option value="p" ${r.type==='p'?'selected':''}>Participating</option><option value="pc" ${r.type==='pc'?'selected':''}>Part. capped</option></select></td>
+    <td><input type="number" step="0.25" data-i="${i}" data-f="mult" value="${r.mult}" style="width:48px"></td></tr>`).join('');
+  document.querySelectorAll('#rounds [data-f]').forEach(el=>el.onchange = el.oninput = ()=>{
+    const r = WF.rounds[+el.dataset.i], f = el.dataset.f; r[f] = f==='on'?el.checked : f==='type'?el.value : +el.value; draw(); });
+}
+function stakes(){
+  const act = WF.rounds.filter(r=>r.on && r.inv>0 && r.post>r.inv), pool = WF.pool/100;
+  if(!act.length) return { act, F:1-pool, O:pool, inv:[], steps:[] };
+  const s = act.map(r=>r.inv/r.post);
+  let F = 1-s[0]-pool, O = pool, inv = [s[0]];
+  const steps = [{name:act[0].name, F:Math.max(0,F)}];
+  for(let i=1;i<act.length;i++){ const d=1-s[i]; F*=d; O*=d; inv = inv.map(v=>v*d); inv.push(s[i]); steps.push({name:act[i].name, F:Math.max(0,F)}); }
+  return { act, F:Math.max(0,F), O, inv, steps };
+}
+function payout(E, st, conv){
+  const act = st.act, n = act.length, out = { F:0, O:0, inv:new Array(n).fill(0) };
+  const claim = act.map((r,i)=>conv.has(i)?0:r.mult*r.inv);
+  let rem = E; const pay = new Array(n).fill(0);
+  if(WF.sen==='pari'){ const tot = sum(claim), f = tot>E? E/tot : 1; claim.forEach((c,i)=>pay[i]=c*f); rem = E-sum(pay); }
+  else for(let i=n-1;i>=0;i--){ const p = Math.min(claim[i],rem); pay[i]=p; rem-=p; }
+  const part = new Set(); act.forEach((r,i)=>{ if(conv.has(i)||r.type==='p'||r.type==='pc') part.add(i); });
+  const capped = new Set(), extra = new Array(n).fill(0); let left = rem;
+  for(let it=0; it<6; it++){
+    const free = [...part].filter(i=>!capped.has(i)), base = st.F + st.O + sum(free.map(i=>st.inv[i])), per = base>0? left/base : 0;
+    let changed = false;
+    free.forEach(i=>{ const r = act[i]; if(!conv.has(i) && r.type==='pc'){ const room = Math.max(0, 3*r.inv - pay[i]); if(per*st.inv[i] > room+1e-9){ capped.add(i); extra[i]=room; left-=room; changed=true; } } });
+    if(!changed){ out.F = per*st.F; out.O = per*st.O; free.forEach(i=>extra[i]=per*st.inv[i]); break; }
+  }
+  act.forEach((r,i)=>out.inv[i] = pay[i]+extra[i]);
+  return out;
+}
+function solve(E, st){
+  const conv = new Set(), elig = st.act.map((r,i)=>(r.type==='np'||r.type==='pc')?i:-1).filter(i=>i>=0);
+  for(let it=0; it<8; it++){
+    let changed = false;
+    elig.forEach(i=>{ const c1=new Set(conv); c1.add(i); const c0=new Set(conv); c0.delete(i);
+      const want = payout(E,st,c1).inv[i] > payout(E,st,c0).inv[i]+1e-9;
+      if(want!==conv.has(i)){ want?conv.add(i):conv.delete(i); changed=true; } });
+    if(!changed) break;
+  }
+  const r = payout(E,st,conv); r.conv = conv; return r;
+}
+
+function draw(){
+  const st = stakes();
+  $('exitV').textContent = '£'+WF.exit+'m';
+  const names = ['Founders','Option pool', ...st.act.map(r=>r.name)];
+  const own = [st.F, st.O, ...st.inv];
+  const cols = [COL.F, COL.O, ...st.act.map(r=>COL[r.name])];
+  /* ownership steps */
+  const pool = WF.pool/100;
+  $('steps').innerHTML = [{name:'Start',F:1}, ...st.steps].map(s=>`<div class="step"><span>${s.name}</span><div class="bar"><i style="width:${s.F*100}%;background:${COL.F}"></i></div><b>${(s.F*100).toFixed(1)}%</b></div>`).join('');
+  /* chart */
+  const host = $('chart'), W = Math.max(280, host.clientWidth), H = Math.max(150, host.clientHeight);
+  const m = {l:36,r:8,t:14,b:22}, w = W-m.l-m.r, h = H-m.t-m.b;
+  const N = 100, xs = Array.from({length:N+1},(_,i)=>i*WF.maxE/N);
+  const rows = xs.map(E=>{ const e=Math.max(E,.01), r=solve(e,st); return [r.F,r.O,...r.inv].map(v=>v/e*100); });
+  const X = E=>m.l+E/WF.maxE*w, Y = p=>m.t+(1-p/100)*h;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+  for(let p=0;p<=100;p+=25) svg += `<line x1="${m.l}" x2="${m.l+w}" y1="${Y(p)}" y2="${Y(p)}" stroke="#e3ddd1"/><text x="${m.l-5}" y="${Y(p)+3}" text-anchor="end" font-size="10" fill="#7a756c">${p}%</text>`;
+  const ticks = WF.maxE<=250?50:WF.maxE<=500?100:200;
+  for(let e=0;e<=WF.maxE;e+=ticks) svg += `<text x="${X(e)}" y="${H-6}" text-anchor="middle" font-size="10" fill="#7a756c">£${e}m</text>`;
+  const k = names.length; let cum = new Array(xs.length).fill(0);
+  for(let s=0;s<k;s++){
+    const lo = cum.slice(), hi = rows.map((r,i)=>cum[i]+r[s]); cum = hi;
+    const top = hi.map((v,i)=>`${X(xs[i])},${Y(v)}`).join(' L'), bot = lo.map((v,i)=>`${X(xs[i])},${Y(v)}`).reverse().join(' L');
+    svg += `<path d="M${top} L${bot} Z" fill="${cols[s]}" opacity=".93"><title>${names[s]}</title></path>`;
+  }
+  svg += `<line x1="${m.l}" x2="${m.l+w}" y1="${Y(own[0]*100)}" y2="${Y(own[0]*100)}" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  svg += `<text x="${m.l+w-4}" y="${Y(own[0]*100)-4}" text-anchor="end" font-size="10.5" font-weight="700" fill="#fff">ownership ${(own[0]*100).toFixed(0)}%</text>`;
+  const ex = Math.min(WF.exit, WF.maxE);
+  svg += `<line x1="${X(ex)}" x2="${X(ex)}" y1="${m.t}" y2="${m.t+h}" stroke="#1c1b1a" stroke-width="2"/><text x="${X(ex)}" y="${m.t-3}" text-anchor="middle" font-size="11" font-weight="700" fill="#1c1b1a">£${WF.exit}m</text></svg>`;
+  host.innerHTML = svg;
+  $('legend').innerHTML = names.map((n,i)=>`<span><i style="background:${cols[i]}"></i>${n}</span>`).join('');
+  /* table */
+  const E = Math.max(WF.exit,.01), r = solve(E,st), pay = [r.F,r.O,...r.inv], conv = r.conv;
+  $('table').innerHTML = `<table class="t"><thead><tr><th>Holder</th><th class="n">Ownership</th><th class="n">Payout</th><th class="n">% proceeds</th><th class="n">vs ownership</th><th>Status</th></tr></thead><tbody>${names.map((nm,i)=>{
+    const d = pay[i]/E*100 - own[i]*100;
+    const status = i<2?'':conv.has(i-2)?'<span class="pill ok">converts</span>':(st.act[i-2].type==='np'?'<span class="pill warn">takes pref</span>':'<span class="pill warn">pref + participation</span>');
+    return `<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${cols[i]};margin-right:6px"></i><b>${nm}</b></td><td class="n">${(own[i]*100).toFixed(1)}%</td><td class="n">£${pay[i].toFixed(pay[i]<10?2:1)}m</td><td class="n">${(pay[i]/E*100).toFixed(1)}%</td><td class="n ${d>=0?'up':'down'}">${d>0?'+':''}${d.toFixed(1)}pp</td><td>${status}</td></tr>`; }).join('')}</tbody></table>`;
+  const fPay = pay[0], drag = own[0]*E - fPay, totalPref = sum(st.act.map((a,i)=>conv.has(i)?0:a.mult*a.inv));
+  const thr = st.act.map((a,i)=>[a.name,a.mult*a.inv/st.inv[i],a.type]).filter(t=>t[2]!=='p');
+  $('read').innerHTML = `At a <b>£${WF.exit}m</b> exit founders receive <b>£${fPay.toFixed(1)}m (${(fPay/E*100).toFixed(1)}% of proceeds)</b> against ${(own[0]*100).toFixed(1)}% ownership — ${drag>0.05?`a preference “tax” of <b>£${drag.toFixed(1)}m</b>`:'no preference drag (all investors convert)'}.${E<totalPref?` Exit is below the £${totalPref.toFixed(1)}m of stacked preferences, so equity gets little or nothing.`:''}${thr.length?` Conversion points: ${thr.map(t=>`${t[0]} ≈ £${t[1].toFixed(0)}m`).join(' · ')}.`:''}`;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('#preset button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#preset button').forEach(x=>x.classList.toggle('on',x===b)); load(b.dataset.p); });
+  $('pool').oninput = e=>{ WF.pool=+e.target.value; draw(); };
+  $('sen').onchange = e=>{ WF.sen=e.target.value; draw(); };
+  $('exit').oninput = e=>{ WF.exit=+e.target.value; draw(); };
+  $('scale').onchange = e=>{ WF.maxE=+e.target.value; $('exit').max=WF.maxE; if(WF.exit>WF.maxE){ WF.exit=WF.maxE; $('exit').value=WF.exit; } draw(); };
+  let t; addEventListener('resize',()=>{ clearTimeout(t); t=setTimeout(draw,120); });
+  load('market');
+});
+</script></body></html>
