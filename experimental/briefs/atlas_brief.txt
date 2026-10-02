@@ -1,0 +1,154 @@
+=====================================================================
+BRIEF 1 OF 3: TERM SHEET ATLAS (index.html)  — rebuild specification
+=====================================================================
+FORMAT NOTE FOR THE READING LLM: sections are delimited by "## " headings. Items are "KEY: value" or "- bullet". Anything in
+[square brackets] is a parameter. Anything marked MUST is a hard requirement; SHOULD is a strong preference. Numbers quoted here
+are the values the original build used; the authoritative dataset is the ATLAS_DATA object (see §3), which the builder must be given.
+
+## 1. PURPOSE
+A single-page, offline-capable (except CDN libs/fonts), editorial-light data story built from the "Term Sheet Guide 2026 Vol.1"
+(HSBC Innovation Banking / UKBAA; UK venture capital term sheets; 711 sheets, 2025 deals) with the 2025 and 2024 editions folded in
+for multi-year history. Goal: extract all quantitative data, recast it into novel views, and attach ACTIONABLE conclusions for two
+audiences (founders raising, investors deploying). Every insight is labelled founder / investor / both. There is NO audience toggle.
+
+## 2. DELIVERABLE / STACK
+- ONE self-contained file: index.html with inline <style> and inline <script> (data embedded). Vanilla JS, no framework, no bundler.
+- Libraries (script tags, cdnjs): d3 7.9.0 (cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js), d3-sankey 0.12.3
+  (…/d3-sankey/0.12.3/d3-sankey.min.js), three.js r128 (…/three.js/r128/three.min.js). DO NOT rely on three's OrbitControls (not on
+  cdnjs for r128): orbit/zoom is hand-written with pointer events.
+- Fonts (Google Fonts link, with system fallbacks): Inter (UI), Source Serif 4 (headings/numbers). Mono not required.
+- Data: a global `const D = ATLAS_DATA;` supplied by the data file (§3). All charts read from D; no numbers are hard-coded in chart code
+  except annotations that were typed into prose "so-what" notes (see §11 consistency rule).
+- Single page, sticky top nav with anchor links and active-section highlighting (IntersectionObserver, rootMargin -40% 0 -55% 0).
+
+## 3. DATA MODEL (ATLAS_DATA, accessed as D)  — shapes only
+Terms (19): keys pref, nonpart, pool, antidil, conv, sec, coinv (Economic); board, vest, leaver, drag, consent (Control);
+fwarr, cwarr, arrfee, monfee, excl, sust, dei (Other). D.terms = [{k,l,c}].
+- D.stages = ['Seed','Series A','Series B','Series C+']; D.stageDef = ['<£2m','£2–10m','£10–30m','>£30m'].
+- D.byStage.y2023|y2024|y2025[termKey] = [seed,A,B,C+] (% of term sheets containing the term). NB: 2023 Series B and C+ are IDENTICAL
+  in the source (stages pooled in the 2024 edition) -> flag D.bcPooled2023=true and surface the caveat wherever 2023 B/C+ is used.
+- D.byInvestor.y2023|y2024|y2025[termKey] = [VC(LP fund), VCT, EIS, CVC, Family office, Angel]; D.investorMeta=[{n,avg}] (2025 counts and avg cheque £m).
+- D.bySector.y2024|y2025[termKey] = [AI(pure), DeepTech(ex-AI), Life Sci & BioTech] (no 2023).
+- D.termSeries[key] = 5 values 2021..2025 (null = not surveyed): 19-term set plus tag, tranche, cosale, restrict, prefdiv, growth, dno, keyman, persguar.
+  D.termSeriesLabels, D.termCat (category per series). D.liqType {nonpart,part,partcap}[5]. D.esg, D.dei by stage 2022..2025.
+- Valuation: D.valuation[stage][5] median post-money £m 2021..25 (Pitchbook); D.avgInv[stage][5] average cheque £m; D.partPref[stage]=[2024,2025]
+  % deals with participating pref; D.prefDiv likewise; D.stageMix[stage][5] % of term sheets by stage; D.sample (counts); D.kpi.
+- Capital flows: D.leadVol[all|stage] = {n:[2023,24,25], UK[],Europe[],US[],Other[]} (% of lead investors by HQ); D.leadVal (origin £bn,
+  origin share by stage for inbound £5.9bn of £8.8bn); D.macro {ukVC years/bn, conc (value by stage 2023-25), countries, exits, dryPowder}.
+- Sectors: D.sectors [{n, s:[2022..2025 % share]}]; D.sectorYears; D.top10Share; D.deepTech {vol,val}[5]; D.sectorVal [{n,v,i,dt}] avg post-money
+  and cheque £m (2026 ed.; 15 sectors); D.sectorVal24 (2025 ed.: avg PRE-money + cheque; methodology differs!); D.sectorStage {y2023,y2024}
+  {n:[stage counts], rows:{sector:[counts by stage]}}; D.sectorShareEd; D.aiVal {years 2021..2024; per stage {ai[],ex[]}}.
+- Geography: D.geoStage, D.geoSector (term sheets, London % by count, £m, London % by value), D.regions (9 regions: ts, avg cheque, pref %,
+  non-part %, liq multiple, pool %, vesting %, investor mix [6]).
+- Investor types over time: D.invVol, D.invVal, D.cvcSector, D.cvcStage, D.bigA (Series A >£50m pre-money table of 15 rounds), D.spinouts.
+- Pulse survey: D.pulse {outlook, deals, focus, sectors, founderVal, structure} each row [label, 2025 %, 2026 %] (n=52 in 2025, n=41 in 2026).
+- Misc: D.cplusCycle, D.seedPart, D.editions, D.exclusivityDays {y2024:34,y2025:48}, D.advice (term -> negotiation advice string).
+
+## 4. PAGE STRUCTURE (top to bottom, anchor ids)
+hero -> #helper -> #actions -> #market -> #landscape -> #movers -> #leverage -> #capital -> #sectors -> #geo -> #investors -> #outlook ->
+#years -> #scorecard -> #waterfall -> footer. Nav links: Founder helper, Actions, Market, 3D landscape, Movers, Leverage, Capital, Sectors,
+Geography, Investors, Outlook, Across years, Scorecard, Waterfall.
+- Hero: kicker, H1 "The UK term sheet, re-cut into things you can act on.", lede, 8 headline stat tiles in a FIXED 4x2 grid (2 columns on <=700px;
+  never leave empty tiles), source note stating that figures were read from slide graphics and derived metrics are our calculations.
+- Every chart section ends with "so-what" blocks: a "Founder so-what" and an "Investor so-what" (both always visible, left border teal vs plum).
+
+## 5. SECTION SPECS
+5.1 #helper (Founder helper) — FLAGSHIP INTERACTIVE
+ Inputs: Sector (AI, FinTech, Life Sci & BioTech, HealthTech/MedTech, CleanTech & Energy, Enterprise software, Retail & Consumer, Cyber,
+ Hardware/Robotics/Space, Other), Stage (4), Region (London / Outside London), Likely lead investor (Not sure / 6 types).
+ Sector->data mapping object per sector: share[] (D.sectors names), val[] (D.sectorVal names, averaged if several), val24[] (D.sectorVal24),
+ cohort index into D.bySector (AI=0, DeepTech=1 for CleanTech/Energy/Cyber/Hardware, LS=2), bull (D.pulse.sectors label), geo[], ss[] (D.sectorStage rows).
+ Outputs: (a) 6 KPI tiles: stage median post-money + YoY; equity sold = avgInv/valuation; sector price index = sector avg post-money / mean of the
+ 15 sector averages x100; participating-pref % + pp change; leverage verdict chip; exclusivity %. Grid 3x2 (2 cols mobile).
+ (b) Insight cards generated by rules (founder/investor pills; optional "Do this" with separate Founder:/Investor: lines when tagged both):
+   Price (path 2021-25, equity sold, sector index, like-for-like pre+cheque vs 2025-edition), AI-vs-ex-AI premium (AI only), Leverage verdict
+   (founder's market if valuation YoY>=0 and part-pref change<=0; investor's market if <0 and >=0; "priced up but structured"; "cheaper but cleaner")
+   with Seed snap-back and C+ cyclicality commentary, Terms (resist <40% & burden / expect >=80%), Trend (largest |2025-2023| moves + whipsaw
+   detection: |d1|>=6, |d0|>=6, opposite sign), Investors (lead HQ mix 2023-25), Sector market position, Cohort term differences (if cohort mapped),
+   Region (London vs regions text), Timing (exclusivity), optional lead-investor-type deviations (|diff vs VC|>=15), Stage 2025 paragraph, plus 3
+   investor-only cards (credible asks, competition/pricing, deal flow/syndication/exits).
+ (c) Term-by-term table: sparkline 2023->2024->2025 (local min/max scaled), % at stage, sector-cohort column if available (arrow when |diff|>=10),
+   verdict pill (burden term: <30 "Resist", <50 "Negotiate", <80 "Common", >=80 "Expect it"; nonpart: >=88 "Insist" else "Watch out"), advice text; checkbox
+   "show only push-back candidates".
+ (d) Three small charts: stage median post-money path (AI vs ex-AI lines if AI), stacked lead-investor HQ mix 2023-25, sector share bars at the stage
+   (2024 bar, 2023 tick, user sector highlighted).
+5.2 #actions — 23 insight cards (founder-only, investor-only, both; some tagged "multi-year"), each: rank, audience pills, impact (1-5 meter), ease,
+ headline stat, text, evidence chips, black "Do this" box, link to evidence section. Sort buttons: priority (=0.6*impact+0.4*ease), impact, quick wins.
+5.3 #market — UK VC value 2020-25 bars; value-by-stage stacked (share of £ labels: C+ 63% of £ with 12% of deals); stage-mix 100% columns;
+ country lollipop (log x); exits (M&A bars vs IPO marker) + dry powder areas (global £169bn->£525bn, Europe £23bn->£58bn).
+5.4 #landscape — 3D Three.js term landscape (see §6).
+5.5 #movers — top-16 stage x term deltas 2024->2025 (diverging bars); Investor-Protection Index (IPI) dumbbells with cohort toggle (stage/investor/sector);
+ delta heatmap (19 terms x 4 stages, outline when |d|>=5); selectable 5-year trend lines (default pref, vest, excl, fwarr, board).
+ IPI = mean of 10 terms [pref, 100-nonpart, antidil, board, vest, leaver, drag, consent, fwarr, cwarr] (our composite).
+5.6 #leverage — quadrant (x=median post-money YoY %, y=participating-pref change pp, bubble=% of term sheets; quadrants Founder's market/Investor's market/
+ Priced up but structured/Cheaper but clean); equity sold per round 2021-25; valuation index (2021=100) with end-label collision spreading;
+ participating pref & pref dividend 2024 vs 2025; liquidation-type stacked bars; Series A >£50m pre-money bars coloured by investor type (CVC=5 of 15).
+5.7 #capital — d3-sankey origin->stage for inbound £5.9bn (value = stageBn x originShare/100; UK-led £2.9bn noted, no stage split published);
+ origin share stacked bars 2023-25; 4 small-multiple line charts (UK/Europe/US share by stage 2023-25). Create all grid cells BEFORE measuring widths.
+5.8 #sectors — slope chart sector share 2022->2025 (label collision handling); momentum matrix (x=share change pp, y=avg post-money, bubble=share,
+ ring=2026 bullishness); valuation vs cheque scatter with iso-stake lines (10/20/40%), DeepTech filled; DeepTech volume vs value lines (value/vol 1.29x);
+ 19-term dumbbell AI vs DeepTech vs Life Sci with 2024 ticks. Use a generic `dodge(items,gapY,gapX)` for labels.
+5.9 #geo — London share by sector (count vs £ dumbbell), by stage (paired bars), investor mix by region (stacked), terms vs London (nonpart/pool deltas,
+ regions with n>=15 only), regional scorecard table with read pills.
+5.10 #investors — term x investor-type heatmap (toggle level / delta), "punching above weight" (£share/deal share: CVC 1.67x), CVC sector pivot, CVC by stage,
+ investor type over time, spin-out terms dumbbell, spin-out stage/sector donuts with HTML legends (no outside labels), top-10 universities.
+5.11 #outlook — pulse survey paired bars (outlook, deal expectations, focus, sector bullishness) and the "expectation gap" stacked-diverging chart
+ (net aggressive founder valuations +39 in 2026 vs +30 in 2025; investor structure net +13 vs +28).
+5.12 #years (Across the editions) — sample sizes by edition (2023 ed. 245, 2024 ed. 426, 2025 ed. 588, 2026 ed. 711; 2023 edition NOT included as official source
+ not available); term atlas (27 term sparklines tagged Rising/Falling/Volatile/Stable: net change >=8 / <=-8 / range>=18); term tracker (term select x stage|investor lines
+ 2023-25); two-year drift (Seed and A only; B/C+ excluded because of pooled 2023); cycles (Seed participating 15%->7%->13%; C+ valuation+participation dual axis);
+ AI premium by stage (% AI vs ex-AI median post-money 2021-24); sector share across editions; sector x stage heat 2023|2024 split cells; sector valuation 2025-ed vs 2026-ed
+ dumbbell (pre-money+cheque vs implied post-money; caveat: method change and large-deal skew in Hardware/Transport).
+5.13 #scorecard — see §7. 5.14 #waterfall — see §8.
+
+## 6. 3D LANDSCAPE (Three.js) — details
+- Grid: x = 19 terms (spacing 1.15), z = lanes (spacing 2.15). One BoxGeometry(0.78, 1, 1.2) mesh per cell scaled on Y; target height = value/100*9 (HEIGHT=9). Bars lerp
+  toward target (0.12/frame). Floor plane + GridHelper + dashed rails at 25/50/75/100%.
+- Controls: lane dimension [Stage | Investor type | Sector cohort]; mode [Prevalence (colour by category Economic/Control/Other, lightened as value falls) |
+  Colour = delta vs prior year (diverging teal/rust saturating at +/-20pp) | Change landscape (height = delta*0.55*0.45, negative bars below floor)];
+  edition year [2025|2024|2023] (sector dimension has no 2023 -> falls back to 2024; delta vs previous year, 2023 has none); prior-year ghost wireframes toggle;
+  auto-orbit toggle; Reset view.
+- Camera: spherical (theta -0.3, phi 1.0, target y 2.4). Hand-written pointer orbit (drag), wheel zoom (clamp 12..60), click selects, hover raycast + tooltip + readout card
+  (value, prior year, change, lane average, rank, interpretive sentence). Auto-fit radius: max(22, (w/2+7)/(tan(21deg)*aspect)*0.95, (d/2+8)*1.5).
+- Labels are DOM divs projected each frame (term labels rotated -55deg, right-aligned at the bar base; lane labels at right; 25..100% rail labels). They need `position:absolute;left:0;top:0`.
+- Render loop pauses when off-screen (IntersectionObserver). Handle WebGL failure with a message. Mobile: readout card becomes static, stage height 520px.
+
+## 7. SCORECARD (in-page copy; standalone version is Brief 2)
+Benchmark by [Stage | Investor type | Sector cohort] + cohort; round stage; cheque; post-money; Yes/No/? per term; outputs protection index vs cohort + gauge, round check
+(equity sold, post-money vs median, cheque vs average), ranked negotiation list with advice. Same logic as Brief 2 §5.
+
+## 8. WATERFALL (in-page copy; standalone version is Brief 3)
+Presets, rounds table with fixed-layout columns (NO horizontal scrollbar; round names shortened to Seed/A/B/C+), option pool, seniority, exit slider 0-500, stacked-area chart
+of share of proceeds vs exit (d3 stacked area, founders' ownership dashed line, exit marker, legend), payout table, read-out with conversion points. Logic as Brief 3 §5.
+
+## 9. DESIGN SYSTEM
+- Theme: clean editorial LIGHT. Tokens (CSS vars): paper #faf8f4, paper2 #f3efe7, card #fff, ink #1c1b1a, ink2 #46433e, muted #7a756c, rule #e3ddd1, rule2 #cfc7b8,
+  teal #0f6e6e (up/good), rust #c1502e (down/bad), plum #6b3f7a (investor accents), blue #2f55a4, ochre #c8932f.
+- Stage colours: Seed #d9a024, A #2a8a86, B #3a5aa8, C+ #7a3b6e. Origin colours: UK #3a7d4f, Europe #3a5aa8, US #b3202a, Other #9a9186.
+  Term category colours: Economic #2f55a4, Control #6b3f7a, Other #c8932f. Delta colours: teal = more common, rust = less common.
+- Typography: Source Serif 4 for H1-H3, stat numbers; Inter for UI/body (15px/1.55). Max content width 1240px, card radius 12px, 1px rule borders, no shadows.
+- Grid: .grid2/.grid3 collapse to 1 column <=900px; 16px gutters on mobile; no horizontal page scroll.
+- Charts: inline SVG built with d3 via helper `mkSvg(id,height,margins)` returning {svg,g,w,h}; width = container clientWidth, viewBox scaling. Redraw all on resize (180ms debounce).
+  Shared helpers: tooltip (#tip, follows cursor), yAxisGrid, legend, dodge/label-spreading, fmt.
+- IMPORTANT CSS GOTCHA: do not set `fill` for SVG text via a plain CSS class rule if JS sets a `fill` attribute — the CSS wins and kills colours. Use `.lbl:not([fill]){fill:...}`.
+- Pills: founder (teal tint), investor (plum tint), multi-year (ochre), neutral. "Do this" boxes are black with a small caps teal label.
+- Interaction principles: hover tooltips on every mark; toggles are segmented controls (.seg); selects for cohort choices; keep numbers formatted (pp for percentage points, £m/£bn).
+
+## 10. BUILD/FILE ORGANISATION (recommended)
+Source parts: datasets.js (3 objects, markers /*@@SHARED*/ /*@@ATLAS*/ /*@@END*/), style.css, body.html (+fragments), core.js (helpers, COHORT registry, IPI), charts1.js
+(hero/market/movers/leverage), landscape.js, charts2.js (capital/sectors/geo/investors/outlook), insights.js, tools.js (scorecard+waterfall), helper.js, years.js, main.js
+(init, resize redraw, nav highlighting). A small build script concatenates CSS, body, libs and JS into index.html. Not required: any single-file authoring is acceptable.
+
+## 11. CONSIDERATIONS / RULES FOR CORRECTNESS
+- Source discrepancy: the 2026 guide's executive-summary tile prints Series B+C+ share as 26% for 2025; its own stage chart gives 19%+12% = 31% -> use 31% and footnote.
+- Derived metrics must be labelled as ours: IPI, equity sold (avgInv/valuation), sector price index, value/volume ratio, net expectation scores, implied origin x stage £ split.
+- SpaceTech implied stake (36.7/44 = 83%) is an outlier -> flag. Sector valuations changed definition between editions (pre-money vs implied post-money): show direction only.
+- Prose so-what/insight text embeds numbers: any data change MUST be re-checked against prose (consistency rule). Prefer computing numbers in code where feasible.
+- Do not invent data not in the sources; label approximations. Not financial/legal advice (footer).
+- Performance: pause WebGL when off-screen; avoid layout thrash; redraw only on resize/interaction.
+- Accessibility: sufficient contrast, tooltips supplement visible labels, keyboard-usable native controls.
+
+## 12. ACCEPTANCE CHECKLIST
+[ ] No console errors; all .chart containers populated. [ ] Helper works for all 10 sectors x 4 stages x region x investor. [ ] 3D: all 3 lane dims x 3 modes x years switch without error.
+[ ] Hero tiles 4x2, no blanks. [ ] No audience toggle; every note labelled founder/investor. [ ] Rounds table has no scrollbar at normal width. [ ] Legend colours visible in the waterfall.
+[ ] Mobile 390px: single column, no horizontal overflow. [ ] 2023 B/C+ pooled caveat visible wherever used.

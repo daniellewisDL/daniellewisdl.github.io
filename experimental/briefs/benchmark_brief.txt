@@ -1,0 +1,67 @@
+=====================================================================
+BRIEF 2 OF 3: TERM SHEET BENCHMARK (benchmark.html) — rebuild specification
+=====================================================================
+FORMAT NOTE FOR THE READING LLM: "## " headings; "KEY: value" or "- bullet". MUST = hard requirement, SHOULD = strong preference.
+
+## 1. PURPOSE
+A standalone, single-screen tool that benchmarks a user's actual UK VC term sheet against market prevalence (HSBC Innovation Banking / UKBAA Term Sheet Guide 2026 plus
+2025 and 2024 editions) and produces (a) a protection index vs the market cohort, (b) a round check (equity sold, valuation, cheque vs stage medians) and (c) a ranked
+negotiation list with what-to-do advice and the 2023->2025 market trend per term.
+
+## 2. DELIVERABLE / STACK
+- ONE file benchmark.html. Inline CSS and JS. NO external libraries and NO network dependency (works offline). System font stack (Inter if installed, Georgia/serif for headings).
+- Data: global `const D = BENCH_DATA;` (§3) plus `ADVICE = BENCH_DATA.advice`. Helper functions from the atlas core: `mean`, `clamp`, `val(family,year,term,cohortIdx)`,
+  `COHORT` registry {stage|investor|sector -> labels,data}, `IPI_TERMS`, `equitySold(stage,yearIdx)`, `stageIdx`.
+
+## 3. DATA MODEL (BENCH_DATA)
+- terms: 19 x {k,l,c(category: Economic|Control|Other)}; keys pref, nonpart, pool, antidil, conv, sec, coinv, board, vest, leaver, drag, consent, fwarr, cwarr, arrfee, monfee, excl, sust, dei.
+- stages ['Seed','Series A','Series B','Series C+'], stageDef; investorTypes ['VC (LP fund)','VCT','EIS fund','CVC','Family office','Angel']; investorMeta [{n,avg}]; sectorCohorts ['AI (pure)','DeepTech (ex-AI)','Life Sci & BioTech'].
+- byStage.y2023|y2024|y2025[term] = [seed,A,B,C+] (% of term sheets with the term; 2023 B and C+ identical because the source pooled them).
+- byInvestor.y2023|y2024|y2025[term] = [VC,VCT,EIS,CVC,FO,Angel]. bySector.y2024|y2025[term] = [AI,DeepTech,LifeSci] (no 2023; code falls back to 2024).
+- valuation[stage] and avgInv[stage] = 5-value arrays 2021..2025 (£m): median post-money (Pitchbook) and average cheque. Index 4 = 2025, 3 = 2024.
+- advice[term] = one-sentence negotiation advice (e.g. nonpart: "Participating prefs let the investor take their money back AND share in the rest — push for 1× non-participating, or a hard cap (≤2–3×).").
+
+## 4. UI / LAYOUT (MUST)
+Desktop/laptop (>900px wide): the page MUST fit the viewport with NO page scroll (height 100dvh) on a normal laptop (e.g. 1366x768). Only the negotiation list may scroll internally.
+ Top bar (one wrapping row, card): title+subtitle | Benchmark by [Stage|Investor type|Sector cohort] | Cohort select | Year select (hidden for sector family) | separator |
+   Round (stage) select | Cheque £m | Post-money £m.
+ Main grid: left column (width clamp 330px..520px, ~27vw) = card "Your term sheet" with buttons [Fill typical] [Clear] and a 2-column list (term name | Yes/No/? tri-state buttons) with
+   category sub-headers (Economic, Control, Other); right column = (top) summary row of two cards: [score + gauge] and [Round check table], (below) card "Negotiation list" filling remaining height with internal scroll, and a source/disclaimer footer line.
+Large screens: scale the UI up so it fills the screen. Implementation used: CSS var --z = 1 default, 1.15 @ (min-width 1500 & min-height 760), 1.3 @ (1800 & 900), 1.6 @ (2300 & 1200); every CSS px value
+ >3px is written as calc(Npx*var(--z)) (do NOT use CSS `zoom`, it mis-rendered in the preview). No max-width cap.
+Mobile (<=900px): single scrolling column; --z=1; larger tap targets (Yes/No/? buttons padding 5px 11px); negotiation table collapses to stacked cards (thead hidden, each row a bordered card);
+ a fixed bottom-right pill "See results ↓" smooth-scrolls to the score. No horizontal overflow.
+
+## 5. LOGIC
+State: SC = {dim:'investor', ci:0, stage:'Series A', year:2025, ans:{}}.   DEFAULTS: benchmark family = Investor type, cohort = VC (LP fund), round stage = Series A, cheque 4.5, post-money 20.
+- Cohort selector repopulates from COHORT[dim].labels. When dim = stage, cohort follows the Round select. Year options = [2025,2024,2023] for stage/investor, [2025,2024] for sector (year select hidden for sector).
+- benchmark prevalence p(k) = val(dim, year, k, cohortIdx).  Trend array = values over the available years (3 for stage/investor, 2 for sector).
+- Per answered term (answer 1=Yes, 0=No, -1=unsure => ignored):
+    pp = (term=='nonpart') ? 100 - p : p      // prevalence of the "burdensome / protective" variant; for nonpart the variant is PARTICIPATING
+    present = (term=='nonpart') ? (answer==Yes ? 0 : 1) : answer      // Yes on "non-participating" means participation is absent
+    weight w = Economic 1.5, Control 1.2, Other 1.0
+    if present: pp<45 -> "Unusual — push back" (tone warn, score w*(100-pp)); 45<=pp<75 -> "Common — negotiable" (mid, score w*(100-pp)*0.4); pp>=75 -> "Standard — don't spend leverage" (ok, 0)
+    else:       pp>=80 -> "Missing a near-universal term" (mid, score w*10); else "Absent — good for you" (ok, 0)
+  Label for nonpart row: present ? "Participating liquidation preference" : "Non-participating liq. pref".
+- Protection index: over answered terms that are in IPI_TERMS = [pref, nonpart, antidil, board, vest, leaver, drag, consent, fwarr, cwarr]: mine = mean(present?100:0), market = mean(pp); diff = mine - market.
+  Gauge: bar split teal (left half: founder-friendlier) / rust (right half: more investor-protective); dot position = (clamp(diff,-40,40)+40)/80; label "+N pts vs market". Index values shown as large numbers (yours vs cohort/year).
+- Round check (only if cheque>0 and post>cheque): equity sold = cheque/post*100 vs benchmark equitySold(stage,2025)=avgInv/valuation*100 (flag "dilutive" if +4pp, "light" if -4pp);
+  post-money vs median valuation[stage][4] (+10% ok / -10% warn); cheque vs avgInv[stage][4] (larger if >1.3x, smaller if <0.7x).
+- Negotiation list sorted by score desc; columns: Term | Market trend "a% → b% → c%" (+ "have it"/"participating") | Verdict pill | What to do. What-to-do text = ADVICE[term] for warn rows and for mid rows where the term is present;
+  mid & absent rows say "Likely in the long-form docs — check you're getting a better deal than market."; else "—". Empty state text instructs to mark terms or press Fill typical.
+- Fill typical: answers every term Yes if prevalence >=50 else No (for the current cohort/year). Clear resets all to "?".
+- Re-render on every input; no persistence required.
+
+## 6. DESIGN
+Editorial light, compact density. Tokens: paper #faf8f4, card #fff, ink #1c1b1a, muted #7a756c, rule #e3ddd1, rule2 #cfc7b8, teal #0f6e6e, rust #c1502e. Fonts 13px base; headings serif (Source Serif 4/Georgia).
+Tri-state buttons: Yes = black, No = dark grey, ? = light grey (selected state). Pills: warn #f8e0d6/#9a3a1c, ok #dcefe2/#27623b, mid #f5ecd2/#7a5a12, neutral #e8e4da. Sticky table header; thin borders; 10px card radius.
+
+## 7. CONSIDERATIONS
+- Sector family has only 2024/2025 and cohorts are all-stage, so comparing to a stage-specific term sheet is directional.
+- 2023 Series B/C+ values are identical in source — note if shown.
+- Interpretation of "No" on absent universal terms is deliberately soft (may appear in long-form documents).
+- Disclaimer: benchmarks only, not legal/financial advice. Source line in footer of the list card.
+
+## 8. ACCEPTANCE CHECKLIST
+[ ] 1366x768: scrollHeight == innerHeight (no page scroll). [ ] 1920x1080: fills window, text scaled ~1.3x. [ ] 390px: no horizontal overflow, cards layout, "See results" button present.
+[ ] Defaults open on Investor type / VC (LP fund). [ ] Fill typical populates all 19 rows and yields 19 list rows. [ ] Switching to Sector hides the Year select and falls back correctly.

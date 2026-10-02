@@ -1,0 +1,67 @@
+=====================================================================
+BRIEF 3 OF 3: FOUNDER DILUTION & EXIT WATERFALL (dilution.html) — rebuild specification
+=====================================================================
+FORMAT NOTE FOR THE READING LLM: "## " headings; "KEY: value" or "- bullet". MUST = hard requirement, SHOULD = strong preference.
+
+## 1. PURPOSE
+A standalone single-screen tool that shows (a) how founder ownership is diluted across up to four funding rounds and an option pool, and (b) what founders actually receive at an exit once
+liquidation preferences are applied (non-participating, participating, participating-capped; senior-stacked or pari passu). Defaults are UK median round sizes from the HSBC Innovation Banking
+Term Sheet Guide 2026 (Seed £0.59m @ £4.2m post, A £4.6m @ £17.1m, B £17.7m @ £58.2m, C+ £110m @ £258.4m).
+
+## 2. DELIVERABLE / STACK
+- ONE file dilution.html. Inline CSS + JS. NO libraries, NO network: the chart is hand-built inline SVG. System font stack.
+- Data: global `const DILUTION_DATA = {...}` embedded before the app script:
+  _about; medians2025 {stage:{invest,postMoney}}; defaults {optionPoolPct:10, seniority:'std', exitValueM:60, chartMaxM:500, chartMaxOptions:[250,500,1000], participatingCapMultiple:3};
+  prefTypes {np:'Non-participating', p:'Participating', pc:'Participating, capped'};
+  presets {market, seedpart, heavy} each {label, rounds:[{name, invest, postMoney, pref('np'|'p'|'pc'), multiple, included}]} with rounds Seed, Series A, Series B, Series C+;
+    market = all non-participating 1x with Seed/A/B on and C+ off; seedpart = Seed participating; heavy = Seed participating 1x, A capped 1.5x, B participating 1x, C+ capped 1x (all four on).
+  colours {founders:#0f6e6e, optionPool:#9db6c7, Seed:#d9a024, 'Series A':#2a8a86, 'Series B':#3a5aa8, 'Series C+':#7a3b6e}.
+
+## 3. UI / LAYOUT (MUST)
+Desktop (>900px): fits the viewport (100dvh) with NO page scroll on a normal laptop (1366x768); internal panes may scroll only if content overflows.
+ Top bar (card, wrapping row): title+subtitle | preset segmented control [Market median | Participating Seed | Heavy structure] | Option pool % (number, 0-30) | Seniority select [Latest senior | Pari passu] |
+   Chart-to select [£250m | £500m | £1bn] | Exit label + range slider (0..chartMax, step 1, default 60).
+ Main grid: LEFT card (width clamp(360px,30vw,560px)): "Rounds" table + "Founder ownership after each round" step bars + assumptions note.
+   RIGHT: top card = chart of share of proceeds vs exit value with legend; bottom card = payout table + read-out box.
+Rounds table (MUST have no horizontal scrollbar at normal widths): columns On(checkbox) | Round | £m in | Post £m | Pref(select) | × (multiple). `table-layout:fixed`, inputs width 100%.
+Large screens: scale-up via CSS var --z (1; 1.15 @ min-w1500&min-h760; 1.3 @ 1800&900; 1.6 @ 2300&1200); all CSS px >3px written calc(Npx*var(--z)); no zoom property; no max-width.
+Mobile (<=900px): --z=1, single scrolling column, chart fixed 300px height, tables stay readable (payout table may scroll horizontally inside its card).
+Design: editorial light. paper #faf8f4, cards #fff with 1px #e3ddd1 border, ink #1c1b1a, teal #0f6e6e, rust #c1502e; pills ok (green tint) = "converts", warn (rust tint) = "takes pref"/"pref + participation".
+
+## 4. INPUT MODEL
+Round = {name, inv (£m), post (£m post-money), type np|p|pc, mult (liquidation multiple, default 1; for pc it is the preference multiple), on (included)}.
+Active rounds = on && inv>0 && post>inv (in the order Seed, A, B, C+). Pool% p applies at the FIRST active round (fully granted, zero strike, no later top-ups). Re-render on every change.
+
+## 5. CALCULATIONS (MUST be reproduced exactly)
+Ownership (fractions of fully diluted post-all-rounds):
+  s_i = inv_i / post_i (new investor stake of round i immediately post-money).
+  After first round: Founders F = 1 - s_0 - pool; ESOP O = pool; investor0 = s_0.
+  For each later round i: d = 1 - s_i; F*=d; O*=d; every earlier investor stake *= d; new investor stake = s_i.  Record founder ownership after each round for the step bars (start 100%).
+Payout at exit value E (£m, treated as net proceeds to equity):
+  payout(E, conv): conv = set of investors who have converted to ordinary.
+   1. claim_i = conv? 0 : mult_i*inv_i.  Standard seniority: pay from latest round backwards min(claim, remaining). Pari passu: scale all claims by min(1, E/sum(claims)).
+   2. remaining R = E - paid. Sharers = Founders, ESOP, converters, and participating (p, pc) holders; they split R pro rata to their ownership fractions.
+      pc holders are capped at total return = cap*inv (cap = defaults.participatingCapMultiple = 3): if per-share allocation would exceed (cap*inv - preference paid) they are fixed at that room, removed from the pool and the rest is redistributed (iterate up to 6x).
+   3. Investor total = preference paid + participation share.
+  solve(E): decide conversions for eligible holders (type np and pc) by iterating (<=8 passes): for each eligible i, compare i's payout if converted vs not (holding others fixed); convert iff strictly better.
+  Result {F, O, inv[], conv}. Conversion threshold shown per non-participating/capped investor = mult*inv / finalStake_i (£m).
+Chart: sample E from 0 to chartMax in ~100 steps (use max(E,0.01)), compute each holder's payout / E * 100 (% of proceeds), stack areas bottom->top: Founders, Option pool, Seed, Series A, Series B, Series C+.
+  X axis £0..chartMax with ticks every 50/100/200 (for 250/500/1000); Y axis 0-100% gridlines every 25%. Dashed white horizontal line at founders' fully-diluted ownership with label "ownership N%".
+  Vertical black marker at the chosen exit with "£Nm" label. Legend (colour swatches) below chart.
+Payout table at selected exit E: holder | ownership % | payout £m | % of proceeds | delta vs ownership (pp, coloured teal/rust) | status pill (converts / takes pref / pref + participation).
+Read-out sentence: "At a £E exit founders receive £X (Y% of proceeds) against Z% ownership — a preference 'tax' of £T" (T = ownership*E - payout, shown if >0.05, else "no preference drag (all investors convert)");
+  if E < total outstanding preferences: add "Exit is below the £P of stacked preferences, so equity gets little or nothing."; append "Conversion points: Seed ≈ £a · Series A ≈ £b …".
+
+## 6. BEHAVIOURS
+- Presets overwrite the round inputs. Changing Chart-to updates slider max (clamp exit to it). Slider updates only exit value (instant redraw). Window resize redraws the SVG (120ms debounce).
+- Chart SVG is sized from its container (viewBox = clientWidth x clientHeight). Draw legend colours via inline style/attributes that CSS cannot override.
+
+## 7. CONSIDERATIONS
+- It is illustrative, not financial/legal advice; state assumptions on screen (pool fully granted, created at first round, no top-ups, conversion rule, 3x cap).
+- Ignore SAFEs/convertibles, anti-dilution, dividends, transaction fees, management carve-outs, taxes, and secondary sales.
+- Seniority "std" = later rounds senior; "pari" = all preferences equal. Preferences of 0 if multiple=0.
+- Prevent nonsense: rounds with post<=inv or inv<=0 are ignored; if pool+first stake >100% founders clamp at 0.
+
+## 8. ACCEPTANCE CHECKLIST
+[ ] 1366x768 fits without page scroll; 1920x1080 scaled to fill. [ ] Rounds table has no scrollbar. [ ] Market preset at £60m exit: founders 38.6% ownership, payout £23.2m, "no preference drag".
+[ ] Heavy preset at £60m: founders £0.0m, text says exit is below stacked preferences. [ ] Legend swatches visible. [ ] Mobile 390px: single column, no horizontal page overflow.
