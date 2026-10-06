@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Stream That Loses Itself</title>
+<meta name="description" content="A techno-ethnographic history of the River Loose, Kent, its chain of watermills, and the people who lived with them, c.1550 to today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{
+  --bg:#f3eee2; --bg2:#ebe4d3; --card:#fbf8f1; --ink:#26221c; --ink2:#5b5346; --ink3:#8a8070;
+  --rule:#d5ccb8; --river:#2f6f8f; --river2:#7fb2c9; --pond:#cfe2ea; --ochre:#b5832a; --rust:#a4492d;
+  --land:#e4dcc6; --land2:#d8ceb3; --hill:#cfc4a6;
+  --c-fulling:#a0522d; --c-paper:#2f6f8f; --c-corn:#c49a1c; --c-powder:#3d3a36; --c-oil:#6b8e23;
+  --c-earth:#7d6ca8; --c-rag:#4fa3a0; --c-home:#b9ad97; --c-unknown:#cfc6b3;
+  --serif:'Fraunces',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1916; --bg2:#23201b; --card:#26231e; --ink:#ece5d6; --ink2:#bdb3a0; --ink3:#8d8475;
+    --rule:#3d3830; --river:#6fb3d2; --river2:#3f7f9c; --pond:#22394a; --ochre:#d9a54a; --rust:#d9775a;
+    --land:#2a2620; --land2:#312c24; --hill:#3a342a;
+    --c-fulling:#d07a50; --c-paper:#5fb0d6; --c-corn:#e0bb3e; --c-powder:#9a948a; --c-oil:#9cc256;
+    --c-earth:#a796d6; --c-rag:#62c4c0; --c-home:#70675a; --c-unknown:#4a443b;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#1b1916; --bg2:#23201b; --card:#26231e; --ink:#ece5d6; --ink2:#bdb3a0; --ink3:#8d8475;
+    --rule:#3d3830; --river:#6fb3d2; --river2:#3f7f9c; --pond:#22394a; --ochre:#d9a54a; --rust:#d9775a;
+    --land:#2a2620; --land2:#312c24; --hill:#3a342a;
+    --c-fulling:#d07a50; --c-paper:#5fb0d6; --c-corn:#e0bb3e; --c-powder:#9a948a; --c-oil:#9cc256;
+    --c-earth:#a796d6; --c-rag:#62c4c0; --c-home:#70675a; --c-unknown:#4a443b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--river)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0 0 .5em}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.01em}
+h3{font-size:1.2rem}
+p{margin:0 0 1em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+.narrow{max-width:720px}
+section{padding:72px 0 40px;border-top:1px solid var(--rule)}
+.kicker{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ochre);margin-bottom:.6em}
+.lede{font-size:1.15rem;color:var(--ink2)}
+sup.cite a{font-family:var(--mono);font-size:.68rem;text-decoration:none;padding:0 2px;color:var(--ochre)}
+blockquote{margin:1.2em 0;padding:.2em 0 .2em 1.1em;border-left:3px solid var(--ochre);font-family:var(--serif);font-style:italic;font-size:1.08rem;color:var(--ink)}
+blockquote footer{font-family:var(--mono);font-style:normal;font-size:.72rem;color:var(--ink3);margin-top:.4em}
+.note{font-size:.85rem;color:var(--ink3)}
+.mono{font-family:var(--mono)}
+/* hero */
+.hero{position:relative;padding:0;border:0;background:var(--bg2);overflow:hidden}
+.hero svg{display:block;width:100%;height:auto}
+.hero-text{position:relative;padding:clamp(28px,6vw,72px) 16px 0}
+.hero-text .wrap{padding:0}
+.hero h1{font-size:clamp(2.1rem,6.4vw,4.8rem);font-weight:800;letter-spacing:-.02em;max-width:14ch;margin-bottom:.25em}
+.hero h1 em{font-weight:400;color:var(--river)}
+.hero p{max-width:60ch;color:var(--ink2);font-size:clamp(.95rem,1.6vw,1.15rem)}
+.hero svg{margin-top:clamp(-140px,-10vw,-40px);max-height:420px}
+nav.toc{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+nav.toc ul{list-style:none;margin:0 auto;padding:8px 16px;display:flex;gap:18px;overflow-x:auto;max-width:1120px;scrollbar-width:none}
+nav.toc a{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);text-decoration:none;white-space:nowrap}
+nav.toc a:hover{color:var(--river)}
+.theme-btn{position:fixed;right:14px;bottom:14px;z-index:30;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:999px;font-family:var(--mono);font-size:.72rem;padding:6px 12px;cursor:pointer}
+/* grids */
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.maptwo{grid-template-columns:1.35fr .65fr}
+@media (max-width:1000px){.maptwo{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 20px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--ink2);margin:10px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px}
+.chart{width:100%;overflow:visible}
+.chart text{font-family:var(--sans);fill:var(--ink2);font-size:11px}
+.axis path,.axis line{stroke:var(--rule)}
+.axis text{font-family:var(--mono);font-size:10px;fill:var(--ink3)}
+.tooltip{position:fixed;pointer-events:none;z-index:50;max-width:300px;background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;font-size:.82rem;line-height:1.45;box-shadow:0 6px 24px rgba(0,0,0,.18);opacity:0;transition:opacity .12s}
+.tooltip b{font-family:var(--serif);font-size:.95rem}
+/* map */
+#mapBox{position:relative;background:var(--land);border:1px solid var(--rule);border-radius:10px;overflow:hidden;touch-action:none}
+#mapBox svg{display:block;width:100%;height:auto;cursor:grab}
+#mapBox path,#mapBox line,#mapBox ellipse{vector-effect:non-scaling-stroke}
+.zbtns{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:4px}
+.zbtns button{width:30px;height:30px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:6px;font-size:16px;cursor:pointer;line-height:1}
+.map-hint{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-size:.66rem;color:var(--ink3)}
+#millPanel h3{font-size:1.5rem;margin-bottom:.1em}
+#millPanel .meta{font-family:var(--mono);font-size:.72rem;color:var(--ink3);margin-bottom:.8em}
+#millPanel dl{display:grid;grid-template-columns:7.5em 1fr;gap:4px 12px;font-size:.88rem;margin:.6em 0 1em}
+#millPanel dt{color:var(--ink3);font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding-top:3px}
+#millPanel dd{margin:0}
+.phasebar{display:flex;height:14px;border-radius:3px;overflow:hidden;margin:.4em 0 .2em}
+.millbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.millbtns button{font-family:var(--mono);font-size:.7rem;border:1px solid var(--rule);background:var(--card);color:var(--ink2);border-radius:999px;padding:3px 9px;cursor:pointer}
+.millbtns button.on{background:var(--river);color:var(--bg);border-color:var(--river)}
+/* fieldnotes */
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.fn{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 18px 14px;display:flex;flex-direction:column;position:relative}
+.fn .yr{font-family:var(--mono);font-size:.72rem;color:var(--ochre);letter-spacing:.1em}
+.fn h3{margin:.2em 0 .4em}
+.fn p{font-size:.92rem;color:var(--ink2);margin-bottom:.6em}
+.fn blockquote{font-size:.95rem;margin:.4em 0 .6em}
+.fn svg.ic{width:56px;height:56px;position:absolute;right:14px;top:14px;opacity:.9}
+.fn .src{margin-top:auto;font-family:var(--mono);font-size:.68rem;color:var(--ink3)}
+table.ins{width:100%;border-collapse:collapse;font-size:.88rem}
+table.ins td,table.ins th{border-bottom:1px solid var(--rule);padding:8px 6px;text-align:left;vertical-align:top}
+table.ins th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);font-weight:500}
+table.ins td:first-child{font-family:var(--mono);color:var(--rust);max-width:11em}
+.flowctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.flowctl button{font-family:var(--mono);font-size:.74rem;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 10px;cursor:pointer}
+.flowctl button.on{background:var(--river);color:var(--bg);border-color:var(--river)}
+.stat{font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--river);line-height:1}
+.statlabel{font-family:var(--mono);font-size:.7rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em}
+ol.bib{padding-left:1.6em;font-size:.86rem;color:var(--ink2)}
+ol.bib li{margin-bottom:.55em;padding-left:.3em}
+ol.bib li:target{background:color-mix(in srgb,var(--ochre) 18%,transparent);border-radius:4px}
+.cols{columns:2 300px;column-gap:40px}
+.pill{display:inline-block;font-family:var(--mono);font-size:.68rem;border:1px solid var(--rule);border-radius:999px;padding:1px 8px;color:var(--ink2);margin:0 4px 4px 0}
+footer.end{padding:40px 0 80px;color:var(--ink3);font-size:.8rem;border-top:1px solid var(--rule)}
+.swatchrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero" aria-label="Title">
+  <div class="hero-text"><div class="wrap">
+    <div class="kicker">A techno-ethnography of the River Loose, Kent · c.1550 – today</div>
+    <h1>The stream that <em>loses</em> itself</h1>
+    <p>Thirteen watermills crowded onto three miles of a small stream in the ragstone country south of Maidstone. Over about four hundred years they fulled cloth, ground corn, made gunpowder, pressed oil and made some of England's finest paper. This page follows the water, the machines and the people, and how each changed the others.</p>
+  </div></div>
+  <svg viewBox="0 0 1440 620" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Illustration: the Loose valley with church, mill and overshot waterwheel">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--bg2)"/><stop offset="1" stop-color="var(--bg)"/></linearGradient>
+      <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="6" stroke="var(--ink3)" stroke-width=".6" opacity=".35"/></pattern>
+    </defs>
+    <rect width="1440" height="620" fill="url(#sky)"/>
+    <!-- far hills -->
+    <path d="M0 420 C 200 360, 380 400, 560 370 S 900 330, 1100 360 S 1350 340, 1440 350 L1440 620 L0 620Z" fill="var(--hill)" opacity=".55"/>
+    <path d="M0 470 C 180 430, 330 450, 520 430 S 860 410, 1040 440 S 1300 420, 1440 430 L1440 620 L0 620Z" fill="var(--land2)"/>
+    <!-- trees -->
+    <g fill="var(--hill)" opacity=".9">
+      <circle cx="980" cy="420" r="26"/><circle cx="1010" cy="410" r="30"/><circle cx="1045" cy="425" r="22"/>
+      <circle cx="1240" cy="415" r="28"/><circle cx="1275" cy="425" r="22"/><circle cx="1380" cy="410" r="30"/>
+      <circle cx="700" cy="430" r="20"/><circle cx="725" cy="420" r="26"/>
+    </g>
+    <!-- church on hill -->
+    <g transform="translate(1110 330)" stroke="var(--ink)" stroke-width="1.4" fill="var(--card)">
+      <rect x="0" y="40" width="70" height="42"/><path d="M-4 40 L35 18 L74 40Z" fill="var(--land2)"/>
+      <rect x="70" y="20" width="26" height="62"/><path d="M68 20 L83 -30 L98 20Z" fill="var(--land2)"/>
+      <path d="M83 -30 v-10" /><rect x="78" y="34" width="10" height="14" fill="var(--ink)" opacity=".7"/>
+    </g>
+    <!-- viaduct -->
+    <g transform="translate(120 395)" fill="none" stroke="var(--ink2)" stroke-width="1.4">
+      <path d="M0 0 H420"/><path d="M0 10 H420"/>
+      <path d="M20 10 V70 M80 10 V70 M140 10 V70 M200 10 V70 M260 10 V70 M320 10 V70 M380 10 V70"/>
+      <path d="M20 40 A30 30 0 0 1 80 40 M80 40 A30 30 0 0 1 140 40 M140 40 A30 30 0 0 1 200 40 M200 40 A30 30 0 0 1 260 40 M260 40 A30 30 0 0 1 320 40 M320 40 A30 30 0 0 1 380 40"/>
+      <text x="0" y="-8" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink3)" stroke="none">LOOSE VIADUCT · 1830</text>
+    </g>
+    <!-- valley floor -->
+    <path d="M0 520 C 220 495, 420 520, 640 505 S 1040 490, 1440 510 L1440 620 L0 620Z" fill="var(--land)"/>
+    <!-- stream -->
+    <path d="M1440 548 C 1200 536, 1010 560, 860 548 C 740 538, 690 560, 560 556 C 420 552, 300 575, 0 568" fill="none" stroke="var(--river)" stroke-width="10" stroke-linecap="round" opacity=".85"/>
+    <path d="M1440 548 C 1200 536, 1010 560, 860 548 C 740 538, 690 560, 560 556 C 420 552, 300 575, 0 568" fill="none" stroke="var(--river2)" stroke-width="2" stroke-dasharray="14 18" opacity=".9">
+      <animate attributeName="stroke-dashoffset" from="0" to="64" dur="2.4s" repeatCount="indefinite"/>
+    </path>
+    <!-- mill building -->
+    <g transform="translate(560 410)" stroke="var(--ink)" stroke-width="1.5">
+      <rect x="0" y="40" width="150" height="104" fill="var(--card)"/>
+      <rect x="0" y="40" width="150" height="104" fill="url(#hatch)"/>
+      <path d="M-10 40 L75 -6 L160 40Z" fill="var(--land2)"/>
+      <rect x="62" y="6" width="26" height="22" fill="var(--card)"/><path d="M58 6 L75 -6 L92 6" fill="none"/>
+      <g fill="var(--ink)" opacity=".75"><rect x="18" y="60" width="16" height="20"/><rect x="66" y="60" width="16" height="20"/><rect x="114" y="60" width="16" height="20"/><rect x="18" y="100" width="16" height="20"/><rect x="114" y="100" width="16" height="20"/></g>
+      <rect x="62" y="104" width="24" height="40" fill="var(--ink2)"/>
+      <!-- chimney -->
+      <rect x="170" y="-40" width="16" height="184" fill="var(--card)"/><path d="M168 -40 h20" />
+    </g>
+    <!-- leat / pentrough -->
+    <path d="M740 455 H860" stroke="var(--ink)" stroke-width="1.5"/><path d="M740 465 H850" stroke="var(--ink)" stroke-width="1.5"/>
+    <path d="M745 460 H848" stroke="var(--river)" stroke-width="7" opacity=".7"/>
+    <!-- waterwheel (rotating) -->
+    <g transform="translate(800 520)">
+      <g id="heroWheel" stroke="var(--ink)" stroke-width="1.6" fill="none">
+        <circle r="58"/><circle r="50"/><circle r="7" fill="var(--ink)"/>
+        <g id="heroSpokes"></g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="14s" repeatCount="indefinite"/>
+      </g>
+    </g>
+    <path d="M846 462 C 852 480, 856 492, 856 505" stroke="var(--river)" stroke-width="5" fill="none" opacity=".7"/>
+    <!-- figures -->
+    <g stroke="var(--ink)" stroke-width="1.5" fill="none" transform="translate(470 520)">
+      <circle cx="0" cy="-36" r="6" fill="var(--card)"/><path d="M0 -30 V-8 M0 -8 L-7 10 M0 -8 L7 10 M0 -24 L-10 -14 M0 -24 L12 -30"/>
+      <path d="M12 -30 L40 -8" stroke="var(--ochre)"/>
+    </g>
+    <g stroke="var(--ink)" stroke-width="1.5" fill="none" transform="translate(960 535)">
+      <circle cx="0" cy="-36" r="6" fill="var(--card)"/><path d="M0 -30 V-8 M0 -8 L-7 10 M0 -8 L7 10 M0 -24 L-12 -18 M0 -24 L11 -18"/>
+      <rect x="-16" y="-24" width="32" height="20" fill="var(--card)" stroke="var(--ink2)"/>
+    </g>
+    <text x="1430" y="612" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink3)">Illustration: composite, not a specific mill</text>
+  </svg>
+</header>
+
+<nav class="toc" aria-label="Sections"><ul>
+  <li><a href="#method">Method</a></li>
+  <li><a href="#map">The chain</a></li>
+  <li><a href="#lifelines">Lifelines</a></li>
+  <li><a href="#counting">Counting</a></li>
+  <li><a href="#wheels">Wheels</a></li>
+  <li><a href="#entangle">Entanglements</a></li>
+  <li><a href="#fieldnotes">Field notes</a></li>
+  <li><a href="#inscriptions">Inscriptions</a></li>
+  <li><a href="#afterlives">Afterlives</a></li>
+  <li><a href="#sources">Sources</a></li>
+</ul></nav>
+<button class="theme-btn" id="themeBtn" aria-label="Toggle colour theme">◐ theme</button>
+
+<!-- ============ METHOD ============ -->
+<section id="method"><div class="wrap two">
+  <div>
+    <div class="kicker">00 · Prologue &amp; method</div>
+    <h2>Reading a valley as a sociotechnical system</h2>
+    <p class="lede">Ethnographers usually study living people. A <em>techno-ethnography</em> of the Loose has to work from what earlier generations left behind: rate books, insurance policies, auction notices, apprentice lists, mill-dam inscriptions, cast dates on iron shafts, and the memories of a few people interviewed in the 1960s.</p>
+    <p>The working premise here is that the stream, the machines and the inhabitants form one system, and each part changes the others. The stream's steep fall and steady spring water drew in fullers and then papermakers. Their dams, ponds, culverts and effluent then changed the stream. Changes in markets, transport and technology emptied the mills. Residents later turned the ponds and ruins into a heritage landscape, which they have defended since 2000.</p>
+    <p>The name comes first. Edward Hasted, writing in 1798, derived it from the stream's habit of vanishing:</p>
+    <blockquote>“the stream here, losing itself for some space under ground, <i>hlosan</i> in Saxon, signifying to lose or be lost.”
+      <footer>Edward Hasted, <i>History and Topographical Survey of the County of Kent</i>, vol. 4 (1798) <sup class="cite"><a href="#s3">[3]</a></sup></footer></blockquote>
+    <p class="note">The Loose Area History Society gives a rival etymology, Old English for “pig-sty”<sup class="cite"><a href="#s14">[14]</a></sup>. The two readings make a useful point for everything below: sources disagree, and this page says so where they do rather than smoothing it over.</p>
+  </div>
+  <div class="card">
+    <div class="kicker">The valley in numbers</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 12px;margin-top:8px">
+      <div><div class="stat">8 km</div><div class="statlabel">stream length, Langley → Medway<sup class="cite"><a href="#s11">[11]</a></sup></div></div>
+      <div><div class="stat">13</div><div class="statlabel">mill sites between Loose village and Tovil<sup class="cite"><a href="#s1">[1]</a></sup></div></div>
+      <div><div class="stat">~½ mi</div><div class="statlabel">underground run at Brishing (Hasted)<sup class="cite"><a href="#s3">[3]</a></sup></div></div>
+      <div><div class="stat">1,300</div><div class="statlabel">gallons/min, normal flow at Crisbrook, 1950s<sup class="cite"><a href="#s2">[2]</a></sup></div></div>
+      <div><div class="stat">882</div><div class="statlabel">inhabitants of Loose parish, 1848<sup class="cite"><a href="#s4">[4]</a></sup></div></div>
+      <div><div class="stat">1987</div><div class="statlabel">last sheet of handmade paper at Hayle Mill<sup class="cite"><a href="#s19">[19]</a></sup></div></div>
+    </div>
+    <p class="note" style="margin-top:16px">Spain judged this density of watermills <em>“one of the greatest in England”</em><sup class="cite"><a href="#s1">[1]</a></sup>. Mills historian Alan Stoyel calls it the highest concentration in Kent<sup class="cite"><a href="#s13">[13]</a></sup>.</p>
+  </div>
+</div></section>
+
+<!-- ============ MAP ============ -->
+<section id="map"><div class="wrap">
+  <div class="kicker">01 · The chain</div>
+  <h2>“Within sight of each other”</h2>
+  <div class="narrow">
+    <blockquote>“there are so many mills on it, for different manufacturers, within sight of each other, that it may be said to form a chain of them.”
+      <footer>Hasted, 1798 <sup class="cite"><a href="#s3">[3]</a></sup></footer></blockquote>
+    <p>Mills are plotted at their Ordnance Survey grid references, so the spacing is real. Select a mill to read its history. Drag to pan, and use the +/− buttons, a pinch, or Ctrl/⌘ + scroll to zoom. The dashed stretch near Brishing is where the stream sinks into the ragstone and runs underground before rising again at the quarries.</p>
+  </div>
+  <div class="two maptwo" style="margin-top:18px">
+    <div>
+      <div id="mapBox"><div class="map-hint">drag to pan · ctrl/⌘+scroll, pinch or +/− to zoom · OSGB TQ grid, 1 km squares</div></div>
+      <div class="legend" id="mapLegend"></div>
+    </div>
+    <div class="card" id="millPanel" aria-live="polite"></div>
+  </div>
+  <p class="note" style="margin-top:10px">Grid references are taken from the Wikipedia/Mills Archive gazetteer<sup class="cite"><a href="#s11">[11]</a></sup><sup class="cite"><a href="#s13">[13]</a></sup>. Positions for Upper Mill and the two Ivy Mills are <b>estimated</b> from Spain's site descriptions and are drawn with hollow markers. The source and swallow-hole are approximate.</p>
+</div></section>
+
+<!-- ============ LIFELINES ============ -->
+<section id="lifelines"><div class="wrap">
+  <div class="kicker">02 · Lifelines</div>
+  <h2>One building, many trades</h2>
+  <div class="narrow">
+    <p>A mill site was a <em>fall of water</em> first and a particular machine second. As markets changed, the same weir and wheel-pit were refitted for whatever paid. Cloth gave way to paper in the late 1600s, when West Kent broadcloth declined and London's demand for paper (and its supply of rags) grew<sup class="cite"><a href="#s16">[16]</a></sup>. In the 19th century, small corn mills were undercut by large port roller-mills and by railway freight rates. In the 20th century the buildings became houses.</p>
+  </div>
+  <div class="legend" id="lifeLegend"></div>
+  <div id="lifeChart"></div>
+  <p class="note">Each bar is one mill site, ordered from upstream (top) to the Medway (bottom). Dates come from rate-book entries, directories and leases compiled by Spain<sup class="cite"><a href="#s1">[1]</a></sup><sup class="cite"><a href="#s2">[2]</a></sup>. Faded ends mean the start or end date is approximate. Diamonds mark events (hover to read them).</p>
+</div></section>
+
+<!-- ============ COUNTING ============ -->
+<section id="counting"><div class="wrap">
+  <div class="kicker">03 · Counting mills</div>
+  <h2>What the archive can see, and what travellers reported</h2>
+  <div class="two">
+    <div id="countChart"></div>
+    <div>
+      <p>Each writer who passed through counted the mills, and their counts are evidence in their own right. In 1570/76 William Lambarde reported a dozen or more fulling mills and one corn mill<sup class="cite"><a href="#s5">[5]</a></sup>. The sources do not agree: Spain reads him as <b>twelve</b> fulling mills plus one corn mill<sup class="cite"><a href="#s1">[1]</a></sup>, while the Wikipedia gazetteer gives Lambarde and Camden as <b>thirteen</b><sup class="cite"><a href="#s11">[11]</a></sup>.</p>
+      <p>Around 1715 Harris mentioned only two fulling mills and one paper mill<sup class="cite"><a href="#s11">[11]</a></sup>. By 1839 Phippen counted twelve, “including one pulled down”<sup class="cite"><a href="#s8">[8]</a></sup>, and Lewis's 1848 gazetteer said the stream turns <em>“no less than twelve mills”</em><sup class="cite"><a href="#s4">[4]</a></sup>.</p>
+      <p>The shaded area shows how many sites the surviving <em>parish paperwork</em> can show working in a given year. Before about 1650 it falls well below what Lambarde saw. That gap tells us about the archive rather than the valley: Tudor fulling mills paid rates that do not survive, so they leave almost no trace.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ WHEELS ============ -->
+<section id="wheels"><div class="wrap">
+  <div class="kicker">04 · Wheels &amp; water</div>
+  <h2>Wheels drawn to scale against a person</h2>
+  <div class="narrow"><p>The stream's real asset was <em>head</em> (height of fall). A narrow, deep valley made short dams effective, and most Loose wheels were <b>overshot</b>: water fell into buckets at the top, and its weight turned the wheel. Below are the documented diameters, with a figure 1.75 m tall for scale.</p></div>
+  <div id="wheelChart"></div>
+  <div class="two" style="margin-top:28px">
+    <div>
+      <h3>Run the Crisbrook wheel</h3>
+      <p>In the 1950s Albert E. Reed &amp; Co. gauged the water passing through Crisbrook Pond<sup class="cite"><a href="#s2">[2]</a></sup>. Pick one of their measured flows to drive Upper Crisbrook's 18½ ft wheel (specified in 1878 for £200<sup class="cite"><a href="#s2">[2]</a></sup>).</p>
+      <div class="flowctl" id="flowCtl"></div>
+      <div id="powerOut" class="card" style="margin-top:8px"></div>
+      <p class="note" style="margin-top:10px">The power figure is an illustrative estimate: P = ρ·g·Q·h·η, with h ≈ wheel diameter and η = 0.65, a typical efficiency for an overshot wheel. A note kept at Hayle Mill gave that wheel “about 10 h.p.”<sup class="cite"><a href="#s2">[2]</a></sup>, from a higher head and stored pond water.</p>
+    </div>
+    <div style="display:flex;justify-content:center"><svg id="bigWheel" viewBox="-130 -150 260 290" style="width:100%;max-width:300px" role="img" aria-label="Animated overshot waterwheel"></svg></div>
+  </div>
+</div></section>
+
+<!-- ============ ENTANGLEMENTS ============ -->
+<section id="entangle"><div class="wrap">
+  <div class="kicker">05 · Entanglements</div>
+  <h2>River → people, people → river</h2>
+  <div class="narrow"><p>On the left are properties of the stream; on the right are things people did. <span style="color:var(--river);font-weight:600">Blue threads</span> show where the river shaped human life. <span style="color:var(--rust);font-weight:600">Rust threads</span> show where people reshaped the river. Hover over or tap any node or thread to see the evidence.</p></div>
+  <div id="entChart"></div>
+</div></section>
+
+<!-- ============ FIELD NOTES ============ -->
+<section id="fieldnotes"><div class="wrap">
+  <div class="kicker">06 · Field notes from the archive</div>
+  <h2>Everyday life around the mills</h2>
+  <p class="narrow">These short scenes come from newspapers, borough records, account books and 20th-century recollections collected by R. J. Spain. Quotations of pre-1900 sources are given in full. Later recollections are paraphrased, with short quotes.</p>
+  <div class="notes" id="notes"></div>
+</div></section>
+
+<!-- ============ INSCRIPTIONS ============ -->
+<section id="inscriptions"><div class="wrap two">
+  <div>
+    <div class="kicker">07 · Things that write</div>
+    <h2>Inscriptions on the machinery</h2>
+    <p>Some of the most reliable informants in this valley are objects. Millwrights and owners cast or carved their names and dates into the hydraulic works, and those marks have outlasted most of the paperwork. Spain used them as evidence, and so does this page.</p>
+    <p class="note">Each is a claim of ownership or workmanship on infrastructure that several parties depended on. The “WW 1873” stones sit in a dam whose water also fed Upper Mill. Lower Tovil had no pond of its own and drew water through an 8-inch pipe from Lower Crisbrook pond, an arrangement Spain traced to “ancient water rights”<sup class="cite"><a href="#s2">[2]</a></sup>.</p>
+  </div>
+  <table class="ins">
+    <thead><tr><th>Inscription</th><th>Where</th><th>What it records</th></tr></thead>
+    <tbody>
+      <tr><td>1680</td><td>Cast-iron wheel shaft, Lower Crisbrook</td><td>Recalled by Mr Brett, who removed the wheel c.1935. This is a remembered reading, not a verified one.<sup class="cite"><a href="#s2">[2]</a></sup></td></tr>
+      <tr><td>1785</td><td>Gut (sluice) casting, Lower Tovil</td><td>Medway Foundry, Maidstone. Local iron for local water.<sup class="cite"><a href="#s11">[11]</a></sup></td></tr>
+      <tr><td>WW 1873</td><td>Two dressed stones, Leg-o'-Mutton dam</td><td>Wilson family of Upper Mill, who controlled the head of water.<sup class="cite"><a href="#s1">[1]</a></sup></td></tr>
+      <tr><td>F. CLARK MILLWRIGHT ASHFORD 1875</td><td>Waterwheel, Hayle Mill</td><td>A regional millwright's mark on the valley's last working wheel.<sup class="cite"><a href="#s11">[11]</a></sup></td></tr>
+      <tr><td>H GREEN JULY 1884</td><td>Sluice gate, Upper Crisbrook</td><td>Green family (Hayle Mill), who had bought the upper flour mill in 1876.<sup class="cite"><a href="#s2">[2]</a></sup></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- ============ AFTERLIVES ============ -->
+<section id="afterlives"><div class="wrap">
+  <div class="kicker">08 · Afterlives</div>
+  <h2>From industrial landscape to protected landscape</h2>
+  <div class="two">
+    <div>
+      <p><b>The wheels stop (1890s–1987).</b> Steam came first, as an addition rather than a replacement. Upper Mill added a 12 hp beam engine and roller mills in 1890. Alan Wilson remembered the engine as <em>“a most wondrous contraption and most reliable”</em><sup class="cite"><a href="#s1">[1]</a></sup>. After the 1896 fire at Upper Tovil, Albert E. Reed rebuilt the mill around steam. That mill became the starting point of the company later known as Reed International<sup class="cite"><a href="#s11">[11]</a></sup>. The small mills closed one after another: Upper Mill in 1908, the Village Mill and Little Ivy in 1912, and Great Ivy and Gurney's around the First World War. Lower Tovil's great wheel was cut up for scrap in 1941<sup class="cite"><a href="#s1">[1]</a></sup><sup class="cite"><a href="#s2">[2]</a></sup>. Reed's Tovil mills closed in 1983<sup class="cite"><a href="#s17">[17]</a></sup>. Hayle Mill, run by the Green family since the 1810s, made paper by hand, sheet by sheet, until 1987<sup class="cite"><a href="#s19">[19]</a></sup>.</p>
+      <p><b>Effluent and sewage.</b> For much of the 20th century Tovil mill drew water from the Loose via its pond and discharged it back <em>“into the stream under the mill and thence to the Medway”</em><sup class="cite"><a href="#s17">[17]</a></sup>. In the 1950s Reeds rented the Crisbrook tail-race and pond and tried to keep them clear, but sewage from the valley cottages kept silting them up<sup class="cite"><a href="#s2">[2]</a></sup>.</p>
+      <p><b>Conversion.</b> Mills became houses: Little Ivy (1912), Bockingford (1891), Upper Crisbrook (c.1975) and Hayle Mill (as apartments after 2002; its mill house burned in 2003 and was rebuilt in 2006–07)<sup class="cite"><a href="#s11">[11]</a></sup>. The Tovil sites were cleared for housing<sup class="cite"><a href="#s11">[11]</a></sup>.</p>
+    </div>
+    <div>
+      <p><b>Residents organise (2000– ).</b> In September 2000 Maidstone Borough Council designated the Loose Valley and its mill sites a Conservation Area<sup class="cite"><a href="#s11">[11]</a></sup>. In July 2000 residents of the Lower Loose Valley in Tovil had founded the Valley Conservation Society. Its stated aim is to protect the valley by <em>“opposing inappropriate, inconsiderate and unwelcome development”</em>, and it buys open land through a company limited by guarantee<sup class="cite"><a href="#s15">[15]</a></sup>. Volunteers hold working parties every Tuesday<sup class="cite"><a href="#s15">[15]</a></sup>. The Society did not win every fight: land it opposed was still allocated for 62 homes in Maidstone's 2017 Local Plan<sup class="cite"><a href="#s15">[15]</a></sup>.</p>
+      <p><b>The ponds as habitat.</b> Reservoirs dug to store power are now valued as wetland. The stream's water quality near the Medway is classed “very good”. Recorded species include kingfishers (which nest in the old quarry faces), little grebes, water rails, grey herons, egrets and dormice, with water mint, meadowsweet, yellow iris and marsh marigold along the banks<sup class="cite"><a href="#s11">[11]</a></sup><sup class="cite"><a href="#s12">[12]</a></sup>.</p>
+      <div class="card" style="margin-top:14px">
+        <div class="kicker">A nearby aside · 1897</div>
+        <p style="font-size:.92rem;margin:0">The valley's springs also supplied drinking water. In 1897 Maidstone, a town of about 34,000, suffered Britain's largest typhoid epidemic: at least 1,908 cases and 132 or more deaths. The source was the <b>Farleigh springs</b>, just west of the Loose, which typhoid-carrying hop-pickers had contaminated. Maidstone became the first town to chlorinate its mains supply<sup class="cite"><a href="#s18">[18]</a></sup>. The epidemic was not on the Loose itself, but it shows how closely spring water, seasonal hop labour and public health were tied together in this landscape.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ SOURCES ============ -->
+<section id="sources"><div class="wrap">
+  <div class="kicker">09 · Sources &amp; notes</div>
+  <h2>Sources</h2>
+  <div class="cols">
+  <ol class="bib">
+    <li id="s1">Spain, R. J. (1972). “The Loose Watermills (Part I).” <i>Archaeologia Cantiana</i> 87: 43–79. Kent Archaeological Society. <a href="https://www.kentarchaeology.org.uk/journal/87/loose-watermills-part-i">kentarchaeology.org.uk</a>. <span class="note">Main source for occupants, rate-book dates and the Wilson/Skinner recollections.</span></li>
+    <li id="s2">Spain, R. J. (1973). “The Loose Watermills (Part II).” <i>Archaeologia Cantiana</i> 88. <a href="https://www.kentarchaeology.org.uk/journal/88/loose-watermills-part-ii">kentarchaeology.org.uk</a>. <span class="note">Hayle, Crisbrook, Tovil and Bridge mills; Reed flow tests; the 1731 explosion.</span></li>
+    <li id="s3">Hasted, Edward (1798). <i>The History and Topographical Survey of the County of Kent</i>, vol. 4, “Parishes: Loose,” pp. 359–365. <a href="https://www.british-history.ac.uk/survey-kent/vol4/pp359-365">British History Online</a>.</li>
+    <li id="s4">Lewis, Samuel (1848). <i>A Topographical Dictionary of England</i>, “Loose.” <a href="https://www.melocki.org.uk/lewis/England/Vol3/e30670.txt">Transcription</a>.</li>
+    <li id="s5">Lambarde, William (1576; 2nd ed. 1596). <i>A Perambulation of Kent</i>, p. 200 of the 1596 reprint, as cited by Spain [1]. Spain gives the date as 1570.</li>
+    <li id="s6"><i>The Gentleman's Magazine</i>, vol. 1, July 1731, p. 309, list of “Deaths and Casualties”, as quoted in Spain [2]. Also reported in <i>The Kentish Post</i>, July 1731.</li>
+    <li id="s7"><i>Kentish Gazette</i>, 15 September 1812, sale notice for Hayle Mill (Green MSS), as quoted in Spain [2].</li>
+    <li id="s8">Phippen, James (1839). <i>Topography of Maidstone and its Environs</i>. Maidstone. As quoted in Spain [1].</li>
+    <li id="s9"><i>Industries of Maidstone</i> (1881), reprinted from the <i>Maidstone &amp; County Kent Standard</i>, p. 5, as quoted in Spain [1].</li>
+    <li id="s10">Smith, J. (1839). <i>Topography and Directory of Maidstone</i>, as quoted in Spain [2]. Also: Court of Burghmote minutes, Maidstone, 8 July 1749 (Clement Taylor Smythe MSS, Maidstone Museum), quoted in Spain [1].</li>
+    <li id="s11">“Loose Stream.” Wikipedia. <a href="https://en.wikipedia.org/wiki/Loose_Stream">en.wikipedia.org/wiki/Loose_Stream</a>. Draws on Reid (1987), Fuller &amp; Spain (1986) and the Mills Archive.</li>
+    <li id="s12">“Loose, Kent.” Wikipedia. <a href="https://en.wikipedia.org/wiki/Loose,_Kent">en.wikipedia.org/wiki/Loose,_Kent</a>.</li>
+    <li id="s13">Stoyel, Alan. “Kent Millers' Tales.” The Mills Archive. <a href="https://millsarchive.org/2007/01/01/kent-millers-tales/4/">millsarchive.org</a>.</li>
+    <li id="s14">Loose Area History Society. “Welcome to Loose Village.” <a href="https://www.looseareahistorysociety.org.uk/?page_id=10">looseareahistorysociety.org.uk</a>.</li>
+    <li id="s15">Valley Conservation Society. “About the Society.” <a href="https://valleyconservation.org.uk/?p=44">valleyconservation.org.uk</a>.</li>
+    <li id="s16">Maidstone Museum. “Maidstone and its industrial past, part 3.” <a href="https://museum.maidstone.gov.uk/maidstone-and-its-industrial-past-part-3">museum.maidstone.gov.uk</a>.</li>
+    <li id="s17">UK Paper Mills. “Tovil Paper Mills (Maidstone).” <a href="https://ukpapermills.org.uk/?p=313">ukpapermills.org.uk</a>.</li>
+    <li id="s18">“Maidstone typhoid epidemic.” Wikipedia. <a href="https://en.wikipedia.org/wiki/Maidstone_typhoid_epidemic">en.wikipedia.org</a>.</li>
+    <li id="s19">Barcham Green, Simon. “Papermaking at Hayle Mill 1808–1987” and related posts, U. Iowa Papermoulds blog. <a href="https://paper.lib.uiowa.edu/papermoulds/simon-barcham-greens-pap/2011/08/papermaking-at-hayle-mill-1808-1987-.html">paper.lib.uiowa.edu</a>.</li>
+    <li id="s20">Kent HER, “The Wool House and garden wall,” Loose (TQ 75 SE 192). <a href="https://heritage.kent.gov.uk/Monument/MKE29225">heritage.kent.gov.uk</a>.</li>
+  </ol>
+  </div>
+  <div class="card" style="margin-top:24px">
+    <h3>Notes on method and uncertainty</h3>
+    <ul style="font-size:.9rem;color:var(--ink2);margin:0;padding-left:1.2em">
+      <li>Mill dates are the first and last occupancy entries Spain found in parish rate books, not construction or demolition dates. Where a use is only implied, for example “probably fulling” before the first papermaker appears, the bar is drawn with a faded end.</li>
+      <li>Spain's two articles, the Wikipedia gazetteer and the Mills Archive sometimes disagree, for example on whether Bockingford was a corn mill and when Great Ivy closed. Where they differ, this page follows Spain's archival reconstruction and the disagreement is noted in the mill panel.</li>
+      <li>The closing dates for papermaking at Lower Tovil and Bridge Mill are approximate. They are drawn to 1983, when the Tovil mills closed<sup class="cite"><a href="#s17">[17]</a></sup>.</li>
+      <li>Pre-1900 primary sources are quoted in full. Twentieth-century recollections, which are still in copyright through Spain's articles, are paraphrased with brief quotes.</li>
+      <li>The Wool House (National Trust) is a pair of 16th–17th-century timber-framed cottages that tradition links to the wool trade<sup class="cite"><a href="#s20">[20]</a></sup>. A direct link to fulling has not been documented, so it is not plotted as a mill.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer class="end"><div class="wrap">Compiled October 2026. Built with D3.js v7. Illustrations are drawn as schematic SVG and are not reproductions of historical images. Any errors are the compiler's; corrections are welcome.</div></footer>
+
+<div class="tooltip" id="tip"></div>
+
+<script>
+/* ================= DATA ================= */
+const USES = {
+  fulling:{label:"Fulling (cloth)", v:"--c-fulling"},
+  paper:{label:"Paper", v:"--c-paper"},
+  corn:{label:"Corn / flour", v:"--c-corn"},
+  powder:{label:"Gunpowder", v:"--c-powder"},
+  oil:{label:"Oil &amp; cattle-cake", v:"--c-oil"},
+  rag:{label:"Rag-washing", v:"--c-rag"},
+  earth:{label:"Fuller's earth / pumping", v:"--c-earth"},
+  home:{label:"Dwelling", v:"--c-home"},
+  unknown:{label:"Use unknown / ruin", v:"--c-unknown"}
+};
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const col = u => css(USES[u].v);
+
+// e,n = km within OS 100km square TQ. approx=true → position estimated.
+// phases: [use, start, end, startApprox, endApprox]
+const MILLS = [
+ {id:"leg", name:"Leg-o'-Mutton Mill", e:76.2, n:52.1,
+  phases:[["unknown",1730,1742,true],["paper",1742,1804],["home",1837,1955,false,true]],
+  wheel:null, fall:"12–15 ft head",
+  people:"Thomas Foster &amp; Robert Hartridge (1730s); John Farley, papermaker (1742–75); William Farley; Michael/Thomas Golding (1779–1802).",
+  story:"Named for the shape of its pond. It was probably the thirteenth mill Lambarde counted. Spain suggests it was abandoned c.1804 because it could not supply enough power for papermaking as demand grew. It became three black weatherboard cottages for Upper Mill's workers, which were later demolished.",
+  quote:null, cites:[1,11]},
+ {id:"upper", name:"Upper Mill", e:76.12, n:52.24, approx:true,
+  phases:[["paper",1706,1850,true],["corn",1851,1908],["unknown",1908,1925,false,true]],
+  wheel:19, fall:"overshot/breast",
+  people:"Daniel Purlis (1706); David &amp; Joseph Dean (1730s); John Farley; <b>James Whatman</b> (1774–94); Hollingworths (1796–1850); William Wilson (1851–1908).",
+  story:"James Whatman, the papermaker who pioneered wove paper at Turkey Mill, held this mill from 1774. His account books list carpenters, glaziers, bricks and laths under “Loose Mills”. Under the Hollingworths it served as a washing mill for Gurney's. The Wilsons ran it as a flour mill, adding steam roller-mills in 1890. It was declared uneconomic in 1908 because of transport costs and competition from large port mills.",
+  quote:{t:"a most wondrous contraption and most reliable", s:"Alan Wilson on the 1890 beam engine, quoted in Spain [1]"}, cites:[1]},
+ {id:"gurney", name:"Gurney's (Old) Mill", e:76.0, n:52.1,
+  phases:[["fulling",1650,1687,true],["paper",1689,1910],["unknown",1910,1914]],
+  wheel:15, fall:"overshot, ~9 ft wide",
+  people:"Henry Maplesden, fuller (1685–87); <b>William Harris</b>, papermaker (1689–1727); Quelch; Musgrove; French family (1760–95); Hollingworths; Gurney &amp; Son (1851–95).",
+  story:"This is the clearest case of the switch from cloth to paper: the fuller Maplesden appears until 1687, and the papermaker Harris from 1689. Harris was among the “ancient papermakers” who petitioned against the bill for the Company of White Paper Makers (c.1690). Its last product was millboard, roofing board reinforced with steel wire. It closed c.1912–14, and its foundations survive near Salts Lane by the viaduct.",
+  quote:null, cites:[1,11]},
+ {id:"village", name:"Loose Village Mill", e:75.8, n:52.2,
+  phases:[["corn",1550,1912,true]],
+  wheel:10, fall:"overshot",
+  people:"John Nicholson, miller (1632?); <b>Robert Wilson</b> (1757–); Wilson family into the 1800s; E. J. Antrum (1874–1912).",
+  story:"Probably Lambarde's single corn mill, on Christ Church Priory land. A 1761 map shows the pond separated from the stream by a causeway with a footpath, the same arrangement the village has today. A broken millstone lies in the tunnel beneath the causeway. The mill was auctioned in 1912 as uneconomic.",
+  quote:{t:"At this Court also came Robert Wilson Miller Eldest Son of William Wilson of this Town Gingerbreadbaker a Freeman of this Corporation and desired to be made free by his Fathers Copy according to the Custom…", s:"Maidstone Court of Burghmote, 8 July 1749 [10]"}, cites:[1,10]},
+ {id:"littleivy", name:"Little Ivy Mill", e:75.73, n:52.6, approx:true,
+  phases:[["fulling",1560,1653,true,true],["corn",1653,1742],["paper",1742,1855],["corn",1856,1912],["home",1912,2026]],
+  wheel:11, fall:"overshot, two ponds",
+  people:"Cheeseman family (1653–85); Joseph Tuppeny, miller (1685–1741); Elliotts; Thomas Geere (1780–1807); Smith &amp; Allnutt; E. J. Antrum.",
+  story:"Attached to Pymps Court manor. It prepared “half-stuff” (partly beaten rag pulp) for Great Ivy, and donkeys carried pulp and rags between the two mills. Its machinery was scrapped in 1912 and the mill became a house.",
+  quote:{t:"two donkeys which used to carry it in panniers", s:"Green MSS recollection, quoted in Spain [1]"}, cites:[1,11]},
+ {id:"greativy", name:"Great Ivy Mill", e:75.7, n:53.0, approx:true,
+  phases:[["fulling",1600,1679,true],["paper",1679,1914,false,true],["unknown",1914,1970,false,true]],
+  wheel:17, fall:"overshot → turbine",
+  people:"Henry Bruman (1679–85); Richard Burnham, papermaker (1685–1703); Thomas Mankteloe; <b>Pine family</b> (1715–1800s); Pine &amp; Edmeads; Smith &amp; Allnutt; Allnutts.",
+  story:"A long-running white-paper mill. Three settling ponds upstream slowed the water so that sediment dropped out before it reached the vats. This was clean water made deliberately. The mill closed around the First World War and the building later became a garage and store.",
+  quote:{t:"It formerly belonged to Mr. Thomas Pine, from whom residence at a house at Cripple Street Loose, covered with ivy, and called the Ivy House, is said to have acquired its present name.", s:"Phippen, 1839 [8]"}, cites:[1,8]},
+ {id:"bockingford", name:"Bockingford Mill", e:75.68, n:53.64,
+  phases:[["fulling",1650,1803,true],["rag",1825,1855],["corn",1856,1891],["home",1891,2026]],
+  wheel:12, fall:"overshot, 8 ft wide",
+  people:"Greene family (1650–75); Thomas Jones, “fuller of Loose” (1683–1749); Thomas Foster; Bigg family (1782–1817); John Green (rag-washing); Wilsons (to 1891).",
+  story:"The name may preserve the cloth trade: “bucking” was dialect for washing coarse cloth in lye. In 1839 it was a washing-mill for rags supplying the paper mills. Two automatic water-rams were later fitted to pump water to houses in the valley. The Wikipedia gazetteer gives a later build date (c.1880), which Spain's records contradict.",
+  quote:{t:"…the road leads past the old “Bockingford Arms” near which in days long past the process of “bucking” or dipping, the cloth made in the Weald went on in the stream hard by the ford.", s:"Industries of Maidstone, 1881 [9]"}, cites:[1,9,11]},
+ {id:"hayle", name:"Hayle Mill", e:75.6, n:53.8,
+  phases:[["paper",1808,1987],["home",2002,2026]],
+  wheel:12, fall:"pitchback/high breast, 9 ft 9 in wide",
+  people:"John Green (from c.1810–17); Samuel Green; J. Barcham Green &amp; family, six generations to 1987.",
+  story:"Built c.1807–08, this was the last mill on the stream. It made handmade paper sheet by sheet until 1987. Its wheel, dated 1875 by its maker, was still turning in the late 1960s, driving a cooling fan and a felt-washer. It is now apartments and the most complete survival in the valley.",
+  quote:{t:"Two Vat White Paper Mill on the Loose Stream… with a pen of water of about 2 acres which gives at all times full and ample power to the Mill also a copious supply of spring water which rises on the premises…", s:"Kentish Gazette, 15 Sept 1812 [7]"}, cites:[2,7,11,19]},
+ {id:"uppercris", name:"Upper Crisbrook Mill", e:75.6, n:54.1,
+  phases:[["fulling",1650,1711,true],["corn",1711,1900],["earth",1900,1965,false,true],["home",1975,2026]],
+  wheel:18.5, fall:"overshot",
+  people:"Matthew Chandler (1711–31); James Appleton; Jonathan Pillow (1783–1822); John Bunyar (1824–40); W. Threadgold; J. Barcham Green (from 1876).",
+  story:"After 1906 its wheel pumped spring water to Hayle Mill, so when the wheel froze, Hayle stopped too. Workers freed it by burning boxes, tyres and fencing in the wheel-pit. In the 1920s and 30s trespassers repeatedly damaged the wheel and it had to be replaced several times. The wheel was restored and the building converted c.1975.",
+  quote:{t:"The whole of the above specification to be completed in a good and workmanlike manner for the sum of £200", s:"Waterwheel specification, April 1878, quoted in Spain [2]"}, cites:[2,11]},
+ {id:"lowercris", name:"Lower Crisbrook Mill", e:75.6, n:54.2,
+  phases:[["fulling",1668,1719],["corn",1719,1905],["earth",1905,1935,false,true],["unknown",1935,1954]],
+  wheel:11, fall:"overshot/high breast, 8½ ft wide",
+  people:"Richard Parson (1668–77); Jonathan Dare (1678–1717); Matthew Chandler; Gentles; Jonathan Pillow; John Down; W. Threadgold; G. B. Blackett (1895–1905).",
+  story:"A four-storey mill, 72 by 41 ft. It was last used to grind fuller's earth and was demolished in 1950–54. Albert E. Reed &amp; Co.'s flow gauging here gives the only measured discharge figures we have for the stream.",
+  quote:null, cites:[2,11]},
+ {id:"uppertovil", name:"Upper Tovil Mill", e:75.45, n:54.45,
+  phases:[["paper",1650,1983,true,true]],
+  wheel:18, fall:"overshot, 15 ft wide",
+  people:"Stephen Fowle (1650); Mankteloe; Peter Musgrove; <b>Clement Taylor</b> (1772–97, bankrupt 1797); Russell; Turner family; William Simpson; <b>Albert E. Reed</b> (from 1895–96).",
+  story:"Five vats by 1798. Under Simpson it was one of the earliest mills to make paper from straw, and locals still call the area “Strawmill” (Strawmill Hill). After a fire in 1896 Albert Reed rebuilt it to run on steam. That was the start of what became Reed International. The site was cleared for housing in the 1980s.",
+  quote:{t:"one of the largest mills in the country, was at different times almost entirely new built by Mr. Taylor, a former proprietor", s:"Gazetteer, 1839, quoted in Spain [2]"}, cites:[2,11,17]},
+ {id:"lowertovil", name:"Lower Tovil Mill", e:75.2, n:54.75,
+  phases:[["paper",1668,1983,false,true]],
+  wheel:18, fall:"overshot, 14 ft wide, no pond",
+  people:"William Lanes (1668–85); Peter Musgrove; Pine family (1730s–1822); Smith &amp; Allnutt; Lawrence Green; Allnutts; later Thomas &amp; Green.",
+  story:"It had no pond. An 8-inch cast-iron pipe brought water from Lower Crisbrook pond, an arrangement Spain linked to “ancient water rights”. A day book records <i>“1889 19th Oct. Lower Tovil paper mill burnt down.”</i> The wheel was last used in 1932 and scrapped in 1941.",
+  quote:null, cites:[2,17]},
+ {id:"bridge", name:"Bridge Mill", e:75.0, n:54.7,
+  phases:[["fulling",1551,1700,true],["powder",1704,1741],["corn",1742,1746],["oil",1755,1899],["paper",1899,1983,false,true]],
+  wheel:null, fall:"largest throughput; flooded by the Medway",
+  people:"College of All Saints (fulling); powder-makers (1704–41); W. T. Steinmetz, seed-crusher (1824); T. W. Brook (1858–77); <b>Albert E. Reed</b> (after 1899).",
+  story:"Bridge Mill had more successive trades than any other site on the stream. As a gunpowder mill it exploded in July 1731, killing two men and a child. In 1881 it was making linseed, rape and cotton-seed oil and cattle-cake. Medway floods regularly stopped it. It closed in 1899 because of competition, and Reed took it over for paper.",
+  quote:{t:"A powder mill at Maidstone in Kent blew-up, by which two Men and a Child were killed; A Paper-Mill and a House adjoining were destroyed…", s:"Gentleman's Magazine, July 1731 [6]"}, cites:[2,6,11]}
+];
+
+const EVENTS = [
+ {y:1576, m:null, t:"Lambarde's Perambulation of Kent counts a dozen or more fulling mills and one corn mill on the stream [5]."},
+ {y:1687, m:"gurney", t:"Fuller Henry Maplesden gives way to papermaker William Harris, the first documented papermaker on the stream [1]."},
+ {y:1731, m:"bridge", t:"23 July: the powder mill blows up. Two men and a child are killed and the windows of Tovil church are shattered [6]."},
+ {y:1774, m:"upper", t:"James Whatman takes Upper Mill and rebuilds it [1]."},
+ {y:1797, m:"uppertovil", t:"Clement Taylor, who rebuilt Tovil Mill, is declared bankrupt [2]."},
+ {y:1808, m:"hayle", t:"Hayle Mill completed “after some difficulties” [2]."},
+ {y:1830, m:"gurney", t:"Loose Viaduct (attributed to Telford) carries the Maidstone road over the valley [12]."},
+ {y:1890, m:"upper", t:"Steam roller-mills installed alongside the water wheel [1]."},
+ {y:1895, m:"village", t:"Great frost: Loose village skates on the millponds; only Springhead stays open [1]."},
+ {y:1896, m:"uppertovil", t:"Fire. Albert E. Reed rebuilds the mill for steam power [2]."},
+ {y:1908, m:"upper", t:"Upper Mill declared uneconomic and closed [1]."},
+ {y:1912, m:"village", t:"Village Mill and Little Ivy are auctioned [1]."},
+ {y:1941, m:"lowertovil", t:"The great wheel is scrapped for the war effort [2]."},
+ {y:1987, m:"hayle", t:"Hand papermaking ends at Hayle Mill [19]."},
+ {y:2000, m:null, t:"Conservation Area designated and the Valley Conservation Society founded [11][15]."}
+];
+
+const OBSERVERS = [
+ {y:1576, n:13, who:"Lambarde", dx:0, dy:-11, a:"middle", note:"12 fulling + 1 corn (Spain's reading); 13 fulling + 1 corn per the Wikipedia gazetteer [1][5][11]"},
+ {y:1715, n:3, who:"Harris", dx:0, dy:-11, a:"middle", note:"Mentions only 2 fulling mills and 1 paper mill [11]"},
+ {y:1839, n:12, who:"Phippen", dx:-10, dy:-10, a:"end", note:"Twelve, “including one pulled down” [8]"},
+ {y:1848, n:12, who:"Lewis", dx:0, dy:-24, a:"middle", note:"“turns no less than twelve mills” [4]"},
+ {y:1865, n:12, who:"OS / Green map", dx:10, dy:-10, a:"start", note:"Twelve water-powered mills on 2½ miles of stream [19]"},
+ {y:1972, n:13, who:"Spain", dx:0, dy:-11, a:"middle", note:"Thirteen sites identified on the ground and in the archive [1]"}
+];
+
+/* ================= HELPERS ================= */
+const tip = d3.select("#tip");
+function showTip(html, ev){
+  tip.html(html).style("opacity",1);
+  const x = Math.min(ev.clientX+14, window.innerWidth-320), y = Math.min(ev.clientY+14, window.innerHeight-160);
+  tip.style("left",x+"px").style("top",y+"px");
+}
+function hideTip(){ tip.style("opacity",0); }
+const citeLinks = s => s.replace(/\[(\d+)\]/g,'<sup class="cite"><a href="#s$1">[$1]</a></sup>');
+
+function legend(sel, keys){
+  const L = d3.select(sel).html("");
+  keys.forEach(k=>{ const s=L.append("span"); s.append("i").style("background",col(k)); s.append("span").html(USES[k].label); });
+}
+
+/* ================= HERO SPOKES ================= */
+(function(){
+  const g = d3.select("#heroSpokes");
+  for(let i=0;i<16;i++){
+    const a=i/16*2*Math.PI;
+    g.append("line").attr("x1",0).attr("y1",0).attr("x2",50*Math.cos(a)).attr("y2",50*Math.sin(a));
+    g.append("path").attr("d",`M${50*Math.cos(a)} ${50*Math.sin(a)} L${58*Math.cos(a+0.12)} ${58*Math.sin(a+0.12)}`).attr("stroke-width",3);
+  }
+})();
+
+/* ================= MAP ================= */
+let selectedMill = "hayle";
+function drawMap(){
+  const box = d3.select("#mapBox"); box.select("svg").remove();
+  const W=760,H=620;
+  const svg = box.insert("svg",":first-child").attr("viewBox",`0 0 ${W} ${H}`).attr("role","img").attr("aria-label","Map of the Loose stream and mill sites");
+  // domain in km within TQ
+  const x = d3.scaleLinear().domain([73.4,80.4]).range([0,W]);
+  const kmPerPx = (80.4-73.4)/W;
+  const y = d3.scaleLinear().domain([50.6, 50.6 + H*kmPerPx]).range([H,0]); // equal scale
+  const root = svg.append("g");
+  const pxScale = () => W / Math.max(200, svg.node().getBoundingClientRect().width || W); // viewBox units per screen px
+  const zoom = d3.zoom().scaleExtent([1,10]).translateExtent([[-100,-100],[W+100,H+100]]).on("zoom",e=>{
+    const k=e.transform.k, u=pxScale()/k; window._mapU=u;
+    root.attr("transform",e.transform);
+    root.selectAll(".lbl").style("font-size",(12*u)+"px").attr("stroke-width",3*u);
+    root.selectAll(".lbl-o").each(function(){ const t=d3.select(this); t.attr("x",+t.attr("data-dx")*u).attr("y",+t.attr("data-dy")*u); });
+    root.selectAll(".mk").attr("r",d=>(d.sel?8:6.5)*u).attr("stroke-width",d=>(d.sel?3.5:2.5)*u);
+    root.selectAll(".dot").attr("r",2.5*u);
+  });
+  zoom.filter(e => (e.type==="wheel" ? (e.ctrlKey||e.metaKey) : !e.button));
+  svg.call(zoom);
+  box.selectAll(".zbtns").remove();
+  const zb = box.append("div").attr("class","zbtns");
+  zb.append("button").text("+").attr("aria-label","Zoom in").on("click",()=>svg.transition().duration(300).call(zoom.scaleBy,1.6));
+  zb.append("button").text("−").attr("aria-label","Zoom out").on("click",()=>svg.transition().duration(300).call(zoom.scaleBy,1/1.6));
+  zb.append("button").text("⟲").attr("aria-label","Reset view").on("click",()=>svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity.translate(W/2-x(75.9)*1.85, H/2-y(53.45)*1.85).scale(1.85)));
+  // grid
+  const g = root.append("g");
+  for(let k=74;k<=80;k++){ g.append("line").attr("class","gridl").attr("x1",x(k)).attr("x2",x(k)).attr("y1",0).attr("y2",H).attr("stroke",css("--rule")).attr("stroke-width",1);
+    g.append("text").attr("x",x(k)+3).attr("y",H-6).text("TQ "+k).attr("font-family","IBM Plex Mono").attr("font-size",9).attr("fill",css("--ink3")); }
+  for(let k=51;k<=57;k++){ if(y(k)<0) continue; g.append("line").attr("class","gridl").attr("y1",y(k)).attr("y2",y(k)).attr("x1",0).attr("x2",W).attr("stroke",css("--rule")).attr("stroke-width",1);
+    g.append("text").attr("x",4).attr("y",y(k)-3).text(k).attr("font-family","IBM Plex Mono").attr("font-size",9).attr("fill",css("--ink3")); }
+  // Maidstone town tint
+  root.append("ellipse").attr("cx",x(76.0)).attr("cy",y(55.9)).attr("rx",90).attr("ry",50).attr("fill",css("--land2"));
+  root.append("text").attr("class","lbl").attr("x",x(76.4)).attr("y",y(56.05)).text("MAIDSTONE").attr("font-family","IBM Plex Mono").attr("letter-spacing","2").attr("fill",css("--ink3")).style("font-size","11px");
+  // Medway
+  const medway = [[73.3,53.0],[74.2,54.1],[74.9,54.8],[75.6,55.6],[76.1,56.4]];
+  const line = d3.line().x(d=>x(d[0])).y(d=>y(d[1])).curve(d3.curveCatmullRom.alpha(.5));
+  root.append("path").attr("d",line(medway)).attr("fill","none").attr("stroke",css("--river2")).attr("stroke-width",16).attr("stroke-linecap","round").attr("opacity",.6);
+  root.append("text").attr("class","lbl").attr("x",x(73.8)).attr("y",y(53.75)).text("River Medway").attr("font-family","Fraunces").attr("font-style","italic").attr("fill",css("--river")).style("font-size","11px").attr("transform",`rotate(-48 ${x(73.8)} ${y(53.75)})`);
+  // stream: surface upper, underground, surface
+  const upperSurf = [[79.6,51.25],[79.0,51.35],[78.4,51.42],[77.9,51.5]];
+  const under = [[77.9,51.5],[77.6,51.6],[77.25,51.72]];
+  const main = [[77.25,51.72],[76.8,51.95],[76.5,52.05],[76.2,52.1],[76.0,52.1],[75.8,52.2],[75.74,52.4],[75.73,52.6],[75.71,52.8],[75.7,53.0],[75.69,53.3],[75.68,53.64],[75.6,53.8],[75.6,54.1],[75.6,54.2],[75.52,54.34],[75.45,54.45],[75.3,54.62],[75.2,54.75],[75.0,54.7],[74.9,54.8]];
+  const spring = [[76.3,52.42],[76.18,52.3],[76.12,52.24],[76.02,52.13]];
+  [[upperSurf,null],[main,null],[spring,null]].forEach(([p])=>{
+    root.append("path").attr("d",line(p)).attr("fill","none").attr("stroke",css("--river")).attr("stroke-width",3.2).attr("stroke-linecap","round");
+  });
+  root.append("path").attr("d",line(under)).attr("fill","none").attr("stroke",css("--river")).attr("stroke-width",2).attr("stroke-dasharray","3 5");
+  // ponds
+  [[76.2,52.1,22,8],[75.8,52.2,10,6],[75.73,52.55,7,14],[75.7,52.95,7,16],[75.68,53.6,5,13],[75.6,53.78,9,9],[75.6,54.12,5,9],[75.45,54.42,8,7]].forEach(p=>{
+    root.append("ellipse").attr("cx",x(p[0])).attr("cy",y(p[1])).attr("rx",p[2]).attr("ry",p[3]).attr("fill",css("--pond")).attr("stroke",css("--river2")).attr("stroke-width",.8).lower();
+  });
+  root.select("ellipse").lower();
+  g.lower();
+  // landmarks
+  const lm = [
+    {e:79.6,n:51.25,t:"source · Langley (approx.)",dx:-6,dy:-10,anchor:"end"},
+    {e:77.9,n:51.5,t:"sinks at Brishing",dx:0,dy:18,anchor:"middle"},
+    {e:77.25,n:51.72,t:"rises at the quarries",dx:6,dy:-10,anchor:"start"},
+    {e:76.3,n:52.42,t:"Springhead",dx:6,dy:-4,anchor:"start"},
+    {e:75.95,n:52.0,t:"Loose Viaduct 1830",dx:8,dy:16,anchor:"start"},
+    {e:75.82,n:52.27,t:"Loose village",dx:-10,dy:-12,anchor:"end"},
+    {e:75.2,n:54.55,t:"Tovil",dx:-14,dy:4,anchor:"end"}
+  ];
+  lm.forEach(d=>{
+    root.append("circle").attr("class","dot").attr("cx",x(d.e)).attr("cy",y(d.n)).attr("r",2.2).attr("fill",css("--ink3"));
+    root.append("g").attr("transform",`translate(${x(d.e)},${y(d.n)})`).append("text").attr("class","lbl lbl-o").attr("data-dx",d.dx).attr("data-dy",d.dy).attr("text-anchor",d.anchor).text(d.t).attr("font-family","IBM Plex Mono").attr("fill",css("--ink2")).style("font-size","11px").attr("paint-order","stroke").attr("stroke",css("--land"));
+  });
+  // viaduct tick
+  root.append("line").attr("x1",x(75.95)).attr("y1",y(52.0)-10).attr("x2",x(76.05)).attr("y2",y(52.22)+4).attr("stroke",css("--ink")).attr("stroke-width",3).attr("opacity",.5);
+  // mills
+  const latestUse = m => { const ind = m.phases.filter(p=>p[0]!=="home"&&p[0]!=="unknown"); return ind.length? ind[ind.length-1][0] : "unknown"; };
+  const mg = root.append("g").selectAll("g").data(MILLS).join("g").attr("transform",d=>`translate(${x(d.e)},${y(d.n)})`).style("cursor","pointer")
+    .on("click",(e,d)=>{ selectMill(d.id); })
+    .on("mousemove",(e,d)=>showTip(`<b>${d.name}</b><br>${d.phases.map(p=>USES[p[0]].label).filter((v,i,a)=>a.indexOf(v)===i).join(" → ")}`,e))
+    .on("mouseleave",hideTip);
+  mg.append("circle").attr("class","mk").attr("r",6).attr("fill",d=>d.approx?css("--card"):col(latestUse(d))).attr("stroke",d=>col(latestUse(d))).attr("stroke-width",2.5);
+  // labels with simple left/right alternation
+  const side = {leg:[8,-8,"start"],upper:[8,-6,"start"],gurney:[2,16,"start"],village:[-10,4,"end"],littleivy:[10,4,"start"],greativy:[10,4,"start"],bockingford:[10,4,"start"],hayle:[10,4,"start"],uppercris:[10,11,"start"],lowercris:[10,-5,"start"],uppertovil:[10,2,"start"],lowertovil:[8,-8,"start"],bridge:[-10,10,"end"]};
+  mg.append("text").attr("class","lbl lbl-o").attr("data-dx",d=>side[d.id][0]).attr("data-dy",d=>side[d.id][1]).attr("text-anchor",d=>side[d.id][2]).text(d=>d.name.replace(" Mill","")).attr("font-family","IBM Plex Sans").attr("font-weight",500).attr("fill",css("--ink")).style("font-size","11px").attr("paint-order","stroke").attr("stroke",css("--land")).attr("stroke-width",3);
+  // scale bar
+  const sb = svg.append("g").attr("transform",`translate(${W-150},${H-24})`);
+  sb.append("rect").attr("width",x(74.4)-x(73.4)).attr("height",5).attr("fill",css("--ink2"));
+  sb.append("text").attr("y",-5).text("1 km").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ink2"));
+  sb.append("text").attr("x",110).attr("y",-30).text("N ↑").attr("font-family","IBM Plex Mono").attr("font-size",12).attr("fill",css("--ink2"));
+  // initial zoom on mill cluster
+  const k=1.85, cx=x(75.9), cy=y(53.45);
+  svg.call(zoom.transform, d3.zoomIdentity.translate(W/2-cx*k, H/2-cy*k).scale(k));
+  window._mapSel = mg;
+  highlightMap();
+}
+function highlightMap(){
+  if(!window._mapSel) return;
+  window._mapSel.each(function(d){ d.sel = d.id===selectedMill; });
+  const u=window._mapU||1; window._mapSel.select("circle").attr("r",d=>(d.sel?8:6.5)*u).attr("stroke-width",d=>(d.sel?3.5:2.5)*u).attr("stroke",d=>d.sel?css("--ink"):col(d.phases.filter(p=>p[0]!=="home"&&p[0]!=="unknown").slice(-1)[0]?.[0]||"unknown"));
+}
+function selectMill(id){
+  selectedMill=id; const m = MILLS.find(d=>d.id===id);
+  highlightMap();
+  const span = [1550,2026], tot = span[1]-span[0];
+  let bar = ""; let cur = span[0];
+  m.phases.forEach(p=>{ const s=Math.max(p[1],span[0]); if(s>cur) bar+=`<span style="flex:${s-cur};background:transparent"></span>`;
+    bar+=`<span title="${USES[p[0]].label} ${p[1]}–${p[2]}" style="flex:${p[2]-s};background:${col(p[0])}"></span>`; cur=p[2]; });
+  if(cur<span[1]) bar+=`<span style="flex:${span[1]-cur}"></span>`;
+  const uses = m.phases.map(p=>`${USES[p[0]].label} <span class="mono" style="color:var(--ink3);font-size:.75rem">${p[3]?"c.":""}${p[1]}–${p[4]?"c.":""}${p[2]>=2026?"now":p[2]}</span>`).join("<br>");
+  const html = `<div class="kicker">Mill ${MILLS.indexOf(m)+1} of ${MILLS.length} · upstream → Medway</div>
+   <h3>${m.name}</h3><div class="meta">TQ ${(m.e*10).toFixed(1)} ${(m.n*10).toFixed(1)}${m.approx?" (estimated)":""}</div>
+   <div class="phasebar" aria-hidden="true">${bar}</div><div class="mono note" style="display:flex;justify-content:space-between;font-size:.62rem"><span>1550</span><span>1800</span><span>today</span></div>
+   <dl><dt>Uses</dt><dd>${uses}</dd>
+   <dt>Wheel</dt><dd>${m.wheel? m.wheel+" ft diameter, ":""}${m.fall}</dd>
+   <dt>People</dt><dd>${m.people}</dd></dl>
+   <p style="font-size:.92rem">${m.story}</p>
+   ${m.quote?`<blockquote>“${m.quote.t}”<footer>${citeLinks(m.quote.s)}</footer></blockquote>`:""}
+   <div class="note">Sources: ${m.cites.map(c=>`<a href="#s${c}">[${c}]</a>`).join(" ")}</div>
+   <div class="millbtns">${MILLS.map(d=>`<button data-id="${d.id}" class="${d.id===id?"on":""}">${d.name.replace(" Mill","").replace(" (Old)","")}</button>`).join("")}</div>`;
+  const P = document.getElementById("millPanel"); P.innerHTML = html;
+  P.querySelectorAll(".millbtns button").forEach(b=>b.onclick=()=>selectMill(b.dataset.id));
+}
+
+/* ================= LIFELINES ================= */
+function drawLifelines(){
+  const host = d3.select("#lifeChart").html("");
+  const W = Math.max(640, host.node().clientWidth), rowH=30, M={t:30,r:16,b:30,l:150};
+  const H = M.t+M.b+rowH*MILLS.length;
+  const svg = host.append("div").style("overflow-x","auto").append("svg").attr("class","chart").attr("viewBox",`0 0 ${W} ${H}`).style("min-width","640px");
+  const x = d3.scaleLinear().domain([1550,2026]).range([M.l,W-M.r]);
+  const yb = d3.scaleBand().domain(MILLS.map(d=>d.id)).range([M.t,H-M.b]).padding(.28);
+  // era bands
+  const eras=[[1550,1690,"cloth"],[1690,1890,"paper & corn"],[1890,1990,"steam & closure"],[1990,2026,"heritage"]];
+  svg.append("g").selectAll("rect").data(eras).join("rect").attr("x",d=>x(d[0])).attr("width",d=>x(d[1])-x(d[0])).attr("y",M.t-18).attr("height",H-M.t-M.b+18).attr("fill",(d,i)=>i%2?css("--bg2"):"transparent").attr("opacity",.7);
+  svg.append("g").selectAll("text").data(eras).join("text").attr("x",d=>x(d[0])+4).attr("y",M.t-6).text(d=>d[2]).attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ink3")).attr("letter-spacing",1);
+  svg.append("g").attr("class","axis").attr("transform",`translate(0,${H-M.b})`).call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(10));
+  // gradient defs for approx ends
+  const defs = svg.append("defs");
+  Object.keys(USES).forEach(u=>{
+    const gl = defs.append("linearGradient").attr("id","gs-"+u); gl.append("stop").attr("offset",0).attr("stop-color",col(u)).attr("stop-opacity",.1); gl.append("stop").attr("offset",1).attr("stop-color",col(u));
+    const gr = defs.append("linearGradient").attr("id","ge-"+u); gr.append("stop").attr("offset",0).attr("stop-color",col(u)); gr.append("stop").attr("offset",1).attr("stop-color",col(u)).attr("stop-opacity",.1);
+    const gb = defs.append("linearGradient").attr("id","gb-"+u); gb.append("stop").attr("offset",0).attr("stop-color",col(u)).attr("stop-opacity",.1); gb.append("stop").attr("offset",.5).attr("stop-color",col(u)); gb.append("stop").attr("offset",1).attr("stop-color",col(u)).attr("stop-opacity",.1);
+  });
+  const rows = svg.append("g").selectAll("g").data(MILLS).join("g").attr("transform",d=>`translate(0,${yb(d.id)})`).style("cursor","pointer")
+     .on("click",(e,d)=>{selectMill(d.id); document.getElementById("map").scrollIntoView({behavior:"smooth"});});
+  rows.append("text").attr("x",M.l-10).attr("y",yb.bandwidth()/2+4).attr("text-anchor","end").text(d=>d.name).attr("font-size",12).attr("fill",css("--ink"));
+  rows.append("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",yb.bandwidth()/2).attr("y2",yb.bandwidth()/2).attr("stroke",css("--rule")).attr("stroke-dasharray","2 4");
+  rows.selectAll("rect.ph").data(d=>d.phases.map(p=>({m:d,p}))).join("rect").attr("class","ph")
+     .attr("x",d=>x(d.p[1])).attr("width",d=>Math.max(2,x(d.p[2])-x(d.p[1]))).attr("height",yb.bandwidth()).attr("rx",3)
+     .attr("fill",d=>{const u=d.p[0]; if(d.p[3]&&d.p[4]) return `url(#gb-${u})`; if(d.p[3]) return `url(#gs-${u})`; if(d.p[4]) return `url(#ge-${u})`; return col(u);})
+     .on("mousemove",(e,d)=>showTip(`<b>${d.m.name}</b><br>${USES[d.p[0]].label}: ${d.p[3]?"c.":""}${d.p[1]} – ${d.p[4]?"c.":""}${d.p[2]>=2026?"present":d.p[2]}`,e)).on("mouseleave",hideTip);
+  // events
+  const ev = EVENTS.filter(e=>e.m);
+  svg.append("g").selectAll("path").data(ev).join("path")
+     .attr("d",d3.symbol(d3.symbolDiamond,70)).attr("transform",d=>`translate(${x(d.y)},${yb(d.m)+yb.bandwidth()/2})`)
+     .attr("fill",css("--card")).attr("stroke",css("--ink")).attr("stroke-width",1.4)
+     .on("mousemove",(e,d)=>showTip(`<b>${d.y}</b><br>${d.t.replace(/\[(\d+)\]/g,"[$1]")}`,e)).on("mouseleave",hideTip);
+  // global events lines
+  EVENTS.filter(e=>!e.m).forEach(e=>{
+    svg.append("line").attr("x1",x(e.y)).attr("x2",x(e.y)).attr("y1",M.t-18).attr("y2",H-M.b).attr("stroke",css("--ochre")).attr("stroke-dasharray","4 3")
+      .on("mousemove",ev2=>showTip(`<b>${e.y}</b><br>${e.t}`,ev2)).on("mouseleave",hideTip).style("cursor","help").attr("stroke-width",2);
+  });
+}
+
+/* ================= COUNTING ================= */
+function drawCount(){
+  const host = d3.select("#countChart").html("");
+  const W=560,H=340,M={t:20,r:20,b:34,l:36};
+  const svg = host.append("svg").attr("class","chart").attr("viewBox",`0 0 ${W} ${H}`);
+  const yrs = d3.range(1550,2027);
+  const active = yrs.map(yr=>({yr, n: MILLS.filter(m=>m.phases.some(p=>!["home","unknown"].includes(p[0]) && yr>=p[1] && yr<p[2])).length}));
+  const x = d3.scaleLinear().domain([1550,2026]).range([M.l,W-M.r]);
+  const y = d3.scaleLinear().domain([0,14]).range([H-M.b,M.t]);
+  svg.append("g").attr("class","axis").attr("transform",`translate(0,${H-M.b})`).call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(8));
+  svg.append("g").attr("class","axis").attr("transform",`translate(${M.l},0)`).call(d3.axisLeft(y).ticks(7)).call(g=>g.select(".domain").remove());
+  svg.append("g").selectAll("line").data(y.ticks(7)).join("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke",css("--rule")).attr("opacity",.6);
+  svg.append("path").datum(active).attr("d",d3.area().x(d=>x(d.yr)).y0(y(0)).y1(d=>y(d.n)).curve(d3.curveStepAfter)).attr("fill",css("--river")).attr("opacity",.22);
+  svg.append("path").datum(active).attr("d",d3.line().x(d=>x(d.yr)).y(d=>y(d.n)).curve(d3.curveStepAfter)).attr("fill","none").attr("stroke",css("--river")).attr("stroke-width",2);
+  svg.append("text").attr("x",x(1700)).attr("y",y(5)).text("sites documented working").attr("font-size",11.5).attr("font-weight",600).attr("fill",css("--river"));
+  svg.append("text").attr("x",x(1700)).attr("y",y(5)+14).text("(parish rate books, directories)").attr("font-size",10.5).attr("fill",css("--river"));
+  // gap annotation
+  svg.append("path").attr("d",`M${x(1576)},${y(13)} L${x(1576)},${y(3.3)}`).attr("stroke",css("--ochre")).attr("stroke-dasharray","3 3");
+  svg.append("text").attr("x",x(1582)).attr("y",y(8)).text("archival").attr("font-size",10).attr("fill",css("--ochre"));
+  svg.append("text").attr("x",x(1582)).attr("y",y(8)+12).text("silence").attr("font-size",10).attr("fill",css("--ochre"));
+  const o = svg.append("g").selectAll("g").data(OBSERVERS).join("g").attr("transform",d=>`translate(${x(d.y)},${y(d.n)})`).style("cursor","help")
+    .on("mousemove",(e,d)=>showTip(`<b>${d.who}, ${d.y}</b><br>${d.note}`,e)).on("mouseleave",hideTip);
+  o.append("circle").attr("r",6).attr("fill",css("--card")).attr("stroke",css("--ochre")).attr("stroke-width",2.5);
+  o.append("text").attr("x",d=>d.dx).attr("y",d=>d.dy).attr("text-anchor",d=>d.a).text(d=>d.who).attr("font-size",10.5).attr("font-weight",600).attr("fill",css("--ink"));
+  svg.append("text").attr("x",M.l).attr("y",M.t-6).text("mills").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ink3"));
+  const lg = svg.append("g").attr("transform",`translate(${x(1600)},${y(1.2)})`);
+  lg.append("circle").attr("r",5).attr("fill",css("--card")).attr("stroke",css("--ochre")).attr("stroke-width",2.5);
+  lg.append("text").attr("x",10).attr("y",4).text("= count reported by an observer").attr("font-size",10.5);
+}
+
+/* ================= WHEELS ================= */
+function wheelPath(sel, r, n=16){
+  sel.append("circle").attr("r",r).attr("fill","none");
+  sel.append("circle").attr("r",r*0.86).attr("fill","none");
+  for(let i=0;i<n;i++){ const a=i/n*2*Math.PI;
+    sel.append("line").attr("x1",0).attr("y1",0).attr("x2",r*.86*Math.cos(a)).attr("y2",r*.86*Math.sin(a));
+    sel.append("line").attr("x1",r*.86*Math.cos(a)).attr("y1",r*.86*Math.sin(a)).attr("x2",r*Math.cos(a+.14)).attr("y2",r*Math.sin(a+.14)).attr("stroke-width",2); }
+  sel.append("circle").attr("r",Math.max(2,r*.07)).attr("fill",css("--ink"));
+}
+function personPath(g, h){ // h px tall
+  const s=h/1.75; g.attr("stroke",css("--ink")).attr("fill","none").attr("stroke-width",1.4);
+  g.append("circle").attr("cx",0).attr("cy",-h+0.12*s).attr("r",0.12*s).attr("fill",css("--card"));
+  g.append("path").attr("d",`M0 ${-h+0.24*s} V${-0.85*s} M0 ${-0.85*s} L${-0.18*s} 0 M0 ${-0.85*s} L${0.18*s} 0 M0 ${-h+0.45*s} L${-0.25*s} ${-0.95*s} M0 ${-h+0.45*s} L${0.25*s} ${-0.95*s}`);
+}
+function drawWheels(){
+  const host = d3.select("#wheelChart").html("");
+  const ws = MILLS.filter(m=>m.wheel).sort((a,b)=>b.wheel-a.wheel);
+  const FT=0.3048, pxPerM = 16;
+  let cx = 30; const items=[];
+  ws.forEach(m=>{ const r=m.wheel*FT*pxPerM/2; items.push({m,r,cx:cx+r}); cx+=2*r+22; });
+  const W = cx+60, base=150, H=base+56;
+  const svg = host.append("div").style("overflow-x","auto").append("svg").attr("class","chart").attr("viewBox",`0 0 ${W} ${H}`).style("min-width","560px");
+  svg.append("line").attr("x1",0).attr("x2",W).attr("y1",base).attr("y2",base).attr("stroke",css("--ink3"));
+  const g = svg.selectAll("g.w").data(items).join("g").attr("class","w").attr("transform",d=>`translate(${d.cx},${base-d.r})`)
+     .attr("stroke",d=>col(d.m.phases.filter(p=>!["home","unknown"].includes(p[0])).slice(-1)[0][0])).attr("stroke-width",1.2)
+     .style("cursor","pointer").on("click",(e,d)=>{selectMill(d.m.id);document.getElementById("map").scrollIntoView({behavior:"smooth"});})
+     .on("mousemove",(e,d)=>showTip(`<b>${d.m.name}</b><br>${d.m.wheel} ft (${(d.m.wheel*FT).toFixed(1)} m) · ${d.m.fall}`,e)).on("mouseleave",hideTip);
+  g.each(function(d){ wheelPath(d3.select(this), d.r, 12); });
+  svg.selectAll("text.wl").data(items).join("text").attr("class","wl").attr("x",d=>d.cx).attr("y",base+16).attr("text-anchor","middle").text(d=>d.m.name.replace(" Mill","").replace(" (Old)","")).attr("font-size",10.5).attr("fill",css("--ink"));
+  svg.selectAll("text.wf").data(items).join("text").attr("class","wf").attr("x",d=>d.cx).attr("y",base+30).attr("text-anchor","middle").text(d=>d.m.wheel+" ft").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ink3"));
+  const pg = svg.append("g").attr("transform",`translate(${W-30},${base})`); personPath(pg,1.75*pxPerM);
+  svg.append("text").attr("x",W-30).attr("y",base+16).attr("text-anchor","middle").text("1.75 m").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ink3"));
+}
+let flowIdx=1, wheelAngle=0, lastT=null;
+const FLOWS=[{g:850,l:"850 · lowest weekly average"},{g:1300,l:"1,300 · normal"},{g:1800,l:"1,800 · flood"}];
+function drawBigWheel(){
+  const svg = d3.select("#bigWheel").html("");
+  const R=100;
+  // pentrough
+  svg.append("rect").attr("x",-130).attr("y",-R-26).attr("width",125).attr("height",12).attr("fill","none").attr("stroke",css("--ink"));
+  svg.append("rect").attr("x",-128).attr("y",-R-24).attr("width",121).attr("height",8).attr("fill",css("--river")).attr("opacity",.6).attr("id","troughWater");
+  svg.append("path").attr("id","fall").attr("d",`M-6 ${-R-18} C 6 ${-R-12}, 10 ${-R-4}, 12 ${-R+6}`).attr("stroke",css("--river")).attr("fill","none").attr("stroke-width",6).attr("opacity",.7);
+  // tailrace
+  svg.append("path").attr("d",`M-130 ${R+18} H130`).attr("stroke",css("--river")).attr("stroke-width",10).attr("opacity",.5);
+  const g = svg.append("g").attr("id","bw").attr("stroke",css("--ink")).attr("stroke-width",1.6);
+  wheelPath(g,R,16);
+  // buckets highlight on right (descending side)
+  svg.append("path").attr("d",d3.arc()({innerRadius:R*.86,outerRadius:R,startAngle:0.15,endAngle:Math.PI-0.2})).attr("fill",css("--river")).attr("opacity",.25);
+  const pg = svg.append("g").attr("transform",`translate(${R+18},${R+14})`); personPath(pg, 1.75/(18.5*0.3048)*2*R);
+  svg.append("text").attr("x",0).attr("y",R+38).attr("text-anchor","middle").text("Upper Crisbrook · 18½ ft overshot").attr("font-family","IBM Plex Mono").attr("font-size",9.5).attr("fill",css("--ink3"));
+}
+function updateFlow(){
+  d3.select("#flowCtl").html("").selectAll("button").data(FLOWS).join("button").attr("class",(d,i)=>i===flowIdx?"on":"").text(d=>d.l+" gpm")
+    .on("click",(e,d)=>{flowIdx=FLOWS.indexOf(d);updateFlow();});
+  const f = FLOWS[flowIdx];
+  const Q = f.g*4.546/60/1000; // m3/s (imperial gallons)
+  const h = 18.5*0.3048, eta=0.65;
+  const P = 1000*9.81*Q*h*eta; // W
+  const rpm = (60*Q/0.12)/(Math.PI*h)*0.9; // notional rim-speed model
+  window._rpm = Math.min(9, Math.max(2.5, 3+ (f.g-850)/950*4));
+  d3.select("#powerOut").html(`<div style="display:flex;gap:28px;flex-wrap:wrap">
+    <div><div class="stat">${(Q*1000).toFixed(0)}</div><div class="statlabel">litres / second</div></div>
+    <div><div class="stat">${(P/1000).toFixed(1)} kW</div><div class="statlabel">≈ ${(P/745.7).toFixed(1)} hp (estimate)</div></div>
+    <div><div class="stat">${window._rpm.toFixed(1)}</div><div class="statlabel">rev/min (illustrative)</div></div></div>`);
+  d3.select("#fall").attr("stroke-width",3+flowIdx*4);
+}
+function spin(t){
+  if(lastT===null) lastT=t; const dt=(t-lastT)/1000; lastT=t;
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){ wheelAngle += (window._rpm||4)*6*dt; }
+  d3.select("#bw").attr("transform",`rotate(${wheelAngle})`);
+  requestAnimationFrame(spin);
+}
+
+/* ================= ENTANGLEMENTS ================= */
+const RIVER_NODES = [
+ {id:"fall", t:"Steep fall in a narrow valley", d:"About 2 miles of the stream drop sharply to the Medway. The valley narrows below Loose village, so short dams give a useful head of water [1][13]."},
+ {id:"spring", t:"Constant spring flow", d:"Springhead Pond never froze, even in 1895. Alan Wilson had “never known or heard of any shortage of water” [1]."},
+ {id:"clear", t:"Clear, hard spring water", d:"The stream's purity is given as the reason papermaking grew here in the 19th century [11]. The 1812 notice for Hayle advertised a “copious supply of spring water which rises on the premises” [7]."},
+ {id:"sink", t:"Sinks underground at Brishing", d:"The stream runs “through a subterraneous passage for near half a mile” before rising at the quarries [3]."},
+ {id:"flood", t:"Floods (and the Medway backing up)", d:"Bridge Mill, the lowest site, was regularly flooded by the Medway. In 1958 Hayle noted rain that “floods the rag boiling room” [2]."},
+ {id:"ice", t:"Hard frost and ice", d:"Ice up to 18 inches thick formed on Upper Crisbrook's wheel arms. In 1895 the ponds froze solid [1][2]."},
+ {id:"silt", t:"Sediment and silting", d:"Ponds fill with silt. Leg-o'-Mutton went from too deep to touch bottom in 1908 to 2–3 ft deep by the 1960s [1]."}
+];
+const PEOPLE_NODES = [
+ {id:"fulling", t:"Fulling cloth / “bucking”", d:"Wealden cloth was beaten and washed in fulling stocks. Lambarde counted at least a dozen fulling mills [5]."},
+ {id:"paper", t:"White & handmade paper", d:"From c.1687 to 1987. Producers included Whatman, the Pines, the Allnutts and the Greens [1][2][19]."},
+ {id:"corn", t:"Corn, flour & feed", d:"Village Mill, Upper Mill and the Crisbrooks ground for local bakers and farmers. “Some people walked to the mill for pig food” [1]."},
+ {id:"name", t:"Naming & identity", d:"“Loose” from hlosan, “to lose” [3]. “Strawmill Hill” preserves Simpson's experiments with straw paper [2]."},
+ {id:"quarry", t:"Ragstone quarrying", d:"Workers abandoned a quarry pit near Brishing when the stream flooded it and moved to the north bank [1]."},
+ {id:"leisure", t:"Skating, swimming & fishing", d:"The whole village skated in 1895. A springboard stood on the Leg-o'-Mutton dam. The ponds held pike, roach, bream and tench and were let for fishing [1]."},
+ {id:"dams", t:"Dams, ponds & settling-ponds", d:"Every mill impounded the stream. Great Ivy had four ponds, including three settling ponds [1]."},
+ {id:"rights", t:"Water rights & pipes", d:"Lower Tovil drew water through an 8-inch pipe from Lower Crisbrook pond. Upper Crisbrook's wheel pumped water to Hayle [2]."},
+ {id:"waste", t:"Effluent & sewage", d:"Tovil mill discharged into the stream. Sewage from the valley cottages silted the Crisbrook tail-race [2][17]."},
+ {id:"conserve", t:"Conservation & housing", d:"Conservation Area and the Valley Conservation Society (2000), land purchases and planning disputes [11][15]."}
+];
+const LINKS = [
+ // river shapes people
+ ["fall","fulling","r","Only a high fall could drive the heavy fulling stocks: 13 mills in about 3 miles [1]."],
+ ["fall","corn","r","Overshot wheels of 10–19 ft were possible because of the head [1]."],
+ ["fall","dams","r","A narrow valley meant short, cheap dams [1]."],
+ ["spring","paper","r","Steady flow kept vats and beaters running year-round [13]."],
+ ["spring","leisure","r","Springhead never froze and was “renowned for trout” [1]."],
+ ["clear","paper","r","Clean water made white paper. Purity is the reason given for the 19th-century paper boom [11]."],
+ ["clear","fulling","r","Washing cloth needed clean running water at the ford (“bucking”) [9]."],
+ ["sink","name","r","The disappearing stream gave the village its name, according to Hasted [3]."],
+ ["sink","quarry","r","The dipping strata that swallow the stream also flooded the quarry workings [1]."],
+ ["flood","corn","r","Medway floods stopped Bridge Mill's wheels and caused “considerable disorder in the warehouses” (1881) [2]."],
+ ["flood","paper","r","Hayle, 1958: “much rain lately… floods the rag boiling room” [2]."],
+ ["ice","leisure","r","The 1895 frost turned the millponds into the village skating rink [1]."],
+ ["ice","rights","r","When Upper Crisbrook's wheel froze, Hayle Mill's water supply stopped [2]."],
+ ["silt","conserve","r","Desilting the ponds became a major cost for later owners, and a habitat question [1]."],
+ // people reshape river
+ ["dams","silt","p","Settling ponds were built to slow the water so sediment would drop, which filled them with silt [1]."],
+ ["dams","leisure","p","Industrial reservoirs became swimming holes, fisheries and later bird sanctuaries [1]."],
+ ["paper","waste","p","Mill water was discharged “into the stream under the mill and thence to the Medway” [17]."],
+ ["waste","silt","p","Sewage from the valley cottages silted the Crisbrook tail-race, and an orchard island had to be removed [2]."],
+ ["rights","dams","p","Water was shared between mills by pipe and by agreement, as at Lower Tovil [2]."],
+ ["quarry","sink","p","Quarrying worked into the karst-like strata that swallow the stream [1]."],
+ ["conserve","dams","p","Owners raised pond levels to encourage cover for water-birds [1]."],
+ ["conserve","clear","p","Water quality near the Medway is now classed “very good” [11]."],
+ ["corn","rights","p","Upper Mill's owners controlled the Leg-o'-Mutton dam (“WW 1873”) [1]."]
+];
+function drawEntangle(){
+  const host = d3.select("#entChart").html("");
+  const W = Math.max(340, Math.min(1080, host.node().clientWidth));
+  const narrow = W<640;
+  const rowL = 58, rowR = 42, M={t:16,b:16};
+  const H = M.t+M.b+Math.max(RIVER_NODES.length*rowL, PEOPLE_NODES.length*rowR);
+  const svg = host.append("svg").attr("class","chart").attr("viewBox",`0 0 ${W} ${H}`);
+  const lx = narrow? 8 : 30, rx = narrow? W-8 : W-30, colW = narrow? 130 : 240;
+  const yl = d3.scalePoint().domain(RIVER_NODES.map(d=>d.id)).range([M.t+20,H-M.b-20]);
+  const yr = d3.scalePoint().domain(PEOPLE_NODES.map(d=>d.id)).range([M.t+14,H-M.b-14]);
+  const L = Object.fromEntries(RIVER_NODES.map(d=>[d.id,{x:lx+colW,y:yl(d.id),side:"L"}]));
+  const R = Object.fromEntries(PEOPLE_NODES.map(d=>[d.id,{x:rx-colW,y:yr(d.id),side:"R"}]));
+  const pos = id => L[id]||R[id];
+  const linkPath = d => {
+    const a=pos(d[0]), b=pos(d[1]);
+    if(a.side!==b.side){ const mx=(a.x+b.x)/2; return `M${a.x},${a.y} C${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`; }
+    // same side loop
+    const bulge = a.side==="L"? 70 : -70; return `M${a.x},${a.y} C${a.x+bulge},${a.y} ${b.x+bulge},${b.y} ${b.x},${b.y}`;
+  };
+  const defs = svg.append("defs");
+  [["r","--river"],["p","--rust"]].forEach(([k,v])=>defs.append("marker").attr("id","ar-"+k).attr("viewBox","0 0 10 10").attr("refX",9).attr("refY",5).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto-start-reverse").append("path").attr("d","M0,0 L10,5 L0,10z").attr("fill",css(v)));
+  const links = svg.append("g").attr("fill","none").selectAll("path").data(LINKS).join("path").attr("d",linkPath)
+    .attr("stroke",d=>d[2]==="r"?css("--river"):css("--rust")).attr("stroke-width",2).attr("opacity",.55)
+    .attr("marker-end",d=>`url(#ar-${d[2]})`).attr("stroke-dasharray",d=>d[2]==="p"?"6 3":null).style("cursor","help")
+    .on("mousemove",(e,d)=>{ focus([d[0],d[1]],d); showTip(`<b>${d[2]==="r"?"River → people":"People → river"}</b><br>${d[3]}`,e);})
+    .on("mouseleave",()=>{unfocus();hideTip();});
+  const allNodes = [...RIVER_NODES.map(d=>({...d,side:"L"})),...PEOPLE_NODES.map(d=>({...d,side:"R"}))];
+  const ng = svg.append("g").selectAll("g").data(allNodes).join("g").style("cursor","help")
+    .attr("transform",d=>{const p=pos(d.id);return `translate(${p.x},${p.y})`;})
+    .on("mousemove",(e,d)=>{ focus([d.id]); showTip(`<b>${d.t}</b><br>${d.d}`,e);}).on("mouseleave",()=>{unfocus();hideTip();});
+  ng.append("circle").attr("r",5.5).attr("fill",d=>d.side==="L"?css("--river"):css("--ochre"));
+  ng.append("foreignObject").attr("x",d=>d.side==="L"? -colW : 10).attr("y",d=>d.side==="L"?-18:-12).attr("width",colW-12).attr("height",d=>d.side==="L"?40:28)
+    .append("xhtml:div").style("font-size",narrow?"11px":"13px").style("line-height","1.2").style("text-align",d=>d.side==="L"?"right":"left")
+    .style("color",css("--ink")).style("font-family","IBM Plex Sans").style("font-weight",d=>d.side==="L"?"600":"500").text(d=>d.t);
+  svg.append("text").attr("x",lx).attr("y",10).text("THE STREAM").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--river")).attr("letter-spacing",2);
+  svg.append("text").attr("x",rx).attr("y",10).attr("text-anchor","end").text("PEOPLE & PRACTICES").attr("font-family","IBM Plex Mono").attr("font-size",10).attr("fill",css("--ochre")).attr("letter-spacing",2);
+  function focus(ids, link){
+    links.attr("opacity",d=> link? (d===link?1:.08) : (ids.includes(d[0])||ids.includes(d[1])?.95:.08)).attr("stroke-width",d=> (link? d===link : (ids.includes(d[0])||ids.includes(d[1])))?3.2:2);
+    const lit = new Set(ids); if(!link) LINKS.forEach(d=>{ if(ids.includes(d[0])||ids.includes(d[1])){lit.add(d[0]);lit.add(d[1]);} });
+    ng.attr("opacity",d=>lit.has(d.id)?1:.25);
+  }
+  function unfocus(){ links.attr("opacity",.55).attr("stroke-width",2); ng.attr("opacity",1); }
+}
+
+/* ================= FIELD NOTES ================= */
+const IC = {
+ boom:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M28 8 L32 20 L44 14 L38 26 L50 30 L38 34 L44 46 L32 40 L28 52 L24 40 L12 46 L18 34 L6 30 L18 26 L12 14 L24 20Z"/><circle cx="28" cy="30" r="5" fill="currentColor"/></g>`,
+ cake:`<g stroke="currentColor" fill="none" stroke-width="2"><circle cx="28" cy="16" r="6"/><path d="M28 22 V40 M18 30 H38 M28 40 L20 52 M28 40 L36 52"/><path d="M14 10 l4 4 M42 10 l-4 4"/></g>`,
+ ledger:`<g stroke="currentColor" fill="none" stroke-width="2"><rect x="10" y="8" width="36" height="42" rx="2"/><path d="M16 18 H40 M16 26 H40 M16 34 H34 M16 42 H30"/></g>`,
+ vat:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M8 26 H48 L44 50 H12Z"/><rect x="14" y="12" width="28" height="10"/><path d="M14 17 H42 M20 12 V22 M28 12 V22 M36 12 V22"/></g>`,
+ skate:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M14 14 V34 H40 Q46 34 46 40"/><path d="M10 44 H48"/><path d="M14 22 H28 V34"/></g>`,
+ rat:`<g stroke="currentColor" fill="none" stroke-width="2"><ellipse cx="26" cy="34" rx="14" ry="8"/><circle cx="40" cy="30" r="5"/><circle cx="42" cy="29" r="1" fill="currentColor"/><path d="M12 34 Q2 30 6 20 Q10 12 4 6"/><path d="M38 25 l2-5 M42 25 l3-4"/></g>`,
+ donkey:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M10 30 H38 V40 H10Z"/><path d="M38 32 L46 22 L50 26 L42 36"/><path d="M46 22 L44 14 M48 22 L50 15"/><path d="M14 40 V50 M34 40 V50"/><rect x="16" y="22" width="16" height="10"/></g>`,
+ fire:`<g stroke="currentColor" fill="none" stroke-width="2"><circle cx="28" cy="26" r="18"/><path d="M28 8 V44 M10 26 H46 M15 13 L41 39 M41 13 L15 39"/><path d="M22 54 Q20 46 26 42 Q26 48 30 48 Q32 44 30 40 Q38 44 36 54Z" fill="currentColor" opacity=".5"/></g>`,
+ chimney:`<g stroke="currentColor" fill="none" stroke-width="2"><rect x="22" y="6" width="10" height="44"/><path d="M18 50 H38 M20 6 H34"/><path d="M38 30 L48 24 M38 30 L48 36" stroke-dasharray="3 2"/></g>`,
+ drop:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M28 8 Q42 28 42 36 A14 14 0 0 1 14 36 Q14 28 28 8Z"/><path d="M20 40 Q24 44 30 42"/></g>`,
+ dive:`<g stroke="currentColor" fill="none" stroke-width="2"><path d="M6 20 H26"/><path d="M8 20 V28"/><path d="M4 40 Q16 36 28 40 T52 40 M4 48 Q16 44 28 48 T52 48"/><circle cx="38" cy="14" r="4"/><path d="M38 18 L42 30 M36 22 L44 24"/></g>`
+};
+const NOTES = [
+ {y:"23 July 1731", ic:"boom", t:"The powder mill blows up", p:"Bridge Mill had been converted to make gunpowder. The overseers' accounts for that year record no relief for the victims. As Spain observed, responsibility was “entirely private”. A century later people still remembered a farmhouse that had to be propped up after the blast.",
+  q:"A powder mill at Maidstone in Kent blew-up, by which two Men and a Child were killed; A Paper-Mill and a House adjoining were destroyed; The Tiling and Windows of Several Houses, and the Windows of a Church at a great distance very much Shatter'd.", s:"Gentleman's Magazine, July 1731 [6]"},
+ {y:"8 July 1749", ic:"cake", t:"A gingerbread baker's son becomes a free miller", p:"Robert Wilson, later the miller at Loose Village Mill, came before Maidstone's borough court to be made a freeman through his father. Milling here passed through families and through civic custom.",
+  q:"…came Robert Wilson Miller Eldest Son of William Wilson of this Town Gingerbreadbaker a Freeman of this Corporation and desired to be made free by his Fathers Copy according to the Custom…", s:"Court of Burghmote, Maidstone [10]"},
+ {y:"1774", ic:"ledger", t:"Whatman's “Loose Mills”", p:"James Whatman of Turkey Mill, England's most celebrated papermaker, took over Upper Mill. His account books list payments for carpentry, glazing, bricks and bundles of laths under the heading “Loose Mills”. Capital from a famous Maidstone firm was being invested in a small valley mill. He sold it in 1794.", q:null, s:"Spain, Part I [1]"},
+ {y:"15 Sept 1812", ic:"vat", t:"Hayle for sale", p:"The newest mill on the stream was advertised only about five years after it was built. The notice sold the water as much as the machinery.",
+  q:"…with a pen of water of about 2 acres which gives at all times full and ample power to the Mill also a copious supply of spring water which rises on the premises…", s:"Kentish Gazette [7]"},
+ {y:"Winter 1895", ic:"skate", t:"The whole village on the ice", p:"Alan Wilson remembered the great frost, when all of Loose skated on the millponds. Springhead Pond, fed by constant spring flow, never froze over. The miller had to keep the penstock from leaking while the wheel stood still. Swans kept the ponds clear of weed.", q:"never known or heard of any shortage of water", s:"Alan Wilson, in Spain [1]"},
+ {y:"c.1900", ic:"rat", t:"The rat-catcher and his wife", p:"Every eight or nine months a rat-catcher came to Upper Mill with a dog-cart, five or six dogs and ferrets. His wife worked the ferrets alongside him. The miller paid them by the number of rats' tails they handed over. The working day ran from 6 a.m. to 6 p.m.", q:null, s:"Spain, Part I [1]"},
+ {y:"19th century", ic:"donkey", t:"Donkeys between the Ivy mills", p:"Little Ivy beat rags into half-stuff (partly processed pulp) for Great Ivy. Two donkeys with panniers carried the pulp downstream and brought cut rags back. The mills were connected by animals as well as by water.", q:"two donkeys which used to carry it in panniers", s:"Green MSS, in Spain [1]"},
+ {y:"Winters, 1900s–60s", ic:"fire", t:"Burning tyres to free the wheel", p:"Ice up to 18 inches thick fused Upper Crisbrook's wheel to the mill wall. Workers threw boxes, tyres and fencing into the wheel and set them alight, and kept the buckets topped up. Once it took more than twelve hours before the wheel spun free. While it was frozen, Hayle Mill had no water.", q:null, s:"Spain, Part II [2]"},
+ {y:"1914–18", ic:"chimney", t:"A chimney as a military risk", p:"During the Great War, German prisoners of war took down Upper Mill's chimney, for fear that the enemy would use it as a landmark. The war turned an industrial building into a navigational hazard.", q:null, s:"Spain, Part I [1]"},
+ {y:"1908 → 1960s", ic:"dive", t:"From diving board to mudflat", p:"As a young man Alan Wilson dived from a springboard on the Leg-o'-Mutton dam into water too deep to touch bottom. By the 1960s that spot was 2–3 ft deep. The once well-stocked pond, “let for fishing-rights”, was then empty of fish.", q:null, s:"Spain, Part I [1]"},
+ {y:"1950s", ic:"drop", t:"Sewage in the tail-race", p:"Albert E. Reed &amp; Co. rented the Crisbrook pond and tail-race and tried to keep them clear. Sewage from the valley cottages silted the watercourses until an orchard island had to be dug out to enlarge the pond. As the valley became more residential, its waste ended up in the same water.", q:null, s:"Spain, Part II [2]"},
+ {y:"3 Nov 1958", ic:"vat", t:"A note from the vat-house", p:"Hayle Mill still kept its pond by hand, pulling boards from the sluice when the water rose. An automatic gate was then being made to do the job.", q:"much rain lately … floods the rag boiling room … may have to pull another board.", s:"Hayle Mill notes, in Spain [2]"}
+];
+function drawNotes(){
+  const host = d3.select("#notes").html("");
+  NOTES.forEach(n=>{
+    const c = host.append("article").attr("class","fn");
+    c.append("svg").attr("class","ic").attr("viewBox","0 0 56 56").style("color",css("--ochre")).html(IC[n.ic]);
+    c.append("div").attr("class","yr").text(n.y);
+    c.append("h3").style("padding-right","60px").text(n.t);
+    c.append("p").html(n.p);
+    if(n.q) c.append("blockquote").text("“"+n.q+"”");
+    c.append("div").attr("class","src").html(citeLinks(n.s));
+  });
+}
+
+/* ================= BOOT ================= */
+function drawAll(){
+  legend("#mapLegend",["fulling","paper","corn","rag","earth","oil","powder"]);
+  legend("#lifeLegend",Object.keys(USES));
+  drawMap(); selectMill(selectedMill); drawLifelines(); drawCount(); drawWheels(); drawBigWheel(); updateFlow(); drawEntangle(); drawNotes();
+}
+drawAll();
+requestAnimationFrame(spin);
+let rT; window.addEventListener("resize",()=>{clearTimeout(rT); rT=setTimeout(()=>{drawMap();drawLifelines();drawEntangle();},200);});
+// theme toggle
+document.getElementById("themeBtn").onclick=()=>{
+  const r=document.documentElement; const cur=r.getAttribute("data-theme");
+  const dark = cur? cur==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.setAttribute("data-theme", dark?"light":"dark"); drawAll();
+};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{ if(!document.documentElement.getAttribute("data-theme")) drawAll(); });
+document.addEventListener("touchstart",e=>{ if(!e.target.closest("svg")) hideTip(); },{passive:true});
+</script>
+</body>
+</html>
